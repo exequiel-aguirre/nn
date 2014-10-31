@@ -1,6 +1,6 @@
 #ifndef ComponentH
 #define ComponentH
-#include <vector.h>
+#include <vector>
 #include "../Position/Position.h"
 #include "../Behavior/IBehavior.h"
 #include "../Listener/ListenerManager.h"

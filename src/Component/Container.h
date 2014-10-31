@@ -1,7 +1,7 @@
 #ifndef ContainerH
 #define ContainerH
 #include "Component.h"
-#include <vector.h>
+#include <vector>
 
 class Container: public Component {
   private:

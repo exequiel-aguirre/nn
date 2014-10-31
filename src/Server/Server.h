@@ -1,7 +1,7 @@
 #ifndef SERVER_H_
 #define SERVER_H_
 
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 #include "../Window/Window.h"
 #include "../Position/Position.h"
 #include "../Application/Application.h"
