@@ -1,6 +1,7 @@
 #ifndef ListenerManagerH
 #define ListenerManagerH
 #include <vector>
+using std::vector;
 
 class ListenerManager{
   private:
@@ -26,7 +27,7 @@ class ListenerManager{
         (*it)->onTimer();
       }    
     }    
-    void callKeyboardListeners(SDLKey key){
+    void callKeyboardListeners(SDL_Keycode key){
     	vector<IListener*>::iterator it;
     	for(it=listeners->begin();it!=listeners->end();it++){
     		(*it)->onKeyDown(key) ;

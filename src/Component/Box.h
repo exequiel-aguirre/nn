@@ -13,8 +13,8 @@ class Box: public Component {
 	GLuint	texture;	
 	
 	void loadTexture(char* fileName){
-		SDL_Surface* bmpFile=SDL_LoadBMP(fileName);
-		
+		SDL_Surface* bmpFile=SDL_LoadBMP(fileName);		
+		if(bmpFile == NULL ) std::cout <<  SDL_GetError();
 		glGenTextures(1,&texture);
 		glBindTexture(GL_TEXTURE_2D,texture);
 		glTexImage2D(GL_TEXTURE_2D,0,3,bmpFile->w,bmpFile->h,0,GL_RGB,GL_UNSIGNED_BYTE,bmpFile->pixels);

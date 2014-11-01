@@ -27,7 +27,7 @@ private:
     virtual ~BaseRotationKeyboardBehavior(){}   
     
     //todo:make an "function" object with the responsability of generating the new position
-    void  onKeyDown(SDLKey key){    	
+    void  onKeyDown(SDL_Keycode key){    	
     	//float theta=getCurrentAngle(getComponent()->getPosition());
     	//TODO:do not commit this awful flag!
     	bool shouldUpdatePosition=false;

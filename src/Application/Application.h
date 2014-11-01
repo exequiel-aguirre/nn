@@ -29,7 +29,7 @@ class Application:public IListener {
     void onCreate(){}
     void onPaint(){}    
     void onDestroy(){}
-    void onKeyDown(SDLKey key){
+    void onKeyDown(SDL_Keycode key){
     	ListenerManager::getInstance()->callKeyboardListeners(key);
     }
     void onTimer(){

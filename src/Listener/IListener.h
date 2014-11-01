@@ -13,7 +13,7 @@ class IListener{
     void virtual onCreate(){}
     void virtual onPaint(){}
     void virtual onDraw(){}
-    void virtual onKeyDown(SDLKey key){}
+    void virtual onKeyDown(SDL_Keycode key){}
     void virtual onDestroy(){}
 
     

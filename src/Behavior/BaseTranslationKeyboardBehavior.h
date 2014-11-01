@@ -19,7 +19,7 @@ class BaseTranslationKeyboardBehavior: public AbstractBehavior{
     virtual ~BaseTranslationKeyboardBehavior(){}   
     
     //todo:make an "function" object with the responsability of generating the new position
-    void  onKeyDown(SDLKey key){
+    void  onKeyDown(SDL_Keycode key){
     	float deltaX=0.0f;    	
     	float deltaZ=0.0f;
     	//TODO:do not commit this awful flag!

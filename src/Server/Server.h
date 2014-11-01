@@ -2,25 +2,25 @@
 #define SERVER_H_
 
 #include <SDL2/SDL.h>
-#include "../Window/Window.h"
+#include "../SDLWindow/SDLWindow.h"
 #include "../Position/Position.h"
 #include "../Application/Application.h"
 #include "../Test/MyContainer.h"
 class Server
 {
 private:
-	void init(){
-		SDL_EnableKeyRepeat(1,1);		
+	void init(){		
+		//SDL_EnableKeyRepeat(1,1);	//EXE-TODO:lost in migration!
 		glEnable(GL_TEXTURE_2D);
 		glEnable(GL_DEPTH_TEST);
 	}
 protected:
-	Window m_Window;	
+	SDLWindow m_Window;		
 public:
 	Server(){}
 	virtual ~Server(){}	
-	bool start(){
-		if(!m_Window.createWindow(800, 600, 32, false, "Title")) return false;
+	bool start(){		
+		if(!m_Window.createSDLWindow(800, 600, 32, false, "Title")) return false;
 		Application::getInstance()->setCurrentComponent(new MyContainer(new Position(0.0f,0.0f,0.0f)));
 		glClearColor(0.0, 0.0, 0.0, 1.0);
 		init();
@@ -33,7 +33,8 @@ public:
 			{
 				glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 				Application::getInstance()->onDraw();
-				SDL_GL_SwapBuffers();
+				SDL_GL_SwapWindow((&m_Window)->getSDLWindow());			
+
 			}
 		}
 	
@@ -74,7 +75,7 @@ public:
 
 					case SDL_KEYDOWN:
 					{
-						SDLKey sym = event.key.keysym.sym;
+						SDL_Keycode sym = event.key.keysym.sym;
 
 						if(sym == SDLK_ESCAPE) //Quit if escape was pressed
 						{
@@ -89,16 +90,18 @@ public:
 					
 					case SDL_KEYUP:
 					{
-						//SDLKey sym = event.key.keysym.sym;						
+						//SDL_Keycode sym = event.key.keysym.sym;						
 						break;
 					}
 
-					case SDL_VIDEORESIZE:
+					//EXE-TODO:MIGRATE WITH SDL_WINDOWEVENT
+					/*case SDL_VIDEORESIZE:
 					{
 						//the window has been resized so we need to set up our viewport and projection according to the new size
 						resize(event.resize.w, event.resize.h);
 						break;
-					}
+					}*/
+
 					// Default case
 					default: 
 					{
