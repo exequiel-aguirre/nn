@@ -10,7 +10,8 @@
 //todo:make box a container
 class Box: public Component {  
   private:
-	GLuint	texture;	
+	GLuint	texture;
+	char* defaultTextureFilename="img/box.bmp";
 	
 	void loadTexture(char* fileName){
 		SDL_Surface* bmpFile=SDL_LoadBMP(fileName);		
@@ -26,12 +27,14 @@ class Box: public Component {
 	
   public:
 	  Box(Position* position,char* textureFilename):Component(position){
+		  if(textureFilename==NULL) textureFilename=defaultTextureFilename;
 		  loadTexture(textureFilename);
 		  //by default this behavior is added in order to create the sensation of,moving through the components.
 		  //TODO:this should be in a super class, like "decorativeComponent" or something like that
 		  add(new BaseTranslationKeyboardBehavior());
 		  add(new BaseRotationKeyboardBehavior());
-	  }
+	  }		
+
     virtual ~Box(){}
     
     void onRender(){		
