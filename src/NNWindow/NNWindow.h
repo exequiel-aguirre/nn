@@ -33,7 +33,7 @@ private:
 
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		gluPerspective(45.0f,(GLfloat)x/(GLfloat)y,1.0f,100.0f);
+		gluPerspective(45.0f,(GLfloat)x/(GLfloat)y,1.0f,500.0f);//the last parameter is how far you'll be able to see
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 	}
