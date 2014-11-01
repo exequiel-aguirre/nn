@@ -1,3 +1,6 @@
+//install environment
+apt-get install build-essential mesa-common-dev freeglut3-dev libsdl2-dev
+
 To compile:
 >g++ src/main.cpp -w   -lGL  -lGLU  -lSDL2
 

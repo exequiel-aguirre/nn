@@ -4,10 +4,11 @@
 #include "../Behavior/IBehavior.h"
 
 
-class AbstractBehavior:public IBehavior{
+class AbstractBehavior:public IBehavior{  
   private:
     Component* component;
   public:
+    static const float DEFAULT_SPEED=0.1f;
     AbstractBehavior(){}
     virtual ~AbstractBehavior(){}   
     

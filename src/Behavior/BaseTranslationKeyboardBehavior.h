@@ -11,7 +11,7 @@
 
 
 class BaseTranslationKeyboardBehavior: public AbstractBehavior{	  
-  static const float DEFAULT_SPEED=0.1f;	
+  	
   public:
 	BaseTranslationKeyboardBehavior(){}
     virtual ~BaseTranslationKeyboardBehavior(){}   
