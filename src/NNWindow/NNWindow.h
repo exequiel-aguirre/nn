@@ -14,6 +14,7 @@ using std::string;
 //move the resposabilities from server to this class.
 class NNWindow
 {
+	const Uint32  REFRESH_DELAY=1000/60;
 private:
 
 	SDL_Window* SDLWindow;
@@ -94,6 +95,7 @@ public:
 	
 	void refresh()
 	{
+		SDL_Delay(REFRESH_DELAY);
 		SDL_GL_SwapWindow(SDLWindow);
 		//std::cout << SDL_GetError() << ' ; ' << glGetError();exit(4);
 	}
