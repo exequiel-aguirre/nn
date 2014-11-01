@@ -8,11 +8,23 @@
 #include "../Test/MyContainer.h"
 class Server
 {
+
+static const int DEFAULT_WINDOW_WIDTH=800;
+static const int DEFAULT_WINDOW_HEIGHT=600;
+
 private:
-	void init(){		
+	void init(int x,int y){
 		//SDL_EnableKeyRepeat(1,1);	//EXE-TODO:lost in migration!
 		glEnable(GL_TEXTURE_2D);
 		glEnable(GL_DEPTH_TEST);
+
+		glViewport(0,0,x,y);
+
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		gluPerspective(45.0f,(GLfloat)x/(GLfloat)y,1.0f,100.0f);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
 	}
 protected:
 	SDLWindow m_Window;		
@@ -20,12 +32,10 @@ public:
 	Server(){}
 	virtual ~Server(){}	
 	bool start(){		
-		if(!m_Window.createSDLWindow(800, 600, 32, false, "Title")) return false;
+		if(!m_Window.createSDLWindow(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, 32, false, "Title")) return false;
 		Application::getInstance()->setCurrentComponent(new MyContainer(new Position(0.0f,0.0f,0.0f)));
 		glClearColor(0.0, 0.0, 0.0, 1.0);
-		//EXE-TODO:ugly hack!
-		resize(800,600);
-		init();
+		init(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
 		run();
 		return true;
 	}
@@ -48,15 +58,7 @@ public:
 			{
 				y = 1;
 			}
-
-			glViewport(0,0,x,y);
-
-			glMatrixMode(GL_PROJECTION);
-			glLoadIdentity();
-			gluPerspective(45.0f,(GLfloat)x/(GLfloat)y,1.0f,100.0f);
-
-			glMatrixMode(GL_MODELVIEW);
-			glLoadIdentity();
+			init(x,y);
 		}
 	
 	bool processEvents()
@@ -96,12 +98,23 @@ public:
 					}
 
 					//EXE-TODO:MIGRATE WITH SDL_WINDOWEVENT
-					/*case SDL_VIDEORESIZE:
+					case SDL_WINDOWEVENT:
 					{
-						//the window has been resized so we need to set up our viewport and projection according to the new size
-						resize(event.resize.w, event.resize.h);
-						break;
-					}*/
+						switch(event.window.event)
+						{
+							case SDL_WINDOWEVENT_RESIZED:
+							{            					
+            					//the window has been resized so we need to set up our viewport and projection according to the new size								
+								resize(event.window.data1, event.window.data1);
+								break;
+            				}
+            				
+							default:
+							{
+								break;
+							}
+						}
+					}
 
 					// Default case
 					default: 

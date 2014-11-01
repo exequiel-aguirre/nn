@@ -13,6 +13,7 @@
 
 using std::string;
 //EXE-TODO:change name. This is to close to SDL_Window
+//move the resposabilities from server to this class.
 class SDLWindow
 {
 private:
@@ -59,7 +60,7 @@ public:
 
 		
 		// Flags tell SDL about the type of window we are creating.
-		int flags = SDL_WINDOW_OPENGL;
+		int flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
 
 		if(fullscreen == true)
 		{
@@ -74,15 +75,6 @@ public:
 		{
 			return false;
 		}
-
-		//SDL doesn't trigger off a ResizeEvent at startup, but as we need this for OpenGL, we do this ourself
-		//EXE-TODO!!!
-		/*SDL_Event resizeEvent;
-		resizeEvent.type = SDL_WINDOWEVENT_RESIZE;
-		resizeEvent.resize.w = width;
-		resizeEvent.resize.h = height;
-
-		SDL_PushEvent(&resizeEvent);*/
 
 		return true;
 	}

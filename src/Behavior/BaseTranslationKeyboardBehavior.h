@@ -9,11 +9,9 @@
  * Remember that all the effects are the opposite
  * */
 
-//TODO:this should be inside the class...
-static const float DEFAULT_SPEED=0.1f;
 
-class BaseTranslationKeyboardBehavior: public AbstractBehavior{	
-	
+class BaseTranslationKeyboardBehavior: public AbstractBehavior{	  
+  static const float DEFAULT_SPEED=0.1f;	
   public:
 	BaseTranslationKeyboardBehavior(){}
     virtual ~BaseTranslationKeyboardBehavior(){}   
