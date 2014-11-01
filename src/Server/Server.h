@@ -23,6 +23,8 @@ public:
 		if(!m_Window.createSDLWindow(800, 600, 32, false, "Title")) return false;
 		Application::getInstance()->setCurrentComponent(new MyContainer(new Position(0.0f,0.0f,0.0f)));
 		glClearColor(0.0, 0.0, 0.0, 1.0);
+		//EXE-TODO:ugly hack!
+		resize(800,600);
 		init();
 		run();
 		return true;
