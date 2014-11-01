@@ -33,8 +33,7 @@ public:
 			{
 				glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 				Application::getInstance()->onDraw();
-				SDL_GL_SwapWindow((&m_Window)->getSDLWindow());			
-
+				(&m_Window)->refresh();
 			}
 		}
 	

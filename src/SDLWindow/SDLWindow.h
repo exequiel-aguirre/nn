@@ -12,7 +12,7 @@
 #include <GL/glu.h>
 
 using std::string;
-
+//EXE-TODO:change name. This is to close to SDL_Window
 class SDLWindow
 {
 private:
@@ -22,6 +22,7 @@ private:
 	bool m_Fullscreen;
 	string m_Title;
 	SDL_Window* screen;
+	SDL_GLContext context;
 
 public:
 	SDLWindow(){
@@ -31,6 +32,8 @@ public:
 	}
 	
 	~SDLWindow(){
+		SDL_DestroyWindow(screen);
+		SDL_GL_DeleteContext(context);
 		SDL_Quit();
 	}
 
@@ -64,9 +67,10 @@ public:
 		}
 
 		// Create the window
-		SDL_Window* screen = SDL_CreateWindow(title.c_str(),SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,width, height, flags );
+		screen = SDL_CreateWindow(title.c_str(),SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,width, height, flags );
+		context = SDL_GL_CreateContext(screen);
 
-		if(screen == NULL)
+		if(screen == NULL || context == NULL)
 		{
 			return false;
 		}
@@ -93,8 +97,9 @@ public:
 		return m_Width;
 	}
 
-	SDL_Window* getSDLWindow(){
-		return screen;
+	void refresh(){
+		SDL_GL_SwapWindow(screen);
+		//std::cout << SDL_GetError() << ' ; ' << glGetError();exit(4);
 	}
 };
 
