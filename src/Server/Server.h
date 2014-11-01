@@ -2,7 +2,7 @@
 #define SERVER_H_
 
 #include <SDL2/SDL.h>
-#include "../SDLWindow/SDLWindow.h"
+#include "../NNWindow/NNWindow.h"
 #include "../Position/Position.h"
 #include "../Application/Application.h"
 #include "../Test/MyContainer.h"
@@ -13,53 +13,32 @@ static const int DEFAULT_WINDOW_WIDTH=800;
 static const int DEFAULT_WINDOW_HEIGHT=600;
 
 private:
-	void init(int x,int y){
-		//SDL_EnableKeyRepeat(1,1);	//EXE-TODO:lost in migration!
-		glEnable(GL_TEXTURE_2D);
-		glEnable(GL_DEPTH_TEST);
 
-		glViewport(0,0,x,y);
-
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		gluPerspective(45.0f,(GLfloat)x/(GLfloat)y,1.0f,100.0f);
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-	}
 protected:
-	SDLWindow m_Window;		
+	NNWindow* window;		
 public:
 	Server(){}
 	virtual ~Server(){}	
-	bool start(){		
-		if(!m_Window.createSDLWindow(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, 32, false, "Title")) return false;
+	bool start()
+	{
+		window=new NNWindow(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, false, "Title");		
 		Application::getInstance()->setCurrentComponent(new MyContainer(new Position(0.0f,0.0f,0.0f)));
-		glClearColor(0.0, 0.0, 0.0, 1.0);
-		init(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
 		run();
 		return true;
 	}
+
 	void run()
 		{			
 			while(processEvents())
 			{
-				glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+				window->clearGL();
 				Application::getInstance()->onDraw();
-				(&m_Window)->refresh();
+				window->refresh();
 			}
 		}
 	
 	
-	void resize(int x, int y)
-		{
-			std::cout << "Resizing Window to " << x << "x" << y << std::endl;
-			
-			if (y <= 0)
-			{
-				y = 1;
-			}
-			init(x,y);
-		}
+
 	
 	bool processEvents()
 		{
@@ -105,7 +84,7 @@ public:
 							case SDL_WINDOWEVENT_RESIZED:
 							{            					
             					//the window has been resized so we need to set up our viewport and projection according to the new size								
-								resize(event.window.data1, event.window.data1);
+								window->resize(event.window.data1, event.window.data1);
 								break;
             				}
             				
