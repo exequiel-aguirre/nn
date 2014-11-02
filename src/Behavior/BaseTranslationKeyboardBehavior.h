@@ -22,44 +22,41 @@ class BaseTranslationKeyboardBehavior: public AbstractBehavior{
     	float deltaX=0.0f;
         float deltaY=0.0f;    	
     	float deltaZ=0.0f;
-        float delta=0.0f;
+        float directionXZ=0.0f;//direction angle in degrees for the X-Z plane (theta)
+        float directionY=0.0f;//direction angle in degrees for the Y axis(phi)
         Position* currentPosition=getComponent()->getPosition();
-    	//TODO:do not commit this awful flag!define the flag on the default case
-        //REFACTOR!!!(asociate w with 0*PI,d->PI/2,s->PI,a->-PI/2)
-    	bool shouldUpdatePosition=false;
+    	//TODO:do not commit this awful flag!
+    	bool shouldUpdatePosition=true;
 
     	switch(key){ 
-        	case SDLK_w:{        		
-                deltaX=DEFAULT_SPEED * -sinf(currentPosition->getAbsoluteTheta() * M_PI/180);//change from grads to rads and calculate the x component
-                deltaZ=DEFAULT_SPEED * cosf(currentPosition->getAbsoluteTheta() * M_PI/180);//change from grads to rads and calculate the x component
-                deltaY=sinf(currentPosition->getAbsolutePhi() * M_PI/180) * DEFAULT_SPEED;//change from grads to rads and calculate the x component           
-        		shouldUpdatePosition=true;
+        	case SDLK_w:{
+                directionXZ=0.0f;//looking forward
+                directionY=90.0f;//looking up(maybe using 0 is more readable)
         		break;
         	}
         	case SDLK_s:{
-        		deltaX=-DEFAULT_SPEED * -sinf(currentPosition->getAbsoluteTheta() * M_PI/180);//change from grads to rads and calculate the x component
-                deltaZ=-DEFAULT_SPEED * cosf(currentPosition->getAbsoluteTheta() * M_PI/180);//change from grads to rads and calculate the x component
-                deltaY=sinf(currentPosition->getAbsolutePhi() * M_PI/180) * -DEFAULT_SPEED;//change from grads to rads and calculate the x component           
-        		shouldUpdatePosition=true;
+                directionXZ=180.0f;//looking backwards
+                directionY=-90.0f;//looking down             
         		break;
         	}
         	case SDLK_d:{
-        		deltaX=-DEFAULT_SPEED * cosf(currentPosition->getAbsoluteTheta() * M_PI/180);//change from grads to rads and calculate the x component
-                deltaZ=-DEFAULT_SPEED * sinf(currentPosition->getAbsoluteTheta() * M_PI/180);//change from grads to rads and calculate the x component
-        		shouldUpdatePosition=true;
+                directionXZ=180/2;//PI/2,looking right
         		break;
         	}
         	case SDLK_a:{
-        		deltaX=DEFAULT_SPEED * cosf(currentPosition->getAbsoluteTheta() * M_PI/180);//change from grads to rads and calculate the x component
-                deltaZ=DEFAULT_SPEED * sinf(currentPosition->getAbsoluteTheta() * M_PI/180);//change from grads to rads and calculate the x component
-        		shouldUpdatePosition=true;
+                directionXZ=-180/2;//-PI/2,looking left
         		break;
         	}
         	default:{
+                shouldUpdatePosition=false;
         		break;
         	}
     	}
     	if(shouldUpdatePosition){
+            deltaX=DEFAULT_SPEED * -sinf((currentPosition->getAbsoluteTheta()+directionXZ) * M_PI/180);//change from grads to rads and calculate the x component
+            deltaZ=DEFAULT_SPEED * cosf((currentPosition->getAbsoluteTheta()+directionXZ) * M_PI/180);//change from grads to rads and calculate the z component
+
+            if(directionY!=0.0f) deltaY=cosf((currentPosition->getAbsolutePhi()+directionY) * M_PI/180) * -DEFAULT_SPEED;//change from grads to rads and calculate the y component
 
             Position* newPosition=new Position(
                 currentPosition->getAbsoluteX()+deltaX,
