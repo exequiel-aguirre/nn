@@ -7,23 +7,19 @@
 #include "../Behavior/BaseTranslationKeyboardBehavior.h"
 #include "../Behavior/BaseRotationKeyboardBehavior.h"
 
-//todo:make box a container
+
 class Ground: public Component { 
   const float SIDE_LENGTH=600.0f;//how far in Z axes will go.
   const float STEP_LENGTH=2.0f;
   public:
-	  Ground(Position* position):Component(position){
-		  //by default this behavior is added in order to create the sensation of,moving through the components.
-		  //TODO:this should be in a super class, like "decorativeComponent" or something like that
-		  add(new BaseTranslationKeyboardBehavior());		  
-	  }		
+	Ground(Position* position):Component(position){}		
 
     virtual ~Ground(){}
     
     void onRender(){		
-		glLoadIdentity();
+		//glLoadIdentity();
 		//pull this up			
-		glTranslatef(this->position->getAbsoluteX(),this->position->getAbsoluteY(),this->position->getAbsoluteZ());		
+		//glTranslatef(this->position->getAbsoluteX(),this->position->getAbsoluteY(),this->position->getAbsoluteZ());		
 		
 		// Set colour to white
 		glColor3ub(255, 255, 255);

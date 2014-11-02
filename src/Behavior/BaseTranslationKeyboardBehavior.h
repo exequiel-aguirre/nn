@@ -50,7 +50,8 @@ class BaseTranslationKeyboardBehavior: public AbstractBehavior{
     	}
     	if(shouldUpdatePosition){
     		Position* currentPosition=getComponent()->getPosition();
-    		Position* newPosition=new Position(currentPosition->getAbsoluteX()+deltaX,currentPosition->getAbsoluteY(),currentPosition->getAbsoluteZ()+deltaZ);
+    		Position* newPosition=new Position(currentPosition->getAbsoluteX()+deltaX,currentPosition->getAbsoluteY(),currentPosition->getAbsoluteZ()+deltaZ,
+                currentPosition->getAbsoluteTheta(),currentPosition->getAbsolutePhi());
     		getComponent()->setPosition(newPosition);
     	}
     }    

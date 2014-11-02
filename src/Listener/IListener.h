@@ -10,10 +10,10 @@ class IListener{
     
     
     void virtual onTimer(){}
-    void virtual onCreate(){}
-    void virtual onPaint(){}
+    void virtual onCreate(){}    
     void virtual onDraw(){}
     void virtual onKeyDown(SDL_Keycode key){}
+    void virtual onMouseMotion(SDL_MouseMotionEvent motion){}
     void virtual onDestroy(){}
 
     

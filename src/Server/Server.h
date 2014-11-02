@@ -76,6 +76,12 @@ public:
 						break;
 					}
 
+					case SDL_MOUSEMOTION:
+					{	
+						Application::getInstance()->onMouseMotion(event.motion);
+						break;
+					}
+
 					//EXE-TODO:MIGRATE WITH SDL_WINDOWEVENT
 					case SDL_WINDOWEVENT:
 					{

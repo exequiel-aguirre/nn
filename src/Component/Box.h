@@ -31,17 +31,17 @@ class Box: public Component {
 		  loadTexture(textureFilename);
 		  //by default this behavior is added in order to create the sensation of,moving through the components.
 		  //TODO:this should be in a super class, like "decorativeComponent" or something like that
-		  add(new BaseTranslationKeyboardBehavior());
-		  add(new BaseRotationKeyboardBehavior());
+		  //add(new BaseTranslationKeyboardBehavior());
+		  //add(new BaseRotationKeyboardBehavior());
 	  }		
 
     virtual ~Box(){}
     
     void onRender(){		
 			
-			glLoadIdentity();
+			//glLoadIdentity();
 			//pull this up			
-			glTranslatef(this->position->getAbsoluteX(),this->position->getAbsoluteY(),this->position->getAbsoluteZ());	
+			//glTranslatef(this->position->getAbsoluteX(),this->position->getAbsoluteY(),this->position->getAbsoluteZ());	
 			
 			glBegin(GL_QUADS);
 					// Front Face

@@ -20,6 +20,15 @@ class ListenerManager{
     }
     virtual ~ListenerManager(){}	
     
+
+
+    void callMouseListeners(SDL_MouseMotionEvent motion){
+      vector<IListener*>::iterator it;
+      for(it=listeners->begin();it!=listeners->end();it++){
+        (*it)->onMouseMotion(motion);
+      }
+    }
+
     //TODO:make this call methods generic
     void callTimerListeners(){
       vector<IListener*>::iterator it;

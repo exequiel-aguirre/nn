@@ -27,7 +27,6 @@ class Application:public IListener {
     virtual ~Application(){}	    
     
     void onCreate(){}
-    void onPaint(){}    
     void onDestroy(){}
     void onKeyDown(SDL_Keycode key){
     	ListenerManager::getInstance()->callKeyboardListeners(key);
@@ -35,7 +34,9 @@ class Application:public IListener {
     void onTimer(){
       ListenerManager::getInstance()->callTimerListeners();    
     }
-    
+    void onMouseMotion(SDL_MouseMotionEvent motion){
+      ListenerManager::getInstance()->callMouseListeners(motion);
+    }
     
     
     void onDraw(){

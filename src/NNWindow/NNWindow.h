@@ -14,9 +14,9 @@ using std::string;
 //move the resposabilities from server to this class.
 class NNWindow
 {
-	const Uint32  REFRESH_DELAY=1000/60;
-private:
 
+const Uint32  REFRESH_DELAY=1000/60;
+private:	
 	SDL_Window* SDLWindow;
 	SDL_GLContext GLContext;
 
@@ -52,6 +52,7 @@ private:
 		SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 5);
 		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+		SDL_SetRelativeMouseMode(SDL_TRUE);
 
 		
 		// Flags tell SDL about the type of window we are creating.
