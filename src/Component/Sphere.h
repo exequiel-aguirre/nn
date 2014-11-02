@@ -43,15 +43,15 @@ class Sphere: public Component {
 			int lats=24;
 			int longs=24;
 			int i, j;
-        	for(i = 0; i <= lats; i++) 
+        	for(i = 0; i <= longs; i++) 
         	{
-	           phi0= -(M_PI/2) + ((M_PI/lats)* (i-1));
-	           phi1= -(M_PI/2) + ((M_PI/lats)* i);
+	           phi0= (2*M_PI/longs)* (i-1);
+	           phi1= (2*M_PI/longs)* i;
 
 	           glBegin(GL_QUAD_STRIP);
-		           for(j = 0; j <= longs; j++) 
+		           for(j = 0; j <= lats; j++) 
 		           {   
-					   theta=(2*M_PI/longs) * (j-1);
+					   theta=(2*M_PI/lats) * (j-1);
 					   glNormal3f(r*cos(theta)*sin(phi0), r*sin(theta)*sin(phi0),r*cos(phi0));
 		               glVertex3f(r*cos(theta)*sin(phi0), r*sin(theta)*sin(phi0),r*cos(phi0));
 		               
