@@ -24,8 +24,7 @@ class Camera: public Component {
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 	 
-		// Move the camera to our location in space		
-		std::cout << this->position->getAbsoluteTheta()<<","<< this->position->getAbsolutePhi() << "\n";
+		// Move the camera to our location in space
 		glRotatef(this->position->getAbsolutePhi(), 1.0f, 0.0f, 0.0f);//rotate our camera on the x-axis (looking up and down)
 		glRotatef(this->position->getAbsoluteTheta(), 0.0f, 1.0f, 0.0f); // Rotate our camera on the  y-axis (looking left and right)
 	 

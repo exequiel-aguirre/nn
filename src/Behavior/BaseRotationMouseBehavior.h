@@ -39,6 +39,7 @@ class BaseRotationMouseBehavior: public AbstractBehavior{
             newPhi); 	
 		getComponent()->setPosition(newPosition);
     	
+        //std::cout << getComponent()->getPosition()->getAbsoluteTheta()<<","<< getComponent()->getPosition()->getAbsolutePhi() << "\n";
     }    
 
 
