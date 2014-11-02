@@ -18,7 +18,7 @@ class Box: public Component {
 		if(bmpFile == NULL ) std::cout <<  SDL_GetError();
 		glGenTextures(1,&texture);
 		glBindTexture(GL_TEXTURE_2D,texture);
-		glTexImage2D(GL_TEXTURE_2D,0,3,bmpFile->w,bmpFile->h,0,GL_RGB,GL_UNSIGNED_BYTE,bmpFile->pixels);
+		glTexImage2D(GL_TEXTURE_2D,0,1,bmpFile->w,bmpFile->h,0,GL_RGB,GL_UNSIGNED_BYTE,bmpFile->pixels);
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 		
