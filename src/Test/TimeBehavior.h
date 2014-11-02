@@ -12,7 +12,7 @@ class TimeBehavior: public AbstractBehavior{
     //todo:make an "function" object with the responsability of generating the new position
     void  onTimer(){
       Position* currentPosition=getComponent()->getPosition();
-      Position* newPosition=new Position(currentPosition->getAbsoluteX(),currentPosition->getAbsoluteY(),currentPosition->getAbsoluteZ()+0.1);
+      Position* newPosition=new Position(currentPosition->getAbsoluteX(),currentPosition->getAbsoluteY(),currentPosition->getAbsoluteZ()+0.01);
       getComponent()->setPosition(newPosition);
       
       

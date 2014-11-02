@@ -37,11 +37,11 @@ class Box: public Component {
 
     virtual ~Box(){}
     
-    void onRender(){		
+    void render(){		
 			
 			//glLoadIdentity();
 			//pull this up			
-			//glTranslatef(this->position->getAbsoluteX(),this->position->getAbsoluteY(),this->position->getAbsoluteZ());	
+			glTranslatef(this->position->getAbsoluteX(),this->position->getAbsoluteY(),this->position->getAbsoluteZ());	
 			
 			glBegin(GL_QUADS);
 					// Front Face
@@ -75,6 +75,9 @@ class Box: public Component {
 					glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);
 					glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);
 				glEnd();
+			//we restore the position to avoid messing with the other's component's location
+			//we can always draw them directly using the position on the glvertexinstruction above...
+		   glTranslatef(-this->position->getAbsoluteX(),-this->position->getAbsoluteY(),-this->position->getAbsoluteZ());	
     }
 
 };

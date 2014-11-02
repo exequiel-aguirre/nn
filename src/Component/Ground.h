@@ -16,7 +16,7 @@ class Ground: public Component {
 
     virtual ~Ground(){}
     
-    void onRender(){		
+    void render(){		
 		//glLoadIdentity();
 		//pull this up			
 		//glTranslatef(this->position->getAbsoluteX(),this->position->getAbsoluteY(),this->position->getAbsoluteZ());		

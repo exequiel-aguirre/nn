@@ -38,11 +38,19 @@ class Application:public IListener {
       ListenerManager::getInstance()->callMouseListeners(motion);
     }
     
-    
-    void onDraw(){
+    void render(){
+      onBeforeRender();
       if(currentComponent!=NULL) currentComponent->render();
+      onAfterRender();
     }
    
+   void onBeforeRender(){
+      if(currentComponent!=NULL) currentComponent->onBeforeRender();
+   }
+
+   void onAfterRender(){
+      if(currentComponent!=NULL) currentComponent->onAfterRender();
+   }
     
     void setCurrentComponent(Component* currentComponent){
       this->currentComponent=currentComponent;

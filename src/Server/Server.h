@@ -9,8 +9,8 @@
 class Server
 {
 
-static const int DEFAULT_WINDOW_WIDTH=800;
-static const int DEFAULT_WINDOW_HEIGHT=600;
+static const int DEFAULT_WINDOW_WIDTH=1024;
+static const int DEFAULT_WINDOW_HEIGHT=768;
 
 private:
 
@@ -32,7 +32,7 @@ public:
 			while(processEvents())
 			{
 				window->clearGL();
-				Application::getInstance()->onDraw();
+				Application::getInstance()->render();
 				window->refresh();
 			}
 		}
@@ -108,7 +108,8 @@ public:
 					}
 				}
 			}
-
+			//TODO:check if this is the best way of calling this behavior
+			Application::getInstance()->onTimer();
 			return true;
 		}
 

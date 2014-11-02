@@ -8,24 +8,49 @@ class Container: public Component {
     vector<Component*>* childs;
   
   public:
-		Container(Position* position):Component(position){
-      this->childs=new vector<Component*>();
-		}
-		virtual ~Container(){}
-		
-		void onRender(){      
-       vector<Component*>::iterator it;
+	Container(Position* position):Component(position)
+	{
+    	this->childs=new vector<Component*>();
+	}
+	virtual ~Container(){}
+	
+
+	void onBeforeRender()
+	{
+    	vector<Component*>::iterator it;
       
-      for(it=childs->begin();it!=childs->end();it++){
-        (*it)->render();
-      }
-		}
+    	for(it=childs->begin();it!=childs->end();it++)
+    	{
+        	(*it)->onBeforeRender();
+      	}
+	}
+
+	void render()
+	{
+    	vector<Component*>::iterator it;
+      
+    	for(it=childs->begin();it!=childs->end();it++)
+    	{
+        	(*it)->render();
+      	}
+	}
+
+	void onAfterRender()
+	{
+    	vector<Component*>::iterator it;
+      
+    	for(it=childs->begin();it!=childs->end();it++)
+    	{
+        	(*it)->onAfterRender();
+      	}
+	}
 		
-		Container* add(Component* child){
-      child->getPosition()->setParent(this->position);
-      childs->push_back(child);
-      return this;
-		}
+	Container* add(Component* child)
+	{
+    	child->getPosition()->setParent(this->position);
+    	childs->push_back(child);
+    	return this;
+	}
 		
 		
 };
