@@ -4,14 +4,16 @@
 #include "Component.h"
 #include <GL/gl.h>
 #include "../Map/IMap.h"
+#include <iostream>
 
 
 class Surface: public Component {  
   private:	
 	IMap* map;
 	GLenum GLMode;
-	const int LATS=24;
-	const int LONGS=24;
+  protected:
+	int lats=24;
+	int longs=24;
   public:
 	  Surface(Position* position,IMap* map,GLenum GLMode):Component(position){		  
 		  this->map=map;
@@ -31,15 +33,15 @@ class Surface: public Component {
 			float uTo=map->getUTo();
 			float vFrom=map->getVFrom();
 			float vTo=map->getVTo();
-        	for(i = 0; i <= LONGS; i++) 
+        	for(i = 0; i <= longs; i++) 
         	{
-	           v0= vFrom + ((vTo/LONGS)* (i-1));
-	           v1= vFrom + ((vTo/LONGS)* i);
+	           v0= vFrom + (((vTo-vFrom)/longs)* (i-1));
+	           v1= vFrom + (((vTo-vFrom)/longs)* i);
 
 	           glBegin(GLMode);
-		           for(j = 0; j <= LATS; j++) 
+		           for(j = 0; j <= lats; j++) 
 		           {   
-					   u0=uFrom + (uTo/LATS) * (j-1);
+					   u0=uFrom + (((uTo-uFrom)/lats) * j);
 					   glNormal3f(map->getX(u0,v0),map->getY(u0,v0),map->getZ(u0,v0));
 		               glVertex3f(map->getX(u0,v0),map->getY(u0,v0),map->getZ(u0,v0));
 		               
@@ -49,15 +51,14 @@ class Surface: public Component {
 	           glEnd();
 			}
 
-			for(i = 0; i <= LONGS; i++) 
-        	{
-	           u0= uFrom + ((uTo/LONGS)* (i-1));
-	           u1= uFrom + ((uTo/LONGS)* i);
-
+			for(i = 0; i < lats; i++) 
+        	{ 
+	           u0= uFrom + (((uTo-uFrom)/lats)* (i));
+	           u1= uFrom + (((uTo-uFrom)/lats)* (i+1));			   
 	           glBegin(GLMode);
-		           for(j = 0; j <= LATS; j++) 
+		           for(j = 0; j <= longs; j++) 
 		           {   
-					   v0=vFrom + (vTo/LATS) * (j-1);
+					   v0=vFrom + (((vTo-vFrom)/longs) * j);
 					   glNormal3f(map->getX(u0,v0),map->getY(u0,v0),map->getZ(u0,v0));
 		               glVertex3f(map->getX(u0,v0),map->getY(u0,v0),map->getZ(u0,v0));
 		               

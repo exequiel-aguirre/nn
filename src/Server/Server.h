@@ -90,7 +90,7 @@ public:
 							case SDL_WINDOWEVENT_RESIZED:
 							{            					
             					//the window has been resized so we need to set up our viewport and projection according to the new size								
-								window->resize(event.window.data1, event.window.data1);
+								window->resize(event.window.data1, event.window.data2);
 								break;
             				}
             				
