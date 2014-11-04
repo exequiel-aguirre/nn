@@ -25,7 +25,7 @@ class Surface: public Component {
 			//pull this up			
 			glTranslatef(this->position->getAbsoluteX(),this->position->getAbsoluteY(),this->position->getAbsoluteZ());				
 			
-			float u,v0,v1;
+			float u0,u1,v0,v1;
 			int i, j;
 			float uFrom=map->getUFrom();
 			float uTo=map->getUTo();
@@ -39,12 +39,30 @@ class Surface: public Component {
 	           glBegin(GLMode);
 		           for(j = 0; j <= LATS; j++) 
 		           {   
-					   u=uFrom + (uTo/LATS) * (j-1);
-					   glNormal3f(map->getX(u,v0),map->getY(u,v0),map->getZ(u,v0));
-		               glVertex3f(map->getX(u,v0),map->getY(u,v0),map->getZ(u,v0));
+					   u0=uFrom + (uTo/LATS) * (j-1);
+					   glNormal3f(map->getX(u0,v0),map->getY(u0,v0),map->getZ(u0,v0));
+		               glVertex3f(map->getX(u0,v0),map->getY(u0,v0),map->getZ(u0,v0));
 		               
-		               glNormal3f(map->getX(u,v1),map->getY(u,v1),map->getZ(u,v1));		            
-		               glVertex3f(map->getX(u,v1),map->getY(u,v1),map->getZ(u,v1));
+		               glNormal3f(map->getX(u0,v1),map->getY(u0,v1),map->getZ(u0,v1));		            
+		               glVertex3f(map->getX(u0,v1),map->getY(u0,v1),map->getZ(u0,v1));
+		           }
+	           glEnd();
+			}
+
+			for(i = 0; i <= LONGS; i++) 
+        	{
+	           u0= uFrom + ((uTo/LONGS)* (i-1));
+	           u1= uFrom + ((uTo/LONGS)* i);
+
+	           glBegin(GLMode);
+		           for(j = 0; j <= LATS; j++) 
+		           {   
+					   v0=vFrom + (vTo/LATS) * (j-1);
+					   glNormal3f(map->getX(u0,v0),map->getY(u0,v0),map->getZ(u0,v0));
+		               glVertex3f(map->getX(u0,v0),map->getY(u0,v0),map->getZ(u0,v0));
+		               
+		               glNormal3f(map->getX(u1,v0),map->getY(u1,v0),map->getZ(u1,v0));		            
+		               glVertex3f(map->getX(u1,v0),map->getY(u1,v0),map->getZ(u1,v0));
 		           }
 	           glEnd();
 			}
