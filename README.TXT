@@ -9,6 +9,15 @@ To compile:
 >apt-get install build-essential mesa-common-dev libsdl2-dev freeglut3-dev
 >g++ src/main.cpp -w  -lglut -lGL -lGLU  -lSDL2
 
+DEBUG:
+>gdb ./a.out
+>r
+>bt full
+
+PROFILE:
+>g++ src/main.cpp -w  -lGL -lGLU  -lSDL2 -pg;./a.out 
+>gprof > r.txt
+>kate r.txt
 
 BUGS:
 -The sphere is not loading the texture(need to add "glTexCoord2f")
