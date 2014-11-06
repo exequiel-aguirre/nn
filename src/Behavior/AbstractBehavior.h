@@ -7,8 +7,9 @@
 class AbstractBehavior:public IBehavior{  
   private:
     Component* component;
+  protected:
+    const float DEFAULT_SPEED=0.1f;
   public:
-    static const float DEFAULT_SPEED=0.1f;
     AbstractBehavior(){}
     virtual ~AbstractBehavior(){}   
     

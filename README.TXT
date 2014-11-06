@@ -24,4 +24,5 @@ by adding a CacheDecorator (that extends a Map) and inside has a HashMap, so if 
 -Add water by using the same as aboce, but u+=0.1, and v+=0.1 (so it moves!)
 --if the plane is working fine, maybe we can replace ground. if not make the grass and water passing a map to ground
 
+- for all virtual, I'm using the wrong syntax... is virtual type method_name
 -add blending so we can wrap up that lecture
