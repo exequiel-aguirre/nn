@@ -11,10 +11,7 @@
 class Plane: public Surface {
   public:
 	  
-	Plane(Position* position):Surface(position,new PlaneMap(),GL_LINES){
-		this->lats=40;
-        this->longs=40;
-	}		
+	Plane(Position* position):Surface(position,new PlaneMap(),GL_LINES){}		
 
     virtual ~Plane(){}    
     
