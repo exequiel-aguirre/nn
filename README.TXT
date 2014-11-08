@@ -24,8 +24,7 @@ BUGS:
 -clear header (Adding things that I'm not using...).Check if I can get rid of glu
 
 TODOS:
--surface are performance killers, I think I can fix that by saving the values of getX,getY and getZ,
-by adding a CacheDecorator (that extends a Map) and inside has a HashMap, so if the values is not in the hashmap,we calculate,save and return.If it's there, just return.
+- put the all the load textures around, in just one place. An utils maybe....
 
 -try to fix the plane, and make lats/longs variables that can be override by the subclass(24 for a plane makes no sense)
 

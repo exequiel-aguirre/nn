@@ -11,7 +11,7 @@
 class Sphere: public Surface {
   public:
 	  
-	Sphere(Position* position):Surface(position,new SphereMap(1.0f),GL_LINES){}		
+	Sphere(Position* position):Surface(position,new SphereMap(1.0f),"img/ground.bmp"){}		
 
     virtual ~Sphere(){}    
     
