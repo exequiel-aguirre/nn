@@ -18,7 +18,7 @@ class CreasedDecorator :public IMap {
     }
     
     float getY(float u,float v){
-        return map->getY(u,v);
+        return map->getY(u,v)+(sin(map->getZ(u,v))*cos(map->getX(u,v)));
     }
     float getZ(float u,float v){
     	return map->getZ(u,v)+(sin(map->getX(u,v))*cos(map->getZ(u,v)));
