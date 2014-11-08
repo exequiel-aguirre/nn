@@ -4,8 +4,6 @@
 #include "Component.h"
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include "../Behavior/BaseTranslationKeyboardBehavior.h"
-#include "../Behavior/BaseRotationKeyboardBehavior.h"
 
 //todo:make box a container
 class Box: public Component {  
@@ -28,21 +26,19 @@ class Box: public Component {
   public:
 	  Box(Position* position,char* textureFilename):Component(position){
 		  if(textureFilename==NULL) textureFilename=defaultTextureFilename;
-		  loadTexture(textureFilename);
-		  //by default this behavior is added in order to create the sensation of,moving through the components.
-		  //TODO:this should be in a super class, like "decorativeComponent" or something like that
-		  //add(new BaseTranslationKeyboardBehavior());
-		  //add(new BaseRotationKeyboardBehavior());
+		  loadTexture(textureFilename);		  
 	  }		
 
     virtual ~Box(){}
     
-    void render(){		
-			
-			//glLoadIdentity();
+    void render(){
+
 			//pull this up			
 			glTranslatef(this->position->getAbsoluteX(),this->position->getAbsoluteY(),this->position->getAbsoluteZ());	
 			
+			//bind the texture
+			glBindTexture(GL_TEXTURE_2D,texture);
+			//draw the box
 			glBegin(GL_QUADS);
 					// Front Face
 					glNormal3f( 0.0f, 0.0f,1.0f);
