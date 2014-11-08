@@ -4,9 +4,14 @@
 
 
 class PlaneMap :public IMap {  
-  
+  private:
+    float w;
+    float h;
   public:
-	  PlaneMap(){}
+	PlaneMap(float w,float h){
+        this->w=w;
+        this->h=h;
+      }
 
     virtual ~PlaneMap(){}
     
@@ -15,24 +20,24 @@ class PlaneMap :public IMap {
     }
     
     float getY(float u,float v){
-        return 0.0f;
-    	//return 0.2*sin(v)*cos(u);
+        return 0.0f;    	
     }
+
     float getZ(float u,float v){
     	return v;
     }
     
     float getUFrom(){        
-        return -200;
+        return -w/2;
     }
     float getUTo(){        
-        return 200;
+        return w/2;
     }
     float getVFrom(){
-        return -200;
+        return -h/2;
     } 
     float getVTo(){
-        return 200;
+        return h/2;
     } 
 
 };

@@ -11,7 +11,7 @@
 class Water: public Surface {
   public:
 	  
-	Water(Position* position):Surface(position,new WaterMap(),"img/water.bmp"){}		
+	Water(Position* position,float w,float h):Surface(position,new WaterMap(w,h),"img/water.bmp"){}		
 
     virtual ~Water(){}    
     

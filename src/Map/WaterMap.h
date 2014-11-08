@@ -4,9 +4,14 @@
 
 
 class WaterMap :public IMap {  
-  
+  private:
+    float w;
+    float h;
   public:
-	  WaterMap(){}
+	  WaterMap(float w,float h){
+        this->w=w;
+        this->h=h;
+      }
 
     virtual ~WaterMap(){}
     
@@ -22,16 +27,16 @@ class WaterMap :public IMap {
     }
     
     float getUFrom(){        
-        return -55;
+        return -w/2;
     }
     float getUTo(){        
-        return 55;
+        return w/2;
     }
     float getVFrom(){
-        return -20;
+        return -h/2;
     } 
     float getVTo(){
-        return 20;
+        return h/2;
     } 
 
 };
