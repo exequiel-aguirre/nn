@@ -26,7 +26,7 @@ private:
 		glClearColor(0.0, 0.0, 0.0, 1.0);
 		
 		//SDL_EnableKeyRepeat(1,1);	//EXE-TODO:lost in migration!
-		glEnable(GL_TEXTURE_2D);
+		glEnable(GL_TEXTURE_2D);//this is causing the lines to be grey!!!
 		glEnable(GL_DEPTH_TEST);
 
 		glViewport(0,0,x,y);
