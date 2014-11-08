@@ -3,7 +3,7 @@
 
 #include "Component.h"
 #include <GL/gl.h>
-#include <GL/glu.h>
+#include "../Utils/Utils.h"
 
 //todo:make box a container
 class Box: public Component {  
@@ -11,22 +11,10 @@ class Box: public Component {
 	GLuint	texture;
 	char* defaultTextureFilename="img/box.bmp";
 	
-	void loadTexture(char* fileName){
-		SDL_Surface* bmpFile=SDL_LoadBMP(fileName);		
-		if(bmpFile == NULL ) std::cout <<  SDL_GetError();
-		glGenTextures(1,&texture);
-		glBindTexture(GL_TEXTURE_2D,texture);
-		glTexImage2D(GL_TEXTURE_2D,0,1,bmpFile->w,bmpFile->h,0,GL_RGB,GL_UNSIGNED_BYTE,bmpFile->pixels);
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-		
-		SDL_FreeSurface(bmpFile);
-	}
-	
   public:
 	  Box(Position* position,char* textureFilename):Component(position){
 		  if(textureFilename==NULL) textureFilename=defaultTextureFilename;
-		  loadTexture(textureFilename);		  
+		  texture=Utils::loadTexture(textureFilename);
 	  }		
 
     virtual ~Box(){}

@@ -1,27 +1,18 @@
 #ifndef TextureStrategyH
 #define TextureStrategyH
 #include "CacheStrategy.h"
+#include "../Utils/Utils.h"
 
 
 class TextureStrategy :public CacheStrategy {   
   private:
     GLuint  texture;
     char* defaultTextureFilename="img/ground.bmp";
-
-    void loadTexture(char* filename){
-      SDL_Surface* bmpFile=SDL_LoadBMP(filename);   
-      if(bmpFile == NULL ) std::cout <<  SDL_GetError();
-      glGenTextures(1,&texture);
-      glBindTexture(GL_TEXTURE_2D,texture);
-      glTexImage2D(GL_TEXTURE_2D,0,3,bmpFile->w,bmpFile->h,0,GL_RGB,GL_UNSIGNED_BYTE,bmpFile->pixels);
-      glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-      glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-      SDL_FreeSurface(bmpFile);
-    }
+    
   public:
 	   TextureStrategy(IMap* map,char* textureFilename):CacheStrategy(map,GL_QUAD_STRIP){
         if(textureFilename==NULL) textureFilename=defaultTextureFilename;
-        loadTexture(textureFilename);
+        texture=Utils::loadTexture(textureFilename);
     }
 
     virtual ~TextureStrategy(){}    
