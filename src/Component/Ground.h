@@ -27,9 +27,9 @@ class Ground: public Component {
 	 	float len=STEP_LENGTH/2;
 		// Draw our ground grid
 		glBegin(GL_QUADS);
-			for (float lats = -SIDE_LENGTH; lats < SIDE_LENGTH; lats += STEP_LENGTH)
+			for (float lats = -SIDE_LENGTH; lats <= SIDE_LENGTH; lats += STEP_LENGTH)
 			{
-				for (GLint longs = -SIDE_LENGTH; longs < SIDE_LENGTH; longs += STEP_LENGTH){
+				for (GLint longs = -SIDE_LENGTH; longs <= SIDE_LENGTH; longs += STEP_LENGTH){
 					//EXE-TODO:check how glTexCoord2f works, because I think that if I use 1 insead of len, 
 					//is exactly the same
 					//glNormal3f( 0.0f, -1.0f,-1.0f);
