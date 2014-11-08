@@ -14,14 +14,14 @@ class CreasedDecorator :public IMap {
     virtual ~CreasedDecorator(){}
     
     float getX(float u,float v){
-    	return map->getX(u,v)+(sin(u)*cos(v));
+    	return map->getX(u,v)+(sin(u+v)*cos(v+u));
     }
     
     float getY(float u,float v){
         return map->getY(u,v);
     }
     float getZ(float u,float v){
-    	return map->getZ(u,v)+(sin(u)*cos(v));
+    	return map->getZ(u,v)+(sin(u+v)*cos(v+u));
     }
     
     float getUFrom(){        

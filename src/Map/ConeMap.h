@@ -5,36 +5,38 @@
 //This is juast an inverted cone
 class ConeMap :public IMap {  
   private:
-    float r=9;
+    float r;
+    float h;
   public:
-	  ConeMap(float r){
+	  ConeMap(float r,float h){
         this->r=r;
+        this->h=h;
       }
 
     virtual ~ConeMap(){}
     
-    float getX(float u,float v){
-    	return u;
+    float getX(float u,float theta){
+    	return u* cos(theta);
     }
     
-    float getY(float u,float v){
-        return -2*(sqrt((u*u) + (v*v)));
+    float getY(float u,float theta){
+        return -u*(h/r);
     }
-    float getZ(float u,float v){
-    	return v;
+    float getZ(float u,float theta){
+    	return u*sin(theta);
     }
     
     float getUFrom(){        
-        return -r;
+        return 0;
     }
     float getUTo(){        
         return r;
     }
     float getVFrom(){
-        return -r;
+        return 0;
     } 
     float getVTo(){
-        return r;
+        return 2*M_PI;
     } 
 
 };
