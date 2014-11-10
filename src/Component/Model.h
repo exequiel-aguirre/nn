@@ -19,7 +19,7 @@ class Model: public Component {
 	  Model(Position* position,char* textureFilename):Component(position){
 		//if(textureFilename==NULL) textureFilename=defaultTextureFilename;
 		//texture=Utils::loadTexture(textureFilename);
-	  	modelObject=Utils::loadModel("3DModel/cube.obj");
+	  	modelObject=Utils::loadModel(textureFilename);
 
 	  }		
 

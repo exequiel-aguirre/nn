@@ -98,7 +98,7 @@ class Utils{
 			//free the lineheader.
 			lineHeader="";
 		}
-
+		file.close();
 		// For each vertex of each triangle
 		for( unsigned int i=0; i<vertexIndices->size(); i++ )
 		{
