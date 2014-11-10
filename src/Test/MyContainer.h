@@ -36,7 +36,7 @@ class MyContainer:public Container{
 			Water* myWaterR=new Water(new Position(100.0f,-1.0f,0.0f),100,300);
 			Water* myWaterB=new Water(new Position(0.0f,-1.0f,100.0f),100,100);
 			Water* myWaterL=new Water(new Position(-100.0f,-1.0f,0.0f),100,300);
-			Model* myModel=new Model(new Position(-15.0f,0.0f,-30.0f),"3DModel/monkey.obj");
+			Model* myModel=new Model(new Position(-15.0f,-1.0f,-30.0f),"3DModel/human-blender.obj");
 			Ground* myGround=new Ground(new Position(0.0f,-1.0f,0.0f),NULL);
 			Camera* myCamera=new Camera(new Position(0.0f,-1.0f,0.0f));			
 			Light* myLight=new Light(new Position(40.0f,40.0f,40.0f));

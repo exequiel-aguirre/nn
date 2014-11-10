@@ -6,7 +6,7 @@ using std::vector;
 
 class ModelObject{
   private:
-  	static const int MAX_POINTS=5000;
+  	static const int MAX_POINTS=1000000;
   	static const int VERTICES_MODE=0;
     static const int UVS_MODE=1;
   	static const int NORMALS_MODE=2;

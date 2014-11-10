@@ -12,13 +12,13 @@ using std::vector;
 class Model: public Component {  
   private:
 	GLuint	texture;
-	char* defaultTextureFilename="img/box.bmp";
+	char* defaultTextureFilename="img/human.bmp";
 	ModelObject* modelObject;
 
   public:
 	  Model(Position* position,char* textureFilename):Component(position){
 		//if(textureFilename==NULL) textureFilename=defaultTextureFilename;
-		//texture=Utils::loadTexture(textureFilename);
+		texture=Utils::loadTexture(defaultTextureFilename);
 	  	modelObject=Utils::loadModel(textureFilename);
 
 	  }		
@@ -31,11 +31,13 @@ class Model: public Component {
 			glTranslatef(this->position->getAbsoluteX(),this->position->getAbsoluteY(),this->position->getAbsoluteZ());	
 			
 			//bind the texture
-			//glBindTexture(GL_TEXTURE_2D,texture);
+			glBindTexture(GL_TEXTURE_2D,texture);
 			float* point;
 			glBegin(GL_TRIANGLES);				
     			for(int i=0;i<modelObject->getSize();i++)
     			{
+    				point=modelObject->getUV(i);
+    				glTexCoord2f(point[0],point[1]);
     				point=modelObject->getNormal(i);
     				glNormal3f(point[0],point[1],point[2]);
     				point=modelObject->getVertex(i);
