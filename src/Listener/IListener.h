@@ -9,14 +9,14 @@ class IListener{
     virtual ~IListener(){}
     
     
-    void virtual onTimer(){}
-    void virtual onCreate(){}    
-    void virtual onBeforeRender(){}
-    void virtual render(){}
-    void virtual onAfterRender(){}
-    void virtual onKeyDown(SDL_Keycode key){}
-    void virtual onMouseMotion(SDL_MouseMotionEvent motion){}
-    void virtual onDestroy(){}
+    virtual void onTimer(){}
+    virtual void onCreate(){}
+    virtual void onBeforeRender(){}
+    virtual void render(){}
+    virtual void onAfterRender(){}
+    virtual void onKeyDown(SDL_Keycode key){}
+    virtual void onMouseMotion(SDL_MouseMotionEvent motion){}
+    virtual void onDestroy(){}
 
     
 

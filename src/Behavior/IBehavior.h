@@ -12,7 +12,7 @@ class IBehavior : public IListener {
     virtual ~IBehavior(){}
     
     
-    void virtual bind(Component* component){}
+    virtual void bind(Component* component){}
     
 
 };

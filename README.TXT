@@ -32,14 +32,14 @@ BUGS:
 -all the textures loaded by surfaces seems wrong...
 
 TODOS:
--make a modeldecorator that encapsulates all that iterator logic(or maybe a modelobject composite... or something like that).maybe an animation that is a componentdecorator with many component and an it of components insde....
 -refactor utils::loadModel to use vertex instead of position. refactor modelObject to use vertex as well.(do this having in mind that at some point we will use glbufferdata from glew.h)
 -refactor the cacheStrategy so it uses this modelObject.
 -add a getNormals to the surface objects(a vectorial products between first derivatives)
 -clear headers (There are things that I'm not using...).Check if I can get rid of glu
-- for all virtual, I'm using the wrong syntax... is virtual type method_name
+
 
 -if the plane is working fine, maybe we can replace ground same as we do in water.
+-make a modeldecorator that encapsulates all that iterator logic(or maybe a modelobject composite... or something like that).maybe an animation that is a componentdecorator with many component and an it of components insde....or maybe it could be a behavior?
 
 
 -Big one.(maybe in it's own branch) Render using glBufferData from glew to improve performance

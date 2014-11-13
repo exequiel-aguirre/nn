@@ -11,15 +11,15 @@ class IMap{
 
     virtual ~IMap(){}
     
-    float virtual getX(float u,float v){}
-    float virtual getY(float u,float v){}
-    float virtual getZ(float u,float v){}
+    virtual float getX(float u,float v){}
+    virtual float getY(float u,float v){}
+    virtual float getZ(float u,float v){}
 
-//	EXE-TODO:add virtual!!!
-    float virtual getUFrom(){}
-	float virtual getUTo(){}
-	float virtual getVFrom(){}
-	float virtual getVTo(){}
+
+    virtual float getUFrom(){}
+	virtual float getUTo(){}
+	virtual float getVFrom(){}
+	virtual float getVTo(){}
 
 
 };
