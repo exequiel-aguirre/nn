@@ -10,7 +10,7 @@ using std::vector;
 
 
 class Model: public Component {  
-  private:
+  protected:
 	GLuint	texture;
 	char* defaultTextureFilename="img/human.bmp";
 	ModelObject* modelObject;

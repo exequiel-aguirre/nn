@@ -6,7 +6,7 @@ using std::vector;
 
 class ModelObject{
   private:
-  	static const int MAX_POINTS=1000000;
+  	static const int MAX_POINTS=100000;
   	static const int VERTICES_MODE=0;
     static const int UVS_MODE=1;
   	static const int NORMALS_MODE=2;
@@ -14,7 +14,7 @@ class ModelObject{
   	static const int Y=1;
   	static const int Z=2;
 
-  	float model[3][MAX_POINTS][3]={};
+  	float model[3][MAX_POINTS][3]={};//EXE-TODO:find a way to create this depending on the modelSize
   	int modelSize;
   	
   public:	
@@ -38,6 +38,7 @@ class ModelObject{
   			model[NORMALS_MODE][i][Y]=(*normals)[i]->getAbsoluteY();
   			model[NORMALS_MODE][i][Z]=(*normals)[i]->getAbsoluteZ();
   		}
+      
   	}
 
   	float* getVertex(int i){

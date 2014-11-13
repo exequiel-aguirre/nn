@@ -24,7 +24,7 @@ class Utils{
 	}
 
 	
-	static ModelObject* loadModel(char* filename){		
+	static ModelObject* loadModel(const char* filename){		
 		vector< Position* >* tempVertices=new vector< Position* >();
 		vector< Position* >* vertices=new vector< Position* >();
 		vector< unsigned int >* vertexIndices=new vector< unsigned int >();

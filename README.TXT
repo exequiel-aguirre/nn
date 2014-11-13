@@ -19,18 +19,31 @@ PROFILE:
 >gprof > r.txt
 >kate r.txt
 
+ANIMATION:
+-install blender and the latest stable version of makehuman.Install blender's makehuman plugin by downloading them and coping those folder to ~/.config/blender/2.69/scripts/addons/
+-open makehuman and export the default to the blender exchange format
+-open blender and load the previous exported file with scale 0.3
+-with the makewalk plugin , "load and retarget" /usr/share/makehuman/data/bvhs/02_02.bvh and set max frames to 60(23 or whatever)
+-select human:body on the right hierachy and click the wrench, add a modifier decimate to 0.01 (same to human:tshirt, human:jeans, etc)
+-now select human(top one) on the right and with "makewalk:edit actions" on the left, click global edit and fixate location. (if you select a frame where the human is in the center of the action you will fixate it there.(which is the intended))
+-export as obj ticking export include normal,include uvs,triangulate faces,animation,apply modifiers,objects as OBJ objects. (the first three are for any model whatsoever)
+
 BUGS:
--The sphere is not loading the texture(need to add "glTexCoord2f")
--clear header (Adding things that I'm not using...).Check if I can get rid of glu
+-all the textures loaded by surfaces seems wrong...
 
 TODOS:
-- put the all the load textures around, in just one place. An utils maybe....
-
--try to fix the plane, and make lats/longs variables that can be override by the subclass(24 for a plane makes no sense)
-
--Add a grassGround using that 0.5*sin(u)*cos(v) and texture
--Add water by using the same as aboce, but u+=0.1, and v+=0.1 (so it moves!)
---if the plane is working fine, maybe we can replace ground. if not make the grass and water passing a map to ground
-
+-make a modeldecorator that encapsulates all that iterator logic(or maybe a modelobject composite... or something like that).maybe an animation that is a componentdecorator with many component and an it of components insde....
+-refactor utils::loadModel to use vertex instead of position. refactor modelObject to use vertex as well.(do this having in mind that at some point we will use glbufferdata from glew.h)
+-refactor the cacheStrategy so it uses this modelObject.
+-add a getNormals to the surface objects(a vectorial products between first derivatives)
+-clear headers (There are things that I'm not using...).Check if I can get rid of glu
 - for all virtual, I'm using the wrong syntax... is virtual type method_name
+
+-if the plane is working fine, maybe we can replace ground same as we do in water.
+
+
+-Big one.(maybe in it's own branch) Render using glBufferData from glew to improve performance
+--nice to have:all glbegin/end in one place so the transition to glbuffer data is not so paiful
+
+
 -add blending so we can wrap up that lecture
