@@ -44,6 +44,7 @@ TODOS:
 
 -Big one.(maybe in it's own branch) Render using glBufferData from glew to improve performance
 --nice to have:all glbegin/end in one place so the transition to glbuffer data is not so paiful
-
+-make position extend point
+-start using glm(?)
 
 -add blending so we can wrap up that lecture

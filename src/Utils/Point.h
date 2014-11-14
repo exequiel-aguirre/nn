@@ -14,6 +14,7 @@ class Point{
 		this->y=y;
 		this->z=z;
 	}
+	Point(){}
 	//virtual ~Point(){} do not use virtual because it messes up the glvertexbuff
 
 	float &operator[](int i){
