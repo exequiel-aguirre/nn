@@ -25,7 +25,7 @@ class ModelObject{
   	}
 
 
-    vector<Point>* getVerices(){
+    vector<Point>* getVertices(){
       return vertices;
     }
 
