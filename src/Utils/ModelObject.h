@@ -13,8 +13,7 @@ class ModelObject{
 
     vector<Point>* vertices;
     vector<Point>* uvs;
-    vector<Point>* normals;  	
-  	
+    vector<Point>* normals;  	    
   	
   public:	
 	
@@ -23,6 +22,75 @@ class ModelObject{
       this->uvs=uvs;
       this->normals=normals;
   	}
+
+    ModelObject(IMap* map,bool longitudes):ModelObject(new vector<Point>(),new vector<Point>(),new vector<Point>()){       
+      int lats=12;
+      int longs=12;
+      float u0,u1,v0,v1;
+      int i, j;
+      float uFrom=map->getUFrom();
+      float uTo=map->getUTo();
+      float vFrom=map->getVFrom();
+      float vTo=map->getVTo();
+      
+      //latitudes
+      for(i = 1; i <= longs; i++) 
+      {             
+        v0= vFrom + (((vTo-vFrom)/longs)* (i-1));
+        v1= vFrom + (((vTo-vFrom)/longs)* i);
+
+        for(j = 0; j < lats; j++) 
+        {               
+          u0=uFrom + (((uTo-uFrom)/lats) * j);          
+          u1=uFrom + (((uTo-uFrom)/lats) * (j+1));
+          vertices->push_back(*(map->get(u0,v0)));
+          vertices->push_back(*(map->get(u0,v1)));                
+          vertices->push_back(*(map->get(u1,v0))); 
+
+          vertices->push_back(*(map->get(u1,v0))); 
+          vertices->push_back(*(map->get(u0,v1))); 
+          vertices->push_back(*(map->get(u1,v1))); 
+
+          uvs->push_back(Point(j%2,j%2,NULL));
+          uvs->push_back(Point((j+1)%2,j%2,NULL));
+          uvs->push_back(Point(j%2,(j+1)%2,NULL));
+
+          uvs->push_back(Point(j%2,j%2,NULL));
+          uvs->push_back(Point((j+1)%2,j%2,NULL));
+          uvs->push_back(Point(j%2,(j+1)%2,NULL));
+
+          //EXE-TODO:IMPLEMENT map->getNormalX(u,v);
+//          normals->push_back(*(map->get(u0,v0)));
+ //         normals->push_back(*(map->get(u0,v1)));      
+        }
+      }
+
+      //if we don't  want to render longitudes, we cut here.The longitudes are without textures
+      if(!longitudes) return;
+      
+      //longitudes
+      for(i = 1; i <= lats; i++) 
+      { 
+        u0= uFrom + (((uTo-uFrom)/lats)* (i-1));
+        u1= uFrom + (((uTo-uFrom)/lats)* (i));             
+        
+        for(j = 0; j <= longs; j++) 
+        {
+          v0=vFrom + (((vTo-vFrom)/longs) * j);
+          vertices->push_back(*(map->get(u0,v0)));
+          vertices->push_back(*(map->get(u1,v0)));
+
+          //EXE-TODO:IMPLEMENT map->getNormalX(u,v);
+          normals->push_back(*(map->get(u0,v0)));
+          normals->push_back(*(map->get(u1,v0)));      
+        }
+      }
+    
+    }
+
+    ModelObject(IMap* map):ModelObject(map,false){}
+      
+    
 
 
     vector<Point>* getVertices(){
