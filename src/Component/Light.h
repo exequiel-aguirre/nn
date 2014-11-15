@@ -8,7 +8,7 @@
 
 class Light: public Component { 	
   private:
-  	bool isLightEnabled=true;
+  	bool isLightEnabled=false;
 	GLfloat lightAmbient[4]= { 0.5f, 0.5f, 0.5f, 1.0f };
 	GLfloat lightDiffuse[4]= { 1.0f, 1.0f, 1.0f, 1.0f };	
   

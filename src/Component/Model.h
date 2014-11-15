@@ -5,23 +5,20 @@
 #include <GL/gl.h>
 #include "../Utils/Utils.h"
 #include "../Utils/ModelObject.h"
+#include "../RenderStrategy/TextureStrategy.h"
 #include <vector>
 using std::vector;
 
 
 class Model: public Component {  
-  protected:
-	GLuint	texture;
-	char* defaultTextureFilename="img/human.bmp";
-	ModelObject* modelObject;
+  protected:  	
+	IRenderStrategy* renderStrategy;
 
   public:
-	  Model(Position* position,char* textureFilename):Component(position){
-		//if(textureFilename==NULL) textureFilename=defaultTextureFilename;
-		texture=Utils::loadTexture(defaultTextureFilename);
-	  	modelObject=Utils::loadModel(textureFilename);
-
-	  }		
+  	 Model(Position* position,IRenderStrategy* renderStrategy):Component(position){
+	  	this->renderStrategy=renderStrategy;
+	  }
+	  Model(Position* position,char* modelFilename):Model(position,new TextureStrategy(modelFilename,"img/human.bmp")){}	  
 
     virtual ~Model(){}
     
@@ -30,23 +27,7 @@ class Model: public Component {
 			//pull this up			
 			glTranslatef(this->position->getAbsoluteX(),this->position->getAbsoluteY(),this->position->getAbsoluteZ());	
 			
-			//bind the texture
-			glBindTexture(GL_TEXTURE_2D,texture);
-			Point* point;
-			glBegin(GL_TRIANGLES);				
-    			for(int i=0;i<modelObject->getSize();i++)
-    			{
-    				if(modelObject->hasUVs()){
-	    				point=modelObject->getUV(i);
-	    				glTexCoord2f((*point)[0],(*point)[1]);
-    				}
-    				point=modelObject->getNormal(i);
-    				glNormal3f((*point)[0],(*point)[1],(*point)[2]);
-    				point=modelObject->getVertex(i);
-					glVertex3f((*point)[0],(*point)[1],(*point)[2]);    				
-    			}			
-				
-			glEnd();
+			this->renderStrategy->render();
 			//we restore the position to avoid messing with the other's component's location
 			//we can always draw them directly using the position on the glvertexinstruction above...
 		   glTranslatef(-this->position->getAbsoluteX(),-this->position->getAbsoluteY(),-this->position->getAbsoluteZ());	

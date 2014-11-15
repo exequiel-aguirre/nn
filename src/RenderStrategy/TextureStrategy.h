@@ -10,6 +10,10 @@ class TextureStrategy :public CacheStrategy {
     char* defaultTextureFilename="img/ground.bmp";
     
   public:
+    TextureStrategy(char* modelFilename,char* textureFilename):CacheStrategy(modelFilename,GL_TRIANGLES){
+        if(textureFilename==NULL) textureFilename=defaultTextureFilename;
+        texture=Utils::loadTexture(textureFilename);
+    }
 	   TextureStrategy(IMap* map,char* textureFilename):CacheStrategy(map,GL_TRIANGLES){
         if(textureFilename==NULL) textureFilename=defaultTextureFilename;
         texture=Utils::loadTexture(textureFilename);

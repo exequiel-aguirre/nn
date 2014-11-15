@@ -62,8 +62,13 @@ class ModelObject{
           
 
           //EXE-TODO:IMPLEMENT map->getNormalX(u,v);
-//          normals->push_back(*(map->get(u0,v0)));
- //         normals->push_back(*(map->get(u0,v1)));      
+          normals->push_back(map->get(u0,v0));
+          normals->push_back(map->get(u0,v1));                
+          normals->push_back(map->get(u1,v0)); 
+
+          normals->push_back(map->get(u1,v0)); 
+          normals->push_back(map->get(u0,v1)); 
+          normals->push_back(map->get(u1,v1));
         }
       }
     

@@ -2,6 +2,7 @@
 #define CacheStrategyH
 #include "IRenderStrategy.h"
 #include "../Utils/ModelObject.h"
+#include "../Utils/Utils.h"
 
 
 class CacheStrategy :public IRenderStrategy {  
@@ -11,11 +12,13 @@ class CacheStrategy :public IRenderStrategy {
     GLenum GLMode;
     ModelObject* modelObject;    
   public:
-	CacheStrategy(IMap* map,GLenum GLMode){
-        this->map=map;
+  CacheStrategy(ModelObject* modelObject,GLenum GLMode){        
         this->GLMode=GLMode;        
-        this->modelObject=new ModelObject(map);        
-    }
+        this->modelObject=modelObject;
+  }
+	CacheStrategy(IMap* map,GLenum GLMode):CacheStrategy(new ModelObject(map),GLMode){}
+  CacheStrategy(char* modelFilename,GLenum GLMode):CacheStrategy(Utils::loadModel(modelFilename),GLMode){}
+  
 
     virtual ~CacheStrategy(){}    
     
@@ -28,8 +31,8 @@ class CacheStrategy :public IRenderStrategy {
               point=modelObject->getUV(i);
               glTexCoord2f((*point)[0],(*point)[1]);
             }
-            //point=modelObject->getNormal(i);
-            //glNormal3f(point[0],point[1],point[2]);
+            point=modelObject->getNormal(i);
+            glNormal3f((*point)[0],(*point)[1],(*point)[2]);
             point=modelObject->getVertex(i);
             glVertex3f((*point)[0],(*point)[1],(*point)[2]);
           }     
