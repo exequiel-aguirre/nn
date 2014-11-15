@@ -55,9 +55,11 @@ class ModelObject{
           uvs->push_back(Point((j+1)%2,j%2,NULL));
           uvs->push_back(Point(j%2,(j+1)%2,NULL));
 
-          uvs->push_back(Point(j%2,j%2,NULL));
-          uvs->push_back(Point((j+1)%2,j%2,NULL));
           uvs->push_back(Point(j%2,(j+1)%2,NULL));
+          uvs->push_back(Point((j+1)%2,j%2,NULL));
+          uvs->push_back(Point((j+1)%2,(j+1)%2,NULL));
+          
+          
 
           //EXE-TODO:IMPLEMENT map->getNormalX(u,v);
 //          normals->push_back(*(map->get(u0,v0)));
