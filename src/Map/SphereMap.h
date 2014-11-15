@@ -14,17 +14,14 @@ class SphereMap :public IMap {
 
     virtual ~SphereMap(){}
     
-    float getX(float theta,float phi){
-    	return r*cos(theta)*sin(phi);
+        
+    Point* get(float theta,float phi){
+        float x=r*cos(theta)*sin(phi);
+        float y=r*sin(theta)*sin(phi);
+        float z=r*cos(phi);
+        return new Point(x,y,z);
     }
-    
-    float getY(float theta,float phi){
-    		return r*sin(theta)*sin(phi);
-    }
-    float getZ(float theta,float phi){
-    	return r*cos(phi);
-    }
-    
+
     float getUFrom(){        
         return 0;
     }

@@ -12,18 +12,18 @@ class CreasedDecorator :public IMap {
       }
 
     virtual ~CreasedDecorator(){}
-    
-    float getX(float u,float v){
-    	return map->getX(u,v)+(sin(map->getX(u,v))*cos(map->getZ(u,v)));
+            
+    Point* get(float u,float v){
+        Point* point=map->get(u,v);
+        float x0=(*point)[0];
+        float y0=(*point)[1];
+        float z0=(*point)[2];
+        float x=x0+(sin(x0)*cos(z0));
+        float y=y0+(sin(z0)*cos(x0));
+        float z=z0+(sin(x0)*cos(z0));
+        return new Point(x,y,z);
     }
-    
-    float getY(float u,float v){
-        return map->getY(u,v)+(sin(map->getZ(u,v))*cos(map->getX(u,v)));
-    }
-    float getZ(float u,float v){
-    	return map->getZ(u,v)+(sin(map->getX(u,v))*cos(map->getZ(u,v)));
-    }
-    
+
     float getUFrom(){        
         return map->getUFrom();
     }

@@ -15,18 +15,15 @@ class TorusMap :public IMap {
     }		
 
     virtual ~TorusMap(){}
-    
-    float getX(float theta,float phi){
-    	return (r0 + (r1*cos(theta)))*cos(phi);
-    }
+        
     //this is vertical. To make it horizontal, swap Y with Z
-    float getY(float theta,float phi){
-    	return (r0 + (r1*cos(theta)))*sin(phi);
+    Point* get(float theta,float phi){
+        float x=(r0 + (r1*cos(theta)))*cos(phi);
+        float y=(r0 + (r1*cos(theta)))*sin(phi);
+        float z=r1*sin(theta);
+        return new Point(x,y,z);
     }
-    float getZ(float theta,float phi){
-    	return r1*sin(theta);
-    }
-    
+
     float getUFrom(){        
         return 0;
     }

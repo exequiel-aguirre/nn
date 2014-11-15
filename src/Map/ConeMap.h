@@ -14,18 +14,14 @@ class ConeMap :public IMap {
       }
 
     virtual ~ConeMap(){}
-    
-    float getX(float u,float theta){
-    	return u* cos(theta);
+            
+    Point* get(float u,float theta){
+        float x=u* cos(theta);
+        float y=-u*(h/r);
+        float z=u*sin(theta);
+        return new Point(x,y,z);
     }
-    
-    float getY(float u,float theta){
-        return -u*(h/r);
-    }
-    float getZ(float u,float theta){
-    	return u*sin(theta);
-    }
-    
+
     float getUFrom(){        
         return 0;
     }

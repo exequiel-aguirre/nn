@@ -15,18 +15,14 @@ class PlaneMap :public IMap {
 
     virtual ~PlaneMap(){}
     
-    float getX(float u,float v){
-    	return u;
-    }
-    
-    float getY(float u,float v){
-        return 0.0f;    	
+   Point* get(float u,float v){
+        float x=u;
+        float y=0.0f;
+        float z=v;
+        return new Point(x,y,z);
     }
 
-    float getZ(float u,float v){
-    	return v;
-    }
-    
+
     float getUFrom(){        
         return -w/2;
     }

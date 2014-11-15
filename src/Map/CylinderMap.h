@@ -15,18 +15,14 @@ class CylinderMap :public IMap {
     }		
 
     virtual ~CylinderMap(){}
-    
-    float getX(float theta,float v){
-    	return r*sin(theta);
+            
+    Point* get(float theta,float v){
+        float x=r*sin(theta);
+        float y=v;
+        float z=r*cos(theta);
+        return new Point(x,y,z);
     }
-    
-    float getY(float theta,float v){
-    		return v;
-    }
-    float getZ(float theta,float v){
-    	return r*cos(theta);
-    }
-    
+
     float getUFrom(){        
         return 0;
     }

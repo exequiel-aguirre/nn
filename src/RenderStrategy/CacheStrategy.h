@@ -71,13 +71,15 @@ class CacheStrategy :public IRenderStrategy {
         for(j = 0; j <= lats; j++) 
         {               
           u0=uFrom + (((uTo-uFrom)/lats) * j);
-          cachedValues[mode][i-1][j][0]=map->getX(u0,v0);
-          cachedValues[mode][i-1][j][1]=map->getY(u0,v0);
-          cachedValues[mode][i-1][j][2]=map->getZ(u0,v0);        
-
-          cachedValues[mode][i][j][0]=map->getX(u0,v1);
-          cachedValues[mode][i][j][1]=map->getY(u0,v1);
-          cachedValues[mode][i][j][2]=map->getZ(u0,v1);               
+          Point* point=map->get(u0,v0);
+          cachedValues[mode][i-1][j][0]=(*point)[0];
+          cachedValues[mode][i-1][j][1]=(*point)[1];
+          cachedValues[mode][i-1][j][2]=(*point)[2];        
+          
+          point=map->get(u0,v1);
+          cachedValues[mode][i][j][0]=(*point)[0];
+          cachedValues[mode][i][j][1]=(*point)[1];
+          cachedValues[mode][i][j][2]=(*point)[2];               
         }
       }
 
@@ -90,13 +92,15 @@ class CacheStrategy :public IRenderStrategy {
         for(j = 0; j <= longs; j++) 
         {
           v0=vFrom + (((vTo-vFrom)/longs) * j);
-          cachedValues[mode][i-1][j][0]=map->getX(u0,v0);
-          cachedValues[mode][i-1][j][1]=map->getY(u0,v0);
-          cachedValues[mode][i-1][j][2]=map->getZ(u0,v0);
-
-          cachedValues[mode][i][j][0]=map->getX(u1,v0);
-          cachedValues[mode][i][j][1]=map->getY(u1,v0);
-          cachedValues[mode][i][j][2]=map->getZ(u1,v0);
+          Point* point=map->get(u0,v0);
+          cachedValues[mode][i-1][j][0]=(*point)[0];
+          cachedValues[mode][i-1][j][1]=(*point)[1];
+          cachedValues[mode][i-1][j][2]=(*point)[2];
+          
+          point=map->get(u1,v0);
+          cachedValues[mode][i][j][0]=(*point)[0];
+          cachedValues[mode][i][j][1]=(*point)[1];
+          cachedValues[mode][i][j][2]=(*point)[2];
 
         }
       }

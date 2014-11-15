@@ -1,5 +1,6 @@
 #ifndef IMapH
 #define IMapH
+#include "../Utils/Point.h"
 
 /**
 *This represent a map f:R^2->R^3
@@ -11,9 +12,7 @@ class IMap{
 
     virtual ~IMap(){}
     
-    virtual float getX(float u,float v){}
-    virtual float getY(float u,float v){}
-    virtual float getZ(float u,float v){}
+    virtual Point* get(float u,float v){}
 
 
     virtual float getUFrom(){}
