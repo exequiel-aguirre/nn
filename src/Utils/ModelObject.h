@@ -43,6 +43,7 @@ class ModelObject{
         {               
           u0=uFrom + (((uTo-uFrom)/lats) * j);          
           u1=uFrom + (((uTo-uFrom)/lats) * (j+1));
+          
           vertices->push_back(map->get(u0,v0));
           vertices->push_back(map->get(u0,v1));                
           vertices->push_back(map->get(u1,v0)); 
@@ -51,6 +52,7 @@ class ModelObject{
           vertices->push_back(map->get(u0,v1)); 
           vertices->push_back(map->get(u1,v1)); 
 
+
           uvs->push_back(new Point(j%2,j%2,NULL));
           uvs->push_back(new Point((j+1)%2,j%2,NULL));
           uvs->push_back(new Point(j%2,(j+1)%2,NULL));
@@ -58,17 +60,15 @@ class ModelObject{
           uvs->push_back(new Point(j%2,(j+1)%2,NULL));
           uvs->push_back(new Point((j+1)%2,j%2,NULL));
           uvs->push_back(new Point((j+1)%2,(j+1)%2,NULL));
+                    
           
-          
+          normals->push_back(map->getNormal(u0,v0));
+          normals->push_back(map->getNormal(u0,v1));                
+          normals->push_back(map->getNormal(u1,v0)); 
 
-          //EXE-TODO:IMPLEMENT map->getNormalX(u,v);
-          normals->push_back(map->get(u0,v0));
-          normals->push_back(map->get(u0,v1));                
-          normals->push_back(map->get(u1,v0)); 
-
-          normals->push_back(map->get(u1,v0)); 
-          normals->push_back(map->get(u0,v1)); 
-          normals->push_back(map->get(u1,v1));
+          normals->push_back(map->getNormal(u1,v0)); 
+          normals->push_back(map->getNormal(u0,v1)); 
+          normals->push_back(map->getNormal(u1,v1));
         }
       }
     

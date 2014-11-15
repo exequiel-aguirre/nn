@@ -23,6 +23,10 @@ class CreasedDecorator :public IMap {
         float z=z0+(sin(x0)*cos(z0));
         return new Point(x,y,z);
     }
+    //EXE-TODO:implement this
+    Point* getNormal(float u,float v){
+        return map->getNormal(u,v);
+    }
 
     float getUFrom(){        
         return map->getUFrom();

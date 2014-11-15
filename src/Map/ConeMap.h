@@ -22,6 +22,21 @@ class ConeMap :public IMap {
         return new Point(x,y,z);
     }
 
+    Point* getNormal(float u,float theta){
+        float x_u=cos(theta);
+        float y_u=-(h/r);
+        float z_u=sin(theta);
+        Point* p1=new Point(x_u,y_u,z_u);
+        
+        float x_theta=u* -sin(theta);
+        float y_theta=0.0f;
+        float z_theta=u*cos(theta);
+        Point* p2=new Point(x_theta,y_theta,z_theta);
+
+        return Utils::normalize(Utils::cross(p2,p1));
+    }
+    
+
     float getUFrom(){        
         return 0;
     }

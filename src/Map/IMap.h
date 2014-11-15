@@ -13,7 +13,7 @@ class IMap{
     virtual ~IMap(){}
     
     virtual Point* get(float u,float v){}
-
+    virtual Point* getNormal(float u,float v){}
 
     virtual float getUFrom(){}
 	virtual float getUTo(){}

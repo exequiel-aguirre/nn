@@ -24,6 +24,20 @@ class TorusMap :public IMap {
         return new Point(x,y,z);
     }
 
+     Point* getNormal(float theta,float phi){
+        float x_theta=r1*-sin(theta)*cos(phi);
+        float y_theta=r1*-sin(theta)*sin(phi);
+        float z_theta=r1*cos(theta);
+        Point* p1=new Point(x_theta,y_theta,z_theta);
+        
+        float x_phi=(r0 + (r1*cos(theta)))*-sin(phi);
+        float y_phi=(r0 + (r1*cos(theta)))*cos(phi);
+        float z_phi=0.0f;
+        Point* p2=new Point(x_phi,y_phi,z_phi);
+
+        return Utils::normalize(Utils::cross(p2,p1));
+    }
+
     float getUFrom(){        
         return 0;
     }

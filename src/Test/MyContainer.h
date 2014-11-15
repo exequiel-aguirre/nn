@@ -23,7 +23,6 @@ class MyContainer:public Container{
     MyContainer(Position* position):Container(position){
 			Box* my3DBox=new Box(new Position(0.0f,0.0f,-19.0f),NULL);
 			Box* my3DBox2=new Box(new Position(-3.0f,0.0f,-19.0f),NULL);
-			Sphere* mySphere=new Sphere(new Position(0.0f,0.0f,-7.0f));			
 			Torus* myTorus=new Torus(new Position(-10.0f,2.0f,-17.0f));			
 			Ground* myGround=new Ground(new Position(0.0f,-1.0f,0.0f),100,100);
 			Mountain* myMountain=new Mountain(new Position(10.0f,18.0f,-49.0f));
@@ -41,11 +40,12 @@ class MyContainer:public Container{
 			Animation* myAnimation=new Animation(new Position(-0.0f,-1.0f,-19.0f),"3DModel/human.obj");
 			Camera* myCamera=new Camera(new Position(0.0f,-1.0f,0.0f));			
 			Light* myLight=new Light(new Position(40.0f,40.0f,40.0f));
+			Sphere* mySphere=new Sphere(new Position(40.0f,40.0f,40.0f));
 
 			
 			add(my3DBox);
 			add(my3DBox2->add(new TimeBehavior()));			
-			//add(mySphere);
+			add(mySphere);
 			add(myGround);
 			add(myTorus);
 			add(myMountain);

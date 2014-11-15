@@ -32,8 +32,8 @@ BUGS:
 -all the textures loaded by surfaces seems wrong...
 
 TODOS:
--add a getNormals to the surface objects(a vectorial products between first derivatives)
--clear headers (There are things that I'm not using...).Check if I can get rid of glu
+-add a getNormals to creasedDecorator
+-clear headers (There are things that I'm not using...).
 
 -make TextureStrategy and AnimatonStrategy a decorator, so we could call something like
 new Animation(new TexturureStrategy(new CacheStrategy(modelFilename),textureFilename))
