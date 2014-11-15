@@ -24,6 +24,7 @@ class Box: public Component {
 			//pull this up			
 			glTranslatef(this->position->getAbsoluteX(),this->position->getAbsoluteY(),this->position->getAbsoluteZ());	
 			
+			glEnable(GL_TEXTURE_2D);
 			//bind the texture
 			glBindTexture(GL_TEXTURE_2D,texture);
 			//draw the box
@@ -65,6 +66,7 @@ class Box: public Component {
 					glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);
 					glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);
 				glEnd();
+			glDisable(GL_TEXTURE_2D);
 			//we restore the position to avoid messing with the other's component's location
 			//we can always draw them directly using the position on the glvertexinstruction above...
 		   glTranslatef(-this->position->getAbsoluteX(),-this->position->getAbsoluteY(),-this->position->getAbsoluteZ());	

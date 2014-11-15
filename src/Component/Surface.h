@@ -28,9 +28,9 @@ class Surface: public Component {
     void render(){    	
 		//position the rendering
 		glTranslatef(this->position->getAbsoluteX(),this->position->getAbsoluteY(),this->position->getAbsoluteZ());			
-		glDisable(GL_TEXTURE_2D);//This should be the other way around!!! enable,use texture and disable.
+		//glDisable(GL_TEXTURE_2D);//This should be the other way around!!! enable,use texture and disable.
 		this->renderStrategy->render();
-		glEnable(GL_TEXTURE_2D);
+		//glEnable(GL_TEXTURE_2D);
 		//we restore the position to avoid messing with the other's component's location			
 		glTranslatef(-this->position->getAbsoluteX(),-this->position->getAbsoluteY(),-this->position->getAbsoluteZ());	
     }

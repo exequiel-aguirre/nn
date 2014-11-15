@@ -1,6 +1,6 @@
 #ifndef PositionH
 #define PositionH
-//TODO:check if the relative and parent position stuff is really needed...
+
 class Position {
 
   private:
