@@ -29,12 +29,12 @@ class CacheStrategy :public IRenderStrategy {
           {
             if(modelObject->hasUVs()){
               point=modelObject->getUV(i);
-              glTexCoord2f((*point)[0],(*point)[1]);
+              glTexCoord2f(point->x,point->y);
             }
             point=modelObject->getNormal(i);
-            glNormal3f((*point)[0],(*point)[1],(*point)[2]);
+            glNormal3f(point->x,point->y,point->z);
             point=modelObject->getVertex(i);
-            glVertex3f((*point)[0],(*point)[1],(*point)[2]);
+            glVertex3f(point->x,point->y,point->z);
           }     
         
       glEnd();
