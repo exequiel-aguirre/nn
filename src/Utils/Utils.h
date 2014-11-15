@@ -25,16 +25,16 @@ class Utils{
 
 	
 	static ModelObject* loadModel(const char* filename){		
-		vector< Point>* tempVertices=new vector< Point>();
-		vector< Point >* vertices=new vector< Point >();
+		vector< Point* >* tempVertices=new vector< Point*>();
+		vector< Point* >* vertices=new vector< Point* >();
 		vector< unsigned int >* vertexIndices=new vector< unsigned int >();
 
-		vector< Point >* tempUvs=new vector< Point >();
-		vector< Point >* uvs=new vector< Point >();				
+		vector< Point* >* tempUvs=new vector< Point* >();
+		vector< Point* >* uvs=new vector< Point* >();				
 		vector< unsigned int >* uvIndices=new vector< unsigned int >();
 
-		vector< Point >* tempNormals=new vector< Point >();
-		vector< Point >* normals=new vector< Point >();				
+		vector< Point* >* tempNormals=new vector< Point* >();
+		vector< Point* >* normals=new vector< Point* >();				
 		vector< unsigned int >* normalIndices=new vector< unsigned int >();
 
 		unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];;
@@ -49,17 +49,17 @@ class Utils{
 		    file >> lineHeader;		   
 		    if ( lineHeader=="v"){
 			    file >> x >> y >> z;			    
-			    tempVertices->push_back(Point(x,y,z));
+			    tempVertices->push_back(new Point(x,y,z));
 			}
 			else if(lineHeader== "vt")
 			{
 				file >> x >> y;
-    			tempUvs->push_back(Point(x,y,NULL));
+    			tempUvs->push_back(new Point(x,y,NULL));
 			}
 			else if (lineHeader=="vn")
 			{
 			    file >> x >> y >> z;
-			    tempNormals->push_back(Point(x,y,z));
+			    tempNormals->push_back(new Point(x,y,z));
 			}
 			else if (lineHeader=="f")
 			{			
@@ -102,7 +102,7 @@ class Utils{
 		for( unsigned int i=0; i<vertexIndices->size(); i++ )
 		{
 			unsigned int vertexIndex = (*vertexIndices)[i];
-			Point vertex = (*tempVertices)[ vertexIndex-1 ];
+			Point* vertex = (*tempVertices)[ vertexIndex-1 ];
 			vertices->push_back(vertex);
 		}
 
@@ -110,14 +110,14 @@ class Utils{
 		{
 			if(tempUvs->size()==0) break;//There are no textures
 			unsigned int uvIndex = (*uvIndices)[i];
-			Point uv = (*tempUvs)[ uvIndex-1 ];
+			Point* uv = (*tempUvs)[ uvIndex-1 ];
 			uvs->push_back(uv);
 		}
 
 		for( unsigned int i=0; i<normalIndices->size(); i++ )
 		{
 			unsigned int normalIndex = (*normalIndices)[i];
-			Point normal = (*tempNormals)[ normalIndex-1 ];
+			Point* normal = (*tempNormals)[ normalIndex-1 ];
 			normals->push_back(normal);
 		}
 		

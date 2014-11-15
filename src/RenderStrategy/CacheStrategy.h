@@ -14,25 +14,24 @@ class CacheStrategy :public IRenderStrategy {
 	CacheStrategy(IMap* map,GLenum GLMode){
         this->map=map;
         this->GLMode=GLMode;        
-        this->modelObject=new ModelObject(map,GLMode==GL_LINES);        
+        this->modelObject=new ModelObject(map);        
     }
 
     virtual ~CacheStrategy(){}    
     
     void render(){
-      Point point;
+      Point* point;
       glBegin(GLMode);        
           for(int i=0;i<modelObject->getSize();i++)
           {
             if(modelObject->hasUVs()){
               point=modelObject->getUV(i);
-              glTexCoord2f(point[0],point[1]);
+              glTexCoord2f((*point)[0],(*point)[1]);
             }
-            //EXE-TODO:IMPLEMENT map->getNormalX(u,v);
             //point=modelObject->getNormal(i);
             //glNormal3f(point[0],point[1],point[2]);
             point=modelObject->getVertex(i);
-            glVertex3f(point[0],point[1],point[2]);
+            glVertex3f((*point)[0],(*point)[1],(*point)[2]);
           }     
         
       glEnd();

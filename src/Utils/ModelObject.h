@@ -11,19 +11,19 @@ class ModelObject{
   	static const int Y=1;
   	static const int Z=2;
 
-    vector<Point>* vertices;
-    vector<Point>* uvs;
-    vector<Point>* normals;  	    
+    vector<Point*>* vertices;
+    vector<Point*>* uvs;
+    vector<Point*>* normals;  	    
   	
   public:	
 	
-  	ModelObject(vector<Point>* vertices,vector<Point>* uvs,vector<Point>* normals){
+  	ModelObject(vector<Point*>* vertices,vector<Point*>* uvs,vector<Point*>* normals){
       this->vertices=vertices;
       this->uvs=uvs;
       this->normals=normals;
   	}
 
-    ModelObject(IMap* map,bool longitudes):ModelObject(new vector<Point>(),new vector<Point>(),new vector<Point>()){       
+    ModelObject(IMap* map):ModelObject(new vector<Point*>(),new vector<Point*>(),new vector<Point*>()){       
       int lats=12;
       int longs=12;
       float u0,u1,v0,v1;
@@ -43,21 +43,21 @@ class ModelObject{
         {               
           u0=uFrom + (((uTo-uFrom)/lats) * j);          
           u1=uFrom + (((uTo-uFrom)/lats) * (j+1));
-          vertices->push_back(*(map->get(u0,v0)));
-          vertices->push_back(*(map->get(u0,v1)));                
-          vertices->push_back(*(map->get(u1,v0))); 
+          vertices->push_back(map->get(u0,v0));
+          vertices->push_back(map->get(u0,v1));                
+          vertices->push_back(map->get(u1,v0)); 
 
-          vertices->push_back(*(map->get(u1,v0))); 
-          vertices->push_back(*(map->get(u0,v1))); 
-          vertices->push_back(*(map->get(u1,v1))); 
+          vertices->push_back(map->get(u1,v0)); 
+          vertices->push_back(map->get(u0,v1)); 
+          vertices->push_back(map->get(u1,v1)); 
 
-          uvs->push_back(Point(j%2,j%2,NULL));
-          uvs->push_back(Point((j+1)%2,j%2,NULL));
-          uvs->push_back(Point(j%2,(j+1)%2,NULL));
+          uvs->push_back(new Point(j%2,j%2,NULL));
+          uvs->push_back(new Point((j+1)%2,j%2,NULL));
+          uvs->push_back(new Point(j%2,(j+1)%2,NULL));
 
-          uvs->push_back(Point(j%2,(j+1)%2,NULL));
-          uvs->push_back(Point((j+1)%2,j%2,NULL));
-          uvs->push_back(Point((j+1)%2,(j+1)%2,NULL));
+          uvs->push_back(new Point(j%2,(j+1)%2,NULL));
+          uvs->push_back(new Point((j+1)%2,j%2,NULL));
+          uvs->push_back(new Point((j+1)%2,(j+1)%2,NULL));
           
           
 
@@ -66,57 +66,33 @@ class ModelObject{
  //         normals->push_back(*(map->get(u0,v1)));      
         }
       }
-
-      //if we don't  want to render longitudes, we cut here.The longitudes are without textures
-      if(!longitudes) return;
-      
-      //longitudes
-      for(i = 1; i <= lats; i++) 
-      { 
-        u0= uFrom + (((uTo-uFrom)/lats)* (i-1));
-        u1= uFrom + (((uTo-uFrom)/lats)* (i));             
-        
-        for(j = 0; j <= longs; j++) 
-        {
-          v0=vFrom + (((vTo-vFrom)/longs) * j);
-          vertices->push_back(*(map->get(u0,v0)));
-          vertices->push_back(*(map->get(u1,v0)));
-
-          //EXE-TODO:IMPLEMENT map->getNormalX(u,v);
-          normals->push_back(*(map->get(u0,v0)));
-          normals->push_back(*(map->get(u1,v0)));      
-        }
-      }
     
-    }
-
-    ModelObject(IMap* map):ModelObject(map,false){}
-      
+    } 
     
 
 
-    vector<Point>* getVertices(){
+    vector<Point*>* getVertices(){
       return vertices;
     }
 
-    vector<Point>* getUVs(){
+    vector<Point*>* getUVs(){
       return uvs;
     }
 
-    vector<Point>* getNormals(){
+    vector<Point*>* getNormals(){
       return normals;
     }
 
 
-  	Point getVertex(int i){
+  	Point* getVertex(int i){
   		return (*vertices)[i];
   	}
 
-    Point getUV(int i){
+    Point* getUV(int i){
       return (*uvs)[i];
     }
 
-  	Point getNormal(int i){
+  	Point* getNormal(int i){
   		return (*normals)[i];
   	}
 

@@ -32,7 +32,7 @@ class SphereMap :public IMap {
         return 0;
     } 
     float getVTo(){
-        return 2*M_PI;
+        return M_PI;
     } 
 
 };

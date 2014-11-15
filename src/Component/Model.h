@@ -32,18 +32,18 @@ class Model: public Component {
 			
 			//bind the texture
 			glBindTexture(GL_TEXTURE_2D,texture);
-			Point point;
+			Point* point;
 			glBegin(GL_TRIANGLES);				
     			for(int i=0;i<modelObject->getSize();i++)
     			{
     				if(modelObject->hasUVs()){
 	    				point=modelObject->getUV(i);
-	    				glTexCoord2f(point[0],point[1]);
+	    				glTexCoord2f((*point)[0],(*point)[1]);
     				}
     				point=modelObject->getNormal(i);
-    				glNormal3f(point[0],point[1],point[2]);
+    				glNormal3f((*point)[0],(*point)[1],(*point)[2]);
     				point=modelObject->getVertex(i);
-					glVertex3f(point[0],point[1],point[2]);    				
+					glVertex3f((*point)[0],(*point)[1],(*point)[2]);    				
     			}			
 				
 			glEnd();
