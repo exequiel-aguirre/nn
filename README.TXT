@@ -2,7 +2,7 @@
 >apt-get install build-essential mesa-common-dev libsdl2-dev
 
 To compile:
->g++ src/main.cpp -w   -lGL  -lGLU  -lSDL2
+>g++ src/main.cpp -w   -lGL  -lSDL2
 
 
 // glut was not used, but in that case it would be...
@@ -15,7 +15,7 @@ DEBUG:
 >bt full
 
 PROFILE:
->g++ src/main.cpp -w  -lGL -lGLU  -lSDL2 -pg;./a.out 
+>g++ src/main.cpp -w  -lGL  -lSDL2 -pg;./a.out 
 >gprof > r.txt
 >kate r.txt
 

@@ -7,7 +7,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 #include <GL/gl.h>
-#include <GL/glu.h>
 
 using std::string;
 //EXE-TODO:change name. 
@@ -33,9 +32,17 @@ private:
 
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		gluPerspective(45.0f,(GLfloat)x/(GLfloat)y,1.0f,500.0f);//the last parameter is how far you'll be able to see
+		//gluPerspective(45.0f,(GLfloat)x/(GLfloat)y,1.0f,500.0f);
+		perspective(M_PI/8,(GLfloat)x/(GLfloat)y,1.0f,500.0f);//the last parameter is how far you'll be able to see
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
+	}
+
+	void perspective(float angle,GLfloat aspectRatio,float near,float far){
+		// gluPerspective(angle * 2.0f, x/y, near, far);
+		GLfloat fH = tan( angle ) * near;
+		GLfloat fW = fH * aspectRatio;
+		glFrustum(-fW, fW, -fH, fH, near, far);
 	}
 
 	bool createSDLWindow(int width, int height, bool fullscreen, const string& title){
