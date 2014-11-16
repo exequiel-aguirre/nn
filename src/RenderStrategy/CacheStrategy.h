@@ -2,7 +2,7 @@
 #define CacheStrategyH
 
 #include "IRenderStrategy.h"
-#include "../Utils/ModelObject.h"
+#include "../DataStructure/ModelObject.h"
 #include "../Utils/Utils.h"
 
 

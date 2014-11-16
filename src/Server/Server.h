@@ -3,7 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include "../NNWindow/NNWindow.h"
-#include "../Position/Position.h"
+#include "../DataStructure/Position.h"
 #include "../Application/Application.h"
 #include "../Test/MyContainer.h"
 

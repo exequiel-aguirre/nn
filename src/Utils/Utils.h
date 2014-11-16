@@ -4,8 +4,8 @@
 #include <vector>
 #include <fstream>
 #include <string> 
-#include "Point.h"
-#include "ModelObject.h"
+#include "../DataStructure/Point.h"
+#include "../DataStructure/ModelObject.h"
 
 
 class Utils{

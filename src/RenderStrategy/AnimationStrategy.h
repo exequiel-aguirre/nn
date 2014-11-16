@@ -3,7 +3,7 @@
 
 #include "TextureStrategy.h"
 #include "../Utils/Utils.h"
-#include "../Utils/ModelObject.h"
+#include "../DataStructure/ModelObject.h"
 #include <vector>
 #include <sstream>
 

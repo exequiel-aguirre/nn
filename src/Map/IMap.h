@@ -1,6 +1,6 @@
 #ifndef IMapH
 #define IMapH
-#include "../Utils/Point.h"
+#include "../DataStructure/Point.h"
 
 /**
 *This represent a map f:R^2->R^3

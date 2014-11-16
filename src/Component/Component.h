@@ -1,7 +1,7 @@
 #ifndef ComponentH
 #define ComponentH
 #include <vector>
-#include "../Position/Position.h"
+#include "../DataStructure/Position.h"
 #include "../Behavior/IBehavior.h"
 #include "../Listener/ListenerManager.h"
 
