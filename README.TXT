@@ -1,8 +1,8 @@
 //install environment
->apt-get install build-essential mesa-common-dev libsdl2-dev
+>apt-get install build-essential mesa-common-dev libsdl2-dev libglew-dev
 
 To compile:
->g++ src/main.cpp -w   -lGL  -lSDL2
+>g++ src/main.cpp -w   -lGL  -lSDL2 -lGLEW
 
 
 // glut was not used, but in that case it would be...
@@ -36,6 +36,7 @@ TODOS:
 -make TextureStrategy and AnimatonStrategy a decorator, so we could call something like
 new Animation(new TexturureStrategy(new CacheStrategy(modelFilename),textureFilename))(?)
 -Big one.(maybe in it's own branch) Render using glBufferData from glew to improve performance
+
 --nice to have:all glbegin/end in one place so the transition to glbuffer data is not so paiful
 -make position extend point(?)
 -start using glm(?)

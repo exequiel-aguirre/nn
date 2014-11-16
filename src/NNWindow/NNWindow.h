@@ -3,7 +3,7 @@
 
 #include <string>
 #include <iostream>
-
+#include <GL/glew.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 #include <GL/gl.h>
@@ -71,8 +71,9 @@ private:
 
 		// Create the window
 		SDLWindow = SDL_CreateWindow(title.c_str(),SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,width, height, flags );
-		GLContext = SDL_GL_CreateContext(SDLWindow);
+		GLContext = SDL_GL_CreateContext(SDLWindow);		
 		initGL(width,height);
+		glewInit();
 
 		if(SDLWindow == NULL || GLContext == NULL)
 		{
