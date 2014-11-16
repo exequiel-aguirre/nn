@@ -17,6 +17,8 @@ class RealTimeStrategy :public IRenderStrategy {
     virtual ~RealTimeStrategy(){}    
     
     void render(){
+      int lats=24;
+      int longs=24;
       float u0,u1,v0,v1;
       int i, j;
       float uFrom=map->getUFrom();
@@ -32,11 +34,15 @@ class RealTimeStrategy :public IRenderStrategy {
            for(j = 0; j <= lats; j++) 
            {   
              u0=uFrom + (((uTo-uFrom)/lats) * j);
-             glNormal3f(map->getX(u0,v0),map->getY(u0,v0),map->getZ(u0,v0));
-             glVertex3f(map->getX(u0,v0),map->getY(u0,v0),map->getZ(u0,v0));
+             Point* point=map->getNormal(u0,v0);
+             glNormal3f(point->x,point->y,point->z);
+             point=map->get(u0,v0);
+             glVertex3f(point->x,point->y,point->z);
              
-             glNormal3f(map->getX(u0,v1),map->getY(u0,v1),map->getZ(u0,v1));                
-             glVertex3f(map->getX(u0,v1),map->getY(u0,v1),map->getZ(u0,v1));
+             point=map->getNormal(u0,v1);
+             glNormal3f(point->x,point->y,point->z);                
+             point=map->get(u0,v1);
+             glVertex3f(point->x,point->y,point->z);
            }
          glEnd();
       }
@@ -49,11 +55,15 @@ class RealTimeStrategy :public IRenderStrategy {
            for(j = 0; j <= longs; j++) 
            {   
              v0=vFrom + (((vTo-vFrom)/longs) * j);
-             glNormal3f(map->getX(u0,v0),map->getY(u0,v0),map->getZ(u0,v0));
-             glVertex3f(map->getX(u0,v0),map->getY(u0,v0),map->getZ(u0,v0));
+             Point* point=map->getNormal(u0,v0);
+             glNormal3f(point->x,point->y,point->z);
+             point=map->get(u0,v0);
+             glVertex3f(point->x,point->y,point->z);
              
-             glNormal3f(map->getX(u1,v0),map->getY(u1,v0),map->getZ(u1,v0));                
-             glVertex3f(map->getX(u1,v0),map->getY(u1,v0),map->getZ(u1,v0));
+             point=map->getNormal(u1,v0);
+             glNormal3f(point->x,point->y,point->z);
+             point=map->get(u1,v0);
+             glVertex3f(point->x,point->y,point->z);
             }
          glEnd();
       }
