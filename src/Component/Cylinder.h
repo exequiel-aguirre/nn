@@ -1,8 +1,6 @@
 #ifndef CylinderH
 #define CylinderH
 
-#include "Component.h"
-#include <GL/gl.h>
 #include "Surface.h"
 #include "../Map/CylinderMap.h"
 

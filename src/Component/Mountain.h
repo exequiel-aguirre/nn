@@ -1,8 +1,6 @@
 #ifndef MountainH
 #define MountainH
 
-#include "Component.h"
-#include <GL/gl.h>
 #include "Surface.h"
 #include "../Map/ConeMap.h"
 #include "../Map/CreasedDecorator.h"

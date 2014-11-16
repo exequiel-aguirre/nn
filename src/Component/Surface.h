@@ -2,12 +2,10 @@
 #define SurfaceH
 
 #include "Component.h"
-#include <GL/gl.h>
 #include "../Map/IMap.h"
 #include "../RenderStrategy/IRenderStrategy.h"
 #include "../RenderStrategy/CacheStrategy.h"
 #include "../RenderStrategy/TextureStrategy.h"
-#include <iostream>
 
 
 class Surface: public Component {  

@@ -5,9 +5,7 @@
 #include <math.h>
 
 /**
- * This behavior should be added by default to each "decorative" 3d object, in order to create
- *  the effect of the user moving through this 3d world...
- * Remember that all the effects are the opposite
+ * Camera controlling behaviour
  * */
 
 

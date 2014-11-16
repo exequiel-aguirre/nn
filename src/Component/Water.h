@@ -1,8 +1,6 @@
 #ifndef WaterH
 #define WaterH
 
-#include "Component.h"
-#include <GL/gl.h>
 #include "Surface.h"
 #include "../Map/PlaneMap.h"
 #include "../Map/CreasedDecorator.h"

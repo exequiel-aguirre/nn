@@ -1,8 +1,9 @@
 #ifndef ModelObjectH
 #define ModelObjectH
+
 #include <vector>
 #include "Point.h"
-using std::vector;
+
 
 class ModelObject{
   private:

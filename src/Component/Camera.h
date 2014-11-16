@@ -2,8 +2,6 @@
 #define CameraH
 
 #include "Component.h"
-#include <GL/gl.h>
-#include <GL/glu.h>
 #include "../Behavior/BaseTranslationKeyboardBehavior.h"
 #include "../Behavior/BaseRotationMouseBehavior.h"
 

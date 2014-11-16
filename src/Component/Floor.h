@@ -3,7 +3,6 @@
 
 #include "Component.h"
 #include <GL/gl.h>
-#include <GL/glu.h>
 
 class Floor: public Component { 
   const float SIDE_LENGTH=600.0f;//how far in Z axes will go.

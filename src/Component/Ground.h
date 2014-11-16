@@ -3,8 +3,6 @@
 
 #include "Surface.h"
 #include "../Map/PlaneMap.h"
-#include <GL/gl.h>
-#include <GL/glu.h>
 
 class Ground: public Surface { 
   public:

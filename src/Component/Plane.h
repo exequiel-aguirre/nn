@@ -1,8 +1,6 @@
 #ifndef PlaneH
 #define PlaneH
 
-#include "Component.h"
-#include <GL/gl.h>
 #include "Surface.h"
 #include "../Map/PlaneMap.h"
 

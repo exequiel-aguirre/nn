@@ -1,11 +1,12 @@
 #ifndef UtilsH
 #define UtilsH
+
 #include <vector>
 #include <fstream>
 #include <string> 
 #include "Point.h"
 #include "ModelObject.h"
-using std::vector;
+
 
 class Utils{
   public:

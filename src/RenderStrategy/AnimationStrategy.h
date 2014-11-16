@@ -2,12 +2,11 @@
 #define AnimationStrategyH
 
 #include "TextureStrategy.h"
-#include <GL/gl.h>
 #include "../Utils/Utils.h"
 #include "../Utils/ModelObject.h"
 #include <vector>
 #include <sstream>
-using std::vector;
+
 
 
 class AnimationStrategy: public TextureStrategy {  

@@ -2,12 +2,8 @@
 #define ModelH
 
 #include "Component.h"
-#include <GL/gl.h>
-#include "../Utils/Utils.h"
-#include "../Utils/ModelObject.h"
 #include "../RenderStrategy/TextureStrategy.h"
-#include <vector>
-using std::vector;
+
 
 
 class Model: public Component {  

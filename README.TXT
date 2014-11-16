@@ -33,15 +33,11 @@ BUGS:
 
 TODOS:
 -add a getNormals to creasedDecorator
--clear headers (There are things that I'm not using...).
-
 -make TextureStrategy and AnimatonStrategy a decorator, so we could call something like
-new Animation(new TexturureStrategy(new CacheStrategy(modelFilename),textureFilename))
-
-
+new Animation(new TexturureStrategy(new CacheStrategy(modelFilename),textureFilename))(?)
 -Big one.(maybe in it's own branch) Render using glBufferData from glew to improve performance
 --nice to have:all glbegin/end in one place so the transition to glbuffer data is not so paiful
--make position extend point
+-make position extend point(?)
 -start using glm(?)
 
 -add blending so we can wrap up that lecture

@@ -1,5 +1,6 @@
 #ifndef TextureStrategyH
 #define TextureStrategyH
+
 #include "CacheStrategy.h"
 #include "../Utils/Utils.h"
 

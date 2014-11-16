@@ -3,7 +3,6 @@
 
 #include "Component.h"
 #include <GL/gl.h>
-#include "../Test/SimpleKeyboardBehavior.h"
 
 
 class Light: public Component { 	

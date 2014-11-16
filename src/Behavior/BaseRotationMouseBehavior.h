@@ -5,9 +5,7 @@
 #include <math.h>
 
 /**
- * This behavior should be added by default to each "decorative" 3d object, in order to create
- *  the effect of the user moving through this 3d world...
- * Remember that all the effects are the opposite
+ * Camera controlling behaviour
  * */
 
 
@@ -18,7 +16,7 @@ class BaseRotationMouseBehavior: public AbstractBehavior{
     virtual ~BaseRotationMouseBehavior(){}
 
     
-    //todo:make an "function" object with the responsability of generating the new position
+    
     void  onMouseMotion(SDL_MouseMotionEvent motion)
     {   
 	   	float deltaTheta=motion.xrel*DEFAULT_SPEED;

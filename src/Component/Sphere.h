@@ -1,8 +1,6 @@
 #ifndef SphereH
 #define SphereH
 
-#include "Component.h"
-#include <GL/gl.h>
 #include "Surface.h"
 #include "../Map/SphereMap.h"
 

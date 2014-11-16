@@ -1,8 +1,6 @@
 #ifndef TorusH
 #define TorusH
 
-#include "Component.h"
-#include <GL/gl.h>
 #include "Surface.h"
 #include "../Map/TorusMap.h"
 

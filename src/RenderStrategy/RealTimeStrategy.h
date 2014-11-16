@@ -1,5 +1,6 @@
 #ifndef RealTimeStrategyH
 #define RealTimeStrategyH
+
 #include "IRenderStrategy.h"
 
 
