@@ -14,7 +14,7 @@ class Surface: public Component {
   
   public:
 	  Surface(Position* position,IMap* map,GLenum GLMode):Component(position){		  		  
-		  this->renderStrategy=new CacheStrategy(map,GLMode);
+		  this->renderStrategy=new FastStrategy(map,GLMode);
 	  }
 
 	  Surface(Position* position,IMap* map,char* textureFilename):Component(position){		  		  

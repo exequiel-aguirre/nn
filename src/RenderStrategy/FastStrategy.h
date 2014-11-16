@@ -43,7 +43,7 @@ class FastStrategy :public CacheStrategy {
         glNormalPointer(GL_FLOAT,sizeof(float)*3, NULL);
 
 
-        glDrawArrays(GL_TRIANGLES, 0, this->modelObject->getSize());
+        glDrawArrays(GLMode, 0, this->modelObject->getSize());
         
     }
 
