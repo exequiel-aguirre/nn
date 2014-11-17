@@ -14,36 +14,25 @@ class Container: public Component {
 	}
 	virtual ~Container(){}
 	
-
-	void onBeforeRender()
-	{
-    	vector<Component*>::iterator it;
-      
-    	for(it=childs->begin();it!=childs->end();it++)
-    	{
-        	(*it)->onBeforeRender();
-      	}
-	}
-
+  void onBeforeRenderFrame(){
+      vector<Component*>::iterator it;
+      for(it=childs->begin();it!=childs->end();it++)
+      {
+         (*it)->onBeforeRenderFrame(); 
+      }
+  }
 	void render()
 	{
     	vector<Component*>::iterator it;
       
     	for(it=childs->begin();it!=childs->end();it++)
     	{
+          (*it)->onBeforeRender();
         	(*it)->render();
-      	}
-	}
+          (*it)->onAfterRender();
 
-	void onAfterRender()
-	{
-    	vector<Component*>::iterator it;
-      
-    	for(it=childs->begin();it!=childs->end();it++)
-    	{
-        	(*it)->onAfterRender();
       	}
-	}
+	}	
 		
 	Container* add(Component* child)
 	{

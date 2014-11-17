@@ -39,18 +39,15 @@ class Application:public IListener {
     }
     
     void render(){
-      onBeforeRender();
-      if(currentComponent!=NULL) currentComponent->render();
-      onAfterRender();
+      if(currentComponent!=NULL)
+      {
+        currentComponent->onBeforeRenderFrame();
+        currentComponent->onBeforeRender();
+        currentComponent->render();
+        currentComponent->onAfterRender();
+      }
     }
    
-   void onBeforeRender(){
-      if(currentComponent!=NULL) currentComponent->onBeforeRender();
-   }
-
-   void onAfterRender(){
-      if(currentComponent!=NULL) currentComponent->onAfterRender();
-   }
     
     void setCurrentComponent(Component* currentComponent){
       this->currentComponent=currentComponent;

@@ -17,7 +17,7 @@ class Camera: public Component {
 
     virtual ~Camera(){}
     
-    void onBeforeRender(){
+    void onBeforeRenderFrame(){
 		// Reset the matrix
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();

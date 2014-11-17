@@ -33,11 +33,15 @@ BUGS:
 
 TODOS:
 -add a getNormals to creasedDecorator
+-make onBeforeRender to be before render that component(like before)
+--put the glTranslate there, and add a glrotate base on position's theta and phi
+--for the camera maybe is just needed to be on my container's beforeRender.(or add a new on beforeRenderScene)
 -make TextureStrategy and AnimatonStrategy a decorator, so we could call something like
 new Animation(new TexturureStrategy(new CacheStrategy(modelFilename),textureFilename))(?)
--Big one.(maybe in it's own branch) Render using glBufferData from glew to improve performance
-
---nice to have:all glbegin/end in one place so the transition to glbuffer data is not so paiful
+-put all glbegin/end in one place 
+---remove floor (or make it use plane like ground)
+---make box as a container using planes
+---besides the two above, glbegin/end is just in cacheStrategy(ok) and RealTimestrategy(ok?)
 -make position extend point(?)
 -start using glm(?)
 

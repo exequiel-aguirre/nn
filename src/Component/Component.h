@@ -18,11 +18,13 @@ class Component {
     }
     virtual ~Component(){}  
     
-    //this method is called before any component is rendered.       
-    void virtual onBeforeRender(){}
-    void virtual render(){}
-    //this method is called after all components are rendered.    
-    void virtual onAfterRender(){}
+    //this method is called before any component is rendered.
+    virtual void onBeforeRenderFrame(){}
+    //this method is called before the component is rendered.
+    virtual void onBeforeRender(){}
+    virtual void render(){}
+    //this method is called after the components are rendered.
+    virtual void onAfterRender(){}
     
     Position* getPosition(){
       return this->position;
