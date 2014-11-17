@@ -6,28 +6,29 @@
 
 
 class FastStrategy :public CacheStrategy {   
-  private:
-  GLuint vertexBuffer;
-  GLuint uvBuffer;
-  GLuint normalBuffer;
-  
+
   public:
-    //EXE-TODO:avoid calling init twice
-    FastStrategy(char* modelFilename,GLenum GLMode):CacheStrategy(modelFilename,GLMode){
-      init();
-    }
-    FastStrategy(IMap* map,GLenum GLMode):CacheStrategy(map,GLMode){
-      init();
-    }
+    
+    FastStrategy(char* modelFilename,GLenum GLMode):CacheStrategy(loadModel(modelFilename),GLMode){}
+    FastStrategy(IMap* map,GLenum GLMode):CacheStrategy(loadModel(map),GLMode){}
 
     virtual ~FastStrategy(){
+      GLuint vertexBuffer=modelObject->getVertexBufferId();
+      GLuint uvBuffer=modelObject->getUVBufferId();
+      GLuint normalBuffer=modelObject->getNormalBufferId();
+
       glDeleteBuffers(1, &vertexBuffer);
       glDeleteBuffers(1, &uvBuffer);
       glDeleteBuffers(1, &normalBuffer);
     }    
     
     
-    void render(){      
+    void render(){
+        GLuint vertexBuffer=modelObject->getVertexBufferId();
+        GLuint uvBuffer=modelObject->getUVBufferId();
+        GLuint normalBuffer=modelObject->getNormalBufferId();
+
+
         glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
         glEnableClientState(GL_VERTEX_ARRAY);
         glVertexPointer(3, GL_FLOAT, sizeof(float)*3, NULL);
@@ -47,11 +48,27 @@ class FastStrategy :public CacheStrategy {
         
     }
 
-    void init(){
+    ModelObject*  loadModel(const char* modelFilename){
+        ModelObject* modelObject=CacheStrategy::loadModel(modelFilename);
+        bufferModel(modelObject);
+        return modelObject;
+    }
+      
+    ModelObject* loadModel(IMap* map){
+        ModelObject* modelObject=CacheStrategy::loadModel(map);
+        bufferModel(modelObject);
+        return modelObject;
+    }
+
+    void bufferModel(ModelObject* modelObject){
+        GLuint vertexBuffer;
+        GLuint uvBuffer;
+        GLuint normalBuffer;
+
         vector<Point> vertices;        
         vector<Point> uvs;
         vector<Point> normals;
-        for(int i=0;i<this->modelObject->getSize();i++){
+        for(int i=0;i<modelObject->getSize();i++){
           vertices.push_back(*(modelObject->getVertex(i)));
           if(modelObject->hasUVs()){            
             uvs.push_back(*(modelObject->getUV(i)));
@@ -70,7 +87,14 @@ class FastStrategy :public CacheStrategy {
         glGenBuffers(1, &normalBuffer);         
         glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);        
         glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(Point), &normals[0], GL_STATIC_DRAW);
+
+        modelObject->setVertexBufferId(vertexBuffer);
+        modelObject->setUVBufferId(uvBuffer);
+        modelObject->setNormalBufferId(normalBuffer);
+        return ;
     }
+
+
 
 };
 

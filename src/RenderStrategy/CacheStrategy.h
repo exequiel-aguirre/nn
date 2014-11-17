@@ -17,8 +17,8 @@ class CacheStrategy :public IRenderStrategy {
         this->GLMode=GLMode;        
         this->modelObject=modelObject;
   }
-	CacheStrategy(IMap* map,GLenum GLMode):CacheStrategy(new ModelObject(map),GLMode){}
-  CacheStrategy(char* modelFilename,GLenum GLMode):CacheStrategy(Utils::loadModel(modelFilename),GLMode){}
+	CacheStrategy(IMap* map,GLenum GLMode):CacheStrategy(loadModel(map),GLMode){}
+  CacheStrategy(char* modelFilename,GLenum GLMode):CacheStrategy(loadModel(modelFilename),GLMode){}
   
 
     virtual ~CacheStrategy(){}    
@@ -39,8 +39,15 @@ class CacheStrategy :public IRenderStrategy {
           }     
         
       glEnd();
+    }
+
+    virtual ModelObject*  loadModel(const char* modelFilename){
+      return Utils::loadModel(modelFilename);
     }  
 
+    virtual ModelObject*  loadModel(IMap* map){
+      return new ModelObject(map);
+    }
 
 
 };

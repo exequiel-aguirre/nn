@@ -51,7 +51,7 @@ class AnimationStrategy: public TextureStrategy {
 	  		std::ifstream f(tmp.str().c_str());
 		    if (f.good()) {
 		        f.close();
-		        modelObjects->push_back(Utils::loadModel(tmp.str().c_str()));
+		        modelObjects->push_back(this->loadModel(tmp.str().c_str()));
 			}
 			else
 			{

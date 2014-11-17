@@ -14,7 +14,11 @@ class ModelObject{
 
     vector<Point*>* vertices;
     vector<Point*>* uvs;
-    vector<Point*>* normals;  	    
+    vector<Point*>* normals;
+
+    GLuint vertexBufferId;
+    GLuint uvBufferId;
+    GLuint normalBufferId;
   	
   public:	
 	
@@ -108,6 +112,31 @@ class ModelObject{
 
     bool hasUVs(){
       return uvs->size()>0;
+    }
+
+
+    void setVertexBufferId(GLuint vertexBufferId){
+      this->vertexBufferId=vertexBufferId;
+    }
+
+    GLuint getVertexBufferId(){
+      return vertexBufferId;
+    }
+
+    void setUVBufferId(GLuint uvBufferId){
+      this->uvBufferId=uvBufferId;
+    }
+
+    GLuint getUVBufferId(){
+      return uvBufferId;
+    }
+
+    void setNormalBufferId(GLuint normalBufferId){
+      this->normalBufferId=normalBufferId;
+    }
+
+    GLuint getNormalBufferId(){
+      return normalBufferId;
     }
     
 };
