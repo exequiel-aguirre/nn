@@ -20,7 +20,7 @@ class Position {
 			this->relativeTheta=relativeTheta;
 			this->relativePhi=relativePhi;
   		}
-		Position(float relativeX,float relativeY,float relativeZ):Position(relativeX,relativeY,relativeZ,0,0){}
+		Position(float relativeX,float relativeY,float relativeZ):Position(relativeX,relativeY,relativeZ,0.0f,0.0f){}
     
     virtual ~Position(){}  
     
@@ -28,7 +28,28 @@ class Position {
       this->parent=parent;
     }
 
-    
+      	
+    float getRelativeX(){			
+			return this->relativeX;		
+		}		
+	
+    float getRelativeY(){			
+			return this->relativeY;		
+		}		
+	
+    float getRelativeZ(){	
+			return this->relativeZ ;		
+		}
+	
+    float getRelativeTheta(){			
+			return this->relativeTheta;
+		}		
+		
+    float getRelativePhi(){		
+			return this->relativePhi;
+		}
+		
+
     //decorate this method in order to achive the relative pos.
     float getAbsoluteX(){
 			if(parent==NULL) return this->relativeX;
