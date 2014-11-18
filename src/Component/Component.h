@@ -28,11 +28,14 @@ class Component {
       glRotatef(this->position->getRelativePhi(), 1.0f, 0.0f, 0.0f);
       // Rotate on the y-axis (left and right)
       glRotatef(this->position->getRelativeTheta(), 0.0f, 1.0f, 0.0f);
+      
+      glRotatef(this->position->getRelativePsi(), 0.0f, 0.0f, 1.0f);
     }
     virtual void render(){}
     //this method is called after the components are rendered.
     virtual void onAfterRender(){
       //we restore the position to avoid messing with the other's component's location 
+      glRotatef(-this->position->getRelativePsi(), 0.0f, 0.0f, 1.0f);
       glRotatef(-this->position->getRelativeTheta(), 0.0f, 1.0f, 0.0f);
       glRotatef(-this->position->getRelativePhi(), 1.0f, 0.0f, 0.0f);                 
       glTranslatef(-this->position->getRelativeX(),-this->position->getRelativeY(),-this->position->getRelativeZ());        

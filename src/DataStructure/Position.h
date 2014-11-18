@@ -10,17 +10,22 @@ class Position {
     float relativeZ;
     float relativeTheta;
     float relativePhi;
+    float relativePsi;
     
   public:
-  		Position(float relativeX,float relativeY,float relativeZ,float relativeTheta,float relativePhi ){
+  		Position(float relativeX,float relativeY,float relativeZ,float relativeTheta,float relativePhi,float relativePsi){
   			this->parent=NULL;
 			this->relativeX=relativeX;
 			this->relativeY=relativeY;
 			this->relativeZ=relativeZ;
 			this->relativeTheta=relativeTheta;
 			this->relativePhi=relativePhi;
-  		}
-		Position(float relativeX,float relativeY,float relativeZ):Position(relativeX,relativeY,relativeZ,0.0f,0.0f){}
+			this->relativePsi=relativePsi;			
+  		} 		
+  		
+		Position(float relativeX,float relativeY,float relativeZ,float relativeTheta,float relativePhi):Position(relativeX,relativeY,relativeZ,relativeTheta,relativePhi,0.0f){}
+		Position(float relativeX,float relativeY,float relativeZ):Position(relativeX,relativeY,relativeZ,0.0f,0.0f,0.0f){}
+		
     
     virtual ~Position(){}  
     
@@ -47,6 +52,10 @@ class Position {
 		
     float getRelativePhi(){		
 			return this->relativePhi;
+		}
+
+	float getRelativePsi(){		
+			return this->relativePsi;
 		}
 		
 
@@ -79,6 +88,12 @@ class Position {
     float getAbsolutePhi(){
 			if(parent==NULL) return this->relativePhi;
 			return this->relativePhi + parent->getAbsolutePhi();			
+		}
+	
+	//decorate this method in order to achive the relative phi.
+	float getAbsolutePsi(){
+			if(parent==NULL) return this->relativePsi;
+			return this->relativePsi + parent->getAbsolutePsi();			
 		}
   
 };
