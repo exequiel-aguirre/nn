@@ -51,6 +51,13 @@ class TorusMap :public IMap {
         return 2*M_PI;
     } 
 
+    int getLats(){
+        return 12;
+    }
+    int getLongs(){
+        return 12;
+    } 
+
 };
 
 

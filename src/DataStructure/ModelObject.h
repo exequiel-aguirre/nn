@@ -29,8 +29,8 @@ class ModelObject{
   	}
 
     ModelObject(IMap* map):ModelObject(new vector<Point*>(),new vector<Point*>(),new vector<Point*>()){       
-      int lats=12;
-      int longs=12;
+      int lats=map->getLats();
+      int longs=map->getLongs();
       float u0,u1,v0,v1;
       int i, j;
       float uFrom=map->getUFrom();

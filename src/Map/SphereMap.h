@@ -47,6 +47,13 @@ class SphereMap :public IMap {
     } 
     float getVTo(){
         return M_PI;
+    }
+
+    int getLats(){
+        return 12;
+    }
+    int getLongs(){
+        return 12;
     } 
 
 };

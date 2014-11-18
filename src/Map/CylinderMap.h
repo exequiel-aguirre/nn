@@ -51,6 +51,13 @@ class CylinderMap :public IMap {
         return h;
     } 
 
+    int getLats(){
+        return 12;
+    }
+    int getLongs(){
+        return 12;
+    } 
+
 };
 
 

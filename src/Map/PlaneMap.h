@@ -7,11 +7,16 @@ class PlaneMap :public IMap {
   private:
     float w;
     float h;
+    int lats;
+    int longs;
   public:
-	PlaneMap(float w,float h){
+	PlaneMap(float w,float h,int lats,int longs){
         this->w=w;
         this->h=h;
+        this->lats=lats;
+        this->longs=longs;
       }
+    PlaneMap(float w,float h):PlaneMap(w,h,12,12){}
 
     virtual ~PlaneMap(){}
     
@@ -47,6 +52,13 @@ class PlaneMap :public IMap {
     } 
     float getVTo(){
         return h/2;
+    } 
+
+    int getLats(){
+        return lats;
+    }
+    int getLongs(){
+        return longs;
     } 
 
 };

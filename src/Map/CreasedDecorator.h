@@ -39,7 +39,14 @@ class CreasedDecorator :public IMap {
     } 
     float getVTo(){
         return map->getVTo();
-    } 
+    }
+
+    int getLats(){
+        return map->getLats();
+    }
+    int getLongs(){
+        return map->getLongs();
+    }  
 
 };
 

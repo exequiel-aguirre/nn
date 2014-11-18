@@ -20,6 +20,9 @@ class IMap{
 	virtual float getVFrom(){}
 	virtual float getVTo(){}
 
+	virtual int getLats(){}
+	virtual int getLongs(){}
+
 
 };
 #endif

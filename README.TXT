@@ -32,6 +32,9 @@ BUGS:
 -all the textures loaded by surfaces seems wrong...
 
 TODOS:
+-make the lats/longs variable in modelObject(map). for the box lats=1,longs=2
+-check why the performance decreased so much by the new box
+-put the renderStrategy in component and pull up the render() to component(?)(if the calls to onbeforerender affect the performance, do it and leave them like it was before)
 -add a getNormals to creasedDecorator
 -refactor the position.Remove all absolute/relative. Leave just x,y,z and overload the + operator.(?)
 --in the component implement a getAbsolutePosition which would be,this->position + parent::position(?)
