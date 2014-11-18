@@ -21,10 +21,22 @@ class Component {
     //this method is called before any component is rendered.
     virtual void onBeforeRenderFrame(){}
     //this method is called before the component is rendered.
-    virtual void onBeforeRender(){}
+    virtual void onBeforeRender(){
+      //position the rendering
+      glTranslatef(this->position->getRelativeX(),this->position->getRelativeY(),this->position->getRelativeZ());     
+      //rotate the x-axis (up and down)
+      glRotatef(this->position->getRelativePhi(), 1.0f, 0.0f, 0.0f);
+      // Rotate on the y-axis (left and right)
+      glRotatef(this->position->getRelativeTheta(), 0.0f, 1.0f, 0.0f);
+    }
     virtual void render(){}
     //this method is called after the components are rendered.
-    virtual void onAfterRender(){}
+    virtual void onAfterRender(){
+      //we restore the position to avoid messing with the other's component's location 
+      glRotatef(-this->position->getRelativeTheta(), 0.0f, 1.0f, 0.0f);
+      glRotatef(-this->position->getRelativePhi(), 1.0f, 0.0f, 0.0f);                 
+      glTranslatef(-this->position->getRelativeX(),-this->position->getRelativeY(),-this->position->getRelativeZ());        
+    }
     
     Position* getPosition(){
       return this->position;

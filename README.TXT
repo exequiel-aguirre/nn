@@ -33,9 +33,10 @@ BUGS:
 
 TODOS:
 -add a getNormals to creasedDecorator
--make onBeforeRender to be before render that component(like before)
---put the glTranslate there, and add a glrotate base on position's theta and phi
---for the camera maybe is just needed to be on my container's beforeRender.(or add a new on beforeRenderScene)
+-refactor the position.Remove all absolute/relative. Leave just x,y,z and overload the + operator.(?)
+--in the component implement a getAbsolutePosition which would be,this->position + parent::position(?)
+
+
 -make TextureStrategy and AnimatonStrategy a decorator, so we could call something like
 new Animation(new TexturureStrategy(new CacheStrategy(modelFilename),textureFilename))(?)
 -put all glbegin/end in one place 

@@ -18,15 +18,8 @@ class Model: public Component {
 
     virtual ~Model(){}
     
-    void render(){
-    		
-			//pull this up			
-			glTranslatef(this->position->getAbsoluteX(),this->position->getAbsoluteY(),this->position->getAbsoluteZ());	
-			
-			this->renderStrategy->render();
-			//we restore the position to avoid messing with the other's component's location
-			//we can always draw them directly using the position on the glvertexinstruction above...
-		   glTranslatef(-this->position->getAbsoluteX(),-this->position->getAbsoluteY(),-this->position->getAbsoluteZ());	
+    void render(){     
+		  this->renderStrategy->render();
     }
 
 };
