@@ -8,6 +8,7 @@ class Container: public Component {
     vector<Component*>* childs;
   
   public:
+  using Component::add;
 	Container(Position* position):Component(position)
 	{
     	this->childs=new vector<Component*>();

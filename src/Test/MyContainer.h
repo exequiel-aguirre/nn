@@ -45,7 +45,7 @@ class MyContainer:public Container{
 			
 			
 			add(my3DBox);
-			add(my3DBox2);			
+			add(my3DBox2->add(new TimeBehavior()));
 			add(mySphere);
 			add(myGround);
 			add(myTorus);
