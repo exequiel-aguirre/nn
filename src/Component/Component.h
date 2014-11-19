@@ -34,7 +34,9 @@ class Component {
     virtual void render(){}
     //this method is called after the components are rendered.
     virtual void onAfterRender(){
-      //we restore the position to avoid messing with the other's component's location 
+      //we restore the position to avoid messing with the other's component's location
+      //mind that the group SO(3,R) is non-abelian, so we must do this in the opposite order than
+      // onBeforeRender
       glRotatef(-this->position->getRelativePsi(), 0.0f, 0.0f, 1.0f);
       glRotatef(-this->position->getRelativeTheta(), 0.0f, 1.0f, 0.0f);
       glRotatef(-this->position->getRelativePhi(), 1.0f, 0.0f, 0.0f);                 
