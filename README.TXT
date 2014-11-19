@@ -29,24 +29,18 @@ ANIMATION:
 -export as obj ticking export include normal,include uvs,triangulate faces,animation,apply modifiers,objects as OBJ objects. (the first three are for any model whatsoever)
 
 BUGS:
--all the textures loaded by surfaces seems wrong...
+-all the textures seem wrong...
 
 TODOS:
--make the lats/longs variable in modelObject(map). for the box lats=1,longs=2
 -check why the performance decreased so much by the new box
--put the renderStrategy in component and pull up the render() to component(?)(if the calls to onbeforerender affect the performance, do it and leave them like it was before)
+-put the renderStrategy in component and pull up the render() to component(?)
 -add a getNormals to creasedDecorator
 -refactor the position.Remove all absolute/relative. Leave just x,y,z and overload the + operator.(?)
 --in the component implement a getAbsolutePosition which would be,this->position + parent::position(?)
-
-
 -make TextureStrategy and AnimatonStrategy a decorator, so we could call something like
-new Animation(new TexturureStrategy(new CacheStrategy(modelFilename),textureFilename))(?)
--put all glbegin/end in one place 
----remove floor (or make it use plane like ground)
----make box as a container using planes
----besides the two above, glbegin/end is just in cacheStrategy(ok) and RealTimestrategy(ok?)
+	new Animation(new TexturureStrategy(new CacheStrategy(modelFilename),textureFilename))(?)
+-glbegin/end is just in cacheStrategy(ok) and RealTimestrategy(ok?)
 -make position extend point(?)
--start using glm(?)
+
 
 -add blending so we can wrap up that lecture
