@@ -9,8 +9,6 @@
 
 
 class Surface: public Component {  
-  private:		
-	IRenderStrategy* renderStrategy;
   
   public:
 	  Surface(Position* position,IMap* map,GLenum GLMode):Component(position){		  		  
@@ -22,13 +20,6 @@ class Surface: public Component {
 	  }
 
     virtual ~Surface(){}
-    
-    void render(){
-		this->renderStrategy->render();
-    }
-
-
-    
 
 
 };

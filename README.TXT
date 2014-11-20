@@ -35,10 +35,14 @@ BUGS:
 TODOS:
 -check why the performance decreased so much by the new box.
 ---most likely because it's render each component separately.We could implement some merge method, that agregates each component in the same modelobject and render it as a whole.
---check if we can save the object with the position in the buffer and do the posioning thing just when it change(the isChanged can be set inside the setPositionMethod.)
+-BIG ONE:Add a collision detector
+--iterate over the objects (that changed the position?) and check if (b->getX-minvertx<a->getx<b->getX+minvertx) || (a->getX-minvertx<b->getx<a->getX+minvertx) && (same for y and z)
+---when creating the modelObj save the minvertx and maxvertx
+---within the setPostion set isChanged to true.
 -put the renderStrategy in component and pull up the render() to component(?)
 -add a getNormals to creasedDecorator
 -refactor the position.Remove all absolute/relative. Leave just x,y,z and overload the + operator.(?)
+--check if we can save the object with the position in the buffer and do the posioning thing just when it change(the isChanged can be set inside the setPositionMethod.)(?)
 --in the component implement a getAbsolutePosition which would be,this->position + parent::position(?)
 -make TextureStrategy and AnimatonStrategy a decorator, so we could call something like
 	new Animation(new TexturureStrategy(new CacheStrategy(modelFilename),textureFilename))(?)

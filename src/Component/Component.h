@@ -5,6 +5,7 @@
 #include "../Behavior/IBehavior.h"
 #include "../Listener/ListenerManager.h"
 #include "../Effect/IEffect.h"
+#include "../RenderStrategy/IRenderStrategy.h"
 
 
 class Component {  
@@ -12,6 +13,7 @@ class Component {
     Position* position;    
     vector<IBehavior*>* behaviors;
     vector<IEffect*>* effects;
+    IRenderStrategy* renderStrategy=NULL;
 
   public:
     Component(Position* position){
@@ -36,7 +38,9 @@ class Component {
 
       doEffects();
     }
-    virtual void render(){}
+    virtual void render(){
+      if(this->renderStrategy!=NULL) this->renderStrategy->render();
+    }
     //this method is called after the components are rendered.
     virtual void onAfterRender(){
       undoEffects();

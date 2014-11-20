@@ -6,9 +6,7 @@
 
 
 
-class Model: public Component {  
-  protected:  	
-	IRenderStrategy* renderStrategy;
+class Model: public Component {
 
   public:
   	 Model(Position* position,IRenderStrategy* renderStrategy):Component(position){
@@ -17,10 +15,6 @@ class Model: public Component {
 	  Model(Position* position,char* modelFilename):Model(position,new TextureStrategy(modelFilename,"img/human.bmp")){}	  
 
     virtual ~Model(){}
-    
-    void render(){     
-		  this->renderStrategy->render();
-    }
 
 };
 
