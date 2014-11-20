@@ -30,9 +30,12 @@ ANIMATION:
 
 BUGS:
 -all the textures seem wrong...
+-blending effect not working so well...
 
 TODOS:
--check why the performance decreased so much by the new box
+-check why the performance decreased so much by the new box.
+---most likely because it's render each component separately.We could implement some merge method, that agregates each component in the same modelobject and render it as a whole.
+--check if we can save the object with the position in the buffer and do the posioning thing just when it change(the isChanged can be set inside the setPositionMethod.)
 -put the renderStrategy in component and pull up the render() to component(?)
 -add a getNormals to creasedDecorator
 -refactor the position.Remove all absolute/relative. Leave just x,y,z and overload the + operator.(?)
@@ -43,4 +46,3 @@ TODOS:
 -make position extend point(?)
 
 
--add blending so we can wrap up that lecture

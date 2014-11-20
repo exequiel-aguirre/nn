@@ -4,17 +4,20 @@
 #include "../DataStructure/Position.h"
 #include "../Behavior/IBehavior.h"
 #include "../Listener/ListenerManager.h"
+#include "../Effect/IEffect.h"
 
 
 class Component {  
   protected:
     Position* position;    
-    vector<IBehavior*>* behaviors;    
+    vector<IBehavior*>* behaviors;
+    vector<IEffect*>* effects;
 
   public:
     Component(Position* position){
       this->position=position;
       this->behaviors=new vector<IBehavior*>();
+      this->effects=new vector<IEffect*>();
     }
     virtual ~Component(){}  
     
@@ -30,10 +33,13 @@ class Component {
       glRotatef(this->position->getRelativeTheta(), 0.0f, 1.0f, 0.0f);
       
       glRotatef(this->position->getRelativePsi(), 0.0f, 0.0f, 1.0f);
+
+      doEffects();
     }
     virtual void render(){}
     //this method is called after the components are rendered.
     virtual void onAfterRender(){
+      undoEffects();
       //we restore the position to avoid messing with the other's component's location
       //mind that the group SO(3,R) is non-abelian, so we must do this in the opposite order than
       // onBeforeRender
@@ -57,6 +63,29 @@ class Component {
       ListenerManager::getInstance()->add(behavior);
       return this;
     
+    }
+
+    Component* add(IEffect* effect){      
+      this->effects->push_back(effect);      
+      return this;    
+    }
+
+    void doEffects(){
+      vector<IEffect*>::iterator it;
+      
+      for(it=effects->begin();it!=effects->end();it++)
+      {
+          (*it)->doEffect();
+      }
+    }
+
+    void undoEffects(){
+      vector<IEffect*>::iterator it;
+      
+      for(it=effects->begin();it!=effects->end();it++)
+      {
+          (*it)->undoEffect();
+      }
     }
 
 };
