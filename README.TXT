@@ -29,7 +29,6 @@ ANIMATION:
 -export as obj ticking export include normal,include uvs,triangulate faces,animation,apply modifiers,objects as OBJ objects. (the first three are for any model whatsoever)
 
 BUGS:
--all the textures seem wrong...
 -blending effect not working so well...
 
 TODOS:
