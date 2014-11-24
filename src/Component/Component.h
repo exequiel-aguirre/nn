@@ -2,6 +2,8 @@
 #define ComponentH
 #include <vector>
 #include "../DataStructure/Position.h"
+#include "../DataStructure/Velocity.h"
+#include "../DataStructure/Acceleration.h"
 #include "../Behavior/IBehavior.h"
 #include "../Listener/ListenerManager.h"
 #include "../Effect/IEffect.h"
@@ -14,6 +16,9 @@ class Component {
     IRenderStrategy* renderStrategy=NULL;
     Point* boundaryMin=NULL;
     Point* boundaryMax=NULL;
+    //mechanic properties
+    Velocity* velocity;
+    Acceleration* acceleration;
   protected:
     Position* position;    
     vector<IBehavior*>* behaviors;
@@ -23,6 +28,8 @@ class Component {
       this->position=position;
       this->behaviors=new vector<IBehavior*>();
       this->effects=new vector<IEffect*>();
+      this->velocity=new Velocity(0.0f,0.0f,0.0f);
+      this->acceleration=new Acceleration(0.0f,0.0f,0.0f);
     }
     virtual ~Component(){}  
     
@@ -70,8 +77,19 @@ class Component {
       this->position->move(deltaX,deltaY,deltaZ);
       calculateBoundary();
     }
-    Component* setVelocity(float velocity){
-      this->position->setVelocity(velocity);
+    Velocity* getVelocity(){
+      return this->velocity;  
+    }
+    Acceleration* getAcceleration(){
+      return this->acceleration;  
+    }
+    
+    Component* setVelocity(Velocity* velocity){
+      this->velocity=velocity;
+      return this;
+    }
+    Component* setAcceleration(Acceleration* acceleration){
+      this->acceleration=acceleration;
       return this;
     }
 
@@ -96,6 +114,10 @@ class Component {
 
     Point* getBoundaryMax(){
       return this->boundaryMax;
+    }
+
+    virtual float getMass(){
+      return 1.0f;
     }
 
 

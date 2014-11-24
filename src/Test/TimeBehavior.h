@@ -1,29 +1,21 @@
 #ifndef TimeBehaviorH
 #define TimeBehaviorH
 #include "../Component/Component.h"
+#include "../DataStructure/Velocity.h"
+#include "../DataStructure/Acceleration.h"
 #include "../Behavior/AbstractBehavior.h"
 #include "../Map/IMap.h"
 #include "../Map/TimeMap.h"
 //TODO:find a better way of dealing with the velocity and acceleration parameter
 class TimeBehavior: public AbstractBehavior{
   private:  	
-  	IMap* map;
-    float velocity;
-    float acceleration;
+  	IMap* map;    
   public:
-  	TimeBehavior(){  		
-      this->velocity=1.0f;
-      this->acceleration=0.0f;      
-  	}
-    TimeBehavior(float velocity,float acceleration){
-      this->velocity=velocity;
-      this->acceleration=acceleration;    	
-    }
+  	TimeBehavior(){}    
 
     void bind(Component* hostComponent){
-      AbstractBehavior::bind(hostComponent);
-      getComponent()->getPosition()->setVelocity(velocity);
-      this->map=new TimeMap(getComponent()->getPosition());
+      AbstractBehavior::bind(hostComponent);      
+      this->map=new TimeMap(getComponent()->getVelocity(),getComponent()->getAcceleration());
     }
     virtual ~TimeBehavior(){}   
     

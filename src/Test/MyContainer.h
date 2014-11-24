@@ -40,7 +40,7 @@ class MyContainer:public Container{
 			Water* myWaterB=new Water(new Position(0.0f,0.0f,100.0f),100,100);
 			Water* myWaterL=new Water(new Position(-100.0f,0.0f,0.0f),100,300);
 			Model* myModel=new Model(new Position(-15.0f,0.0f,-19.0f),"3DModel/monkey.obj");
-			Animation* myAnimation=new Animation(new Position(-0.0f,0.0f,-19.0f),"3DModel/human.obj");
+			Animation* myAnimation=new Animation(new Position(0.0f,0.4f,-16.0f),"3DModel/human.obj");
 			Camera* myCamera=new Camera(new Position(0.0f,-2.0f,0.0f));
 			Light* myLight=new Light(new Position(40.0f,40.0f,40.0f));
 			Sphere* mySphere=new Sphere(new Position(40.0f,40.0f,40.0f));
@@ -60,11 +60,11 @@ class MyContainer:public Container{
 			add(myTree1);add(myTree2);add(myTree3);add(myTree4);add(myTree5);add(myTree6);
 			add(myWaterF);add(myWaterR);add(myWaterB);add(myWaterL);
 			add(myModel);
-			add(myAnimation->add(new TimeBehavior()));
+			myAnimation->getVelocity()->setZ(1.0f);add(myAnimation->add(new TimeBehavior()));
 			add(myCamera);
-			add(myLight);
-			add(mySphere2->add(new TimeBehavior()));
-			add(mySphere3);
+			add(myLight);			
+			mySphere2->getVelocity()->setZ(1.0f);add(mySphere2->add(new TimeBehavior()));
+			add(mySphere3->add(new TimeBehavior()));
 
 			add(physics);
 			
