@@ -60,9 +60,14 @@ class Component {
       return this->position;
     }
     //maybe this method should be called moveTo(position)
+    //deprecated
     void setPosition(Position* position){
       this->position=position;
       //position changes so boundaries change
+      calculateBoundary();
+    }
+    void move(float deltaX,float deltaY,float deltaZ){
+      this->position->move(deltaX,deltaY,deltaZ);
       calculateBoundary();
     }
     void setRenderStrategy(IRenderStrategy* renderStrategy){

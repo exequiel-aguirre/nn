@@ -2,18 +2,25 @@
 #define TimeBehaviorH
 #include "../Component/Component.h"
 #include "../Behavior/AbstractBehavior.h"
+#include "../Map/IMap.h"
+#include "../Map/TimeMap.h"
 
 class TimeBehavior: public AbstractBehavior{
-  
+  private:  	
+  	IMap* map;
   public:
-    TimeBehavior(){}
+  	TimeBehavior(){
+  		this->map=new TimeMap(1.0f,0.0f);
+  	}
+    TimeBehavior(IMap* map){
+    	this->map=map;
+    }
     virtual ~TimeBehavior(){}   
     
     //todo:make an "function" object with the responsability of generating the new position
-    void  onTimer(){
-      Position* currentPosition=getComponent()->getPosition();
-      Position* newPosition=new Position(currentPosition->getAbsoluteX(),currentPosition->getAbsoluteY(),currentPosition->getAbsoluteZ()+0.1);
-      getComponent()->setPosition(newPosition);
+    void  onTimer(){    	
+    	Point* point=map->get(0.0f,0.1f);
+    	getComponent()->move(point->x,point->y,point->z);
       
       
     }    
