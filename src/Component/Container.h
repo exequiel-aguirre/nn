@@ -1,6 +1,7 @@
 #ifndef ContainerH
 #define ContainerH
 #include "Component.h"
+#include "../Physics/PhysicsManager.h"
 #include <vector>
 
 class Container: public Component {
@@ -38,7 +39,10 @@ class Container: public Component {
 	Container* add(Component* child)
 	{
     	child->getPosition()->setParent(this->position);
+      //TODO:find a way to avoid this
+      child->calculateBoundary();
     	childs->push_back(child);
+      PhysicsManager::getInstance()->add(child);
     	return this;
 	}
 		

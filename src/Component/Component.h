@@ -5,16 +5,19 @@
 #include "../Behavior/IBehavior.h"
 #include "../Listener/ListenerManager.h"
 #include "../Effect/IEffect.h"
+#include "../DataStructure/ModelObject.h"
 #include "../RenderStrategy/IRenderStrategy.h"
 
 
 class Component {  
+  private:
+    IRenderStrategy* renderStrategy=NULL;
+    Point* boundaryMin=NULL;
+    Point* boundaryMax=NULL;
   protected:
     Position* position;    
     vector<IBehavior*>* behaviors;
     vector<IEffect*>* effects;
-    IRenderStrategy* renderStrategy=NULL;
-
   public:
     Component(Position* position){
       this->position=position;
@@ -59,8 +62,33 @@ class Component {
     //maybe this method should be called moveTo(position)
     void setPosition(Position* position){
       this->position=position;
+      //position changes so boundaries change
+      calculateBoundary();
+    }
+    void setRenderStrategy(IRenderStrategy* renderStrategy){
+      this->renderStrategy=renderStrategy;
+      calculateBoundary();
     }
     
+
+    void calculateBoundary(){
+      if(this->renderStrategy==NULL) return;
+      ModelObject* modelObject=this->renderStrategy->getModelObject();
+      Point* min=modelObject->getBoundaryMin();
+      Point* max=modelObject->getBoundaryMax();
+      boundaryMin=new Point(min->x+position->getAbsoluteX(),min->y+position->getAbsoluteY(),min->z+position->getAbsoluteZ());
+      boundaryMax=new Point(max->x+position->getAbsoluteX(),max->y+position->getAbsoluteY(),max->z+position->getAbsoluteZ());
+    }
+
+    Point* getBoundaryMin(){
+      return this->boundaryMin;
+    }
+
+    Point* getBoundaryMax(){
+      return this->boundaryMax;
+    }
+
+
     Component* add(IBehavior* behavior){
       behavior->bind(this);
       this->behaviors->push_back(behavior);

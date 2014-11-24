@@ -10,7 +10,7 @@ class Model: public Component {
 
   public:
   	 Model(Position* position,IRenderStrategy* renderStrategy):Component(position){
-	  	this->renderStrategy=renderStrategy;
+	  	this->setRenderStrategy(renderStrategy);
 	  }
 	  Model(Position* position,char* modelFilename):Model(position,new TextureStrategy(modelFilename,"img/human.bmp")){}	  
 

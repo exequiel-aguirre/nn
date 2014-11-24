@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "Point.h"
+#include "../Map/IMap.h"
 
 
 class ModelObject{
@@ -19,6 +20,9 @@ class ModelObject{
     GLuint vertexBufferId;
     GLuint uvBufferId;
     GLuint normalBufferId;
+
+    Point* boundaryMin;
+    Point* boundaryMax;
   	
   public:	
 	
@@ -26,9 +30,14 @@ class ModelObject{
       this->vertices=vertices;
       this->uvs=uvs;
       this->normals=normals;
+      calculateBoundary();
   	}
 
-    ModelObject(IMap* map):ModelObject(new vector<Point*>(),new vector<Point*>(),new vector<Point*>()){       
+    ModelObject(IMap* map){
+      this->vertices=new vector<Point*>();
+      this->uvs=new vector<Point*>();
+      this->normals=new vector<Point*>();
+
       int lats=map->getLats();
       int longs=map->getLongs();
       float u0,u1,v0,v1;
@@ -39,6 +48,7 @@ class ModelObject{
       float vTo=map->getVTo();
       
       //latitudes
+      //TODO: set i=0,and change "<="" -> "<"" and "i-1" -> "i","i"->"i+1"
       for(i = 1; i <= longs; i++) 
       {             
         v0= vFrom + (((vTo-vFrom)/longs)* (i-1));
@@ -76,10 +86,26 @@ class ModelObject{
           normals->push_back(map->getNormal(u1,v1));
         }
       }
-    
+      calculateBoundary();
     } 
     
+    void calculateBoundary(){
+      boundaryMin=new Point((*vertices)[0]->x,(*vertices)[0]->y,(*vertices)[0]->z);
+      boundaryMax=new Point((*vertices)[0]->x,(*vertices)[0]->y,(*vertices)[0]->z);
 
+      vector<Point*>::iterator it;
+      Point* p;
+      for(it=vertices->begin();it!=vertices->end();it++){
+        p=(*it);
+        //using an else would save extra steps,but more readable this way
+        if(p->x < boundaryMin->x) boundaryMin->x=p->x;
+        if(p->x > boundaryMax->x) boundaryMax->x=p->x;
+        if(p->y < boundaryMin->y) boundaryMin->y=p->y;
+        if(p->y > boundaryMax->y) boundaryMax->y=p->y;
+        if(p->z < boundaryMin->z) boundaryMin->z=p->z;
+        if(p->z > boundaryMax->z) boundaryMax->z=p->z;
+      }
+    }
 
     vector<Point*>* getVertices(){
       return vertices;
@@ -137,6 +163,14 @@ class ModelObject{
 
     GLuint getNormalBufferId(){
       return normalBufferId;
+    }
+
+
+    Point* getBoundaryMin(){
+      return boundaryMin;
+    }
+    Point* getBoundaryMax(){
+      return boundaryMax;
     }
     
 };

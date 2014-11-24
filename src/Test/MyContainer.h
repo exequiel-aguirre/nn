@@ -15,6 +15,7 @@
 #include "../Component/Ground.h"
 #include "../Component/Camera.h"
 #include "../Component/Light.h"
+#include "../Component/Physics.h"
 
 #include "TimeBehavior.h"
 
@@ -24,7 +25,7 @@ class MyContainer:public Container{
     MyContainer(Position* position):Container(position){
 			Box* my3DBox=new Box(new Position(0.0f,0.0f,-19.0f));
 			Box* my3DBox2=new Box(new Position(-3.0f,0.0f,-19.0f));
-			Hut* myHut=new Hut(new Position(25.0f,0.0f,30.0f));
+			Hut* myHut=new Hut(new Position(25.0f,0.0f,25.0f));
 			Torus* myTorus=new Torus(new Position(-10.0f,1.0f,-17.0f,0.0f,90.0f,0.0f));			
 			Ground* myGround=new Ground(new Position(0.0f,0.0f,0.0f),100,100);
 			Mountain* myMountain=new Mountain(new Position(10.0f,19.0f,-49.0f));
@@ -40,10 +41,13 @@ class MyContainer:public Container{
 			Water* myWaterL=new Water(new Position(-100.0f,0.0f,0.0f),100,300);
 			Model* myModel=new Model(new Position(-15.0f,0.0f,-19.0f),"3DModel/monkey.obj");
 			Animation* myAnimation=new Animation(new Position(-0.0f,0.0f,-19.0f),"3DModel/human.obj");
-			Camera* myCamera=new Camera(new Position(0.0f,-2.0f,0.0f));			
+			Camera* myCamera=new Camera(new Position(0.0f,-2.0f,0.0f));
 			Light* myLight=new Light(new Position(40.0f,40.0f,40.0f));
 			Sphere* mySphere=new Sphere(new Position(40.0f,40.0f,40.0f));
+			Sphere* mySphere2=new Sphere(new Position(0.0f,2.0f,-10.0f));
+			Sphere* mySphere3=new Sphere(new Position(0.0f,2.0f,20.0f));
 			
+			Physics* physics=new Physics();
 			
 			
 			add(my3DBox);
@@ -59,6 +63,10 @@ class MyContainer:public Container{
 			add(myAnimation->add(new TimeBehavior()));
 			add(myCamera);
 			add(myLight);
+			add(mySphere2->add(new TimeBehavior()));
+			add(mySphere3);
+
+			add(physics);
 			
     
     }

@@ -41,6 +41,10 @@ class CacheStrategy :public IRenderStrategy {
       glEnd();
     }
 
+    ModelObject*  getModelObject(){
+      return this->modelObject;
+    }  
+
     virtual ModelObject*  loadModel(const char* modelFilename){
       return Utils::loadModel(modelFilename);
     }  
