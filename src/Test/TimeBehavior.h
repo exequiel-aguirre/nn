@@ -4,16 +4,26 @@
 #include "../Behavior/AbstractBehavior.h"
 #include "../Map/IMap.h"
 #include "../Map/TimeMap.h"
-
+//TODO:find a better way of dealing with the velocity and acceleration parameter
 class TimeBehavior: public AbstractBehavior{
   private:  	
   	IMap* map;
+    float velocity;
+    float acceleration;
   public:
-  	TimeBehavior(){
-  		this->map=new TimeMap(1.0f,0.0f);
+  	TimeBehavior(){  		
+      this->velocity=1.0f;
+      this->acceleration=0.0f;      
   	}
-    TimeBehavior(IMap* map){
-    	this->map=map;
+    TimeBehavior(float velocity,float acceleration){
+      this->velocity=velocity;
+      this->acceleration=acceleration;    	
+    }
+
+    void bind(Component* hostComponent){
+      AbstractBehavior::bind(hostComponent);
+      getComponent()->getPosition()->setVelocity(velocity);
+      this->map=new TimeMap(getComponent()->getPosition());
     }
     virtual ~TimeBehavior(){}   
     

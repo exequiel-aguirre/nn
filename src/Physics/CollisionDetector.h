@@ -1,6 +1,8 @@
 #ifndef CollisionDetectorH
 #define CollisionDetectorH
 #include "../Component/Component.h"
+#include "../Test/TimeBehavior.h"
+#include "../Map/TimeMap.h"
 #include <typeinfo>
 
 
@@ -22,6 +24,8 @@ class CollisionDetector{
             (min1->y <= max2->y) && (max1->y >= min2->y) &&
             (min1->z <= max2->z) && (max1->z >= min2->z)  ) {
             
+            c1->setVelocity(-2.0f);
+            c2->setVelocity(1.0f);
             //c1->move(0.0f,0.01f,0.0f);
             
             //std::cout << typeid(*c1).name()<<" collided with a "<< typeid(*c2).name()<<'\n';

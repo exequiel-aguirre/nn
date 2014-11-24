@@ -1,22 +1,22 @@
 #ifndef TimeMapH
 #define TimeMapH
 #include "IMap.h"
-
+#include "../Utils/Utils.h"
 
 class TimeMap :public IMap {  
   private:
-    float v;
-    float a;    
+    Position* state;
+    
   public:
-	TimeMap(float v,float a){
-        this->v=v;
-        this->a=a;
-        
+	TimeMap(Position* state){
+        this->state=state;        
       }    
 
     virtual ~TimeMap(){}
     //t is in fact a delta t (t is for time)
    Point* get(float theta,float t){
+        float v=state->getVelocity();
+        float a=state->getAcceleration();
         float x=0.0f;
         float y=0.0f;
         float z=v*t+ (0.5f*a*t*t);
@@ -24,6 +24,9 @@ class TimeMap :public IMap {
     }
  
  Point* getNormal(float theta,float t){
+        float v=state->getVelocity();
+        float a=state->getAcceleration();
+        
         float x_theta=0.0f;
         float y_theta=0.0;
         float z_theta=0.0f;

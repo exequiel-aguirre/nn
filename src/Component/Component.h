@@ -70,6 +70,11 @@ class Component {
       this->position->move(deltaX,deltaY,deltaZ);
       calculateBoundary();
     }
+    Component* setVelocity(float velocity){
+      this->position->setVelocity(velocity);
+      return this;
+    }
+
     void setRenderStrategy(IRenderStrategy* renderStrategy){
       this->renderStrategy=renderStrategy;
       calculateBoundary();

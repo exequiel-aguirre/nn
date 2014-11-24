@@ -35,11 +35,16 @@ TODOS:
 -check why the performance decreased so much by the new box.
 ---most likely because it's render each component separately.We could implement some merge method, that agregates each component in the same modelobject and render it as a whole.
 -remove all warnings
--BIG ONE:Add a collision detector
---iterate over the objects (that changed the position?) and check if (b->getX-minvertx<a->getx<b->getX+minvertx) || (a->getX-minvertx<b->getx<a->getX+minvertx) && (same for y and z)
----within the setPostion set isChanged to true and on afterrender set it to false.
+-physics
+--BIG ONE:Add a collision detector
+---iterate over the objects (that changed the position?) and check if (b->getX-minvertx<a->getx<b->getX+minvertx) || (a->getX-minvertx<b->getx<a->getX+minvertx) && (same for y and z)
+----within the setPostion set isChanged to true and on afterrender set it to false.
+--add cinematicProperties with a,v to component, also massDensity (* approxVolume) and chage timebehavior to cinematicBehavior that takes a,v from there.
+
 -refactor the position.Remove all absolute/relative. Leave just x,y,z and overload the + operator.(?)
---or at least change the interface and make the set position to private and allow a move(deltaX,deltaY...) that just changes the relative
+or at least change the interface and make the set position to private and allow a move(deltaX,deltaY...) that just changes the relative
+
+-implement a factory so we can avoid thius chaotics constructors
 -add a getNormals to creasedDecorator
 
 --check if we can save the object with the position in the buffer and do the posioning thing just when it change(the isChanged can be set inside the setPositionMethod.)(?)
