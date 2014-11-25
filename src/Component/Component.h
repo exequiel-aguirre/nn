@@ -73,8 +73,8 @@ class Component {
       //position changes so boundaries change
       calculateBoundary();
     }
-    void move(float deltaX,float deltaY,float deltaZ){
-      this->position->move(deltaX,deltaY,deltaZ);
+    void setPosition(float x,float y,float z){
+      this->position->set(x,y,z);
       calculateBoundary();
     }
     Velocity* getVelocity(){
@@ -84,12 +84,12 @@ class Component {
       return this->acceleration;  
     }
     
-    Component* setVelocity(Velocity* velocity){
-      this->velocity=velocity;
+    Component* setVelocity(float x,float y,float z){
+      this->velocity->set(x,y,z);
       return this;
     }
-    Component* setAcceleration(Acceleration* acceleration){
-      this->acceleration=acceleration;
+    Component* setAcceleration(float x,float y,float z){
+      this->acceleration->set(x,y,z);
       return this;
     }
 

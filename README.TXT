@@ -32,6 +32,7 @@ BUGS:
 -blending effect not working so well...
 
 TODOS:
+-try temmplate for ciclyc reference.
 -check why the performance decreased so much by the new box.
 ---most likely because it's render each component separately.We could implement some merge method, that agregates each component in the same modelobject and render it as a whole.
 -remove all warnings

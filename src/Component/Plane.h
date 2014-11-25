@@ -17,6 +17,9 @@ class Plane: public Surface {
 	Plane(Position* position,float w,float h,char* textureFilename,int lats,int longs):Surface(position,new PlaneMap(w,h,lats,longs),textureFilename){}
     virtual ~Plane(){}    
     
+    float getMass(){
+    	return 10000.0f;
+    }
 
 };
 

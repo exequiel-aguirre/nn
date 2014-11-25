@@ -1,8 +1,6 @@
 #ifndef CollisionDetectorH
 #define CollisionDetectorH
 #include "../Component/Component.h"
-#include "../Test/TimeBehavior.h"
-#include "../Map/TimeMap.h"
 #include <typeinfo>
 
 

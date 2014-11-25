@@ -29,6 +29,12 @@ class Velocity{
     float getZ(){
     	return z;
     }
+
+    void set(float x,float y,float z){
+        this->x=x;
+        this->y=y;
+        this->z=z;
+    }
     
     void setX(float x){
     	this->x=x;

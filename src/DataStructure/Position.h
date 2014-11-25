@@ -58,10 +58,10 @@ class Position {
 			return this->relativePsi;
 		}
 	//TODO:this should ne just in the component	
-	void move(float deltaX,float deltaY,float deltaZ){
-		this->relativeX+=deltaX;
-		this->relativeY+=deltaY;
-		this->relativeZ+=deltaZ;
+	void set(float x,float y,float z){
+		this->relativeX=x;
+		this->relativeY=y;
+		this->relativeZ=z;
 	}
     //decorate this method in order to achive the relative pos.
     float getAbsoluteX(){
