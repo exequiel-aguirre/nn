@@ -17,7 +17,7 @@
 #include "../Component/Light.h"
 #include "../Component/Physics.h"
 
-#include "TimeBehavior.h"
+#include "../Behavior/MotionBehavior.h"
 
 
 class MyContainer:public Container{
@@ -44,14 +44,14 @@ class MyContainer:public Container{
 			Camera* myCamera=new Camera(new Position(0.0f,-2.0f,0.0f));
 			Light* myLight=new Light(new Position(40.0f,40.0f,40.0f));
 			Sphere* mySphere=new Sphere(new Position(40.0f,40.0f,40.0f));
-			Sphere* mySphere2=new Sphere(new Position(0.0f,2.0f,-10.0f));
-			Sphere* mySphere3=new Sphere(new Position(0.0f,2.0f,20.0f));
-			
+			Sphere* mySphere2=new Sphere(new Position(-3.0f,8.0f,20.0f));
+			Sphere* mySphere3=new Sphere(new Position(0.0f,8.0f,20.0f));			
+			Sphere* mySphere4=new Sphere(new Position(3.0f,8.0f,20.0f));			
 			Physics* physics=new Physics();
 			
 			
 			add(my3DBox);
-			add(my3DBox2->add(new TimeBehavior()));			
+			add(my3DBox2->add(new MotionBehavior()));			
 			add(myHut);
 			add(mySphere);
 			add(myGround);
@@ -60,11 +60,16 @@ class MyContainer:public Container{
 			add(myTree1);add(myTree2);add(myTree3);add(myTree4);add(myTree5);add(myTree6);
 			add(myWaterF);add(myWaterR);add(myWaterB);add(myWaterL);
 			add(myModel);
-			myAnimation->getVelocity()->setZ(1.0f);add(myAnimation->add(new TimeBehavior()));
+			myAnimation->getVelocity()->setZ(1.0f);add(myAnimation->add(new MotionBehavior()));
 			add(myCamera);
 			add(myLight);			
-			mySphere2->getVelocity()->setZ(1.0f);add(mySphere2->add(new TimeBehavior()));
-			add(mySphere3->add(new TimeBehavior()));
+			mySphere2->getVelocity()->setX(1.0f);add(mySphere2->add(new MotionBehavior()));
+			mySphere3->getAcceleration()->setY(-1.0f);add(mySphere3->add(new MotionBehavior()));
+			add(mySphere4->add(new MotionBehavior()));
+
+
+			add(new Plane(new Position(-15.0f,8.0f,20.0f,0.0f,0.0f,0.0f),5.0f,5.0f,"img/box.bmp",2,2));
+		  	add(new Plane(new Position(15.0f,8.0f,20.0f,0.0f,0.0f,0.0f),5.0f,5.0f,"img/box.bmp",2,2));
 
 			add(physics);
 			
