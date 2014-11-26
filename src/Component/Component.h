@@ -9,6 +9,7 @@
 #include "../Effect/IEffect.h"
 #include "../DataStructure/ModelObject.h"
 #include "../RenderStrategy/IRenderStrategy.h"
+#include "../Utils/Utils.h"
 
 
 class Component {  
@@ -104,6 +105,9 @@ class Component {
       ModelObject* modelObject=this->renderStrategy->getModelObject();
       Point* min=modelObject->getBoundaryMin();
       Point* max=modelObject->getBoundaryMax();
+      min=Utils::rotate(min,position->getAbsolutePhi(),position->getAbsoluteTheta(),position->getAbsolutePsi());
+      max=Utils::rotate(max,position->getAbsolutePhi(),position->getAbsoluteTheta(),position->getAbsolutePsi());
+      Utils::check(min,max);
       boundaryMin=new Point(min->x+position->getAbsoluteX(),min->y+position->getAbsoluteY(),min->z+position->getAbsoluteZ());
       boundaryMax=new Point(max->x+position->getAbsoluteX(),max->y+position->getAbsoluteY(),max->z+position->getAbsoluteZ());
     }

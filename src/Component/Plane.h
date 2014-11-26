@@ -3,6 +3,7 @@
 
 #include "Surface.h"
 #include "../Map/PlaneMap.h"
+#include <limits>
 
 
 
@@ -18,7 +19,7 @@ class Plane: public Surface {
     virtual ~Plane(){}    
     
     float getMass(){
-    	return 10000.0f;
+      return std::numeric_limits<float>::max();
     }
 
 };

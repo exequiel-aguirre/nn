@@ -142,6 +142,52 @@ class Utils{
 		if(norm==0.0f) return p;
 		return new Point(p->x/norm,p->y/norm,p->z/norm);
 	}
+
+	static Point* rotate(Point* p,float phi,float theta,float psi){
+		float x=p->x;
+		float y=p->y;
+		float z=p->z;
+		phi=phi*M_PI/180.0f;
+		theta=theta*M_PI/180.0f;
+		psi=psi*M_PI/180.0f;
+		//rotation on x axis
+		//x=x;
+		y=(cos(phi)*y)-(sin(phi)*z);
+		z=(sin(phi)*y)+(cos(phi)*z);
+		
+		//rotation on y axis
+		x=(cos(theta)*x)+(sin(theta)*z);
+		//y=y
+		z=(-sin(theta)*x)+(cos(theta)*z);
+
+		//rotation on z axis
+		x=(cos(psi)*x)-(sin(psi)*y);
+		y=(sin(psi)*x)+(cos(psi)*y);
+		//z=z		
+		
+		return new Point(x,y,z);		
+	}
+
+	static void check(Point* min,Point* max){
+		float tmp;
+		if(min->x>max->x){
+			tmp=min->x;
+			min->x=max->x;
+			max->x=tmp;
+		}
+      	
+      	if(min->y>max->y){
+			tmp=min->y;
+			min->y=max->y;
+			max->y=tmp;
+		}
+
+		if(min->z>max->z){
+			tmp=min->z;
+			min->z=max->z;
+			max->z=tmp;
+		}
+	}
 };
 
 #endif

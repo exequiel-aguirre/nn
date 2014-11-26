@@ -30,7 +30,7 @@ ANIMATION:
 
 BUGS:
 -blending effect not working so well...
-
+-the util::rotate is not working properly(see *)
 TODOS:
 -try temmplate for ciclyc reference.
 -check why the performance decreased so much by the new box.
@@ -56,3 +56,11 @@ or at least change the interface and make the set position to private and allow 
 -make position extend point(?)
 
 
+Notes:
+*  
+put this at the end of Component::afterRender
+if(boundaryMin==NULL) return;
+      glBegin(GL_LINES);
+        glVertex3f(boundaryMin->x,boundaryMin->y,boundaryMin->z);
+        glVertex3f(boundaryMax->x,boundaryMax->y,boundaryMax->z);
+      glEnd();
