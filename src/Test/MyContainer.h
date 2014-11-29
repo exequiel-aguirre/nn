@@ -23,18 +23,18 @@
 class MyContainer:public Container{
   public:
     MyContainer(Position* position):Container(position){
-			Box* my3DBox=new Box(new Position(0.0f,0.0f,-19.0f));
-			Box* my3DBox2=new Box(new Position(-3.0f,0.0f,-19.0f));
+			Box* my3DBox=new Box(new Position(3.0f,0.0f,-25.0f));
+			Box* my3DBox2=new Box(new Position(-3.0f,0.0f,-25.0f));
 			Hut* myHut=new Hut(new Position(25.0f,0.0f,25.0f));
 			Torus* myTorus=new Torus(new Position(-10.0f,1.0f,-17.0f,0.0f,90.0f,0.0f));			
 			Ground* myGround=new Ground(new Position(0.0f,0.0f,0.0f),100,100);
 			Mountain* myMountain=new Mountain(new Position(10.0f,19.0f,-49.0f));
-			Tree* myTree1=new Tree(new Position(5.0f,0.0f,-5.0f));
-			Tree* myTree2=new Tree(new Position(5.0f,0.0f,-10.0f));
-			Tree* myTree3=new Tree(new Position(5.0f,0.0f,-15.0f));
-			Tree* myTree4=new Tree(new Position(-5.0f,0.0f,-5.0f));
-			Tree* myTree5=new Tree(new Position(-5.0f,0.0f,-10.0f));
-			Tree* myTree6=new Tree(new Position(-5.0f,0.0f,-15.0f));
+			Tree* myTree1=new Tree(new Position(5.0f,0.0f,5.0f));
+			Tree* myTree2=new Tree(new Position(5.0f,0.0f,10.0f));
+			Tree* myTree3=new Tree(new Position(5.0f,0.0f,15.0f));
+			Tree* myTree4=new Tree(new Position(-5.0f,0.0f,5.0f));
+			Tree* myTree5=new Tree(new Position(-5.0f,0.0f,10.0f));
+			Tree* myTree6=new Tree(new Position(-5.0f,0.0f,15.0f));
 			Water* myWaterF=new Water(new Position(0.0f,0.0f,-100.0f),100,100);
 			Water* myWaterR=new Water(new Position(100.0f,0.0f,0.0f),100,300);
 			Water* myWaterB=new Water(new Position(0.0f,0.0f,100.0f),100,100);
@@ -44,9 +44,9 @@ class MyContainer:public Container{
 			Camera* myCamera=new Camera(new Position(0.0f,-2.0f,0.0f));
 			Light* myLight=new Light(new Position(40.0f,40.0f,40.0f));
 			Sphere* mySphere=new Sphere(new Position(40.0f,40.0f,40.0f));
-			Sphere* mySphere2=new Sphere(new Position(-3.0f,8.0f,20.0f));
-			Sphere* mySphere3=new Sphere(new Position(0.0f,8.0f,20.0f));			
-			Sphere* mySphere4=new Sphere(new Position(3.0f,8.0f,20.0f));			
+			Sphere* mySphere2=new Sphere(new Position(-3.0f,8.0f,-20.0f));
+			Sphere* mySphere3=new Sphere(new Position(3.0f,8.0f,-20.0f),2.0f);
+			
 			Physics* physics=new Physics();
 			
 			
@@ -65,11 +65,10 @@ class MyContainer:public Container{
 			add(myLight);			
 			mySphere2->getVelocity()->setX(1.0f);add(mySphere2->add(new MotionBehavior()));
 			add(mySphere3->add(new MotionBehavior()));
-			add(mySphere4->add(new MotionBehavior()));
 
 
-			add(new Plane(new Position(-15.0f,8.0f,20.0f,0.0f,0.0f,90.0f),5.0f,5.0f,"img/box.bmp",2,2));
-		  	add(new Plane(new Position(15.0f,8.0f,20.0f,00.0f,0.0f,90.0f),5.0f,5.0f,"img/box.bmp",2,2));
+			add(new Plane(new Position(-15.0f,8.0f,-20.0f,0.0f,0.0f,90.0f),5.0f,5.0f,"img/box.bmp",2,2));
+		  	add(new Plane(new Position(15.0f,8.0f,-20.0f,00.0f,0.0f,90.0f),5.0f,5.0f,"img/box.bmp",2,2));
 
 			add(physics);
 			

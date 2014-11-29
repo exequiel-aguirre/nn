@@ -17,13 +17,14 @@ class Component {
     IRenderStrategy* renderStrategy=NULL;
     Point* boundaryMin=NULL;
     Point* boundaryMax=NULL;
-    //mechanic properties
-    Velocity* velocity;
-    Acceleration* acceleration;
   protected:
-    Position* position;    
     vector<IBehavior*>* behaviors;
     vector<IEffect*>* effects;
+    //mechanic properties
+    Position* position;
+    Velocity* velocity;
+    Acceleration* acceleration;
+    float massDensity=1.0f;
   public:
     Component(Position* position){
       this->position=position;
@@ -121,7 +122,11 @@ class Component {
     }
 
     virtual float getMass(){
-      return 1.0f;
+      if(this->boundaryMin==NULL || this->boundaryMax==NULL) calculateBoundary();
+      //a very rough approximation of volume
+      return (boundaryMax->x - boundaryMin->x)*
+             (boundaryMax->y - boundaryMin->y)*
+             (boundaryMax->z - boundaryMin->z)* massDensity;
     }
 
 
