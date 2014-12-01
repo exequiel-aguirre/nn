@@ -3,7 +3,7 @@
 
 class Position {
 
-  private:    
+  protected:    
     float x;
     float y;
     float z;
@@ -62,7 +62,31 @@ class Position {
 		if(phi!=NULL) this->phi=phi;
 		if(theta!=NULL) this->theta=theta;
 		if(psi!=NULL) this->psi=psi;
-	}    
+	}
+
+	float setX(float x){
+    	this->x=x;
+    }
+
+    float setY(float y){
+    	this->y=y;
+    }    
+
+    float setZ(float z){
+    	this->z=z;
+    }
+
+    float setPhi(float phi){
+    	this->phi=phi;
+    }
+
+    float setTheta(float theta){
+    	this->theta=theta;
+    }    
+
+    float setPsi(float psi){
+    	this->psi=psi;
+    }
 
 	Position* operator+=(const Position* position) {
     	this->x+=position->x;

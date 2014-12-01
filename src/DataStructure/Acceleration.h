@@ -1,53 +1,13 @@
 #ifndef AccelerationH
 #define AccelerationH
+#include "Position.h"
 
-class Acceleration{
-
-  private:    
-    float x;
-    float y;
-    float z;    
-    
+class Acceleration:public Position{
+   
   public:
-  		Acceleration(float x,float y,float z){
-  			this->x=x;
-  			this->y=y;
-  			this->z=z;
-			
-  		}  		
+  		Acceleration(float x,float y,float z):Position(x,y,z){}
     
-    virtual ~Acceleration(){}  
-
-    float getX(){
-    	return x;
-    }
-
-    float getY(){
-    	return y;
-    }
-
-    float getZ(){
-    	return z;
-    }
-    
-    void set(float x,float y,float z){
-        this->x=x;
-        this->y=y;
-        this->z=z;
-    }
-    
-    float setX(float x){
-    	this->x=x;
-    }
-
-    float setY(float y){
-    	this->y=y;
-    }    
-
-    float setZ(float z){
-    	this->z=z;
-    }
-  
+    virtual ~Acceleration(){}    
 };
 
 #endif
