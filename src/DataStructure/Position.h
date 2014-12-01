@@ -1,104 +1,78 @@
 #ifndef PositionH
 #define PositionH
-//TODO:change the name to something like "state"
+
 class Position {
 
-  private:
-    Position* parent;
-    float relativeX;
-    float relativeY;
-    float relativeZ;
-    float relativeTheta;
-    float relativePhi;
-    float relativePsi;    
+  private:    
+    float x;
+    float y;
+    float z;
+    float theta;
+    float phi;
+    float psi;    
     
   public:
-  		Position(float relativeX,float relativeY,float relativeZ,float relativeTheta,float relativePhi,float relativePsi){
-  			this->parent=NULL;
-			this->relativeX=relativeX;
-			this->relativeY=relativeY;
-			this->relativeZ=relativeZ;
-			this->relativeTheta=relativeTheta;
-			this->relativePhi=relativePhi;
-			this->relativePsi=relativePsi;
+  		Position(float x,float y,float z,float phi,float theta,float psi){  			
+			this->x=x;
+			this->y=y;
+			this->z=z;
+			this->phi=phi;
+			this->theta=theta;
+			this->psi=psi;
   		} 		
   		
-		Position(float relativeX,float relativeY,float relativeZ,float relativeTheta,float relativePhi):Position(relativeX,relativeY,relativeZ,relativeTheta,relativePhi,0.0f){}
-		Position(float relativeX,float relativeY,float relativeZ):Position(relativeX,relativeY,relativeZ,0.0f,0.0f,0.0f){}
+		Position(float x,float y,float z,float phi,float theta):Position(x,y,z,phi,theta,0.0f){}
+		Position(float x,float y,float z):Position(x,y,z,0.0f,0.0f,0.0f){}
 		
     
     virtual ~Position(){}  
+              	
+    float getX(){			
+			return this->x;		
+		}		
+	
+    float getY(){			
+			return this->y;		
+		}		
+	
+    float getZ(){	
+			return this->z ;		
+		}
+	
+	float getPhi(){		
+			return this->phi;
+		}
+
+    float getTheta(){			
+			return this->theta;
+		}			
     
-    void setParent(Position* parent){
-      this->parent=parent;
-    }
-
-      	
-    float getRelativeX(){			
-			return this->relativeX;		
-		}		
-	
-    float getRelativeY(){			
-			return this->relativeY;		
-		}		
-	
-    float getRelativeZ(){	
-			return this->relativeZ ;		
-		}
-	
-    float getRelativeTheta(){			
-			return this->relativeTheta;
-		}		
-		
-    float getRelativePhi(){		
-			return this->relativePhi;
+	float getPsi(){		
+			return this->psi;
 		}
 
-	float getRelativePsi(){		
-			return this->relativePsi;
-		}
-	//TODO:this should ne just in the component	
 	void set(float x,float y,float z){
-		this->relativeX=x;
-		this->relativeY=y;
-		this->relativeZ=z;
+		this->set(x,y,z,NULL,NULL,NULL);
 	}
-    //decorate this method in order to achive the relative pos.
-    float getAbsoluteX(){
-			if(parent==NULL) return this->relativeX;
-			return this->relativeX + parent->getAbsoluteX();			
-		}
-		
-		//decorate this method in order to achive the relative pos.
-    float getAbsoluteY(){
-			if(parent==NULL) return this->relativeY;
-			return this->relativeY + parent->getAbsoluteY();			
-		}
-		
-		//decorate this method in order to achive the relative pos.
-    float getAbsoluteZ(){
-			if(parent==NULL) return this->relativeZ;
-			return this->relativeZ + parent->getAbsoluteZ();			
-		}
+	//TODO:this should ne just in the component	
+	void set(float x,float y,float z,float phi,float theta,float psi){
+		if(x!=NULL) this->x=x;
+		if(y!=NULL) this->y=y;
+		if(z!=NULL) this->z=z;
+		if(phi!=NULL) this->phi=phi;
+		if(theta!=NULL) this->theta=theta;
+		if(psi!=NULL) this->psi=psi;
+	}    
 
-
-	//decorate this method in order to achive the relative theta.
-    float getAbsoluteTheta(){
-			if(parent==NULL) return this->relativeTheta;
-			return this->relativeTheta + parent->getAbsoluteTheta();			
-		}
-		
-		//decorate this method in order to achive the relative phi.
-    float getAbsolutePhi(){
-			if(parent==NULL) return this->relativePhi;
-			return this->relativePhi + parent->getAbsolutePhi();			
-		}
-	
-	//decorate this method in order to achive the relative phi.
-	float getAbsolutePsi(){
-			if(parent==NULL) return this->relativePsi;
-			return this->relativePsi + parent->getAbsolutePsi();			
-		}	
+	Position* operator+=(const Position* position) {
+    	this->x+=position->x;
+    	this->y+=position->y;
+    	this->z+=position->z;
+    	this->phi+=position->phi;
+    	this->theta+=position->theta;
+    	this->psi+=position->psi;
+    	return this;
+  	}
   
 };
 

@@ -16,7 +16,7 @@ class Light: public Component {
 		glLightfv(GL_LIGHT1, GL_AMBIENT, lightAmbient);
 		glLightfv(GL_LIGHT1, GL_DIFFUSE, lightDiffuse);
 
-		GLfloat lightPosition[4]={position->getAbsoluteX(),position->getAbsoluteY(),position->getAbsoluteZ(),1.0f};
+		GLfloat lightPosition[4]={position->getX(),position->getY(),position->getZ(),1.0f};
 		glLightfv(GL_LIGHT1, GL_POSITION,lightPosition);
 		glEnable(GL_LIGHT1);
 

@@ -23,12 +23,12 @@ class Camera: public Component {
 		glLoadIdentity();
 	 
 		// Move the camera to our location in space
-		glRotatef(this->position->getAbsolutePhi(), 1.0f, 0.0f, 0.0f);//rotate our camera on the x-axis (looking up and down)
-		glRotatef(this->position->getAbsoluteTheta(), 0.0f, 1.0f, 0.0f); // Rotate our camera on the  y-axis (looking left and right)
+		glRotatef(this->position->getPhi(), 1.0f, 0.0f, 0.0f);//rotate our camera on the x-axis (looking up and down)
+		glRotatef(this->position->getTheta(), 0.0f, 1.0f, 0.0f); // Rotate our camera on the  y-axis (looking left and right)
 	 
 		// Translate the ModelView matrix to the position of our camera - everything should now be drawn relative
 		// to this position!
-		glTranslatef( this->position->getAbsoluteX(), this->position->getAbsoluteY(), this->position->getAbsoluteZ() );
+		glTranslatef( this->position->getX(), this->position->getY(), this->position->getZ() );
     }
 
 };

@@ -21,9 +21,9 @@ class Motion {
     //t is in fact a delta t (t is for time)
     //newPosition=currentPosition + deltaPosition
    Point* getPosition(float t){        
-        float x=position->getRelativeX() + (velocity->getX()*t) + (0.5f*acceleration->getX()*t*t);
-        float y=position->getRelativeY() + (velocity->getY()*t) + (0.5f*acceleration->getY()*t*t);
-        float z=position->getRelativeZ() + (velocity->getZ()*t)+ (0.5f*acceleration->getZ()*t*t);
+        float x=position->getX() + (velocity->getX()*t) + (0.5f*acceleration->getX()*t*t);
+        float y=position->getY() + (velocity->getY()*t) + (0.5f*acceleration->getY()*t*t);
+        float z=position->getZ() + (velocity->getZ()*t)+ (0.5f*acceleration->getZ()*t*t);
         
         return new Point(x,y,z);
     }

@@ -52,22 +52,20 @@ class BaseTranslationKeyboardBehavior: public AbstractBehavior{
         	}
     	}
     	if(shouldUpdatePosition){
-            deltaX=DEFAULT_SPEED * -sinf((currentPosition->getAbsoluteTheta()+directionXZ) * M_PI/180);//change from grads to rads and calculate the x component
-            deltaZ=DEFAULT_SPEED * cosf((currentPosition->getAbsoluteTheta()+directionXZ) * M_PI/180);//change from grads to rads and calculate the z component
+            deltaX=DEFAULT_SPEED * -sinf((currentPosition->getTheta()+directionXZ) * M_PI/180);//change from grads to rads and calculate the x component
+            deltaZ=DEFAULT_SPEED * cosf((currentPosition->getTheta()+directionXZ) * M_PI/180);//change from grads to rads and calculate the z component
 
             if(directionY!=0.0f){
-                deltaY=DEFAULT_SPEED * -cosf((currentPosition->getAbsolutePhi()+directionY) * M_PI/180); //change from grads to rads and calculate the y component
+                deltaY=DEFAULT_SPEED * -cosf((currentPosition->getPhi()+directionY) * M_PI/180); //change from grads to rads and calculate the y component
 
-                deltaX=deltaX * cosf((currentPosition->getAbsolutePhi()) * M_PI/180);
-                deltaZ=deltaZ * cosf((currentPosition->getAbsolutePhi()) * M_PI/180);
+                deltaX=deltaX * cosf((currentPosition->getPhi()) * M_PI/180);
+                deltaZ=deltaZ * cosf((currentPosition->getPhi()) * M_PI/180);
             }
-
-            Position* newPosition=new Position(
-                currentPosition->getAbsoluteX()+deltaX,
-                currentPosition->getAbsoluteY()+deltaY,
-                currentPosition->getAbsoluteZ()+deltaZ,
-                currentPosition->getAbsoluteTheta(),currentPosition->getAbsolutePhi());
-    		getComponent()->setPosition(newPosition);
+            
+    		getComponent()->setPosition(currentPosition->getX()+deltaX,
+                                        currentPosition->getY()+deltaY,
+                                        currentPosition->getZ()+deltaZ,
+                                        NULL,NULL,NULL);
     	}
     }    
 

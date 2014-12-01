@@ -26,7 +26,7 @@ class MyContainer:public Container{
 			Box* my3DBox=new Box(new Position(3.0f,0.0f,-25.0f));
 			Box* my3DBox2=new Box(new Position(-3.0f,0.0f,-25.0f));
 			Hut* myHut=new Hut(new Position(25.0f,0.0f,25.0f));
-			Torus* myTorus=new Torus(new Position(-10.0f,1.0f,-17.0f,0.0f,90.0f,0.0f));			
+			Torus* myTorus=new Torus(new Position(-10.0f,1.0f,-17.0f,90.0f,0.0f,0.0f));			
 			Ground* myGround=new Ground(new Position(0.0f,0.0f,0.0f),100,100);
 			Mountain* myMountain=new Mountain(new Position(10.0f,19.0f,-49.0f));
 			Tree* myTree1=new Tree(new Position(5.0f,0.0f,5.0f));
@@ -68,7 +68,7 @@ class MyContainer:public Container{
 
 
 			add(new Plane(new Position(-15.0f,8.0f,-20.0f,0.0f,0.0f,90.0f),5.0f,5.0f,"img/box.bmp",2,2));
-		  	add(new Plane(new Position(15.0f,8.0f,-20.0f,00.0f,0.0f,90.0f),5.0f,5.0f,"img/box.bmp",2,2));
+		  	add(new Plane(new Position(15.0f,8.0f,-20.0f,0.0f,0.0f,90.0f),5.0f,5.0f,"img/box.bmp",2,2));
 
 			add(physics);
 			

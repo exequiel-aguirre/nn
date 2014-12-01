@@ -14,8 +14,9 @@ class Container: public Component {
 	{
     	this->childs=new vector<Component*>();
 	}
-	virtual ~Container(){}
-	
+	virtual ~Container(){}  
+  
+
   void onBeforeRenderFrame(){
       vector<Component*>::iterator it;
       for(it=childs->begin();it!=childs->end();it++)
@@ -23,6 +24,11 @@ class Container: public Component {
          (*it)->onBeforeRenderFrame(); 
       }
   }
+  void onBeforeRender(){
+    //do not translate anything
+    doEffects();
+  } 
+  
 	void render()
 	{
     	vector<Component*>::iterator it;
@@ -34,11 +40,15 @@ class Container: public Component {
           (*it)->onAfterRender();
 
       	}
-	}	
+	}
+  void onAfterRender(){
+    //do not translate anything
+    undoEffects();
+  }
 		
 	Container* add(Component* child)
 	{
-    	child->getPosition()->setParent(this->position);
+    	*(child->getPosition())+=(this->position);
       //TODO:find a way to avoid this
       child->calculateBoundary();
     	childs->push_back(child);

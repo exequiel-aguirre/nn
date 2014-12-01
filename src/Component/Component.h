@@ -40,13 +40,13 @@ class Component {
     //this method is called before the component is rendered.
     virtual void onBeforeRender(){
       //position the rendering
-      glTranslatef(this->position->getRelativeX(),this->position->getRelativeY(),this->position->getRelativeZ());     
+      glTranslatef(this->position->getX(),this->position->getY(),this->position->getZ());     
       //rotate the x-axis (up and down)
-      glRotatef(this->position->getRelativePhi(), 1.0f, 0.0f, 0.0f);
+      glRotatef(this->position->getPhi(), 1.0f, 0.0f, 0.0f);
       // Rotate on the y-axis (left and right)
-      glRotatef(this->position->getRelativeTheta(), 0.0f, 1.0f, 0.0f);
+      glRotatef(this->position->getTheta(), 0.0f, 1.0f, 0.0f);
       
-      glRotatef(this->position->getRelativePsi(), 0.0f, 0.0f, 1.0f);
+      glRotatef(this->position->getPsi(), 0.0f, 0.0f, 1.0f);
 
       doEffects();
     }
@@ -59,24 +59,22 @@ class Component {
       //we restore the position to avoid messing with the other's component's location
       //mind that the group SO(3,R) is non-abelian, so we must do this in the opposite order than
       // onBeforeRender
-      glRotatef(-this->position->getRelativePsi(), 0.0f, 0.0f, 1.0f);
-      glRotatef(-this->position->getRelativeTheta(), 0.0f, 1.0f, 0.0f);
-      glRotatef(-this->position->getRelativePhi(), 1.0f, 0.0f, 0.0f);                 
-      glTranslatef(-this->position->getRelativeX(),-this->position->getRelativeY(),-this->position->getRelativeZ());        
+      glRotatef(-this->position->getPsi(), 0.0f, 0.0f, 1.0f);
+      glRotatef(-this->position->getTheta(), 0.0f, 1.0f, 0.0f);
+      glRotatef(-this->position->getPhi(), 1.0f, 0.0f, 0.0f);                 
+      glTranslatef(-this->position->getX(),-this->position->getY(),-this->position->getZ());        
     }
     
     Position* getPosition(){
       return this->position;
     }
-    //maybe this method should be called moveTo(position)
-    //deprecated
-    void setPosition(Position* position){
-      this->position=position;
-      //position changes so boundaries change
-      calculateBoundary();
-    }
+
     void setPosition(float x,float y,float z){
-      this->position->set(x,y,z);
+      this->setPosition(x,y,z,NULL,NULL,NULL);
+    }
+    void setPosition(float x,float y,float z,float phi,float theta,float psi){
+      this->position->set(x,y,z,phi,theta,psi);
+      //position changes so boundaries change
       calculateBoundary();
     }
     Velocity* getVelocity(){
@@ -106,11 +104,11 @@ class Component {
       ModelObject* modelObject=this->renderStrategy->getModelObject();
       Point* min=modelObject->getBoundaryMin();
       Point* max=modelObject->getBoundaryMax();
-      min=Utils::rotate(min,position->getAbsolutePhi(),position->getAbsoluteTheta(),position->getAbsolutePsi());
-      max=Utils::rotate(max,position->getAbsolutePhi(),position->getAbsoluteTheta(),position->getAbsolutePsi());
+      min=Utils::rotate(min,position->getPhi(),position->getTheta(),position->getPsi());
+      max=Utils::rotate(max,position->getPhi(),position->getTheta(),position->getPsi());
       Utils::check(min,max);
-      boundaryMin=new Point(min->x+position->getAbsoluteX(),min->y+position->getAbsoluteY(),min->z+position->getAbsoluteZ());
-      boundaryMax=new Point(max->x+position->getAbsoluteX(),max->y+position->getAbsoluteY(),max->z+position->getAbsoluteZ());
+      boundaryMin=new Point(min->x+position->getX(),min->y+position->getY(),min->z+position->getZ());
+      boundaryMax=new Point(max->x+position->getX(),max->y+position->getY(),max->z+position->getZ());
     }
 
     Point* getBoundaryMin(){
