@@ -1,5 +1,5 @@
-#ifndef TimeBehaviorH
-#define TimeBehaviorH
+#ifndef MotionBehaviorH
+#define MotionBehaviorH
 #include "../Component/Component.h"
 #include "../DataStructure/Velocity.h"
 #include "../DataStructure/Acceleration.h"
@@ -20,10 +20,10 @@ class MotionBehavior: public AbstractBehavior{
     
     //todo:make an "function" object with the responsability of generating the new position
     void  onTimer(){    	
-    	Point* point=motion->getPosition(0.1f);
+      Point* point=motion->getPosition(1.0f/60.0f);
     	getComponent()->setPosition(point->x,point->y,point->z);
 
-      point=motion->getVelocity(0.1f);
+      point=motion->getVelocity(1.0f/60.0f);
       getComponent()->getVelocity()->set(point->x,point->y,point->z);
       
       

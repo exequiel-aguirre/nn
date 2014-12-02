@@ -18,6 +18,7 @@
 #include "../Component/Physics.h"
 
 #include "../Behavior/MotionBehavior.h"
+#include "../Behavior/DragBehavior.h"
 
 
 class MyContainer:public Container{
@@ -43,8 +44,8 @@ class MyContainer:public Container{
 			Animation* myAnimation=new Animation(new Position(0.0f,0.4f,-20.0f),"3DModel/human.obj");
 			Camera* myCamera=new Camera(new Position(0.0f,-2.0f,0.0f));
 			Light* myLight=new Light(new Position(40.0f,40.0f,40.0f));
-			Sphere* mySphere=new Sphere(new Position(40.0f,40.0f,40.0f));
-			Sphere* mySphere2=new Sphere(new Position(-3.0f,8.0f,-20.0f));
+			Sphere* mySphere=new Sphere(new Position(0.0f,4.0f,-10.0f),0.39f);
+			Sphere* mySphere2=new Sphere(new Position(-3.0f,8.0f,-20.0f),0.5f);
 			Sphere* mySphere3=new Sphere(new Position(3.0f,8.0f,-20.0f),2.0f);
 			
 			Physics* physics=new Physics();
@@ -53,17 +54,17 @@ class MyContainer:public Container{
 			add(my3DBox);
 			add(my3DBox2->add(new MotionBehavior()));			
 			add(myHut);
-			add(mySphere);
+			add(mySphere->add(new MotionBehavior()));
 			add(myGround);
 			add(myTorus);
 			add(myMountain);
 			add(myTree1);add(myTree2);add(myTree3);add(myTree4);add(myTree5);add(myTree6);
 			add(myWaterF);add(myWaterR);add(myWaterB);add(myWaterL);
 			add(myModel);
-			myAnimation->getVelocity()->setZ(1.0f);add(myAnimation->add(new MotionBehavior()));
+			myAnimation->getVelocity()->setZ(8.0f);add(myAnimation->add(new MotionBehavior()));
 			add(myCamera);
 			add(myLight);			
-			mySphere2->getVelocity()->setX(1.0f);add(mySphere2->add(new MotionBehavior()));
+			mySphere2->getVelocity()->setX(40.0f);add(mySphere2->add(new MotionBehavior()));
 			add(mySphere3->add(new MotionBehavior()));
 
 

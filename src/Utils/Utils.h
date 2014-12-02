@@ -188,6 +188,12 @@ class Utils{
 			max->z=tmp;
 		}
 	}
+
+	static float sgn(float value){
+		if(value<0) return -1.0f;
+		if(value>0) return 1.0f;
+		return 0.0f;
+	}
 };
 
 #endif
