@@ -22,8 +22,16 @@ class PhysicsManager{
     }
     virtual ~PhysicsManager(){}	
     
-    
+    void onBeforeDetectCollisions(){
+      vector<Component*>::iterator it;
+      for(it=components->begin();it!=components->end();it++){
+          (*it)->setCollided(false);
+      }
+    }
+
     void detectCollisions(){
+      onBeforeDetectCollisions();
+
     	vector<Component*>::iterator it;
       vector<Component*>::iterator it2;
       //n(n-1)/2 calls with n being the amount of components
@@ -32,7 +40,16 @@ class PhysicsManager{
           collisionDetector->detect(*it,*it2);
     	}
     }
+
+    onAfterDetectCollisions();
   }
+
+    void onAfterDetectCollisions(){
+      vector<Component*>::iterator it;
+      for(it=components->begin();it!=components->end();it++){
+          if(!(*it)->getCollided()) (*it)->getAcceleration()->setY(-9.8f);
+      }
+    }
 
     void add(Component* component){
       components->push_back(component);      

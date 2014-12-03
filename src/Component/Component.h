@@ -25,6 +25,7 @@ class Component {
     Velocity* velocity;
     Acceleration* acceleration;
     float massDensity=1.0f;
+    bool collided=false;
   public:
     Component(Position* position){
       this->position=position;
@@ -125,6 +126,13 @@ class Component {
       return (boundaryMax->x - boundaryMin->x)*
              (boundaryMax->y - boundaryMin->y)*
              (boundaryMax->z - boundaryMin->z)* massDensity;
+    }
+
+    bool getCollided(){
+      return collided;
+    }
+    void setCollided(bool collided){
+      this->collided=collided;
     }
 
 

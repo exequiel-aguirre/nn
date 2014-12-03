@@ -5,7 +5,7 @@
 
 
 class CollisionDetector{
-  private:
+  private:    
     //TODO:this is component's property
     static const float e=0.88f;//Coefficient of restitution,1 is perfectly elastic,0 is perfectly plastic
   public:
@@ -24,7 +24,7 @@ class CollisionDetector{
         if( (min1->x <= max2->x) && (max1->x >= min2->x) &&
             (min1->y <= max2->y) && (max1->y >= min2->y) &&
             (min1->z <= max2->z) && (max1->z >= min2->z)  ) {
-            
+            //TODO:same thing for x,y and z. Put all these in a method
             //elasctic collision on X           
             float v1,v2;
             float m1=c1->getMass();
@@ -33,6 +33,11 @@ class CollisionDetector{
             float v2_i=c2->getVelocity()->getX();            
             v1=((m1*v1_i) + (m2*v2_i) + (m2 * e *(v2_i-v1_i)))/(m1+m2);
             v2=((m1*v1_i) + (m2*v2_i) + (m1 * e *(v1_i-v2_i)))/(m1+m2);
+            //if the velocity change sign, we set acceleration to 0(TODO:check if this is a correct aplication of the third law)
+            if((Utils::sgn(v1_i)!=0 && (Utils::sgn(v1)+Utils::sgn(v1_i))==0) && (Utils::sgn(v2_i)!=0 && (Utils::sgn(v2)+Utils::sgn(v2_i))==0)){
+                c1->getAcceleration()->setX(0.0f);
+                c2->getAcceleration()->setX(0.0f);
+            }
             c1->getVelocity()->setX(v1);
             c2->getVelocity()->setX(v2);
 
@@ -41,6 +46,11 @@ class CollisionDetector{
             v2_i=c2->getVelocity()->getY();            
             v1=((m1*v1_i) + (m2*v2_i) + (m2 * e *(v2_i-v1_i)))/(m1+m2);
             v2=((m1*v1_i) + (m2*v2_i) + (m1 * e *(v1_i-v2_i)))/(m1+m2);
+            //if the velocity change sign, we set acceleration to 0(TODO:check if this is a correct aplication of the third law)
+            if((Utils::sgn(v1_i)!=0 && (Utils::sgn(v1)+Utils::sgn(v1_i))==0) && (Utils::sgn(v2_i)!=0 && (Utils::sgn(v2)+Utils::sgn(v2_i))==0)){
+                c1->getAcceleration()->setY(0.0f);
+                c2->getAcceleration()->setY(0.0f);
+            }
             c1->getVelocity()->setY(v1);
             c2->getVelocity()->setY(v2);
 
@@ -49,6 +59,11 @@ class CollisionDetector{
             v2_i=c2->getVelocity()->getZ();            
             v1=((m1*v1_i) + (m2*v2_i) + (m2 * e *(v2_i-v1_i)))/(m1+m2);
             v2=((m1*v1_i) + (m2*v2_i) + (m1 * e *(v1_i-v2_i)))/(m1+m2);
+            //if the velocity change sign, we set acceleration to 0(TODO:check if this is a correct aplication of the third law)
+            if((Utils::sgn(v1_i)!=0 && (Utils::sgn(v1)+Utils::sgn(v1_i))==0) && (Utils::sgn(v2_i)!=0 && (Utils::sgn(v2)+Utils::sgn(v2_i))==0)){
+                c1->getAcceleration()->setZ(0.0f);
+                c2->getAcceleration()->setZ(0.0f);
+            }
             c1->getVelocity()->setZ(v1);
             c2->getVelocity()->setZ(v2);
             
@@ -61,7 +76,12 @@ class CollisionDetector{
             }
 
             */
-    	}        
+            c1->setCollided(true);
+            c2->setCollided(true);
+            return true;
+    	}else{
+            return false;
+        }
     }
 
 };

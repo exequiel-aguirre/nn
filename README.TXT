@@ -32,6 +32,7 @@ BUGS:
 -blending effect not working so well...
 -the util::rotate is not working properly(see *)
 TODOS:
+-all the collide(), setCollide should be done within the component
 -check why the performance decreased so much by the new box.
 ---most likely because it's render each component separately.We could implement some merge method, that agregates each component in the same modelobject and render it as a whole.
 -implement a factory so we can avoid thius chaotics constructors
