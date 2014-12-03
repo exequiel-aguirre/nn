@@ -34,10 +34,9 @@ class CollisionDetector{
             v1=((m1*v1_i) + (m2*v2_i) + (m2 * e *(v2_i-v1_i)))/(m1+m2);
             v2=((m1*v1_i) + (m2*v2_i) + (m1 * e *(v1_i-v2_i)))/(m1+m2);
             //if the velocity change sign, we set acceleration to 0(TODO:check if this is a correct aplication of the third law)
-            if((Utils::sgn(v1_i)!=0 && (Utils::sgn(v1)+Utils::sgn(v1_i))==0) && (Utils::sgn(v2_i)!=0 && (Utils::sgn(v2)+Utils::sgn(v2_i))==0)){
-                c1->getAcceleration()->setX(0.0f);
-                c2->getAcceleration()->setX(0.0f);
-            }
+            //The if is to detect if the collision was on the X axis. left || right
+            if((min1->x <= (max2->x-min2->x)) || (max1->x >= (max2->x-min2->x))) c1->getAcceleration()->setX(0.0f);
+            if((min2->x <= (max1->x-min1->x)) || (max2->x >= (max1->x-min1->x))) c2->getAcceleration()->setX(0.0f);
             c1->getVelocity()->setX(v1);
             c2->getVelocity()->setX(v2);
 
@@ -47,10 +46,8 @@ class CollisionDetector{
             v1=((m1*v1_i) + (m2*v2_i) + (m2 * e *(v2_i-v1_i)))/(m1+m2);
             v2=((m1*v1_i) + (m2*v2_i) + (m1 * e *(v1_i-v2_i)))/(m1+m2);
             //if the velocity change sign, we set acceleration to 0(TODO:check if this is a correct aplication of the third law)
-            if((Utils::sgn(v1_i)!=0 && (Utils::sgn(v1)+Utils::sgn(v1_i))==0) && (Utils::sgn(v2_i)!=0 && (Utils::sgn(v2)+Utils::sgn(v2_i))==0)){
-                c1->getAcceleration()->setY(0.0f);
-                c2->getAcceleration()->setY(0.0f);
-            }
+            if((min1->y <= (max2->y-min2->y)) || (max1->y >= (max2->y-min2->y))) c1->getAcceleration()->setY(0.0f);
+            if((min2->y <= (max1->y-min1->y)) || (max2->y >= (max1->y-min1->y))) c2->getAcceleration()->setY(0.0f);                
             c1->getVelocity()->setY(v1);
             c2->getVelocity()->setY(v2);
 
@@ -60,10 +57,8 @@ class CollisionDetector{
             v1=((m1*v1_i) + (m2*v2_i) + (m2 * e *(v2_i-v1_i)))/(m1+m2);
             v2=((m1*v1_i) + (m2*v2_i) + (m1 * e *(v1_i-v2_i)))/(m1+m2);
             //if the velocity change sign, we set acceleration to 0(TODO:check if this is a correct aplication of the third law)
-            if((Utils::sgn(v1_i)!=0 && (Utils::sgn(v1)+Utils::sgn(v1_i))==0) && (Utils::sgn(v2_i)!=0 && (Utils::sgn(v2)+Utils::sgn(v2_i))==0)){
-                c1->getAcceleration()->setZ(0.0f);
-                c2->getAcceleration()->setZ(0.0f);
-            }
+            if((min1->z <= (max2->z-min2->z)) || (max1->z >= (max2->z-min2->z))) c1->getAcceleration()->setZ(0.0f);
+            if((min2->z <= (max1->z-min1->z)) || (max2->z >= (max1->z-min1->z))) c2->getAcceleration()->setZ(0.0f);
             c1->getVelocity()->setZ(v1);
             c2->getVelocity()->setZ(v2);
             
