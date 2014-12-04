@@ -144,6 +144,7 @@ class Utils{
 	}
 
 	static Point* rotate(Point* p,float phi,float theta,float psi){
+		float xr,yr,zr;
 		float x=p->x;
 		float y=p->y;
 		float z=p->z;
@@ -152,18 +153,24 @@ class Utils{
 		psi=psi*M_PI/180.0f;
 		//rotation on x axis
 		//x=x;
-		y=(cos(phi)*y)-(sin(phi)*z);
-		z=(sin(phi)*y)+(cos(phi)*z);
+		yr=(cos(phi)*y)-(sin(phi)*z);
+		zr=(sin(phi)*y)+(cos(phi)*z);
+		y=yr;
+		z=zr;
 		
 		//rotation on y axis
-		x=(cos(theta)*x)+(sin(theta)*z);
+		xr=(cos(theta)*x)+(sin(theta)*z);
 		//y=y
-		z=(-sin(theta)*x)+(cos(theta)*z);
+		zr=(-sin(theta)*x)+(cos(theta)*z);
+		x=xr;
+		z=zr;
 
 		//rotation on z axis
-		x=(cos(psi)*x)-(sin(psi)*y);
-		y=(sin(psi)*x)+(cos(psi)*y);
+		xr=(cos(psi)*x)-(sin(psi)*y);
+		yr=(sin(psi)*x)+(cos(psi)*y);
 		//z=z		
+		x=xr;
+		y=yr;
 		
 		return new Point(x,y,z);		
 	}
