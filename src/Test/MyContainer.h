@@ -12,6 +12,7 @@
 #include "../Component/Animation.h"
 #include "../Component/Box.h"
 #include "../Component/Hut.h"
+#include "../Component/Mill.h"
 #include "../Component/Ground.h"
 #include "../Component/Camera.h"
 #include "../Component/Light.h"
@@ -27,7 +28,8 @@ class MyContainer:public Container{
 			Box* my3DBox=new Box(new Position(3.0f,0.0f,-25.0f));
 			Box* my3DBox2=new Box(new Position(-3.0f,0.0f,-25.0f));
 			Hut* myHut=new Hut(new Position(25.0f,0.0f,25.0f));
-			Torus* myTorus=new Torus(new Position(-10.0f,1.0f,-17.0f,90.0f,0.0f,0.0f));			
+			Mill* myMill=new Mill(new Position(35.0f,0.0f,-35.0f));
+			Torus* myTorus=new Torus(new Position(-10.0f,2.0f,-17.0f,90.0f,0.0f,0.0f));
 			Ground* myGround=new Ground(new Position(0.0f,0.0f,0.0f),100,100);
 			Mountain* myMountain=new Mountain(new Position(10.0f,19.0f,-49.0f));
 			Tree* myTree1=new Tree(new Position(5.0f,0.0f,5.0f));
@@ -54,6 +56,7 @@ class MyContainer:public Container{
 			add(my3DBox);
 			add(my3DBox2->add(new MotionBehavior()));			
 			add(myHut);
+			add(myMill);
 			add(mySphere->add(new MotionBehavior()));
 			add(myGround);
 			add(myTorus);

@@ -4,7 +4,7 @@
 #include "Surface.h"
 #include "../Map/PlaneMap.h"
 #include "../Map/CreasedDecorator.h"
-
+#include <limits>
 
 class Water: public Surface {
   public:
@@ -13,7 +13,9 @@ class Water: public Surface {
 
     virtual ~Water(){}    
     
-
+	float getMass(){
+    	return std::numeric_limits<float>::max();
+    }
 };
 
 

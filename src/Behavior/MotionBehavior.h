@@ -20,11 +20,11 @@ class MotionBehavior: public AbstractBehavior{
     
     //todo:make an "function" object with the responsability of generating the new position
     void  onTimer(){    	
-      Point* point=motion->getPosition(1.0f/60.0f);
-    	getComponent()->setPosition(point->x,point->y,point->z);
+      Position* position=motion->getPosition(1.0f/60.0f);
+    	getComponent()->setPosition(position->getX(),position->getY(),position->getZ(),position->getPhi(),position->getTheta(),position->getPsi());
 
-      point=motion->getVelocity(1.0f/60.0f);
-      getComponent()->getVelocity()->set(point->x,point->y,point->z);
+      Velocity* velocity=motion->getVelocity(1.0f/60.0f);
+      getComponent()->setVelocity(velocity->getX(),velocity->getY(),velocity->getZ(),velocity->getPhi(),velocity->getTheta(),velocity->getPsi());
       
       
       

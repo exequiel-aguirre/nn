@@ -78,21 +78,27 @@ class Component {
       //position changes so boundaries change
       calculateBoundary();
     }
+    
     Velocity* getVelocity(){
       return this->velocity;  
     }
+    void setVelocity(float x,float y,float z){
+      this->setVelocity(x,y,z,NULL,NULL,NULL);
+    }
+    void setVelocity(float x,float y,float z,float phi,float theta,float psi){
+      this->velocity->set(x,y,z,phi,theta,psi);      
+    }
+    
     Acceleration* getAcceleration(){
       return this->acceleration;  
     }
+    void setAcceleration(float x,float y,float z){
+      this->setAcceleration(x,y,z,NULL,NULL,NULL);
+    }
+    void setAcceleration(float x,float y,float z,float phi,float theta,float psi){
+      this->acceleration->set(x,y,z,phi,theta,psi);     
+    }
     
-    Component* setVelocity(float x,float y,float z){
-      this->velocity->set(x,y,z);
-      return this;
-    }
-    Component* setAcceleration(float x,float y,float z){
-      this->acceleration->set(x,y,z);
-      return this;
-    }
 
     void setRenderStrategy(IRenderStrategy* renderStrategy){
       this->renderStrategy=renderStrategy;
