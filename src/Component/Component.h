@@ -10,6 +10,7 @@
 #include "../DataStructure/ModelObject.h"
 #include "../RenderStrategy/IRenderStrategy.h"
 #include "../Utils/Utils.h"
+#include "../Physics/CollisionStatus.h"
 
 
 class Component {  
@@ -25,7 +26,7 @@ class Component {
     Velocity* velocity;
     Acceleration* acceleration;
     float massDensity=1.0f;
-    bool collided=false;
+    CollisionStatus* collisionStatus;
   public:
     Component(Position* position){
       this->position=position;
@@ -33,6 +34,7 @@ class Component {
       this->effects=new vector<IEffect*>();
       this->velocity=new Velocity(0.0f,0.0f,0.0f);
       this->acceleration=new Acceleration(0.0f,0.0f,0.0f);
+      this->collisionStatus=new CollisionStatus();
     }
     virtual ~Component(){}  
     
@@ -134,13 +136,9 @@ class Component {
              (boundaryMax->z - boundaryMin->z)* massDensity;
     }
 
-    bool getCollided(){
-      return collided;
+    CollisionStatus* getCollisionStatus(){
+      return this->collisionStatus;
     }
-    void setCollided(bool collided){
-      this->collided=collided;
-    }
-
 
     Component* add(IBehavior* behavior){
       behavior->bind(this);

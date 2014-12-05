@@ -38,10 +38,6 @@ class CollisionDetector{
                 v2_i=c2->getVelocity()->getX();            
                 v1=((m1*v1_i) + (m2*v2_i) + (m2 * e *(v2_i-v1_i)))/(m1+m2);
                 v2=((m1*v1_i) + (m2*v2_i) + (m1 * e *(v1_i-v2_i)))/(m1+m2);
-                //TODO:check if this is a correct aplication of the third law
-                //The if is to detect if the collision was on the X axis. left || right
-                if((min1->x <= (max2->x-min2->x)) || (max1->x >= (max2->x-min2->x))) c1->getAcceleration()->setX(0.0f);
-                if((min2->x <= (max1->x-min1->x)) || (max2->x >= (max1->x-min1->x))) c2->getAcceleration()->setX(0.0f);
                 c1->getVelocity()->setX(v1);
                 c2->getVelocity()->setX(v2);
             }
@@ -52,9 +48,6 @@ class CollisionDetector{
                 v2_i=c2->getVelocity()->getY();            
                 v1=((m1*v1_i) + (m2*v2_i) + (m2 * e *(v2_i-v1_i)))/(m1+m2);
                 v2=((m1*v1_i) + (m2*v2_i) + (m1 * e *(v1_i-v2_i)))/(m1+m2);
-                //TODO:check if this is a correct aplication of the third law
-                if((min1->y <= (max2->y-min2->y)) || (max1->y >= (max2->y-min2->y))) c1->getAcceleration()->setY(0.0f);
-                if((min2->y <= (max1->y-min1->y)) || (max2->y >= (max1->y-min1->y))) c2->getAcceleration()->setY(0.0f);                
                 c1->getVelocity()->setY(v1);
                 c2->getVelocity()->setY(v2);
             }
@@ -64,23 +57,37 @@ class CollisionDetector{
                 v2_i=c2->getVelocity()->getZ();            
                 v1=((m1*v1_i) + (m2*v2_i) + (m2 * e *(v2_i-v1_i)))/(m1+m2);
                 v2=((m1*v1_i) + (m2*v2_i) + (m1 * e *(v1_i-v2_i)))/(m1+m2);
-                //TODO:check if this is a correct aplication of the third law
-                if((min1->z <= (max2->z-min2->z)) || (max1->z >= (max2->z-min2->z))) c1->getAcceleration()->setZ(0.0f);
-                if((min2->z <= (max1->z-min1->z)) || (max2->z >= (max1->z-min1->z))) c2->getAcceleration()->setZ(0.0f);
                 c1->getVelocity()->setZ(v1);
                 c2->getVelocity()->setZ(v2);
             }
-            /*
-            
-            std::string str(typeid(*c2).name());
-            if(typeid(*c1)==typeid(*c2) && (str=="6Sphere")){
+
+                       
+            /*std::string str1(typeid(*c1).name());
+            std::string str2(typeid(*c2).name());
+            if((str1=="6Sphere") && (str2=="6Ground") && c1->getCollisionStatus()->getYMax()){
                 std::cout << typeid(*c1).name()<<" collided with a "<< typeid(*c2).name()<<'\n';
                 std::cout << v1 <<"," <<v2<<"\n";
-            }
+            }*/
+            
+            
+                
+            c1->getCollisionStatus()->set(
+                min1->x <= min2->x,
+                max1->x >= max2->x,
+                min1->y <= min2->y,
+                max1->y >= max2->y,
+                min1->z <= min2->z,
+                max1->z >= max2->z
+                );
+            c2->getCollisionStatus()->set(
+                min2->z <= min1->z,
+                max2->z >= max1->z,
+                min2->y <= min1->y,
+                max2->y >= max1->y,
+                min2->z <= min1->z,
+                max2->z >= max1->z
+                );
 
-            */
-            c1->setCollided(true);
-            c2->setCollided(true);
             return true;
     	}else{
             return false;

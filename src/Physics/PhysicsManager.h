@@ -25,7 +25,7 @@ class PhysicsManager{
     void onBeforeDetectCollisions(){
       vector<Component*>::iterator it;
       for(it=components->begin();it!=components->end();it++){
-          (*it)->setCollided(false);
+          (*it)->getCollisionStatus()->init();
       }
     }
 
@@ -47,7 +47,17 @@ class PhysicsManager{
     void onAfterDetectCollisions(){
       vector<Component*>::iterator it;
       for(it=components->begin();it!=components->end();it++){
-          if(!(*it)->getCollided()) (*it)->getAcceleration()->setY(-9.8f);
+        CollisionStatus* status=(*it)->getCollisionStatus();
+
+        if(status->getXMax() || status->getXMin()) (*it)->getAcceleration()->setX(0.0f);
+
+        if(status->getYMax() || status->getYMin()) (*it)->getAcceleration()->setY(0.0f);
+        //gravity
+        if(!status->getYMax()) (*it)->getAcceleration()->setY(-9.8f);
+
+        if(status->getZMax() || status->getZMin()) (*it)->getAcceleration()->setZ(0.0f);
+
+
       }
     }
 
