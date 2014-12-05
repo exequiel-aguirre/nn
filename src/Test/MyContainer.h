@@ -62,7 +62,7 @@ class MyContainer:public Container{
 			add(myTorus->add(new MotionBehavior()));
 			add(myMountain);
 			add(myTree1);add(myTree2);add(myTree3);add(myTree4);add(myTree5);add(myTree6);
-			add(myWaterF);add(myWaterR);add(myWaterB);add(myWaterL);
+			//add(myWaterF);add(myWaterR);add(myWaterB);add(myWaterL);
 			add(myModel->add(new MotionBehavior()));
 			myAnimation->getVelocity()->setZ(8.0f);add(myAnimation->add(new MotionBehavior()));
 			add(myCamera);
