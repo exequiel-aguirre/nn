@@ -151,13 +151,14 @@ class Utils{
 		phi=phi*M_PI/180.0f;
 		theta=theta*M_PI/180.0f;
 		psi=psi*M_PI/180.0f;
-		//rotation on x axis
-		//x=x;
-		yr=(cos(phi)*y)-(sin(phi)*z);
-		zr=(sin(phi)*y)+(cos(phi)*z);
+
+		//rotation on z axis
+		xr=(cos(psi)*x)-(sin(psi)*y);
+		yr=(sin(psi)*x)+(cos(psi)*y);
+		//z=z
+		x=xr;
 		y=yr;
-		z=zr;
-		
+
 		//rotation on y axis
 		xr=(cos(theta)*x)+(sin(theta)*z);
 		//y=y
@@ -165,13 +166,13 @@ class Utils{
 		x=xr;
 		z=zr;
 
-		//rotation on z axis
-		xr=(cos(psi)*x)-(sin(psi)*y);
-		yr=(sin(psi)*x)+(cos(psi)*y);
-		//z=z		
-		x=xr;
+		//rotation on x axis
+		//x=x;
+		yr=(cos(phi)*y)-(sin(phi)*z);
+		zr=(sin(phi)*y)+(cos(phi)*z);
 		y=yr;
-		
+		z=zr;
+
 		return new Point(x,y,z);		
 	}
 

@@ -30,6 +30,7 @@ ANIMATION:
 
 BUGS:
 -blending effect not working so well...
+-When we rotate a plane on phi=pi/4 the boundary diagonal falls off the surface (I think this is not a bug, but seemed a bit odd at first. The thing that is making this happen is the utils::check method)
 
 TODOS:
 -all the collide(), setCollide should be done within the component
