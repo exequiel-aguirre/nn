@@ -177,24 +177,9 @@ class Utils{
 	}
 
 	static void check(Point* min,Point* max){
-		float tmp;
-		if(min->x>max->x){
-			tmp=min->x;
-			min->x=max->x;
-			max->x=tmp;
-		}
-      	
-      	if(min->y>max->y){
-			tmp=min->y;
-			min->y=max->y;
-			max->y=tmp;
-		}
-
-		if(min->z>max->z){
-			tmp=min->z;
-			min->z=max->z;
-			max->z=tmp;
-		}
+		if(min->x > max->x) std::swap(min->x,max->x);
+		if(min->y > max->y) std::swap(min->y,max->y);
+		if(min->z > max->z) std::swap(min->z,max->z);
 	}
 
 	static float sgn(float value){
