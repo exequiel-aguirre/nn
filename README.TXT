@@ -50,3 +50,52 @@ Notes:
 	        glVertex3f(boundaryMin->x,boundaryMin->y,boundaryMin->z);
 	        glVertex3f(boundaryMax->x,boundaryMax->y,boundaryMax->z);
 	      glEnd();
+
+
+or the whole box
+
+if(boundaryMin==NULL) return;
+        glBegin(GL_LINES);
+
+          //front rectangle
+          glVertex3f(boundaryMin->x,boundaryMin->y,boundaryMin->z);
+          glVertex3f(boundaryMax->x,boundaryMin->y,boundaryMin->z);
+
+          glVertex3f(boundaryMax->x,boundaryMin->y,boundaryMin->z);
+          glVertex3f(boundaryMax->x,boundaryMax->y,boundaryMin->z);
+
+          glVertex3f(boundaryMax->x,boundaryMax->y,boundaryMin->z);
+          glVertex3f(boundaryMin->x,boundaryMax->y,boundaryMin->z);
+
+          glVertex3f(boundaryMin->x,boundaryMax->y,boundaryMin->z);
+          glVertex3f(boundaryMin->x,boundaryMin->y,boundaryMin->z);
+
+
+          //back rectangle
+          glVertex3f(boundaryMin->x,boundaryMin->y,boundaryMax->z);
+          glVertex3f(boundaryMax->x,boundaryMin->y,boundaryMax->z);
+
+          glVertex3f(boundaryMax->x,boundaryMin->y,boundaryMax->z);
+          glVertex3f(boundaryMax->x,boundaryMax->y,boundaryMax->z);
+
+          glVertex3f(boundaryMax->x,boundaryMax->y,boundaryMax->z);
+          glVertex3f(boundaryMin->x,boundaryMax->y,boundaryMax->z);
+
+          glVertex3f(boundaryMin->x,boundaryMax->y,boundaryMax->z);
+          glVertex3f(boundaryMin->x,boundaryMin->y,boundaryMax->z);
+
+          //depth rectangle
+          glVertex3f(boundaryMin->x,boundaryMin->y,boundaryMin->z);
+          glVertex3f(boundaryMin->x,boundaryMin->y,boundaryMax->z);
+
+          glVertex3f(boundaryMax->x,boundaryMin->y,boundaryMin->z);
+          glVertex3f(boundaryMax->x,boundaryMin->y,boundaryMax->z);
+
+          glVertex3f(boundaryMax->x,boundaryMax->y,boundaryMin->z);
+          glVertex3f(boundaryMax->x,boundaryMax->y,boundaryMax->z);
+
+          glVertex3f(boundaryMin->x,boundaryMax->y,boundaryMin->z);
+          glVertex3f(boundaryMin->x,boundaryMax->y,boundaryMax->z);
+
+          
+        glEnd();
