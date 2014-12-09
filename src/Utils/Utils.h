@@ -8,6 +8,7 @@
 #include "../DataStructure/ModelObject.h"
 
 
+
 class Utils{
   public:
 	
@@ -143,6 +144,45 @@ class Utils{
 		return new Point(p->x/norm,p->y/norm,p->z/norm);
 	}
 
+	static std::pair<Point*,Point*> rotateBoundary(Point* min,Point* max,float phi,float theta,float psi){
+		vector<Point*>* points=new vector<Point*>();
+		vector<Point*>* rPoints=new vector<Point*>();
+
+		//push the vertices of the boundary box
+		points->push_back(new Point(min->x,min->y,min->z));
+		points->push_back(new Point(max->x,min->y,min->z));
+		points->push_back(new Point(max->x,max->y,min->z));
+		points->push_back(new Point(min->x,max->y,min->z));
+		points->push_back(new Point(min->x,min->y,max->z));
+		points->push_back(new Point(max->x,min->y,max->z));
+		points->push_back(new Point(max->x,max->y,max->z));
+		points->push_back(new Point(min->x,max->y,max->z));
+
+
+		//TODO:use std::transform
+		vector<Point*>::iterator it;
+		for(it=points->begin();it!=points->end();it++){
+			rPoints->push_back(rotate((*it),phi,theta,psi));
+		}
+
+		Point* p;
+		Point* rMin=new Point((*rPoints)[0]->x,(*rPoints)[0]->y,(*rPoints)[0]->z);
+		Point* rMax=new Point((*rPoints)[0]->x,(*rPoints)[0]->y,(*rPoints)[0]->z);
+		//TODO:use std::minmax_element
+		for(it=rPoints->begin();it!=rPoints->end();it++){
+			p=(*it);
+			if(p->x < rMin->x) rMin->x=p->x;
+			if(p->x > rMax->x) rMax->x=p->x;
+
+			if(p->y < rMin->y) rMin->y=p->y;
+			if(p->y > rMax->y) rMax->y=p->y;
+
+			if(p->z < rMin->z) rMin->z=p->z;
+			if(p->z > rMax->z) rMax->z=p->z;
+		}
+        return std::make_pair(rMin,rMax);
+	}
+
 	static Point* rotate(Point* p,float phi,float theta,float psi){
 		float xr,yr,zr;
 		float x=p->x;
@@ -174,12 +214,6 @@ class Utils{
 		z=zr;
 
 		return new Point(x,y,z);		
-	}
-
-	static void check(Point* min,Point* max){
-		if(min->x > max->x) std::swap(min->x,max->x);
-		if(min->y > max->y) std::swap(min->y,max->y);
-		if(min->z > max->z) std::swap(min->z,max->z);
 	}
 
 	static float sgn(float value){

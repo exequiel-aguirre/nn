@@ -113,9 +113,9 @@ class Component {
       ModelObject* modelObject=this->renderStrategy->getModelObject();
       Point* min=modelObject->getBoundaryMin();
       Point* max=modelObject->getBoundaryMax();
-      min=Utils::rotate(min,position->getPhi(),position->getTheta(),position->getPsi());
-      max=Utils::rotate(max,position->getPhi(),position->getTheta(),position->getPsi());
-      Utils::check(min,max);
+      std::pair<Point*,Point*> minMax=Utils::rotateBoundary(min,max,position->getPhi(),position->getTheta(),position->getPsi());
+      min=minMax.first;
+      max=minMax.second;
       boundaryMin=new Point(min->x+position->getX(),min->y+position->getY(),min->z+position->getZ());
       boundaryMax=new Point(max->x+position->getX(),max->y+position->getY(),max->z+position->getZ());
     }
