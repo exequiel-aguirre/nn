@@ -8,8 +8,8 @@
 
 class Torus: public Surface {
   private:
-  	static const float DEFAULT_R1=2.0f;
-  	static const float DEFAULT_R2=1.0f;
+	const float DEFAULT_R1=2.0f;
+	const float DEFAULT_R2=1.0f;
   public:
 	  
 	Torus(Position* position):Surface(position,new TorusMap(DEFAULT_R1,DEFAULT_R2),GL_LINES){}		

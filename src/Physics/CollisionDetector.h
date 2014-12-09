@@ -6,9 +6,8 @@
 
 class CollisionDetector{
   private:
-    static const float epsilon=0.000001f;
     //TODO:this is component's property
-    static const float e=0.88f;//Coefficient of restitution,1 is perfectly elastic,0 is perfectly plastic
+    constexpr static float e=0.88f;//Coefficient of restitution,1 is perfectly elastic,0 is perfectly plastic
   public:
     CollisionDetector(){}
     virtual ~CollisionDetector(){}

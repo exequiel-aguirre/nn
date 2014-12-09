@@ -2,7 +2,7 @@
 >apt-get install build-essential mesa-common-dev libsdl2-dev libglew-dev
 
 To compile:
->g++ src/main.cpp -w   -lGL  -lSDL2 -lGLEW
+>g++ src/main.cpp -std=c++11 -w -lGL  -lSDL2 -lGLEW
 
 
 // glut was not used, but in that case it would be...
