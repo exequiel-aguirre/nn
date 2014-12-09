@@ -128,6 +128,14 @@ class Component {
       return this->boundaryMax;
     }
 
+    Point* getBoundaryLength(){
+      if(this->boundaryMin==NULL || this->boundaryMax==NULL) calculateBoundary();
+      return new Point(
+        (this->boundaryMax->x-this->boundaryMin->x)/2.0f,
+        (this->boundaryMax->y-this->boundaryMin->y)/2.0f,
+        (this->boundaryMax->z-this->boundaryMin->z)/2.0f);
+    }
+
     virtual float getMass(){
       if(this->boundaryMin==NULL || this->boundaryMax==NULL) calculateBoundary();
       //a very rough approximation of volume
