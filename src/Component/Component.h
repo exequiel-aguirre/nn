@@ -27,6 +27,7 @@ class Component {
     Acceleration* acceleration;
     float massDensity=1.0f;
     CollisionStatus* collisionStatus;
+    bool rotates=false;
   public:
     Component(Position* position){
       this->position=position;
@@ -179,8 +180,8 @@ class Component {
       }
     }
 
-    virtual bool rotates(){
-      return false;
+    bool getRotates(){
+      return rotates;
     }
 };
 #endif
