@@ -30,10 +30,9 @@ ANIMATION:
 
 BUGS:
 -blending effect not working so well...
--When we rotate a plane on phi=pi/4 the boundary diagonal falls off the surface (I think this is not a bug, but seemed a bit odd at first. The thing that is making this happen is the utils::check method)
+-Spheres when rotating expand the boundary box...
 
 TODOS:
--start using c++11 and use std::minmax_element(points->begin(),points->end(),cmp);
 -all the collide(), setCollide should be done within the component
 -check why the performance decreased so much by the new box.
 ---most likely because it's render each component separately.We could implement some merge method, that agregates each component in the same modelobject and render it as a whole.

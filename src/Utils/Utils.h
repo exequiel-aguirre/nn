@@ -4,6 +4,7 @@
 #include <vector>
 #include <fstream>
 #include <string> 
+#include <algorithm>
 #include "../DataStructure/Point.h"
 #include "../DataStructure/ModelObject.h"
 
@@ -158,29 +159,28 @@ class Utils{
 		points->push_back(new Point(max->x,max->y,max->z));
 		points->push_back(new Point(min->x,max->y,max->z));
 
-
 		//TODO:use std::transform
 		vector<Point*>::iterator it;
 		for(it=points->begin();it!=points->end();it++){
 			rPoints->push_back(rotate((*it),phi,theta,psi));
 		}
 
-		Point* p;
-		Point* rMin=new Point((*rPoints)[0]->x,(*rPoints)[0]->y,(*rPoints)[0]->z);
-		Point* rMax=new Point((*rPoints)[0]->x,(*rPoints)[0]->y,(*rPoints)[0]->z);
-		//TODO:use std::minmax_element
-		for(it=rPoints->begin();it!=rPoints->end();it++){
-			p=(*it);
-			if(p->x < rMin->x) rMin->x=p->x;
-			if(p->x > rMax->x) rMax->x=p->x;
 
-			if(p->y < rMin->y) rMin->y=p->y;
-			if(p->y > rMax->y) rMax->y=p->y;
-
-			if(p->z < rMin->z) rMin->z=p->z;
-			if(p->z > rMax->z) rMax->z=p->z;
-		}
-        return std::make_pair(rMin,rMax);
+		auto minMaxX=std::minmax_element(rPoints->begin(),rPoints->end(),
+			[](Point* p1, Point* p2) {
+				return p1->x < p2->x;
+			});
+		auto minMaxY=std::minmax_element(rPoints->begin(),rPoints->end(),
+			[](Point* p1, Point* p2) {
+				return p1->y < p2->y;
+			});
+		auto minMaxZ=std::minmax_element(rPoints->begin(),rPoints->end(),
+			[](Point* p1, Point* p2) {
+				return p1->z < p2->z;
+			});
+		Point* rMin=new Point((*minMaxX.first)->x,(*minMaxY.first)->y,(*minMaxZ.first)->z);
+		Point* rMax=new Point((*minMaxX.second)->x,(*minMaxY.second)->y,(*minMaxZ.second)->z);
+		return std::make_pair(rMin,rMax);
 	}
 
 	static Point* rotate(Point* p,float phi,float theta,float psi){

@@ -2,6 +2,7 @@
 #define ModelObjectH
 
 #include <vector>
+#include <algorithm>
 #include "Point.h"
 #include "../Map/IMap.h"
 
@@ -90,21 +91,20 @@ class ModelObject{
     } 
     
     void calculateBoundary(){
-      boundaryMin=new Point((*vertices)[0]->x,(*vertices)[0]->y,(*vertices)[0]->z);
-      boundaryMax=new Point((*vertices)[0]->x,(*vertices)[0]->y,(*vertices)[0]->z);
-
-      vector<Point*>::iterator it;
-      Point* p;
-      for(it=vertices->begin();it!=vertices->end();it++){
-        p=(*it);
-        //using an else would save extra steps,but more readable this way
-        if(p->x < boundaryMin->x) boundaryMin->x=p->x;
-        if(p->x > boundaryMax->x) boundaryMax->x=p->x;
-        if(p->y < boundaryMin->y) boundaryMin->y=p->y;
-        if(p->y > boundaryMax->y) boundaryMax->y=p->y;
-        if(p->z < boundaryMin->z) boundaryMin->z=p->z;
-        if(p->z > boundaryMax->z) boundaryMax->z=p->z;
-      }
+      auto minMaxX=std::minmax_element(vertices->begin(),vertices->end(),
+        [](Point* p1, Point* p2) {
+              return p1->x < p2->x;
+          });
+      auto minMaxY=std::minmax_element(vertices->begin(),vertices->end(),
+        [](Point* p1, Point* p2) {
+              return p1->y < p2->y;
+          });
+      auto minMaxZ=std::minmax_element(vertices->begin(),vertices->end(),
+        [](Point* p1, Point* p2) {
+              return p1->z < p2->z;
+          });
+      boundaryMin=new Point((*minMaxX.first)->x,(*minMaxY.first)->y,(*minMaxZ.first)->z);
+      boundaryMax=new Point((*minMaxX.second)->x,(*minMaxY.second)->y,(*minMaxZ.second)->z);
     }
 
     vector<Point*>* getVertices(){
