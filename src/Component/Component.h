@@ -179,6 +179,9 @@ class Component {
       }
     }
 
+    virtual bool rotates(){
+      return false;
+    }
 };
 #endif
 

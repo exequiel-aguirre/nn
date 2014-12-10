@@ -16,7 +16,9 @@ class Sphere: public Surface {
 
     virtual ~Sphere(){}    
     
-
+    bool rotates(){
+      return true;
+    }
 };
 
 

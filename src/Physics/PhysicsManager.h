@@ -58,7 +58,7 @@ class PhysicsManager{
         if(status->getZMax() || status->getZMin()) (*it)->getAcceleration()->setZ(0.0f);
 
         //rotation without slipping
-        if(status->getYMax() || status->getYMin()){
+        if((*it)->rotates() && (status->getYMax() || status->getYMin())){
           Velocity* v=(*it)->getVelocity();
           Point* r=(*it)->getBoundaryLength();
           if(r->x!=0) v->setPhi(-(v->getZ()/r->x)*180.0f/M_PI);
