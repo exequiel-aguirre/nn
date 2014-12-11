@@ -1,6 +1,7 @@
 #ifndef CollisionDetectorH
 #define CollisionDetectorH
 #include "../Component/Component.h"
+#include "../Utils/Utils.h"
 #include <typeinfo>
 
 
@@ -96,5 +97,62 @@ class CollisionDetector{
         }
     }
 
+    //TODO:find a better name:We cannot call it distance, since separation(a,b)!=separation(b,a)
+    static float separation(Component* c1,Component* c2){
+
+        Point* p;
+        vector<Point*>* vertices1=c1->getModelObject()->getVertices();
+        vector<Point*>::iterator it1;
+
+        vector<Point*>* vertices2=c2->getModelObject()->getVertices();
+        vector<Point*>::iterator it2;
+        Point* v1;
+        Point* v2;
+        Point* v3;
+        float d=1000000;
+        for(it1=vertices1->begin();it1!=vertices1->end();it1++){
+            //a point of c1
+            p=transform(*it1,c1);
+            for(it2=vertices2->begin();it2!=vertices2->end();it2+=3){
+                //get the distance from p to the plane of each triangle of c2
+                //get the triangle vertices
+                v1=transform(*it2,c2);
+                v2=transform(*(it2+1),c2);
+                v3=transform(*(it2+2),c2);
+                float d1=distance(p,v1,v2,v3);
+                if(d1<d) d=d1;
+                delete(v1);delete(v2);delete(v3);
+            }
+            delete(p);
+        }
+
+        std::cout <<d<<"\n";
+        //std::cout << typeid(*c1).name()<<" collided with a "<< typeid(*c2).name()<<"\n";
+        //std::cout <<p<<v1<<v2<<v3<< "\n";
+    }
+
+    static float distance(Point* p,Point* v1,Point* v2,Point* v3){
+        //generate the plane for the first triangle of the second component
+        //get the normal versor
+        Point* v21=new Point(v2->x-v1->x,v2->y-v1->y,v2->z-v1->z);
+        Point* v31=new Point(v3->x-v1->x,v3->y-v1->y,v3->z-v1->z);
+        Point* normal=Utils::cross(v21,v31);
+        Point* n=Utils::normalize(normal);
+        //get the x0 for the plane
+        Point* x0=new Point(v1->x,v1->y,v1->z);
+        //n.(p-x0)
+        float d=fabs((n->x *(p->x-x0->x))+(n->y *(p->y-x0->y))+(n->z *(p->z-x0->z)));
+        delete(v21);delete(v31);delete(normal);delete(n);delete(x0);
+        return d;
+
+    }
+
+    static Point* transform(Point* p,Component* c1){
+        Point* tp=Utils::rotate(p,c1->getPosition()->getPhi(),c1->getPosition()->getTheta(),c1->getPosition()->getPsi());
+        tp->x+= c1->getPosition()->getX();
+        tp->y+= c1->getPosition()->getY();
+        tp->z+=c1->getPosition()->getZ();
+        return tp;
+    }
 };
 #endif

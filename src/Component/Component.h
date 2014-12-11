@@ -102,6 +102,10 @@ class Component {
       this->acceleration->set(x,y,z,phi,theta,psi);     
     }
     
+    ModelObject* getModelObject(){
+      if(this->renderStrategy==NULL) return NULL;
+      return this->renderStrategy->getModelObject();
+    }
 
     void setRenderStrategy(IRenderStrategy* renderStrategy){
       this->renderStrategy=renderStrategy;

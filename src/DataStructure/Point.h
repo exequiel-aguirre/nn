@@ -14,6 +14,12 @@ class Point{
 	}
 	Point(){}
 	//virtual ~Point(){} do not use virtual because it messes up the glvertexbuff	
+
+	  //std::ostream::operator<< overload for Foo:
+    friend std::ostream& operator<<(std::ostream& os , const Point* p)
+    {
+        os << "("<<p->x<<","<< p->y<<","<< p->z<<")"<< "\n";
+    }
 };
 
 #endif
