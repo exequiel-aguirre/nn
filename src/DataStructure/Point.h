@@ -15,11 +15,22 @@ class Point{
 	Point(){}
 	//virtual ~Point(){} do not use virtual because it messes up the glvertexbuff	
 
-	  //std::ostream::operator<< overload for Foo:
-    friend std::ostream& operator<<(std::ostream& os , const Point* p)
-    {
-        os << "("<<p->x<<","<< p->y<<","<< p->z<<")"<< "\n";
-    }
+
+	friend std::ostream& operator<<(std::ostream& os , const Point* p){
+		os << "("<<p->x<<","<< p->y<<","<< p->z<<")"<< "\n";
+	}
+
+	bool operator==(const Point& p){
+		return (x==p.x) && (y==p.y) && (z==p.z);
+	}
+
+	bool operator<(const Point& p) const{
+		if(x!=p.x) return x<p.x;
+		if(y!=p.y) return y<p.y;
+		if(z!=p.z) return z<p.z;
+		//they are equals
+		return false;
+	}
 };
 
 #endif

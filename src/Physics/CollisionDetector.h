@@ -7,6 +7,7 @@
 
 class CollisionDetector{
   private:
+    constexpr static float epsilon=0.2f;
     //TODO:this is component's property
     constexpr static float e=0.88f;//Coefficient of restitution,1 is perfectly elastic,0 is perfectly plastic
   public:
@@ -28,6 +29,8 @@ class CollisionDetector{
        
         if( (islx >= 0) && (isly >= 0) && (islz >= 0) ) {
             
+            if(getSeparation(c1,c2) > epsilon) return false;
+
             //v1 and v2 final velocity, v1_i and v2_i initial velocity
             float v1,v2,v1_i,v2_i;
             float m1=c1->getMass();
@@ -98,13 +101,13 @@ class CollisionDetector{
     }
 
     //TODO:find a better name:We cannot call it distance, since separation(a,b)!=separation(b,a)
-    static float separation(Component* c1,Component* c2){
+    static float getSeparation(Component* c1,Component* c2){
 
         Point* p;
-        vector<Point*>* vertices1=c1->getModelObject()->getVertices();
+        vector<Point*>* vertices1=c1->getModelObject()->getModelObjectVO()->getIndexedVertices();
         vector<Point*>::iterator it1;
 
-        vector<Point*>* vertices2=c2->getModelObject()->getVertices();
+        vector<Point*>* vertices2=c2->getModelObject()->getModelObjectVO()->getVertices();
         vector<Point*>::iterator it2;
         Point* v1;
         Point* v2;
@@ -126,9 +129,10 @@ class CollisionDetector{
             delete(p);
         }
 
-        std::cout <<d<<"\n";
+        //std::cout <<d<<"\n";
         //std::cout << typeid(*c1).name()<<" collided with a "<< typeid(*c2).name()<<"\n";
         //std::cout <<p<<v1<<v2<<v3<< "\n";
+        return d;
     }
 
     static float distance(Point* p,Point* v1,Point* v2,Point* v3){

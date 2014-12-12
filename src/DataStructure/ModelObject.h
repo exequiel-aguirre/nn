@@ -5,14 +5,11 @@
 #include <algorithm>
 #include "Point.h"
 #include "../Map/IMap.h"
+#include "ModelObjectVO.h"
 
 
 class ModelObject{
   private:
-  	
-  	static const int X=0;
-  	static const int Y=1;
-  	static const int Z=2;
 
     vector<Point*>* vertices;
     vector<Point*>* uvs;
@@ -24,6 +21,8 @@ class ModelObject{
 
     Point* boundaryMin;
     Point* boundaryMax;
+
+    ModelObjectVO* modelObjectVO;
   	
   public:	
 	
@@ -32,6 +31,7 @@ class ModelObject{
       this->uvs=uvs;
       this->normals=normals;
       calculateBoundary();
+      this->modelObjectVO=new ModelObjectVO(vertices);
   	}
 
     ModelObject(IMap* map){
@@ -88,6 +88,7 @@ class ModelObject{
         }
       }
       calculateBoundary();
+      this->modelObjectVO=new ModelObjectVO(map);
     } 
     
     void calculateBoundary(){
@@ -171,6 +172,10 @@ class ModelObject{
     }
     Point* getBoundaryMax(){
       return boundaryMax;
+    }
+
+    ModelObjectVO* getModelObjectVO(){
+      return modelObjectVO;
     }
     
 };

@@ -53,7 +53,7 @@ class MyContainer:public Container{
 			Camera* myCamera=new Camera(new Position(0.0f,-2.0f,0.0f));
 			Light* myLight=new Light(new Position(40.0f,40.0f,40.0f));
 			Ground* myGround=new Ground(new Position(0.0f,0.0f,0.0f),100,100);
-			Sphere* mySphere=new Sphere(new Position(0.0f,20.0f,-27.0f),0.39f);
+			Sphere* mySphere=new Sphere(new Position(0.0f,20.0f,-15.0f),0.39f);
 			Physics* physics=new Physics();
 			
 			
