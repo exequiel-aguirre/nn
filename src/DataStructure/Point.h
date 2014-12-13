@@ -32,38 +32,35 @@ class Point{
 		return false;
 	}
 
-	Point* rotateCopy(float phi,float theta,float psi){
-		if(phi==0 && theta==0 && psi==0) return new Point(x,y,z);
-		float xa,ya,za;
-		float xr=this->x;
-		float yr=this->y;
-		float zr=this->z;
+	Point* rotate(float phi,float theta,float psi){
+		if(phi==0 && theta==0 && psi==0) return this;
+		float xr,yr,zr;
 		phi=phi*M_PI/180.0f;
 		theta=theta*M_PI/180.0f;
 		psi=psi*M_PI/180.0f;
 
 		//rotation on z axis
-		xa=(cos(psi)*xr)-(sin(psi)*yr);
-		ya=(sin(psi)*xr)+(cos(psi)*yr);
+		xr=(cos(psi)*x)-(sin(psi)*y);
+		yr=(sin(psi)*x)+(cos(psi)*y);
 		//z=z
-		xr=xa;
-		yr=ya;
+		x=xr;
+		y=yr;
 
 		//rotation on y axis
-		xa=(cos(theta)*xr)+(sin(theta)*zr);
+		xr=(cos(theta)*x)+(sin(theta)*z);
 		//y=y
-		za=(-sin(theta)*xr)+(cos(theta)*zr);
-		xr=xa;
-		zr=za;
+		zr=(-sin(theta)*x)+(cos(theta)*z);
+		x=xr;
+		z=zr;
 
 		//rotation on x axis
 		//x=x;
-		ya=(cos(phi)*yr)-(sin(phi)*zr);
-		za=(sin(phi)*yr)+(cos(phi)*zr);
-		yr=ya;
-		zr=za;
+		yr=(cos(phi)*y)-(sin(phi)*z);
+		zr=(sin(phi)*y)+(cos(phi)*z);
+		y=yr;
+		z=zr;
 
-		return new Point(xr,yr,zr);
+		return this;
 	}
 };
 

@@ -15,6 +15,7 @@ class ModelObjectVO{
     vector<Point*>* vertices;
     vector<Point*>* indexedVertices;
     Position* position=NULL;
+    Position* deltaPosition=NULL;
     vector<Point*>* positionedVertices=NULL;
     vector<Point*>* positionedIndexedVertices=NULL;
   public:	
@@ -23,6 +24,7 @@ class ModelObjectVO{
       this->vertices=vertices;
       buildIndexedVertices();
       this->position=new Position(0.0f,0.0f,0.0f);
+      this->deltaPosition=new Position(0.0f,0.0f,0.0f);
       buildPositionedVertices();
   	}
 
@@ -30,6 +32,7 @@ class ModelObjectVO{
       buildVertices(map);
       buildIndexedVertices();
       this->position=new Position(0.0f,0.0f,0.0f);
+      this->deltaPosition=new Position(0.0f,0.0f,0.0f);
       buildPositionedVertices();
     }     
 
@@ -90,30 +93,55 @@ class ModelObjectVO{
       }
     }
     
-    void setPosition(float x,float y,float z,float phi,float theta,float psi){
-      this->position->set(x,y,z,phi,theta,psi);
-      //position changes vertices position change
-      buildPositionedVertices();
-    }
     void buildPositionedVertices(){
       this->positionedVertices=new vector<Point*>();
       vector<Point*>::iterator it;
       for(it=vertices->begin();it!=vertices->end();it++){
-          this->positionedVertices->push_back(transform((*it)));
+          Point* p=new Point((*it)->x,(*it)->y,(*it)->z);
+          this->positionedVertices->push_back(transform(p));
       }
 
       this->positionedIndexedVertices=new vector<Point*>();
       for(it=indexedVertices->begin();it!=indexedVertices->end();it++){
-          this->positionedIndexedVertices->push_back(transform((*it)));
+          Point* p=new Point((*it)->x,(*it)->y,(*it)->z);
+          this->positionedIndexedVertices->push_back(transform(p));
+      }
+    }
+
+    void setPosition(float x,float y,float z,float phi,float theta,float psi){
+      this->deltaPosition->setX(x-position->getX());
+      this->deltaPosition->setY(y-position->getY());
+      this->deltaPosition->setZ(z-position->getZ());
+      this->deltaPosition->setPhi(phi-position->getPhi());
+      this->deltaPosition->setTheta(theta-position->getTheta());
+      this->deltaPosition->setPsi(psi-position->getPsi());
+
+      this->position->setX(x);
+      this->position->setY(y);
+      this->position->setZ(z);
+      this->position->setPhi(phi);
+      this->position->setTheta(theta);
+      this->position->setPsi(psi);
+      //position changes vertices position change
+      updatePositionedVertices();
+    }
+
+    void updatePositionedVertices(){
+      vector<Point*>::iterator it;
+      for(it=positionedVertices->begin();it!=positionedVertices->end();it++){
+          transform((*it));
+      }
+      for(it=positionedIndexedVertices->begin();it!=positionedIndexedVertices->end();it++){
+          transform((*it));
       }
     }
 
     Point* transform(Point* p){
-        Point* tp=p->rotateCopy(position->getPhi(),position->getTheta(),position->getPsi());
-        tp->x+= position->getX();
-        tp->y+= position->getY();
-        tp->z+= position->getZ();
-        return tp;
+        p->rotate(deltaPosition->getPhi(),deltaPosition->getTheta(),deltaPosition->getPsi());
+        p->x+= deltaPosition->getX();
+        p->y+= deltaPosition->getY();
+        p->z+= deltaPosition->getZ();
+        return p;
     }
 
 
