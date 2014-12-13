@@ -107,22 +107,17 @@ class CollisionDetector{
         vector<Point*>* vertices1=c1->getModelObject()->getModelObjectVO()->getPositionedIndexedVertices();
         vector<Point*>::iterator it1;
 
-        vector<Point*>* vertices2=c2->getModelObject()->getModelObjectVO()->getPositionedVertices();
-        vector<Point*>::iterator it2;
-        Point* v1;
-        Point* v2;
-        Point* v3;
+        vector<std::pair<Point*,Point*>>* trianglePlanes2=c2->getModelObject()->getModelObjectVO()->getPositionedTrianglePlanes();
+        vector<std::pair<Point*,Point*>>::iterator it2;
         float d=1000000;
         for(it1=vertices1->begin();it1!=vertices1->end();it1++){
             //a point of c1
             p=*it1;
-            for(it2=vertices2->begin();it2!=vertices2->end();it2+=3){
+            for(it2=trianglePlanes2->begin();it2!=trianglePlanes2->end();it2++){
                 //get the distance from p to the plane of each triangle of c2
-                //get the triangle vertices
-                v1=*it2;
-                v2=*(it2+1);
-                v3=*(it2+2);
-                float d1=distance(p,v1,v2,v3);
+                Point* x0=(*it2).first;
+                Point* n=(*it2).second;
+                float d1=distance(p,x0,n);
                 if(d1<d) d=d1;
             }
         }
@@ -133,20 +128,9 @@ class CollisionDetector{
         return d;
     }
 
-    static float distance(Point* p,Point* v1,Point* v2,Point* v3){
-        //generate the plane for the first triangle of the second component
-        //get the normal versor
-        Point* v21=new Point(v2->x-v1->x,v2->y-v1->y,v2->z-v1->z);
-        Point* v31=new Point(v3->x-v1->x,v3->y-v1->y,v3->z-v1->z);
-        Point* normal=Utils::cross(v21,v31);
-        Point* n=Utils::normalize(normal);
-        //get the x0 for the plane
-        Point* x0=new Point(v1->x,v1->y,v1->z);
+    static float distance(Point* p,Point* x0,Point* n){
         //n.(p-x0)
-        float d=fabs((n->x *(p->x-x0->x))+(n->y *(p->y-x0->y))+(n->z *(p->z-x0->z)));
-        delete(v21);delete(v31);delete(normal);delete(n);delete(x0);
-        return d;
-
+        return fabs((n->x *(p->x-x0->x))+(n->y *(p->y-x0->y))+(n->z *(p->z-x0->z)));
     }
 };
 #endif

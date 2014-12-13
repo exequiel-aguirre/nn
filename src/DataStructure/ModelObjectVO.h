@@ -8,16 +8,20 @@
 #include "Position.h"
 
 
-//TODO:change name
+//TODO:change name(BoundaryPolygon?)
 class ModelObjectVO{
   private:
     const int MAX_VERTICES=3;
+    //TODO:remove the following 2 properties after use
     vector<Point*>* vertices;
     vector<Point*>* indexedVertices;
     Position* position=NULL;
     Position* deltaPosition=NULL;
     vector<Point*>* positionedVertices=NULL;
     vector<Point*>* positionedIndexedVertices=NULL;
+    //TODO:find a better name. pair<point,normal>
+    //here we are using the theorem of rotational invariance of cross product
+    vector<std::pair<Point*,Point*>>* positionedTrianglePlanes=NULL;
   public:	
 	
     ModelObjectVO(vector<Point*>* vertices){
@@ -81,7 +85,7 @@ class ModelObjectVO{
         tmpVertices->push_back(Point((*it)->x,(*it)->y,(*it)->z));
       }
 
-      //remove duplicated
+      //remove duplicated points
       std::sort( tmpVertices->begin(), tmpVertices->end() );
       tmpVertices->erase( std::unique( tmpVertices->begin(), tmpVertices->end() ), tmpVertices->end() );
 
@@ -105,6 +109,24 @@ class ModelObjectVO{
       for(it=indexedVertices->begin();it!=indexedVertices->end();it++){
           Point* p=new Point((*it)->x,(*it)->y,(*it)->z);
           this->positionedIndexedVertices->push_back(transform(p));
+      }
+
+      this->positionedTrianglePlanes=new vector<std::pair<Point*,Point*>>();
+      for(it=vertices->begin();it!=vertices->end();it+=3){
+          //get the vertices of the triangle
+          Point* v1=(*it);
+          Point* v2=*(it+1);
+          Point* v3=*(it+2);
+          //get the normal vector
+          Point* v21=new Point(v2->x-v1->x,v2->y-v1->y,v2->z-v1->z);
+          Point* v31=new Point(v3->x-v1->x,v3->y-v1->y,v3->z-v1->z);
+          Point* n=v21->crossCopy(v31);
+          n->normalize();
+          //get the x0 for the plane
+          Point* x0=new Point(v1->x,v1->y,v1->z);
+          //add the pair that define the plane for this triangle
+          this->positionedTrianglePlanes->push_back(std::make_pair(transform(x0),
+            n->rotate(deltaPosition->getPhi(),deltaPosition->getTheta(),deltaPosition->getPsi())));//the normal needs just to rotate,no translate
       }
     }
 
@@ -134,6 +156,10 @@ class ModelObjectVO{
       for(it=positionedIndexedVertices->begin();it!=positionedIndexedVertices->end();it++){
           transform((*it));
       }
+      vector<std::pair<Point*,Point*>>::iterator itp;
+      for(itp=positionedTrianglePlanes->begin();itp!=positionedTrianglePlanes->end();itp++){
+          transform((*itp).first);(*itp).second->rotate(deltaPosition->getPhi(),deltaPosition->getTheta(),deltaPosition->getPsi());//the normal needs just to rotate,no translate
+      }
     }
 
     Point* transform(Point* p){
@@ -154,6 +180,9 @@ class ModelObjectVO{
       return positionedIndexedVertices;
     }
     
+    vector<std::pair<Point*,Point*>>* getPositionedTrianglePlanes(){
+      return positionedTrianglePlanes;
+    }
     
 };
 

@@ -34,7 +34,8 @@ BUGS:
 
 TODOS:
 -CollisionDetector:
---the ModelObjectVO::buildPositionedVertices is a big memory leak. Maybe using deltaPosition can solve the problem (we would use a rotate instead of rotateCopy)
+--add an new class Boundary with a Box and Polygon (former ModelObjectVO)
+--in the Boundary, put a updatePosition which updates both(in the box implement the same incremental approach than modelObjectVO )
 --bug if normalize receive a point such that ||p||=0 it returns the same point, causing corruption.(also the vertices are reapeting points....)
 --if the velocity and acceleration is 0 do not calculate distance (or collision alltogether)
 --remove all static

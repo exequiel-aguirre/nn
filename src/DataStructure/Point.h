@@ -62,6 +62,25 @@ class Point{
 
 		return this;
 	}
+
+	Point* crossCopy(Point* p){
+		//y1 z2-z1 y2,z1 x2-x1 z2,x1 y2-y1 x2
+		float x1=this->x;
+		float y1=this->y;
+		float z1=this->z;
+		float x2=p->x;
+		float y2=p->y;
+		float z2=p->z;
+		return new Point((y1*z2)-(z1*y2),(z1*x2)-(x1*z2),(x1*y2)-(y1*x2));
+	}
+	Point* normalize(){
+		float norm=sqrt((x*x) + (y*y) + (z*z));
+		if(norm==0.0f) return this;
+		x=x/norm;
+		y=y/norm;
+		z=z/norm;
+		return this;
+	}
 };
 
 #endif
