@@ -34,6 +34,7 @@ BUGS:
 
 TODOS:
 -CollisionDetector:
+--the ModelObjectVO::buildPositionedVertices is a big memory leak. Maybe using deltaPosition can solve the problem (we would use a rotate instead of rotateCopy)
 --if the velocity and acceleration is 0 do not calculate distance (or collision alltogether)
 --remove all static
 - create an struct RawPoint, and put all the point logic that is on utils in the Point class.(add a method Point->getRawPoint to be added in the ModelObject)

@@ -5,6 +5,8 @@
 #include <algorithm>
 #include "Point.h"
 #include "../Map/IMap.h"
+#include "Position.h"
+
 
 //TODO:change name
 class ModelObjectVO{
@@ -12,16 +14,23 @@ class ModelObjectVO{
     const int MAX_VERTICES=3;
     vector<Point*>* vertices;
     vector<Point*>* indexedVertices;
+    Position* position=NULL;
+    vector<Point*>* positionedVertices=NULL;
+    vector<Point*>* positionedIndexedVertices=NULL;
   public:	
 	
-  	ModelObjectVO(vector<Point*>* vertices){
+    ModelObjectVO(vector<Point*>* vertices){
       this->vertices=vertices;
-      buildIndexedVertices();              
+      buildIndexedVertices();
+      this->position=new Position(0.0f,0.0f,0.0f);
+      buildPositionedVertices();
   	}
 
     ModelObjectVO(IMap* map){
       buildVertices(map);
       buildIndexedVertices();
+      this->position=new Position(0.0f,0.0f,0.0f);
+      buildPositionedVertices();
     }     
 
     //TODO:code duplication. Same function in ModelObject
@@ -81,14 +90,40 @@ class ModelObjectVO{
       }
     }
     
-    
-    vector<Point*>* getVertices(){
-      return vertices;
+    void setPosition(float x,float y,float z,float phi,float theta,float psi){
+      this->position->set(x,y,z,phi,theta,psi);
+      //position changes vertices position change
+      buildPositionedVertices();
+    }
+    void buildPositionedVertices(){
+      this->positionedVertices=new vector<Point*>();
+      vector<Point*>::iterator it;
+      for(it=vertices->begin();it!=vertices->end();it++){
+          this->positionedVertices->push_back(transform((*it)));
+      }
+
+      this->positionedIndexedVertices=new vector<Point*>();
+      for(it=indexedVertices->begin();it!=indexedVertices->end();it++){
+          this->positionedIndexedVertices->push_back(transform((*it)));
+      }
+    }
+
+    Point* transform(Point* p){
+        Point* tp=p->rotateCopy(position->getPhi(),position->getTheta(),position->getPsi());
+        tp->x+= position->getX();
+        tp->y+= position->getY();
+        tp->z+= position->getZ();
+        return tp;
+    }
+
+
+    vector<Point*>* getPositionedVertices(){
+      return positionedVertices;
     }
 
     //TODO:change name?
-    vector<Point*>* getIndexedVertices(){
-      return indexedVertices;
+    vector<Point*>* getPositionedIndexedVertices(){
+      return positionedIndexedVertices;
     }
     
     

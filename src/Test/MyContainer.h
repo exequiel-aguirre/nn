@@ -44,16 +44,18 @@ class MyContainer:public Container{
 			Water* myWaterL=new Water(new Position(-100.0f,0.0f,0.0f),100,300);
 			Model* myModel=new Model(new Position(-15.0f,0.0f,-19.0f),"3DModel/monkey.obj");
 			Animation* myAnimation=new Animation(new Position(0.0f,0.4f,-0.0f),"3DModel/human.obj");
-			
-			
-			Sphere* mySphere2=new Sphere(new Position(-3.0f,8.0f,-20.0f),0.5f);
-			Sphere* mySphere3=new Sphere(new Position(3.0f,8.0f,-20.0f),2.0f);
-			
+
 */
 			Camera* myCamera=new Camera(new Position(0.0f,-2.0f,0.0f));
 			Light* myLight=new Light(new Position(40.0f,40.0f,40.0f));
 			Ground* myGround=new Ground(new Position(0.0f,0.0f,0.0f),100,100);
 			Sphere* mySphere=new Sphere(new Position(0.0f,20.0f,-15.0f),0.39f);
+			Sphere* mySphere2=new Sphere(new Position(0.0f,20.0f,-17.0f),0.5f);
+			Sphere* mySphere3=new Sphere(new Position(0.0f,20.0f,-19.0f),0.5f);
+			Sphere* mySphere4=new Sphere(new Position(0.0f,20.0f,-21.0f),0.5f);
+			Sphere* mySphere5=new Sphere(new Position(0.0f,20.0f,-23.0f),0.5f);
+			Sphere* mySphere6=new Sphere(new Position(0.0f,20.0f,-25.0f),0.5f);
+			Sphere* mySphere7=new Sphere(new Position(0.0f,20.0f,-27.0f),0.5f);
 			Physics* physics=new Physics();
 			
 			
@@ -69,17 +71,17 @@ class MyContainer:public Container{
 			//add(myWaterF);add(myWaterR);add(myWaterB);add(myWaterL);
 			add(myModel->add(new MotionBehavior()));
 			myAnimation->getVelocity()->setZ(8.0f);add(myAnimation->add(new MotionBehavior()));
-			
-
-			mySphere2->getVelocity()->setX(40.0f);add(mySphere2->add(new MotionBehavior()));
-			add(mySphere3->add(new MotionBehavior()));
-
-
 			add(new Plane(new Position(-15.0f,8.0f,-20.0f,0.0f,0.0f,90.0f),5.0f,5.0f,"img/box.bmp",2,2));*/
 			add(myGround);
 			add(myCamera);
 			add(myLight);			
 			add(mySphere->add(new MotionBehavior()));
+			add(mySphere2->add(new MotionBehavior()));
+			add(mySphere3->add(new MotionBehavior()));
+			add(mySphere4->add(new MotionBehavior()));
+			add(mySphere5->add(new MotionBehavior()));
+			add(mySphere6->add(new MotionBehavior()));
+			add(mySphere7->add(new MotionBehavior()));
 		  	add(new Plane(new Position(0.0f,10.0f,-20.0f,45.0f,0.0f,0.0f),5.0f,20.0f,"img/box.bmp",2,2));
 
 			add(physics);

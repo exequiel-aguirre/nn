@@ -123,6 +123,9 @@ class Component {
       max=minMax.second;
       boundaryMin=new Point(min->x+position->getX(),min->y+position->getY(),min->z+position->getZ());
       boundaryMax=new Point(max->x+position->getX(),max->y+position->getY(),max->z+position->getZ());
+      //Same for the modelObjectVO
+      modelObject->getModelObjectVO()->setPosition(position->getX(),position->getY(),position->getZ(),
+          position->getPhi(),position->getTheta(),position->getPsi());
     }
 
     Point* getBoundaryMin(){
