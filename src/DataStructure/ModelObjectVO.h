@@ -163,10 +163,13 @@ class ModelObjectVO{
     }
 
     Point* transform(Point* p){
-        p->rotate(deltaPosition->getPhi(),deltaPosition->getTheta(),deltaPosition->getPsi());
         p->x+= deltaPosition->getX();
         p->y+= deltaPosition->getY();
         p->z+= deltaPosition->getZ();
+        //we need to position the object in the (0,0,0) before we rotate, and restore it after the rotate
+        p->x-=position->getX();p->y-=position->getY();p->z-=position->getZ();
+        p->rotate(deltaPosition->getPhi(),deltaPosition->getTheta(),deltaPosition->getPsi());
+        p->x+=position->getX();p->y+=position->getY();p->z+=position->getZ();
         return p;
     }
 
