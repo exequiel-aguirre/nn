@@ -5,12 +5,11 @@
 #include <algorithm>
 #include "Point.h"
 #include "../Map/IMap.h"
-#include "../Map/VODecorator.h"
 
 //TODO:change name
-
 class ModelObjectVO{
   private:
+    const int MAX_VERTICES=3;
     vector<Point*>* vertices;
     vector<Point*>* indexedVertices;
   public:	
@@ -29,8 +28,8 @@ class ModelObjectVO{
     void buildVertices(IMap* map){
       this->vertices=new vector<Point*>();
       
-      int lats=3;
-      int longs=3;
+      int lats=std::min(map->getLats(),MAX_VERTICES);
+      int longs=std::min(map->getLongs(),MAX_VERTICES);
       float u0,u1,v0,v1;
       int i, j;
       float uFrom=map->getUFrom();
