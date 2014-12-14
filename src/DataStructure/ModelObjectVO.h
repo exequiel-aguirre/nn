@@ -25,15 +25,73 @@ class ModelObjectVO{
   public:	
 	
     ModelObjectVO(vector<Point*>* vertices){
-      this->vertices=vertices;
+      buildBoxVertices(vertices);
       buildIndexedVertices();
       this->position=new Position(0.0f,0.0f,0.0f);
       this->deltaPosition=new Position(0.0f,0.0f,0.0f);
       buildPositionedVertices();
   	}
+    //TODO:code duplication. Same function in ModelObject
+    void buildBoxVertices(vector<Point*>* moVertices){
+      this->vertices=new vector<Point*>();
+      auto minMaxX=std::minmax_element(moVertices->begin(),moVertices->end(),
+        [](Point* p1, Point* p2) {
+              return p1->x < p2->x;
+          });
+      auto minMaxY=std::minmax_element(moVertices->begin(),moVertices->end(),
+        [](Point* p1, Point* p2) {
+              return p1->y < p2->y;
+          });
+      auto minMaxZ=std::minmax_element(moVertices->begin(),moVertices->end(),
+        [](Point* p1, Point* p2) {
+              return p1->z < p2->z;
+          });
+      Point* boundaryMin=new Point((*minMaxX.first)->x,(*minMaxY.first)->y,(*minMaxZ.first)->z);
+      Point* boundaryMax=new Point((*minMaxX.second)->x,(*minMaxY.second)->y,(*minMaxZ.second)->z);
 
+      //front rectangle
+      vertices->push_back(new Point(boundaryMin->x,boundaryMin->y,boundaryMin->z));
+      vertices->push_back(new Point(boundaryMax->x,boundaryMin->y,boundaryMin->z));
+
+      vertices->push_back(new Point(boundaryMax->x,boundaryMin->y,boundaryMin->z));
+      vertices->push_back(new Point(boundaryMax->x,boundaryMax->y,boundaryMin->z));
+
+      vertices->push_back(new Point(boundaryMax->x,boundaryMax->y,boundaryMin->z));
+      vertices->push_back(new Point(boundaryMin->x,boundaryMax->y,boundaryMin->z));
+
+      vertices->push_back(new Point(boundaryMin->x,boundaryMax->y,boundaryMin->z));
+      vertices->push_back(new Point(boundaryMin->x,boundaryMin->y,boundaryMin->z));
+
+
+      //back rectangle
+      vertices->push_back(new Point(boundaryMin->x,boundaryMin->y,boundaryMax->z));
+      vertices->push_back(new Point(boundaryMax->x,boundaryMin->y,boundaryMax->z));
+
+      vertices->push_back(new Point(boundaryMax->x,boundaryMin->y,boundaryMax->z));
+      vertices->push_back(new Point(boundaryMax->x,boundaryMax->y,boundaryMax->z));
+
+      vertices->push_back(new Point(boundaryMax->x,boundaryMax->y,boundaryMax->z));
+      vertices->push_back(new Point(boundaryMin->x,boundaryMax->y,boundaryMax->z));
+
+      vertices->push_back(new Point(boundaryMin->x,boundaryMax->y,boundaryMax->z));
+      vertices->push_back(new Point(boundaryMin->x,boundaryMin->y,boundaryMax->z));
+
+      //depth rectangle
+      vertices->push_back(new Point(boundaryMin->x,boundaryMin->y,boundaryMin->z));
+      vertices->push_back(new Point(boundaryMin->x,boundaryMin->y,boundaryMax->z));
+
+      vertices->push_back(new Point(boundaryMax->x,boundaryMin->y,boundaryMin->z));
+      vertices->push_back(new Point(boundaryMax->x,boundaryMin->y,boundaryMax->z));
+
+      vertices->push_back(new Point(boundaryMax->x,boundaryMax->y,boundaryMin->z));
+      vertices->push_back(new Point(boundaryMax->x,boundaryMax->y,boundaryMax->z));
+
+      vertices->push_back(new Point(boundaryMin->x,boundaryMax->y,boundaryMin->z));
+      vertices->push_back(new Point(boundaryMin->x,boundaryMax->y,boundaryMax->z));
+
+    }
     ModelObjectVO(IMap* map){
-      buildVertices(map);
+      buildPolygonVertices(map);
       buildIndexedVertices();
       this->position=new Position(0.0f,0.0f,0.0f);
       this->deltaPosition=new Position(0.0f,0.0f,0.0f);
@@ -41,7 +99,7 @@ class ModelObjectVO{
     }     
 
     //TODO:code duplication. Same function in ModelObject
-    void buildVertices(IMap* map){
+    void buildPolygonVertices(IMap* map){
       this->vertices=new vector<Point*>();
       
       int lats=std::min(map->getLats(),MAX_VERTICES);

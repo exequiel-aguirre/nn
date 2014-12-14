@@ -36,7 +36,7 @@ TODOS:
 -CollisionDetector:
 --add an new class Boundary with a Box and Polygon (former ModelObjectVO)
 --in the Boundary, put a updatePosition which updates both(in the box implement the same incremental approach than modelObjectVO )
---bug if normalize receive a point such that ||p||=0 it returns the same point, causing corruption.(also the vertices are reapeting points....)
+--bug the MOVO has some malformed vertices (two or more vertices equals) causin the normal to be zero, causing the distance to be 0 when it's not
 --if the velocity and acceleration is 0 do not calculate distance (or collision alltogether)
 --remove all static
 - create an struct RawPoint, and put all the point logic that is on utils in the Point class.(add a method Point->getRawPoint to be added in the ModelObject)
@@ -106,3 +106,25 @@ if(boundaryMin==NULL) return;
 
           
         glEnd();
+
+and the MOVO vertices and MOVO normals
+if(getModelObject()==NULL) return;
+      vector<Point*>* vertices=getModelObject()->getModelObjectVO()->getPositionedVertices();
+      vector<Point*>::iterator it;
+      glBegin(GL_TRIANGLES);
+      for(it=vertices->begin();it!=vertices->end();it++){
+          Point* p=(*it);
+          glVertex3f(p->x,p->y,p->z);
+      }
+      glEnd();
+
+      vector<std::pair<Point*,Point*>>* trianglePlanes=getModelObject()->getModelObjectVO()->getPositionedTrianglePlanes();
+      vector<std::pair<Point*,Point*>>::iterator itp;
+      glBegin(GL_LINES);
+      for(itp=trianglePlanes->begin();itp!=trianglePlanes->end();itp++){
+          Point* x0=(*itp).first;
+          Point* n=(*itp).second;
+          glVertex3f(x0->x,x0->y,x0->z);
+          glVertex3f(x0->x+n->x, x0->y+n->y, x0->z+n->z);
+      }
+      glEnd();
