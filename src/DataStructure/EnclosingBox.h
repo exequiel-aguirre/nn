@@ -10,30 +10,43 @@
 
 class EnclosingBox{
   private:
+    vector<Point*>* vertices;
     vector<Point*>* positionedVertices;
     Position* position=NULL;
-    Position* deltaPosition=NULL;
     Point* diagonalMin=NULL;
     Point* diagonalMax=NULL;
   public:	
 	
     EnclosingBox(vector<Point*>* vertices){
       this->position=new Position(0.0f,0.0f,0.0f);
-      this->deltaPosition=new Position(0.0f,0.0f,0.0f);
-      buildDiagonals(vertices);
+      buildBoxVertices(vertices);
       buildPositionedVertices();
   	}
 
-    void buildDiagonals(vector<Point*>* vertices){
-      auto minMaxX=std::minmax_element(vertices->begin(),vertices->end(),
+    void buildBoxVertices(vector<Point*>* moVertices){
+      buildDiagonals(moVertices);
+      this->vertices=new vector<Point*>();
+      //push the vertices of the boundary box
+      vertices->push_back(new Point(diagonalMin->x,diagonalMin->y,diagonalMin->z));
+      vertices->push_back(new Point(diagonalMax->x,diagonalMin->y,diagonalMin->z));
+      vertices->push_back(new Point(diagonalMax->x,diagonalMax->y,diagonalMin->z));
+      vertices->push_back(new Point(diagonalMin->x,diagonalMax->y,diagonalMin->z));
+      vertices->push_back(new Point(diagonalMin->x,diagonalMin->y,diagonalMax->z));
+      vertices->push_back(new Point(diagonalMax->x,diagonalMin->y,diagonalMax->z));
+      vertices->push_back(new Point(diagonalMax->x,diagonalMax->y,diagonalMax->z));
+      vertices->push_back(new Point(diagonalMin->x,diagonalMax->y,diagonalMax->z));
+    }
+
+    void buildDiagonals(vector<Point*>* moVertices){
+      auto minMaxX=std::minmax_element(moVertices->begin(),moVertices->end(),
         [](Point* p1, Point* p2) {
               return p1->x < p2->x;
           });
-      auto minMaxY=std::minmax_element(vertices->begin(),vertices->end(),
+      auto minMaxY=std::minmax_element(moVertices->begin(),moVertices->end(),
         [](Point* p1, Point* p2) {
               return p1->y < p2->y;
           });
-      auto minMaxZ=std::minmax_element(vertices->begin(),vertices->end(),
+      auto minMaxZ=std::minmax_element(moVertices->begin(),moVertices->end(),
         [](Point* p1, Point* p2) {
               return p1->z < p2->z;
           });
@@ -42,27 +55,17 @@ class EnclosingBox{
     }
 
     void buildPositionedVertices(){
+      //push the transformed vertices of the boundary box
       this->positionedVertices=new vector<Point*>();
-      //push the vertices of the boundary box
-      positionedVertices->push_back(transform(new Point(diagonalMin->x,diagonalMin->y,diagonalMin->z)));
-      positionedVertices->push_back(transform(new Point(diagonalMax->x,diagonalMin->y,diagonalMin->z)));
-      positionedVertices->push_back(transform(new Point(diagonalMax->x,diagonalMax->y,diagonalMin->z)));
-      positionedVertices->push_back(transform(new Point(diagonalMin->x,diagonalMax->y,diagonalMin->z)));
-      positionedVertices->push_back(transform(new Point(diagonalMin->x,diagonalMin->y,diagonalMax->z)));
-      positionedVertices->push_back(transform(new Point(diagonalMax->x,diagonalMin->y,diagonalMax->z)));
-      positionedVertices->push_back(transform(new Point(diagonalMax->x,diagonalMax->y,diagonalMax->z)));
-      positionedVertices->push_back(transform(new Point(diagonalMin->x,diagonalMax->y,diagonalMax->z)));
-      buildDiagonals(positionedVertices);//we update the diagonals (rotation changes min and max)
+      vector<Point*>::iterator it;
+      for(it=vertices->begin();it!=vertices->end();it++){
+          Point* p=new Point((*it)->x,(*it)->y,(*it)->z);
+          this->positionedVertices->push_back(transform(p));
+      }
+      buildDiagonals(positionedVertices);
     }
 
     void updatePosition(float x,float y,float z,float phi,float theta,float psi){
-      this->deltaPosition->setX(x-position->getX());
-      this->deltaPosition->setY(y-position->getY());
-      this->deltaPosition->setZ(z-position->getZ());
-      this->deltaPosition->setPhi(phi-position->getPhi());
-      this->deltaPosition->setTheta(theta-position->getTheta());
-      this->deltaPosition->setPsi(psi-position->getPsi());
-
       this->position->setX(x);
       this->position->setY(y);
       this->position->setZ(z);
@@ -74,21 +77,18 @@ class EnclosingBox{
     }
 
     void updatePositionedVertices(){
-      vector<Point*>::iterator it;
-      for(it=positionedVertices->begin();it!=positionedVertices->end();it++){
-          transform((*it));
+      for(int i=0;i<positionedVertices->size();i++){
+        Point* p=(*vertices)[i];
+        Point* pp=(*positionedVertices)[i];
+        pp->set(p->x,p->y,p->z);
+        transform(pp);
       }
-      buildDiagonals(positionedVertices);//we update the diagonals (rotation changes min and max)
+      buildDiagonals(positionedVertices);
     }
 
     Point* transform(Point* p){
-        p->x+= deltaPosition->getX();
-        p->y+= deltaPosition->getY();
-        p->z+= deltaPosition->getZ();
-        //we need to position the object in the (0,0,0) before we rotate, and restore it after the rotate
-        p->x-=position->getX();p->y-=position->getY();p->z-=position->getZ();
-        p->rotate(deltaPosition->getPhi(),deltaPosition->getTheta(),deltaPosition->getPsi());
-        p->x+=position->getX();p->y+=position->getY();p->z+=position->getZ();
+        p->rotate(position->getPhi(),position->getTheta(),position->getPsi());
+        p->translate(position->getX(),position->getY(),position->getZ());
         return p;
     }
 

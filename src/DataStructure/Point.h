@@ -15,7 +15,11 @@ class Point{
 	Point(){}
 	//virtual ~Point(){} do not use virtual because it messes up the glvertexbuff	
 
-
+	void set(float x,float y,float z){
+		this->x=x;
+		this->y=y;
+		this->z=z;
+	}
 	friend std::ostream& operator<<(std::ostream& os , const Point* p){
 		os << "("<<p->x<<","<< p->y<<","<< p->z<<")"<< "\n";
 	}
@@ -62,7 +66,13 @@ class Point{
 
 		return this;
 	}
+	Point* translate(float x,float y,float z){
+		this->x+=x;
+		this->y+=y;
+		this->z+=z;
 
+		return this;
+	}
 	Point* crossCopy(Point* p){
 		//y1 z2-z1 y2,z1 x2-x1 z2,x1 y2-y1 x2
 		float x1=this->x;
