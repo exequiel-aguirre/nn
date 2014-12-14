@@ -35,6 +35,7 @@ BUGS:
 TODOS:
 -CollisionDetector:
 --add an new class Boundary with a Box and Polygon (former ModelObjectVO)
+---bug:the incremental rotation not working well, just re-build when the rotation change
 --in the Boundary, put a updatePosition which updates both(in the box implement the same incremental approach than modelObjectVO )
 --bug the MOVO has some malformed vertices (two or more vertices equals) causin the normal to be zero, causing the distance to be 0 when it's not
 --if the velocity and acceleration is 0 do not calculate distance (or collision alltogether)

@@ -16,8 +16,6 @@
 class Component {  
   private:
     IRenderStrategy* renderStrategy=NULL;
-    Point* boundaryMin=NULL;
-    Point* boundaryMax=NULL;
   protected:
     vector<IBehavior*>* behaviors;
     vector<IEffect*>* effects;
@@ -114,42 +112,31 @@ class Component {
     
 
     void calculateBoundary(){
-      if(this->renderStrategy==NULL) return;
-      ModelObject* modelObject=this->renderStrategy->getModelObject();
-      Point* min=modelObject->getBoundaryMin();
-      Point* max=modelObject->getBoundaryMax();
-      std::pair<Point*,Point*> minMax=Utils::rotateBoundary(min,max,position->getPhi(),position->getTheta(),position->getPsi());
-      min=minMax.first;
-      max=minMax.second;
-      boundaryMin=new Point(min->x+position->getX(),min->y+position->getY(),min->z+position->getZ());
-      boundaryMax=new Point(max->x+position->getX(),max->y+position->getY(),max->z+position->getZ());
-      //Same for the modelObjectVO
-      modelObject->getModelObjectVO()->setPosition(position->getX(),position->getY(),position->getZ(),
+      if(getModelObject()==NULL) return;
+      //update the boundary
+      getModelObject()->getBoundary()->updatePosition(position->getX(),position->getY(),position->getZ(),
           position->getPhi(),position->getTheta(),position->getPsi());
     }
 
     Point* getBoundaryMin(){
-      return this->boundaryMin;
+      if(getModelObject()==NULL) return NULL;
+      return getModelObject()->getBoundary()->getEnclosingBox()->getDiagonalMin();
     }
 
     Point* getBoundaryMax(){
-      return this->boundaryMax;
+      if(getModelObject()==NULL) return NULL;
+      return getModelObject()->getBoundary()->getEnclosingBox()->getDiagonalMax();
     }
 
     Point* getBoundaryLength(){
-      if(this->boundaryMin==NULL || this->boundaryMax==NULL) calculateBoundary();
-      return new Point(
-        (this->boundaryMax->x-this->boundaryMin->x)/2.0f,
-        (this->boundaryMax->y-this->boundaryMin->y)/2.0f,
-        (this->boundaryMax->z-this->boundaryMin->z)/2.0f);
+      if(getModelObject()==NULL) return NULL;
+      return getModelObject()->getBoundary()->getEnclosingBox()->getLength();
     }
 
     virtual float getMass(){
-      if(this->boundaryMin==NULL || this->boundaryMax==NULL) calculateBoundary();
+      if(getModelObject()==NULL) return NULL;
       //a very rough approximation of volume
-      return (boundaryMax->x - boundaryMin->x)*
-             (boundaryMax->y - boundaryMin->y)*
-             (boundaryMax->z - boundaryMin->z)* massDensity;
+      return getModelObject()->getBoundary()->getEnclosingBox()->getVolume()* massDensity;
     }
 
     CollisionStatus* getCollisionStatus(){

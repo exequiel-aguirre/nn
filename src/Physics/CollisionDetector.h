@@ -104,10 +104,10 @@ class CollisionDetector{
     static float getSeparation(Component* c1,Component* c2){
 
         Point* p;
-        vector<Point*>* vertices1=c1->getModelObject()->getModelObjectVO()->getPositionedIndexedVertices();
+        vector<Point*>* vertices1=c1->getModelObject()->getBoundary()->getModelObjectVO()->getPositionedIndexedVertices();
         vector<Point*>::iterator it1;
 
-        vector<std::pair<Point*,Point*>>* trianglePlanes2=c2->getModelObject()->getModelObjectVO()->getPositionedTrianglePlanes();
+        vector<std::pair<Point*,Point*>>* trianglePlanes2=c2->getModelObject()->getBoundary()->getModelObjectVO()->getPositionedTrianglePlanes();
         vector<std::pair<Point*,Point*>>::iterator it2;
         float d=1000000;
         for(it1=vertices1->begin();it1!=vertices1->end();it1++){

@@ -5,7 +5,7 @@
 #include <algorithm>
 #include "Point.h"
 #include "../Map/IMap.h"
-#include "ModelObjectVO.h"
+#include "Boundary.h"
 
 
 class ModelObject{
@@ -19,10 +19,7 @@ class ModelObject{
     GLuint uvBufferId;
     GLuint normalBufferId;
 
-    Point* boundaryMin;
-    Point* boundaryMax;
-
-    ModelObjectVO* modelObjectVO;
+    Boundary* boundary;
   	
   public:	
 	
@@ -30,8 +27,7 @@ class ModelObject{
       this->vertices=vertices;
       this->uvs=uvs;
       this->normals=normals;
-      calculateBoundary();
-      this->modelObjectVO=new ModelObjectVO(vertices);
+      this->boundary=new Boundary(vertices);
   	}
 
     ModelObject(IMap* map){
@@ -87,25 +83,7 @@ class ModelObject{
           normals->push_back(map->getNormal(u1,v1));
         }
       }
-      calculateBoundary();
-      this->modelObjectVO=new ModelObjectVO(map);
-    } 
-    
-    void calculateBoundary(){
-      auto minMaxX=std::minmax_element(vertices->begin(),vertices->end(),
-        [](Point* p1, Point* p2) {
-              return p1->x < p2->x;
-          });
-      auto minMaxY=std::minmax_element(vertices->begin(),vertices->end(),
-        [](Point* p1, Point* p2) {
-              return p1->y < p2->y;
-          });
-      auto minMaxZ=std::minmax_element(vertices->begin(),vertices->end(),
-        [](Point* p1, Point* p2) {
-              return p1->z < p2->z;
-          });
-      boundaryMin=new Point((*minMaxX.first)->x,(*minMaxY.first)->y,(*minMaxZ.first)->z);
-      boundaryMax=new Point((*minMaxX.second)->x,(*minMaxY.second)->y,(*minMaxZ.second)->z);
+      this->boundary=new Boundary(map,vertices);
     }
 
     vector<Point*>* getVertices(){
@@ -167,15 +145,8 @@ class ModelObject{
     }
 
 
-    Point* getBoundaryMin(){
-      return boundaryMin;
-    }
-    Point* getBoundaryMax(){
-      return boundaryMax;
-    }
-
-    ModelObjectVO* getModelObjectVO(){
-      return modelObjectVO;
+    Boundary* getBoundary(){
+      return boundary;
     }
     
 };

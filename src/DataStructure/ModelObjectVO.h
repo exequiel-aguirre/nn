@@ -23,7 +23,7 @@ class ModelObjectVO{
     //here we are using the theorem of rotational invariance of cross product
     vector<std::pair<Point*,Point*>>* positionedTrianglePlanes=NULL;
   public:	
-	
+	 //TODO:here put this->vertices=new vector<>().(makes no sense to do the same as bounding box)
     ModelObjectVO(vector<Point*>* vertices){
       buildBoxVertices(vertices);
       buildIndexedVertices();
@@ -188,7 +188,7 @@ class ModelObjectVO{
       }
     }
 
-    void setPosition(float x,float y,float z,float phi,float theta,float psi){
+    void updatePosition(float x,float y,float z,float phi,float theta,float psi){
       this->deltaPosition->setX(x-position->getX());
       this->deltaPosition->setY(y-position->getY());
       this->deltaPosition->setZ(z-position->getZ());
