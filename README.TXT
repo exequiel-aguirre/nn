@@ -62,7 +62,9 @@ Notes:
 
 or the whole box
 
-if(boundaryMin==NULL) return;
+if(getModelObject()==NULL) return;
+      Point* boundaryMin= getModelObject()->getBoundary()->getEnclosingBox()->getDiagonalMin();
+      Point* boundaryMax= getModelObject()->getBoundary()->getEnclosingBox()->getDiagonalMax();
         glBegin(GL_LINES);
 
           //front rectangle
@@ -110,7 +112,7 @@ if(boundaryMin==NULL) return;
 
 and the MOVO vertices and MOVO normals
 if(getModelObject()==NULL) return;
-      vector<Point*>* vertices=getModelObject()->getModelObjectVO()->getPositionedVertices();
+      vector<Point*>* vertices=getModelObject()->getBoundary()->getModelObjectVO()->getPositionedVertices();
       vector<Point*>::iterator it;
       glBegin(GL_TRIANGLES);
       for(it=vertices->begin();it!=vertices->end();it++){
@@ -119,7 +121,7 @@ if(getModelObject()==NULL) return;
       }
       glEnd();
 
-      vector<std::pair<Point*,Point*>>* trianglePlanes=getModelObject()->getModelObjectVO()->getPositionedTrianglePlanes();
+      vector<std::pair<Point*,Point*>>* trianglePlanes=getModelObject()->getBoundary()->getModelObjectVO()->getPositionedTrianglePlanes();
       vector<std::pair<Point*,Point*>>::iterator itp;
       glBegin(GL_LINES);
       for(itp=trianglePlanes->begin();itp!=trianglePlanes->end();itp++){

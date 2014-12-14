@@ -11,12 +11,12 @@
 //TODO:change name(BoundaryPolygon?)
 class ModelObjectVO{
   private:
-    const int MAX_VERTICES=3;
+    const int MAX_LATS_LONGS=3;
     //TODO:remove the following 2 properties after use
     vector<Point*>* vertices;
     vector<Point*>* indexedVertices;
+    vector<std::pair<Point*,Point*>>* trianglePlanes=NULL;
     Position* position=NULL;
-    Position* deltaPosition=NULL;
     vector<Point*>* positionedVertices=NULL;
     vector<Point*>* positionedIndexedVertices=NULL;
     //TODO:find a better name. pair<point,normal>
@@ -27,8 +27,8 @@ class ModelObjectVO{
     ModelObjectVO(vector<Point*>* vertices){
       buildBoxVertices(vertices);
       buildIndexedVertices();
+      buildTrianglePlanes();
       this->position=new Position(0.0f,0.0f,0.0f);
-      this->deltaPosition=new Position(0.0f,0.0f,0.0f);
       buildPositionedVertices();
   	}
     //TODO:code duplication. Same function in ModelObject
@@ -93,8 +93,8 @@ class ModelObjectVO{
     ModelObjectVO(IMap* map){
       buildPolygonVertices(map);
       buildIndexedVertices();
+      buildTrianglePlanes();
       this->position=new Position(0.0f,0.0f,0.0f);
-      this->deltaPosition=new Position(0.0f,0.0f,0.0f);
       buildPositionedVertices();
     }     
 
@@ -102,8 +102,8 @@ class ModelObjectVO{
     void buildPolygonVertices(IMap* map){
       this->vertices=new vector<Point*>();
       
-      int lats=std::min(map->getLats(),MAX_VERTICES);
-      int longs=std::min(map->getLongs(),MAX_VERTICES);
+      int lats=std::min(map->getLats(),MAX_LATS_LONGS);
+      int longs=std::min(map->getLongs(),MAX_LATS_LONGS);
       float u0,u1,v0,v1;
       int i, j;
       float uFrom=map->getUFrom();
@@ -154,7 +154,26 @@ class ModelObjectVO{
           this->indexedVertices->push_back(new Point((*iti).x,(*iti).y,(*iti).z));
       }
     }
-    
+
+    void buildTrianglePlanes(){
+      this->trianglePlanes=new vector<std::pair<Point*,Point*>>();
+      vector<Point*>::iterator it;
+      for(it=vertices->begin();it!=vertices->end();it+=3){
+          //get the vertices of the triangle
+          Point* v1=(*it);
+          Point* v2=*(it+1);
+          Point* v3=*(it+2);
+          //get the normal vector
+          Point* v21=new Point(v2->x-v1->x,v2->y-v1->y,v2->z-v1->z);
+          Point* v31=new Point(v3->x-v1->x,v3->y-v1->y,v3->z-v1->z);
+          Point* n=v21->crossCopy(v31);
+          n->normalize();
+          //get the x0 for the plane
+          Point* x0=new Point(v1->x,v1->y,v1->z);
+          //add the pair that define the plane for this triangle
+          this->trianglePlanes->push_back(std::make_pair(x0,n));
+      }
+    }
     void buildPositionedVertices(){
       this->positionedVertices=new vector<Point*>();
       vector<Point*>::iterator it;
@@ -169,33 +188,22 @@ class ModelObjectVO{
           this->positionedIndexedVertices->push_back(transform(p));
       }
 
+      this->positionedIndexedVertices=new vector<Point*>();
+      for(it=indexedVertices->begin();it!=indexedVertices->end();it++){
+          Point* p=new Point((*it)->x,(*it)->y,(*it)->z);
+          this->positionedIndexedVertices->push_back(transform(p));
+      }
+
       this->positionedTrianglePlanes=new vector<std::pair<Point*,Point*>>();
-      for(it=vertices->begin();it!=vertices->end();it+=3){
-          //get the vertices of the triangle
-          Point* v1=(*it);
-          Point* v2=*(it+1);
-          Point* v3=*(it+2);
-          //get the normal vector
-          Point* v21=new Point(v2->x-v1->x,v2->y-v1->y,v2->z-v1->z);
-          Point* v31=new Point(v3->x-v1->x,v3->y-v1->y,v3->z-v1->z);
-          Point* n=v21->crossCopy(v31);
-          n->normalize();
-          //get the x0 for the plane
-          Point* x0=new Point(v1->x,v1->y,v1->z);
-          //add the pair that define the plane for this triangle
-          this->positionedTrianglePlanes->push_back(std::make_pair(transform(x0),
-            n->rotate(deltaPosition->getPhi(),deltaPosition->getTheta(),deltaPosition->getPsi())));//the normal needs just to rotate,no translate
+      vector<std::pair<Point*,Point*>>::iterator itp;
+      for(itp=trianglePlanes->begin();itp!=trianglePlanes->end();itp++){
+          Point* x0=new Point((*itp).first->x,(*itp).first->y,(*itp).first->z);
+          Point* n=new Point((*itp).second->x,(*itp).second->y,(*itp).second->z);
+          this->positionedTrianglePlanes->push_back(std::make_pair(transform(x0),n->rotate(position->getPhi(),position->getTheta(),position->getPsi())));//the normal needs just to rotate,no translate          
       }
     }
 
     void updatePosition(float x,float y,float z,float phi,float theta,float psi){
-      this->deltaPosition->setX(x-position->getX());
-      this->deltaPosition->setY(y-position->getY());
-      this->deltaPosition->setZ(z-position->getZ());
-      this->deltaPosition->setPhi(phi-position->getPhi());
-      this->deltaPosition->setTheta(theta-position->getTheta());
-      this->deltaPosition->setPsi(psi-position->getPsi());
-
       this->position->setX(x);
       this->position->setY(y);
       this->position->setZ(z);
@@ -207,28 +215,38 @@ class ModelObjectVO{
     }
 
     void updatePositionedVertices(){
-      vector<Point*>::iterator it;
-      for(it=positionedVertices->begin();it!=positionedVertices->end();it++){
-          transform((*it));
+      for(int i=0;i<positionedVertices->size();i++){
+        Point* p=(*vertices)[i];
+        Point* pp=(*positionedVertices)[i];
+        pp->set(p->x,p->y,p->z);
+        transform(pp);
       }
-      for(it=positionedIndexedVertices->begin();it!=positionedIndexedVertices->end();it++){
-          transform((*it));
+
+      for(int i=0;i<positionedIndexedVertices->size();i++){
+        Point* p=(*indexedVertices)[i];
+        Point* pp=(*positionedIndexedVertices)[i];
+        pp->set(p->x,p->y,p->z);
+        transform(pp);
       }
-      vector<std::pair<Point*,Point*>>::iterator itp;
-      for(itp=positionedTrianglePlanes->begin();itp!=positionedTrianglePlanes->end();itp++){
-          transform((*itp).first);(*itp).second->rotate(deltaPosition->getPhi(),deltaPosition->getTheta(),deltaPosition->getPsi());//the normal needs just to rotate,no translate
+
+      for(int i=0;i<positionedTrianglePlanes->size();i++){
+        std::pair<Point*,Point*> p=(*trianglePlanes)[i];
+        Point* x0=p.first;
+        Point* n=p.second;
+        std::pair<Point*,Point*> pp=(*positionedTrianglePlanes)[i];
+        Point* px0=pp.first;
+        Point* pn=pp.second;
+        px0->set(x0->x,x0->y,x0->z);
+        pn->set(n->x,n->y,n->z);
+        transform(px0);
+        pn->rotate(position->getPhi(),position->getTheta(),position->getPsi());
       }
     }
 
     Point* transform(Point* p){
-        p->x+= deltaPosition->getX();
-        p->y+= deltaPosition->getY();
-        p->z+= deltaPosition->getZ();
-        //we need to position the object in the (0,0,0) before we rotate, and restore it after the rotate
-        p->x-=position->getX();p->y-=position->getY();p->z-=position->getZ();
-        p->rotate(deltaPosition->getPhi(),deltaPosition->getTheta(),deltaPosition->getPsi());
-        p->x+=position->getX();p->y+=position->getY();p->z+=position->getZ();
-        return p;
+      p->rotate(position->getPhi(),position->getTheta(),position->getPsi());
+      p->translate(position->getX(),position->getY(),position->getZ());
+      return p;
     }
 
 
