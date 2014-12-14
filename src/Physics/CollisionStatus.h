@@ -4,6 +4,10 @@
 
 class CollisionStatus{
   private:
+    //this is the intersection segment length (how bad the crash was...)
+    float islx=0.0f;
+    float isly=0.0f;
+    float islz=0.0f;
     //where was I when the collision happened
     bool xMin=false;
     bool xMax=false;
@@ -22,7 +26,9 @@ class CollisionStatus{
     }
 
     void init(){
-        //this->set(false,false,false,false,false,false);
+        islx=0.0f;
+        isly=0.0f;
+        islz=0.0f;
         xMin=false;
         xMax=false;
         yMin=false;
@@ -31,7 +37,10 @@ class CollisionStatus{
         zMax=false;
     }
     
-    void set(bool xMin,bool xMax,bool yMin,bool yMax,bool zMin ,bool zMax){
+    void set(float islx,float isly,float islz,bool xMin,bool xMax,bool yMin,bool yMax,bool zMin ,bool zMax){
+        this->islx=islx;
+        this->isly=isly;
+        this->islz=islz;
         if(xMin) this->xMin=xMin;
         if(xMax) this->xMax=xMax;
         if(yMin) this->yMin=yMin;
@@ -40,6 +49,15 @@ class CollisionStatus{
         if(zMax) this->zMax=zMax;
     }
 
+    float getIslx(){
+        return islx;
+    }
+    float getIsly(){
+        return isly;
+    }
+    float getIslz(){
+        return islz;
+    }
     bool getXMin(){
         return this->xMin;
     }

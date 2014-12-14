@@ -6,24 +6,27 @@
 #include "../Map/IMap.h"
 #include "ReducedPolygon.h";
 #include "EnclosingBox.h";
-
+#include "../Physics/CollisionStatus.h"
 
 
 class Boundary{
   private:
     ReducedPolygon* reducedPolygon=NULL;
     EnclosingBox* enclosingBox=NULL;
+    CollisionStatus* collisionStatus;
   public:	
 	
     Boundary(vector<Point*>* vertices){
       this->reducedPolygon=new ReducedPolygon(vertices);
       this->enclosingBox=new EnclosingBox(vertices);
+      this->collisionStatus=new CollisionStatus();
   	}
     
     //TODO:find a way of avoiding sending both, map and vertices
     Boundary(IMap* map,vector<Point*>* vertices){
       this->reducedPolygon=new ReducedPolygon(map);
       this->enclosingBox=new EnclosingBox(vertices); 
+      this->collisionStatus=new CollisionStatus();
     }     
 
     
@@ -39,6 +42,10 @@ class Boundary{
 
     EnclosingBox* getEnclosingBox(){
       return enclosingBox;
+    }
+
+    CollisionStatus* getCollisionStatus(){
+      return collisionStatus;
     }
     
 };

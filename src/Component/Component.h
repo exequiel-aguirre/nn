@@ -9,7 +9,6 @@
 #include "../Effect/IEffect.h"
 #include "../DataStructure/ModelObject.h"
 #include "../RenderStrategy/IRenderStrategy.h"
-#include "../Utils/Utils.h"
 #include "../Physics/CollisionStatus.h"
 
 
@@ -24,7 +23,6 @@ class Component {
     Velocity* velocity;
     Acceleration* acceleration;
     float massDensity=1.0f;
-    CollisionStatus* collisionStatus;
     bool rotates=false;
   public:
     Component(Position* position){
@@ -33,7 +31,6 @@ class Component {
       this->effects=new vector<IEffect*>();
       this->velocity=new Velocity(0.0f,0.0f,0.0f);
       this->acceleration=new Acceleration(0.0f,0.0f,0.0f);
-      this->collisionStatus=new CollisionStatus();
     }
     virtual ~Component(){}  
     
@@ -118,6 +115,16 @@ class Component {
           position->getPhi(),position->getTheta(),position->getPsi());
     }
 
+    Boundary* getBoundary(){
+      if(getModelObject()==NULL) return NULL;
+      return getModelObject()->getBoundary();
+    }
+
+    CollisionStatus* getCollisionStatus(){
+      if(getModelObject()==NULL) return NULL;
+      return getModelObject()->getBoundary()->getCollisionStatus();
+    }
+
     Point* getBoundaryMin(){
       if(getModelObject()==NULL) return NULL;
       return getModelObject()->getBoundary()->getEnclosingBox()->getDiagonalMin();
@@ -139,9 +146,6 @@ class Component {
       return getModelObject()->getBoundary()->getEnclosingBox()->getVolume()* massDensity;
     }
 
-    CollisionStatus* getCollisionStatus(){
-      return this->collisionStatus;
-    }
 
     Component* add(IBehavior* behavior){
       behavior->bind(this);
