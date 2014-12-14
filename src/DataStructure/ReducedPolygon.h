@@ -1,5 +1,5 @@
-#ifndef ModelObjectVOH
-#define ModelObjectVOH
+#ifndef ReducedPolygonH
+#define ReducedPolygonH
 
 #include <vector>
 #include <algorithm>
@@ -9,7 +9,7 @@
 
 
 //TODO:change name(BoundaryPolygon?)
-class ModelObjectVO{
+class ReducedPolygon{
   private:
     const int MAX_LATS_LONGS=3;
     //TODO:remove the following 2 properties after use
@@ -24,7 +24,7 @@ class ModelObjectVO{
     vector<std::pair<Point*,Point*>>* positionedTrianglePlanes=NULL;
   public:	
 	 //TODO:here put this->vertices=new vector<>().(makes no sense to do the same as bounding box)
-    ModelObjectVO(vector<Point*>* vertices){
+    ReducedPolygon(vector<Point*>* vertices){
       buildBoxVertices(vertices);
       buildIndexedVertices();
       buildTrianglePlanes();
@@ -90,7 +90,7 @@ class ModelObjectVO{
       vertices->push_back(new Point(boundaryMin->x,boundaryMax->y,boundaryMax->z));
 
     }
-    ModelObjectVO(IMap* map){
+    ReducedPolygon(IMap* map){
       buildPolygonVertices(map);
       buildIndexedVertices();
       buildTrianglePlanes();

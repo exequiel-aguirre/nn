@@ -7,14 +7,14 @@
 
 class CollisionDetector{
   private:
-    constexpr static float epsilon=0.2f;
+    const float EPSILON=0.2f;
     //TODO:this is component's property
-    constexpr static float e=0.88f;//Coefficient of restitution,1 is perfectly elastic,0 is perfectly plastic
+    const float E=0.88f;//Coefficient of restitution,1 is perfectly elastic,0 is perfectly plastic
   public:
     CollisionDetector(){}
     virtual ~CollisionDetector(){}
     
-    static bool detect(Component* c1,Component* c2){
+    bool detect(Component* c1,Component* c2){
         if((c1->getBoundaryMin()==NULL)||(c1->getBoundaryMax()==NULL) ||
             (c2->getBoundaryMin()==NULL)||(c2->getBoundaryMax()==NULL)) return false;    	
     	
@@ -29,7 +29,7 @@ class CollisionDetector{
        
         if( (islx >= 0) && (isly >= 0) && (islz >= 0) ) {
             
-            if(getSeparation(c1,c2) > epsilon) return false;
+            if(getSeparation(c1,c2) > EPSILON) return false;
 
             //v1 and v2 final velocity, v1_i and v2_i initial velocity
             float v1,v2,v1_i,v2_i;
@@ -41,8 +41,8 @@ class CollisionDetector{
             if(isly*islz>0){//the isly*islz is the area of the contact surface defined by the x-axis as normal
                 v1_i=c1->getVelocity()->getX();
                 v2_i=c2->getVelocity()->getX();            
-                v1=((m1*v1_i) + (m2*v2_i) + (m2 * e *(v2_i-v1_i)))/(m1+m2);
-                v2=((m1*v1_i) + (m2*v2_i) + (m1 * e *(v1_i-v2_i)))/(m1+m2);
+                v1=((m1*v1_i) + (m2*v2_i) + (m2 * E *(v2_i-v1_i)))/(m1+m2);
+                v2=((m1*v1_i) + (m2*v2_i) + (m1 * E *(v1_i-v2_i)))/(m1+m2);
                 c1->getVelocity()->setX(v1);
                 c2->getVelocity()->setX(v2);
             }
@@ -51,8 +51,8 @@ class CollisionDetector{
             if(islx*islz>0){
                 v1_i=c1->getVelocity()->getY();
                 v2_i=c2->getVelocity()->getY();            
-                v1=((m1*v1_i) + (m2*v2_i) + (m2 * e *(v2_i-v1_i)))/(m1+m2);
-                v2=((m1*v1_i) + (m2*v2_i) + (m1 * e *(v1_i-v2_i)))/(m1+m2);
+                v1=((m1*v1_i) + (m2*v2_i) + (m2 * E *(v2_i-v1_i)))/(m1+m2);
+                v2=((m1*v1_i) + (m2*v2_i) + (m1 * E *(v1_i-v2_i)))/(m1+m2);
                 c1->getVelocity()->setY(v1);
                 c2->getVelocity()->setY(v2);
             }
@@ -60,8 +60,8 @@ class CollisionDetector{
             if(islx*isly>0){
                 v1_i=c1->getVelocity()->getZ();
                 v2_i=c2->getVelocity()->getZ();            
-                v1=((m1*v1_i) + (m2*v2_i) + (m2 * e *(v2_i-v1_i)))/(m1+m2);
-                v2=((m1*v1_i) + (m2*v2_i) + (m1 * e *(v1_i-v2_i)))/(m1+m2);
+                v1=((m1*v1_i) + (m2*v2_i) + (m2 * E *(v2_i-v1_i)))/(m1+m2);
+                v2=((m1*v1_i) + (m2*v2_i) + (m1 * E *(v1_i-v2_i)))/(m1+m2);
                 c1->getVelocity()->setZ(v1);
                 c2->getVelocity()->setZ(v2);
             }
@@ -101,13 +101,13 @@ class CollisionDetector{
     }
 
     //TODO:find a better name:We cannot call it distance, since separation(a,b)!=separation(b,a)
-    static float getSeparation(Component* c1,Component* c2){
+    float getSeparation(Component* c1,Component* c2){
 
         Point* p;
-        vector<Point*>* vertices1=c1->getModelObject()->getBoundary()->getModelObjectVO()->getPositionedIndexedVertices();
+        vector<Point*>* vertices1=c1->getModelObject()->getBoundary()->getReducedPolygon()->getPositionedIndexedVertices();
         vector<Point*>::iterator it1;
 
-        vector<std::pair<Point*,Point*>>* trianglePlanes2=c2->getModelObject()->getBoundary()->getModelObjectVO()->getPositionedTrianglePlanes();
+        vector<std::pair<Point*,Point*>>* trianglePlanes2=c2->getModelObject()->getBoundary()->getReducedPolygon()->getPositionedTrianglePlanes();
         vector<std::pair<Point*,Point*>>::iterator it2;
         float d=1000000;
         for(it1=vertices1->begin();it1!=vertices1->end();it1++){
@@ -128,7 +128,7 @@ class CollisionDetector{
         return d;
     }
 
-    static float distance(Point* p,Point* x0,Point* n){
+    float distance(Point* p,Point* x0,Point* n){
         //n.(p-x0)
         return fabs((n->x *(p->x-x0->x))+(n->y *(p->y-x0->y))+(n->z *(p->z-x0->z)));
     }

@@ -4,8 +4,6 @@
 #include <vector>
 #include "Point.h"
 #include "../Map/IMap.h"
-#include "ModelObjectVO.h";
-
 
 
 class EnclosingBox{

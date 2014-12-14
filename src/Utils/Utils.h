@@ -143,78 +143,7 @@ class Utils{
 		float norm=sqrt((p->x * p->x) + (p->y * p->y) + (p->z * p->z));
 		if(norm==0.0f) return p;
 		return new Point(p->x/norm,p->y/norm,p->z/norm);
-	}
-
-	static std::pair<Point*,Point*> rotateBoundary(Point* min,Point* max,float phi,float theta,float psi){
-		vector<Point*>* points=new vector<Point*>();
-		vector<Point*>* rPoints=new vector<Point*>();
-
-		//push the vertices of the boundary box
-		points->push_back(new Point(min->x,min->y,min->z));
-		points->push_back(new Point(max->x,min->y,min->z));
-		points->push_back(new Point(max->x,max->y,min->z));
-		points->push_back(new Point(min->x,max->y,min->z));
-		points->push_back(new Point(min->x,min->y,max->z));
-		points->push_back(new Point(max->x,min->y,max->z));
-		points->push_back(new Point(max->x,max->y,max->z));
-		points->push_back(new Point(min->x,max->y,max->z));
-
-		//TODO:use std::transform
-		vector<Point*>::iterator it;
-		for(it=points->begin();it!=points->end();it++){
-			rPoints->push_back(rotate((*it),phi,theta,psi));
-		}
-
-
-		auto minMaxX=std::minmax_element(rPoints->begin(),rPoints->end(),
-			[](Point* p1, Point* p2) {
-				return p1->x < p2->x;
-			});
-		auto minMaxY=std::minmax_element(rPoints->begin(),rPoints->end(),
-			[](Point* p1, Point* p2) {
-				return p1->y < p2->y;
-			});
-		auto minMaxZ=std::minmax_element(rPoints->begin(),rPoints->end(),
-			[](Point* p1, Point* p2) {
-				return p1->z < p2->z;
-			});
-		Point* rMin=new Point((*minMaxX.first)->x,(*minMaxY.first)->y,(*minMaxZ.first)->z);
-		Point* rMax=new Point((*minMaxX.second)->x,(*minMaxY.second)->y,(*minMaxZ.second)->z);
-		return std::make_pair(rMin,rMax);
-	}
-
-	static Point* rotate(Point* p,float phi,float theta,float psi){
-		float xr,yr,zr;
-		float x=p->x;
-		float y=p->y;
-		float z=p->z;
-		phi=phi*M_PI/180.0f;
-		theta=theta*M_PI/180.0f;
-		psi=psi*M_PI/180.0f;
-
-		//rotation on z axis
-		xr=(cos(psi)*x)-(sin(psi)*y);
-		yr=(sin(psi)*x)+(cos(psi)*y);
-		//z=z
-		x=xr;
-		y=yr;
-
-		//rotation on y axis
-		xr=(cos(theta)*x)+(sin(theta)*z);
-		//y=y
-		zr=(-sin(theta)*x)+(cos(theta)*z);
-		x=xr;
-		z=zr;
-
-		//rotation on x axis
-		//x=x;
-		yr=(cos(phi)*y)-(sin(phi)*z);
-		zr=(sin(phi)*y)+(cos(phi)*z);
-		y=yr;
-		z=zr;
-
-		return new Point(x,y,z);		
-	}
+	}	
 
 	static float sgn(float value){
 		if(value<0) return -1.0f;
