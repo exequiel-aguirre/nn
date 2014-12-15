@@ -2,6 +2,7 @@
 #define PhysicsManagerH
 #include <vector>
 #include "CollisionDetector.h"
+#include <typeinfo>
 using std::vector;
 
 class PhysicsManager{
@@ -87,6 +88,10 @@ class PhysicsManager{
                 c2->getVelocity()->setZ(v2);
             }
 
+            c1->getBoundary()->getCollisionStatus()->setOtherMass(c2->getMass());
+            c2->getBoundary()->getCollisionStatus()->setOtherMass(c1->getMass());
+           // std::cout << typeid(*c1).name()<<" with "<< typeid(*c2).name()<< " : "<< c1->getBoundary()->getCollisionStatus()->getImpactNormal();
+
     }
     void onAfterDetectCollisions(){
       vector<Component*>::iterator it;
@@ -94,6 +99,18 @@ class PhysicsManager{
 
         CollisionStatus* status=(*it)->getCollisionStatus();
 
+        //When the collisionStatus's normal is accurate enough,
+        //we can replace the 4 "if's" with this.and also the GetXMax,etc
+        /*Point* n=status->getImpactNormal();
+        float m=(*it)->getMass();
+        float m2=status->getOtherMass();
+        float c=m2/(m2+m);//TODO:justify this
+        if(status->hasCollided()){
+           (*it)->getAcceleration()->set(c*9.8f * n->x,c*((9.8f * n->y)-9.8f),c * 9.8f * n->z);
+        }
+        else if((*it)->getMass()<1000){(the if should be more like if(*it)->hasMotion())
+          (*it)->getAcceleration()->set(0.0,-9.8f,0.0f);
+        }*/
         if(status->getXMax() || status->getXMin()) (*it)->getAcceleration()->setX(0.0f);
 
         if(status->getYMax() || status->getYMin()) (*it)->getAcceleration()->setY(0.0f);

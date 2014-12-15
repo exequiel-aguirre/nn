@@ -69,7 +69,7 @@ class Component {
     }
 
     void setPosition(float x,float y,float z){
-      this->setPosition(x,y,z,NULL,NULL,NULL);
+      this->position->set(x,y,z);
     }
     void setPosition(float x,float y,float z,float phi,float theta,float psi){
       this->position->set(x,y,z,phi,theta,psi);
@@ -81,7 +81,7 @@ class Component {
       return this->velocity;  
     }
     void setVelocity(float x,float y,float z){
-      this->setVelocity(x,y,z,NULL,NULL,NULL);
+      this->velocity->set(x,y,z);
     }
     void setVelocity(float x,float y,float z,float phi,float theta,float psi){
       this->velocity->set(x,y,z,phi,theta,psi);      
@@ -91,7 +91,7 @@ class Component {
       return this->acceleration;  
     }
     void setAcceleration(float x,float y,float z){
-      this->setAcceleration(x,y,z,NULL,NULL,NULL);
+      this->acceleration->set(x,y,z);
     }
     void setAcceleration(float x,float y,float z,float phi,float theta,float psi){
       this->acceleration->set(x,y,z,phi,theta,psi);     

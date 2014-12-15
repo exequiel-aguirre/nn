@@ -52,16 +52,16 @@ class Position {
 		}
 
 	void set(float x,float y,float z){
-		this->set(x,y,z,NULL,NULL,NULL);
+		this->set(x,y,z,this->phi,this->theta,this->psi);
 	}
 	//TODO:this should ne just in the component	
 	void set(float x,float y,float z,float phi,float theta,float psi){
-		if(x!=NULL) this->x=x;
-		if(y!=NULL) this->y=y;
-		if(z!=NULL) this->z=z;
-		if(phi!=NULL) this->phi=phi;
-		if(theta!=NULL) this->theta=theta;
-		if(psi!=NULL) this->psi=psi;
+		this->x=x;
+		this->y=y;
+		this->z=z;
+		this->phi=phi;
+		this->theta=theta;
+		this->psi=psi;
 	}
 
 	float setX(float x){

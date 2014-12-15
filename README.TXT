@@ -30,11 +30,11 @@ ANIMATION:
 
 BUGS:
 -blending effect not working so well...
--Position::set() not working when zero value is passed. (here NULL=0)
+- we are setting velocity and acceleration to object with no motion. The objects don't move, but the collision is affected (for example, objects not bounding like they should) 
+--bug the ReducedPolygon has some malformed vertices (two or more vertices equals) causin the normal to be zero, causing the distance to be 0 when it's not
 
 TODOS:
 -CollisionDetector:
---bug the ReducedPolygon has some malformed vertices (two or more vertices equals) causin the normal to be zero, causing the distance to be 0 when it's not
 --if the velocity and acceleration is 0 do not calculate distance (or collision alltogether)
 - create an struct RawPoint, and put all the point logic that is on utils in the Point class.(add a method Point->getRawPoint to be added in the ModelObject)
 -all the collide(), setCollide should be done within the component

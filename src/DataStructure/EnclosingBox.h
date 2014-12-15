@@ -64,12 +64,7 @@ class EnclosingBox{
     }
 
     void updatePosition(float x,float y,float z,float phi,float theta,float psi){
-      this->position->setX(x);
-      this->position->setY(y);
-      this->position->setZ(z);
-      this->position->setPhi(phi);
-      this->position->setTheta(theta);
-      this->position->setPsi(psi);
+      this->position->set(x,y,z,phi,theta,psi);
       //position changes vertices position change
       updatePositionedVertices();
     }

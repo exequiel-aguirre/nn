@@ -8,7 +8,6 @@
 #include "Position.h"
 
 
-//TODO:change name(BoundaryPolygon?)
 class ReducedPolygon{
   private:
     const int MAX_LATS_LONGS=3;
@@ -204,12 +203,7 @@ class ReducedPolygon{
     }
 
     void updatePosition(float x,float y,float z,float phi,float theta,float psi){
-      this->position->setX(x);
-      this->position->setY(y);
-      this->position->setZ(z);
-      this->position->setPhi(phi);
-      this->position->setTheta(theta);
-      this->position->setPsi(psi);
+      this->position->set(x,y,z,phi,theta,psi);
       //position changes vertices position change
       updatePositionedVertices();
     }

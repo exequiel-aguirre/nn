@@ -1,6 +1,7 @@
 #ifndef CollisionStatusH
 #define CollisionStatusH
 
+#include "../DataStructure/Point.h"
 
 class CollisionStatus{
   private:
@@ -15,15 +16,21 @@ class CollisionStatus{
     bool yMax=false;
     bool zMin=false;
     bool zMax=false;
+    //collided in this frame
+    bool collided=false;
+    //point of impact and normal
+    Point* impactPoint=NULL;
+    Point* impactNormal=NULL;
+    //distance to the other object in this frame
+    float distance=10000;
+    //the other component's mass
+    float otherMass=0.0f;
+
   public:
     CollisionStatus(){
         init();
     }
     virtual ~CollisionStatus(){}
-    
-    bool hasCollided(){
-        return (xMin || xMax || yMin || yMax || zMin || zMax);
-    }
 
     void init(){
         islx=0.0f;
@@ -35,9 +42,14 @@ class CollisionStatus{
         yMax=false;
         zMin=false;
         zMax=false;
+        impactPoint=new Point(0.0f,0.0f,0.0f);
+        impactNormal=new Point(0.0f,0.0f,0.0f);
+        collided=false;
+        distance=10000;
+        otherMass=0.0f;
     }
-    
-    void set(float islx,float isly,float islz,bool xMin,bool xMax,bool yMin,bool yMax,bool zMin ,bool zMax){
+
+    void set(float islx,float isly,float islz,bool xMin,bool xMax,bool yMin,bool yMax,bool zMin ,bool zMax,bool collided){
         this->islx=islx;
         this->isly=isly;
         this->islz=islz;
@@ -47,6 +59,11 @@ class CollisionStatus{
         if(yMax) this->yMax=yMax;
         if(zMin) this->zMin=zMin;
         if(zMax) this->zMax=zMax;
+        this->collided=collided;
+    }
+
+    bool hasCollided(){
+        return collided;
     }
 
     float getIslx(){
@@ -79,5 +96,36 @@ class CollisionStatus{
         return this->zMax;
     }
 
+    CollisionStatus* setImpactPoint(Point* impactPoint){
+        this->impactPoint->set(impactPoint->x,impactPoint->y,impactPoint->z);
+        return this;
+    }
+    Point* getImpactPoint(){
+        return impactPoint;
+    }
+
+    CollisionStatus* setImpactNormal(Point* impactNormal){
+        this->impactNormal->set(impactNormal->x,impactNormal->y,impactNormal->z);
+        return this;
+    }
+    Point* getImpactNormal(){
+        return impactNormal;
+    }
+
+    float getOtherMass(){
+        return otherMass;
+    }
+    CollisionStatus* setOtherMass(float otherMass){
+        this->otherMass=otherMass;
+        return this;
+    }
+
+    CollisionStatus* setDistance(float distance){
+        this->distance=distance;
+        return this;
+    }
+    float getDistance(){
+        return distance;
+    }
 };
 #endif

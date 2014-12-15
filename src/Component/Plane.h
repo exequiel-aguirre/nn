@@ -19,7 +19,7 @@ class Plane: public Surface {
     virtual ~Plane(){}    
     
     float getMass(){
-      return std::numeric_limits<float>::max();
+      return std::numeric_limits<float>::max()-10.0;
     }
 
 };

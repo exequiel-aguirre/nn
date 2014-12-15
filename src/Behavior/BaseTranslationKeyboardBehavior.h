@@ -64,8 +64,8 @@ class BaseTranslationKeyboardBehavior: public AbstractBehavior{
             
     		getComponent()->setPosition(currentPosition->getX()+deltaX,
                                         currentPosition->getY()+deltaY,
-                                        currentPosition->getZ()+deltaZ,
-                                        NULL,NULL,NULL);
+                                        currentPosition->getZ()+deltaZ
+                                        );
     	}
     }    
 

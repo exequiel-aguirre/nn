@@ -1,9 +1,6 @@
 #ifndef CollisionDetectorH
 #define CollisionDetectorH
-#include "../Component/Component.h"
-#include "../Utils/Utils.h"
-#include <typeinfo>
-
+#include "../DataStructure/Boundary.h"
 
 class CollisionDetector{
   private:
@@ -36,7 +33,8 @@ class CollisionDetector{
                 min1->y <= min2->y,
                 max1->y >= max2->y,
                 min1->z <= min2->z,
-                max1->z >= max2->z
+                max1->z >= max2->z,
+                true
                 );
             b2->getCollisionStatus()->set(
                 islx,
@@ -47,7 +45,8 @@ class CollisionDetector{
                 min2->y <= min1->y,
                 max2->y >= max1->y,
                 min2->z <= min1->z,
-                max2->z >= max1->z
+                max2->z >= max1->z,
+                true
                 );
 
             return true;
@@ -74,7 +73,11 @@ class CollisionDetector{
                 Point* x0=(*it2).first;
                 Point* n=(*it2).second;
                 float d1=distance(p,x0,n);
-                if(d1<d) d=d1;
+                if(d1<d){
+                    d=d1;
+                    b1->getCollisionStatus()->setImpactPoint(p)->setImpactNormal(n)->setDistance(d);
+                    b2->getCollisionStatus()->setImpactPoint(p)->setImpactNormal(new Point(-n->x,-n->y,-n->z))->setDistance(d);
+                }
             }
         }
 
