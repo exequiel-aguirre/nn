@@ -30,16 +30,16 @@ class ModelObject{
       this->boundary= Boundary(vertices);
   	}
 
-    ModelObject(IMap* map){      
+    ModelObject(IMap& map){
 
-      int lats=map->getLats();
-      int longs=map->getLongs();
+      int lats=map.getLats();
+      int longs=map.getLongs();
       float u0,u1,v0,v1;
       int i, j;
-      float uFrom=map->getUFrom();
-      float uTo=map->getUTo();
-      float vFrom=map->getVFrom();
-      float vTo=map->getVTo();
+      float uFrom=map.getUFrom();
+      float uTo=map.getUTo();
+      float vFrom=map.getVFrom();
+      float vTo=map.getVTo();
       
       //latitudes
       //TODO: set i=0,and change "<="" -> "<"" and "i-1" -> "i","i"->"i+1"
@@ -53,13 +53,13 @@ class ModelObject{
           u0=uFrom + (((uTo-uFrom)/lats) * j);          
           u1=uFrom + (((uTo-uFrom)/lats) * (j+1));
           
-          vertices.push_back(map->get(u0,v0));
-          vertices.push_back(map->get(u0,v1));                
-          vertices.push_back(map->get(u1,v0)); 
+          vertices.push_back(map.get(u0,v0));
+          vertices.push_back(map.get(u0,v1));
+          vertices.push_back(map.get(u1,v0));
 
-          vertices.push_back(map->get(u1,v0)); 
-          vertices.push_back(map->get(u0,v1)); 
-          vertices.push_back(map->get(u1,v1)); 
+          vertices.push_back(map.get(u1,v0));
+          vertices.push_back(map.get(u0,v1));
+          vertices.push_back(map.get(u1,v1));
 
 
           uvs.push_back(new Point(j%2,j%2,NULL));
@@ -71,13 +71,13 @@ class ModelObject{
           uvs.push_back(new Point((j+1)%2,(j+1)%2,NULL));
                     
           
-          normals.push_back(map->getNormal(u0,v0));
-          normals.push_back(map->getNormal(u0,v1));                
-          normals.push_back(map->getNormal(u1,v0)); 
+          normals.push_back(map.getNormal(u0,v0));
+          normals.push_back(map.getNormal(u0,v1));
+          normals.push_back(map.getNormal(u1,v0));
 
-          normals.push_back(map->getNormal(u1,v0)); 
-          normals.push_back(map->getNormal(u0,v1)); 
-          normals.push_back(map->getNormal(u1,v1));
+          normals.push_back(map.getNormal(u1,v0));
+          normals.push_back(map.getNormal(u0,v1));
+          normals.push_back(map.getNormal(u1,v1));
         }
       }
       this->boundary= Boundary(map,vertices);

@@ -11,7 +11,7 @@ class FastStrategy :public CacheStrategy {
   public:
     
     FastStrategy(char* modelFilename,GLenum GLMode):CacheStrategy(loadModel(modelFilename),GLMode){}
-    FastStrategy(IMap* map,GLenum GLMode):CacheStrategy(loadModel(map),GLMode){}
+    FastStrategy(IMap& map,GLenum GLMode):CacheStrategy(loadModel(map),GLMode){}
 
     virtual ~FastStrategy(){
       GLuint vertexBuffer=modelObject->getVertexBufferId();
@@ -55,7 +55,7 @@ class FastStrategy :public CacheStrategy {
         return modelObject;
     }
       
-    ModelObject* loadModel(IMap* map){
+    ModelObject* loadModel(IMap& map){
         ModelObject* modelObject=CacheStrategy::loadModel(map);
         bufferModel(modelObject);
         return modelObject;

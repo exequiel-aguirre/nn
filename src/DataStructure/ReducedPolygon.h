@@ -88,7 +88,7 @@ class ReducedPolygon{
       vertices.push_back(new Point(boundaryMin->x,boundaryMax->y,boundaryMax->z));
 
     }
-    ReducedPolygon(IMap* map){
+    ReducedPolygon(IMap& map){
       buildPolygonVertices(map);
       buildIndexedVertices();
       buildTrianglePlanes();      
@@ -96,17 +96,17 @@ class ReducedPolygon{
     }     
 
     //TODO:code duplication. Same function in ModelObject
-    void buildPolygonVertices(IMap* map){
+    void buildPolygonVertices(IMap& map){
       
       
-      int lats=std::min(map->getLats(),MAX_LATS_LONGS);
-      int longs=std::min(map->getLongs(),MAX_LATS_LONGS);
+      int lats=std::min(map.getLats(),MAX_LATS_LONGS);
+      int longs=std::min(map.getLongs(),MAX_LATS_LONGS);
       float u0,u1,v0,v1;
       int i, j;
-      float uFrom=map->getUFrom();
-      float uTo=map->getUTo();
-      float vFrom=map->getVFrom();
-      float vTo=map->getVTo();
+      float uFrom=map.getUFrom();
+      float uTo=map.getUTo();
+      float vFrom=map.getVFrom();
+      float vTo=map.getVTo();
       
       //latitudes
       //TODO: set i=0,and change "<="" -> "<"" and "i-1" -> "i","i"->"i+1"
@@ -120,13 +120,13 @@ class ReducedPolygon{
           u0=uFrom + (((uTo-uFrom)/lats) * j);          
           u1=uFrom + (((uTo-uFrom)/lats) * (j+1));
           
-          vertices.push_back(map->get(u0,v0));
-          vertices.push_back(map->get(u0,v1));                
-          vertices.push_back(map->get(u1,v0)); 
+          vertices.push_back(map.get(u0,v0));
+          vertices.push_back(map.get(u0,v1));
+          vertices.push_back(map.get(u1,v0));
 
-          vertices.push_back(map->get(u1,v0)); 
-          vertices.push_back(map->get(u0,v1)); 
-          vertices.push_back(map->get(u1,v1));          
+          vertices.push_back(map.get(u1,v0));
+          vertices.push_back(map.get(u0,v1));
+          vertices.push_back(map.get(u1,v1));
         }
       }
 

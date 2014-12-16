@@ -15,7 +15,7 @@ class TextureStrategy :public FastStrategy {
         if(textureFilename==NULL) textureFilename=defaultTextureFilename;
         texture=Utils::loadTexture(textureFilename);
     }
-	   TextureStrategy(IMap* map,char* textureFilename):FastStrategy(map,GL_TRIANGLES){
+	   TextureStrategy(IMap& map,char* textureFilename):FastStrategy(map,GL_TRIANGLES){
         if(textureFilename==NULL) textureFilename=defaultTextureFilename;
         texture=Utils::loadTexture(textureFilename);
     }

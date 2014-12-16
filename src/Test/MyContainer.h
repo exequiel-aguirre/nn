@@ -78,8 +78,6 @@ class MyContainer:public Container{
 			add(new Plane(new Position(-20.0f,10.0f,-20.0f,45.0f,0.0f,0.0f),5.0f,20.0f,"img/box.bmp",2,2));
 
 			add(physics);
-			
-    
     }
 
 };

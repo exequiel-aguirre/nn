@@ -24,7 +24,7 @@ class Boundary{
   	}
     
     //TODO:find a way of avoiding sending both, map and vertices
-    Boundary(IMap* map,vector<Point*> vertices){      
+    Boundary(IMap& map,vector<Point*> vertices){
       this->reducedPolygon= ReducedPolygon(map);
       this->enclosingBox= EnclosingBox(&vertices); 
       this->collisionStatus= CollisionStatus();

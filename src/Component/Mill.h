@@ -13,7 +13,7 @@ class Mill: public Container {
   public:
 	  Mill(Position* position):Container(position){
 	  	  
-		add(new Surface(new Position(0.0f,10.0f,0.0f),new ConeMap(3.0f,15.0f),"img/hut_roof.bmp"));		
+		add(new Surface(new Position(0.0f,10.0f,0.0f),ConeMap(3.0f,15.0f),"img/hut_roof.bmp"));
 		 
 		Plane* blade1=new Plane(new Position(0.0f,9.0f,1.5f,90.0f,0.0f,0.0f),10.0f,2.0f,"img/hut_wall.bmp");
 		blade1->setVelocity(0,0,0,0,90.0f,0);

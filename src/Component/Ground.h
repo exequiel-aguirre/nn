@@ -7,7 +7,7 @@
 
 class Ground: public Surface { 
   public:
-	Ground(Position* position,float w,float h):Surface(position,new PlaneMap(w,h),"img/ground.bmp"){}
+	Ground(Position* position,float w,float h):Surface(position, PlaneMap(w,h),"img/ground.bmp"){}
     virtual ~Ground(){}
     
     float getMass(){
