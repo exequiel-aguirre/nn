@@ -35,8 +35,8 @@ BUGS:
 
 TODOS:
 -CollisionDetector:
---if the velocity and acceleration is 0 do not calculate distance (or collision alltogether)
-- create an struct RawPoint, and put all the point logic that is on utils in the Point class.(add a method Point->getRawPoint to be added in the ModelObject)
+--if the velocity and acceleration is 0 for both objects do not calculate distance (or collision alltogether)
+- the rawPoint was created, but now inside point we have duplicated x,y,z. Besides that, if we modify point->x, rawPoint won't change, which I think is fine having in mind that we are using GL_STATIC_DRAW?
 -all the collide(), setCollide should be done within the component
 -check why the performance decreased so much by the new box.
 ---most likely because it's render each component separately.We could implement some merge method, that agregates each component in the same modelobject and render it as a whole.

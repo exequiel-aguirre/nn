@@ -3,6 +3,7 @@
 
 #include "CacheStrategy.h"
 #include "../Utils/Utils.h"
+#include "../DataStructure/RawPoint.h"
 
 
 class FastStrategy :public CacheStrategy {   
@@ -65,28 +66,28 @@ class FastStrategy :public CacheStrategy {
         GLuint uvBuffer;
         GLuint normalBuffer;
 
-        vector<Point> vertices;        
-        vector<Point> uvs;
-        vector<Point> normals;
+        vector<RawPoint> vertices;
+        vector<RawPoint> uvs;
+        vector<RawPoint> normals;
         for(int i=0;i<modelObject->getSize();i++){
-          vertices.push_back(*(modelObject->getVertex(i)));
+          vertices.push_back(modelObject->getVertex(i)->getRawPoint());
           if(modelObject->hasUVs()){            
-            uvs.push_back(*(modelObject->getUV(i)));
+            uvs.push_back(modelObject->getUV(i)->getRawPoint());
             }
-          normals.push_back(*(modelObject->getNormal(i)));
+          normals.push_back(modelObject->getNormal(i)->getRawPoint());
         }
 
         glGenBuffers(1, &vertexBuffer);         
         glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);        
-        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Point), &vertices[0], GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(RawPoint), &vertices[0], GL_STATIC_DRAW);
 
         glGenBuffers(1, &uvBuffer);         
         glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);        
-        glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(Point), &uvs[0], GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(RawPoint), &uvs[0], GL_STATIC_DRAW);
 
         glGenBuffers(1, &normalBuffer);         
         glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);        
-        glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(Point), &normals[0], GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(RawPoint), &normals[0], GL_STATIC_DRAW);
 
         modelObject->setVertexBufferId(vertexBuffer);
         modelObject->setUVBufferId(uvBuffer);

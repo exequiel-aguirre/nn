@@ -1,25 +1,36 @@
 #ifndef PointH
 #define PointH
+#include "RawPoint.h"
 
 class Point{
   public:
    float x;//put it in one line
    float y;
    float z;
-   
+   //this is for the fastStrategy
+   RawPoint rawPoint;
+
 	Point(float x,float y,float z){
 		this->x=x;
 		this->y=y;
 		this->z=z;
 	}
 	Point(){}
-	//virtual ~Point(){} do not use virtual because it messes up the glvertexbuff	
+	virtual ~Point(){}
 
 	void set(float x,float y,float z){
 		this->x=x;
 		this->y=y;
 		this->z=z;
 	}
+
+	RawPoint getRawPoint(){
+		rawPoint.x=this->x;
+		rawPoint.y=this->y;
+		rawPoint.z=this->z;
+		return rawPoint;
+	}
+
 	friend std::ostream& operator<<(std::ostream& os , const Point* p){
 		os << "("<<p->x<<","<< p->y<<","<< p->z<<")"<< "\n";
 	}
