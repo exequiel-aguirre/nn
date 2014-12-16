@@ -125,18 +125,15 @@ class Component {
       return getModelObject()->getBoundary()->getCollisionStatus();
     }
 
-    Point* getBoundaryMin(){
-      if(getModelObject()==NULL) return NULL;
+    Point getBoundaryMin(){      
       return getModelObject()->getBoundary()->getEnclosingBox()->getDiagonalMin();
     }
 
-    Point* getBoundaryMax(){
-      if(getModelObject()==NULL) return NULL;
+    Point getBoundaryMax(){      
       return getModelObject()->getBoundary()->getEnclosingBox()->getDiagonalMax();
     }
 
-    Point* getBoundaryLength(){
-      if(getModelObject()==NULL) return NULL;
+    Point getBoundaryLength(){      
       return getModelObject()->getBoundary()->getEnclosingBox()->getLength();
     }
 

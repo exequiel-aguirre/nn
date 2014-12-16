@@ -11,14 +11,14 @@ class CollisionDetector{
     
     bool detect(Boundary* b1,Boundary* b2){
 
-        Point* min1=b1->getEnclosingBox()->getDiagonalMin();
-        Point* max1=b1->getEnclosingBox()->getDiagonalMax();
-        Point* min2=b2->getEnclosingBox()->getDiagonalMin();
-        Point* max2=b2->getEnclosingBox()->getDiagonalMax();
+        Point min1=b1->getEnclosingBox()->getDiagonalMin();
+        Point max1=b1->getEnclosingBox()->getDiagonalMax();
+        Point min2=b2->getEnclosingBox()->getDiagonalMin();
+        Point max2=b2->getEnclosingBox()->getDiagonalMax();
         //this is the intersection segment length (how bad the crash was...)
-        float islx=std::min(max1->x,max2->x)-std::max(min1->x,min2->x);
-        float isly=std::min(max1->y,max2->y)-std::max(min1->y,min2->y);
-        float islz=std::min(max1->z,max2->z)-std::max(min1->z,min2->z);
+        float islx=std::min(max1.x,max2.x)-std::max(min1.x,min2.x);
+        float isly=std::min(max1.y,max2.y)-std::max(min1.y,min2.y);
+        float islz=std::min(max1.z,max2.z)-std::max(min1.z,min2.z);
        
         if( (islx >= 0) && (isly >= 0) && (islz >= 0) ) {
             
@@ -28,24 +28,24 @@ class CollisionDetector{
                 islx,
                 isly,
                 islz,
-                min1->x <= min2->x,
-                max1->x >= max2->x,
-                min1->y <= min2->y,
-                max1->y >= max2->y,
-                min1->z <= min2->z,
-                max1->z >= max2->z,
+                min1.x <= min2.x,
+                max1.x >= max2.x,
+                min1.y <= min2.y,
+                max1.y >= max2.y,
+                min1.z <= min2.z,
+                max1.z >= max2.z,
                 true
                 );
             b2->getCollisionStatus()->set(
                 islx,
                 isly,
                 islz,
-                min2->z <= min1->z,
-                max2->z >= max1->z,
-                min2->y <= min1->y,
-                max2->y >= max1->y,
-                min2->z <= min1->z,
-                max2->z >= max1->z,
+                min2.z <= min1.z,
+                max2.z >= max1.z,
+                min2.y <= min1.y,
+                max2.y >= max1.y,
+                min2.z <= min1.z,
+                max2.z >= max1.z,
                 true
                 );
 

@@ -122,9 +122,9 @@ class PhysicsManager{
         //rotation without slipping
         if((*it)->getRotates() && (status->getYMax() || status->getYMin())){
           Velocity* v=(*it)->getVelocity();
-          Point* r=(*it)->getBoundaryLength();
-          if(r->x!=0) v->setPhi(-(v->getZ()/r->x)*180.0f/M_PI);
-          if(r->z!=0) v->setPsi(-(v->getX()/r->z)*180.0f/M_PI);
+          Point r=(*it)->getBoundaryLength();
+          if(r.x!=0) v->setPhi(-(v->getZ()/r.x)*180.0f/M_PI);
+          if(r.z!=0) v->setPsi(-(v->getX()/r.z)*180.0f/M_PI);
         }
 
       }
