@@ -11,41 +11,42 @@
 
 class Boundary{
   private:
-    ReducedPolygon* reducedPolygon=NULL;
-    EnclosingBox* enclosingBox=NULL;
-    CollisionStatus* collisionStatus;
+    ReducedPolygon reducedPolygon;
+    EnclosingBox enclosingBox;
+    CollisionStatus collisionStatus;
   public:	
-	
-    Boundary(vector<Point*>* vertices){
-      this->reducedPolygon=new ReducedPolygon(vertices);
-      this->enclosingBox=new EnclosingBox(vertices);
-      this->collisionStatus=new CollisionStatus();
+    Boundary(){}
+    
+    Boundary(vector<Point*> vertices){
+      this->reducedPolygon= ReducedPolygon(vertices);
+      this->enclosingBox= EnclosingBox(&vertices);
+      this->collisionStatus= CollisionStatus();
   	}
     
     //TODO:find a way of avoiding sending both, map and vertices
-    Boundary(IMap* map,vector<Point*>* vertices){
-      this->reducedPolygon=new ReducedPolygon(map);
-      this->enclosingBox=new EnclosingBox(vertices); 
-      this->collisionStatus=new CollisionStatus();
+    Boundary(IMap* map,vector<Point*> vertices){      
+      this->reducedPolygon= ReducedPolygon(map);
+      this->enclosingBox= EnclosingBox(&vertices); 
+      this->collisionStatus= CollisionStatus();
     }     
 
     
 
     void updatePosition(float x,float y,float z,float phi,float theta,float psi){
-      this->reducedPolygon->updatePosition(x,y,z,phi,theta,psi);
-      this->enclosingBox->updatePosition(x,y,z,phi,theta,psi);
+      this->reducedPolygon.updatePosition(x,y,z,phi,theta,psi);
+      this->enclosingBox.updatePosition(x,y,z,phi,theta,psi);
     }
 
     ReducedPolygon* getReducedPolygon(){
-      return reducedPolygon;
+      return &reducedPolygon;
     }
 
     EnclosingBox* getEnclosingBox(){
-      return enclosingBox;
+      return &enclosingBox;
     }
 
     CollisionStatus* getCollisionStatus(){
-      return collisionStatus;
+      return &collisionStatus;
     }
     
 };

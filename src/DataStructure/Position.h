@@ -12,6 +12,15 @@ class Position {
     float psi;    
     
   public:
+        Position(){
+            this->x=0;
+            this->y=0;
+            this->z=0;
+            this->phi=0;
+            this->theta=0;
+            this->psi=0;
+        }
+        
   		Position(float x,float y,float z,float phi,float theta,float psi){  			
 			this->x=x;
 			this->y=y;

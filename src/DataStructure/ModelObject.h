@@ -11,29 +11,26 @@
 class ModelObject{
   private:
 
-    vector<Point*>* vertices;
-    vector<Point*>* uvs;
-    vector<Point*>* normals;
+    vector<Point*> vertices;
+    vector<Point*> uvs;
+    vector<Point*> normals;
 
     GLuint vertexBufferId;
     GLuint uvBufferId;
     GLuint normalBufferId;
 
-    Boundary* boundary;
+    Boundary boundary;
   	
   public:	
 	
-  	ModelObject(vector<Point*>* vertices,vector<Point*>* uvs,vector<Point*>* normals){
+  	ModelObject(vector<Point*> vertices,vector<Point*> uvs,vector<Point*> normals){
       this->vertices=vertices;
       this->uvs=uvs;
       this->normals=normals;
-      this->boundary=new Boundary(vertices);
+      this->boundary= Boundary(vertices);
   	}
 
-    ModelObject(IMap* map){
-      this->vertices=new vector<Point*>();
-      this->uvs=new vector<Point*>();
-      this->normals=new vector<Point*>();
+    ModelObject(IMap* map){      
 
       int lats=map->getLats();
       int longs=map->getLongs();
@@ -56,67 +53,67 @@ class ModelObject{
           u0=uFrom + (((uTo-uFrom)/lats) * j);          
           u1=uFrom + (((uTo-uFrom)/lats) * (j+1));
           
-          vertices->push_back(map->get(u0,v0));
-          vertices->push_back(map->get(u0,v1));                
-          vertices->push_back(map->get(u1,v0)); 
+          vertices.push_back(map->get(u0,v0));
+          vertices.push_back(map->get(u0,v1));                
+          vertices.push_back(map->get(u1,v0)); 
 
-          vertices->push_back(map->get(u1,v0)); 
-          vertices->push_back(map->get(u0,v1)); 
-          vertices->push_back(map->get(u1,v1)); 
+          vertices.push_back(map->get(u1,v0)); 
+          vertices.push_back(map->get(u0,v1)); 
+          vertices.push_back(map->get(u1,v1)); 
 
 
-          uvs->push_back(new Point(j%2,j%2,NULL));
-          uvs->push_back(new Point((j+1)%2,j%2,NULL));
-          uvs->push_back(new Point(j%2,(j+1)%2,NULL));
+          uvs.push_back(new Point(j%2,j%2,NULL));
+          uvs.push_back(new Point((j+1)%2,j%2,NULL));
+          uvs.push_back(new Point(j%2,(j+1)%2,NULL));
 
-          uvs->push_back(new Point(j%2,(j+1)%2,NULL));
-          uvs->push_back(new Point((j+1)%2,j%2,NULL));
-          uvs->push_back(new Point((j+1)%2,(j+1)%2,NULL));
+          uvs.push_back(new Point(j%2,(j+1)%2,NULL));
+          uvs.push_back(new Point((j+1)%2,j%2,NULL));
+          uvs.push_back(new Point((j+1)%2,(j+1)%2,NULL));
                     
           
-          normals->push_back(map->getNormal(u0,v0));
-          normals->push_back(map->getNormal(u0,v1));                
-          normals->push_back(map->getNormal(u1,v0)); 
+          normals.push_back(map->getNormal(u0,v0));
+          normals.push_back(map->getNormal(u0,v1));                
+          normals.push_back(map->getNormal(u1,v0)); 
 
-          normals->push_back(map->getNormal(u1,v0)); 
-          normals->push_back(map->getNormal(u0,v1)); 
-          normals->push_back(map->getNormal(u1,v1));
+          normals.push_back(map->getNormal(u1,v0)); 
+          normals.push_back(map->getNormal(u0,v1)); 
+          normals.push_back(map->getNormal(u1,v1));
         }
       }
-      this->boundary=new Boundary(map,vertices);
+      this->boundary= Boundary(map,vertices);
     }
 
     vector<Point*>* getVertices(){
-      return vertices;
+      return &vertices;
     }
 
     vector<Point*>* getUVs(){
-      return uvs;
+      return &uvs;
     }
 
     vector<Point*>* getNormals(){
-      return normals;
+      return &normals;
     }
 
 
   	Point* getVertex(int i){
-  		return (*vertices)[i];
+  		return vertices[i];
   	}
 
     Point* getUV(int i){
-      return (*uvs)[i];
+      return uvs[i];
     }
 
   	Point* getNormal(int i){
-  		return (*normals)[i];
+  		return normals[i];
   	}
 
   	int getSize(){
-  		return vertices->size();
+  		return vertices.size();
   	}
 
     bool hasUVs(){
-      return uvs->size()>0;
+      return uvs.size()>0;
     }
 
 
@@ -146,7 +143,7 @@ class ModelObject{
 
 
     Boundary* getBoundary(){
-      return boundary;
+      return &boundary;
     }
     
 };

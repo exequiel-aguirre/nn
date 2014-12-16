@@ -28,17 +28,17 @@ class Utils{
 
 	
 	static ModelObject* loadModel(const char* filename){		
-		vector< Point* >* tempVertices=new vector< Point*>();
-		vector< Point* >* vertices=new vector< Point* >();
-		vector< unsigned int >* vertexIndices=new vector< unsigned int >();
+		vector< Point* > tempVertices;
+		vector< Point* > vertices;
+		vector< unsigned int > vertexIndices;
 
-		vector< Point* >* tempUvs=new vector< Point* >();
-		vector< Point* >* uvs=new vector< Point* >();				
-		vector< unsigned int >* uvIndices=new vector< unsigned int >();
+		vector< Point* > tempUvs;
+		vector< Point* > uvs;
+		vector< unsigned int > uvIndices;
 
-		vector< Point* >* tempNormals=new vector< Point* >();
-		vector< Point* >* normals=new vector< Point* >();				
-		vector< unsigned int >* normalIndices=new vector< unsigned int >();
+		vector< Point* > tempNormals;
+		vector< Point* > normals;
+		vector< unsigned int > normalIndices;
 
 		unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];;
 		string lineHeader;		
@@ -52,17 +52,17 @@ class Utils{
 		    file >> lineHeader;		   
 		    if ( lineHeader=="v"){
 			    file >> x >> y >> z;			    
-			    tempVertices->push_back(new Point(x,y,z));
+			    tempVertices.push_back(new Point(x,y,z));
 			}
 			else if(lineHeader== "vt")
 			{
 				file >> x >> y;
-    			tempUvs->push_back(new Point(x,y,NULL));
+    			tempUvs.push_back(new Point(x,y,NULL));
 			}
 			else if (lineHeader=="vn")
 			{
 			    file >> x >> y >> z;
-			    tempNormals->push_back(new Point(x,y,z));
+			    tempNormals.push_back(new Point(x,y,z));
 			}
 			else if (lineHeader=="f")
 			{			
@@ -84,17 +84,17 @@ class Utils{
 					normalIndex[i]=atoi(s.c_str());				
 				}
 				
-			    vertexIndices->push_back(vertexIndex[0]);
-			    vertexIndices->push_back(vertexIndex[1]);
-			    vertexIndices->push_back(vertexIndex[2]);
+			    vertexIndices.push_back(vertexIndex[0]);
+			    vertexIndices.push_back(vertexIndex[1]);
+			    vertexIndices.push_back(vertexIndex[2]);
 				
-				uvIndices->push_back(uvIndex[0]);
-			    uvIndices->push_back(uvIndex[1]);
-			    uvIndices->push_back(uvIndex[2]);
+				uvIndices.push_back(uvIndex[0]);
+			    uvIndices.push_back(uvIndex[1]);
+			    uvIndices.push_back(uvIndex[2]);
 
-			    normalIndices->push_back(normalIndex[0]);
-			    normalIndices->push_back(normalIndex[1]);
-			    normalIndices->push_back(normalIndex[2]);
+			    normalIndices.push_back(normalIndex[0]);
+			    normalIndices.push_back(normalIndex[1]);
+			    normalIndices.push_back(normalIndex[2]);
 			}
 
 			//free the lineheader.
@@ -102,26 +102,26 @@ class Utils{
 		}
 		file.close();
 		// For each vertex of each triangle
-		for( unsigned int i=0; i<vertexIndices->size(); i++ )
+		for( unsigned int i=0; i<vertexIndices.size(); i++ )
 		{
-			unsigned int vertexIndex = (*vertexIndices)[i];
-			Point* vertex = (*tempVertices)[ vertexIndex-1 ];
-			vertices->push_back(vertex);
+			unsigned int vertexIndex = vertexIndices[i];
+			Point* vertex = tempVertices[ vertexIndex-1 ];
+			vertices.push_back(vertex);
 		}
 
-		for( unsigned int i=0; i<uvIndices->size(); i++ )
+		for( unsigned int i=0; i<uvIndices.size(); i++ )
 		{
-			if(tempUvs->size()==0) break;//There are no textures
-			unsigned int uvIndex = (*uvIndices)[i];
-			Point* uv = (*tempUvs)[ uvIndex-1 ];
-			uvs->push_back(uv);
+			if(tempUvs.size()==0) break;//There are no textures
+			unsigned int uvIndex = uvIndices[i];
+			Point* uv = tempUvs[ uvIndex-1 ];
+			uvs.push_back(uv);
 		}
 
-		for( unsigned int i=0; i<normalIndices->size(); i++ )
+		for( unsigned int i=0; i<normalIndices.size(); i++ )
 		{
-			unsigned int normalIndex = (*normalIndices)[i];
-			Point* normal = (*tempNormals)[ normalIndex-1 ];
-			normals->push_back(normal);
+			unsigned int normalIndex = normalIndices[i];
+			Point* normal = tempNormals[ normalIndex-1 ];
+			normals.push_back(normal);
 		}
 		
 		return  new ModelObject(vertices,uvs,normals);

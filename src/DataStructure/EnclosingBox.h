@@ -14,7 +14,7 @@ class EnclosingBox{
     Point* diagonalMin=NULL;
     Point* diagonalMax=NULL;
   public:	
-	
+    EnclosingBox(){}
     EnclosingBox(vector<Point*>* vertices){
       this->position=new Position(0.0f,0.0f,0.0f);
       buildBoxVertices(vertices);
