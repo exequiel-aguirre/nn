@@ -27,7 +27,7 @@ class Utils{
 	}
 
 	
-	static ModelObject* loadModel(const char* filename){		
+	static ModelObject loadModel(const char* filename){
 		vector< Point* > tempVertices;
 		vector< Point* > vertices;
 		vector< unsigned int > vertexIndices;
@@ -124,7 +124,7 @@ class Utils{
 			normals.push_back(normal);
 		}
 		
-		return  new ModelObject(vertices,uvs,normals);
+		return  ModelObject(vertices,uvs,normals);
 		
 	}
 

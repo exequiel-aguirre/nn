@@ -11,16 +11,15 @@
 
 class AnimationStrategy: public TextureStrategy {  
   protected:	
-	vector<ModelObject*>* modelObjects;
-	vector<ModelObject*>::iterator currentModelObject;
+	vector<ModelObject> modelObjects;
+	vector<ModelObject>::iterator currentModelObject;
 	unsigned int frames=0;
 
   public:
 	  AnimationStrategy(char* modelFilename,char* textureFilename):TextureStrategy(modelFilename,textureFilename){		
-		modelObjects=new vector<ModelObject*>();		
-	  	modelObjects->push_back(this->modelObject);
-	  	this->loadAnimation(modelFilename);	  	
-    	currentModelObject=modelObjects->begin();    	
+		modelObjects.push_back(this->modelObject);
+		this->loadAnimation(modelFilename);
+		currentModelObject=modelObjects.begin();
 	 }		
 
     virtual ~AnimationStrategy(){}
@@ -30,8 +29,8 @@ class AnimationStrategy: public TextureStrategy {
 		if(frames>2){
 			frames=frames%2;
 			currentModelObject++;    			
-			if(currentModelObject==modelObjects->end()){
-				currentModelObject=modelObjects->begin();
+			if(currentModelObject==modelObjects.end()){
+				currentModelObject=modelObjects.begin();
 			}
     	}
     	//we set the current model object and ask the parent strategy to render normally
@@ -51,7 +50,7 @@ class AnimationStrategy: public TextureStrategy {
 	  		std::ifstream f(tmp.str().c_str());
 		    if (f.good()) {
 		        f.close();
-		        modelObjects->push_back(this->loadModel(tmp.str().c_str()));
+		        modelObjects.push_back(this->loadModel(tmp.str().c_str()));
 			}
 			else
 			{
@@ -59,7 +58,7 @@ class AnimationStrategy: public TextureStrategy {
 				break;
 			}
 		}
-		return modelObjects->size();
+		return modelObjects.size();
     }
     
 

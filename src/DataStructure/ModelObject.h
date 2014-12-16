@@ -22,7 +22,8 @@ class ModelObject{
     Boundary boundary;
   	
   public:	
-	
+	  ModelObject(){}
+
   	ModelObject(vector<Point*> vertices,vector<Point*> uvs,vector<Point*> normals){
       this->vertices=vertices;
       this->uvs=uvs;

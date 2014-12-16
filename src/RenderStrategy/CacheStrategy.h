@@ -8,12 +8,11 @@
 
 class CacheStrategy :public IRenderStrategy {  
   
-  protected:    
-    IMap* map;
+  protected:
     GLenum GLMode;
-    ModelObject* modelObject;    
+    ModelObject modelObject;
   public:
-  CacheStrategy(ModelObject* modelObject,GLenum GLMode){        
+  CacheStrategy(ModelObject modelObject,GLenum GLMode){
         this->GLMode=GLMode;        
         this->modelObject=modelObject;
   }
@@ -26,15 +25,15 @@ class CacheStrategy :public IRenderStrategy {
     void render(){
       Point* point;
       glBegin(GLMode);        
-          for(int i=0;i<modelObject->getSize();i++)
+          for(int i=0;i<modelObject.getSize();i++)
           {
-            if(modelObject->hasUVs()){
-              point=modelObject->getUV(i);
+            if(modelObject.hasUVs()){
+              point=modelObject.getUV(i);
               glTexCoord2f(point->x,point->y);
             }
-            point=modelObject->getNormal(i);
+            point=modelObject.getNormal(i);
             glNormal3f(point->x,point->y,point->z);
-            point=modelObject->getVertex(i);
+            point=modelObject.getVertex(i);
             glVertex3f(point->x,point->y,point->z);
           }     
         
@@ -42,15 +41,15 @@ class CacheStrategy :public IRenderStrategy {
     }
 
     ModelObject*  getModelObject(){
-      return this->modelObject;
+      return &modelObject;
     }  
 
-    virtual ModelObject*  loadModel(const char* modelFilename){
+    virtual ModelObject  loadModel(const char* modelFilename){
       return Utils::loadModel(modelFilename);
     }  
 
-    virtual ModelObject*  loadModel(IMap& map){
-      return new ModelObject(map);
+    virtual ModelObject  loadModel(IMap& map){
+      return ModelObject(map);
     }
 
 
