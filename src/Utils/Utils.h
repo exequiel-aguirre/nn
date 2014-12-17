@@ -28,16 +28,16 @@ class Utils{
 
 	
 	static ModelObject loadModel(const char* filename){
-		vector< Point* > tempVertices;
-		vector< Point* > vertices;
+		vector< Point > tempVertices;
+		vector< Point > vertices;
 		vector< unsigned int > vertexIndices;
 
-		vector< Point* > tempUvs;
-		vector< Point* > uvs;
+		vector< Point > tempUvs;
+		vector< Point > uvs;
 		vector< unsigned int > uvIndices;
 
-		vector< Point* > tempNormals;
-		vector< Point* > normals;
+		vector< Point > tempNormals;
+		vector< Point > normals;
 		vector< unsigned int > normalIndices;
 
 		unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];;
@@ -52,17 +52,17 @@ class Utils{
 		    file >> lineHeader;		   
 		    if ( lineHeader=="v"){
 			    file >> x >> y >> z;			    
-			    tempVertices.push_back(new Point(x,y,z));
+			    tempVertices.push_back( Point(x,y,z));
 			}
 			else if(lineHeader== "vt")
 			{
 				file >> x >> y;
-    			tempUvs.push_back(new Point(x,y,NULL));
+				tempUvs.push_back( Point(x,y,NULL));
 			}
 			else if (lineHeader=="vn")
 			{
 			    file >> x >> y >> z;
-			    tempNormals.push_back(new Point(x,y,z));
+			    tempNormals.push_back( Point(x,y,z));
 			}
 			else if (lineHeader=="f")
 			{			
@@ -105,7 +105,7 @@ class Utils{
 		for( unsigned int i=0; i<vertexIndices.size(); i++ )
 		{
 			unsigned int vertexIndex = vertexIndices[i];
-			Point* vertex = tempVertices[ vertexIndex-1 ];
+			Point vertex = tempVertices[ vertexIndex-1 ];
 			vertices.push_back(vertex);
 		}
 
@@ -113,14 +113,14 @@ class Utils{
 		{
 			if(tempUvs.size()==0) break;//There are no textures
 			unsigned int uvIndex = uvIndices[i];
-			Point* uv = tempUvs[ uvIndex-1 ];
+			Point uv = tempUvs[ uvIndex-1 ];
 			uvs.push_back(uv);
 		}
 
 		for( unsigned int i=0; i<normalIndices.size(); i++ )
 		{
 			unsigned int normalIndex = normalIndices[i];
-			Point* normal = tempNormals[ normalIndex-1 ];
+			Point normal = tempNormals[ normalIndex-1 ];
 			normals.push_back(normal);
 		}
 		
@@ -128,21 +128,21 @@ class Utils{
 		
 	}
 
-	static Point* cross(Point* p1,Point* p2){
+	static Point cross(Point p1,Point p2){
 		//y1 z2-z1 y2,z1 x2-x1 z2,x1 y2-y1 x2
-		float x1=p1->x;
-		float y1=p1->y;
-		float z1=p1->z;
-		float x2=p2->x;
-		float y2=p2->y;
-		float z2=p2->z;
-		return new Point((y1*z2)-(z1*y2),(z1*x2)-(x1*z2),(x1*y2)-(y1*x2));
+		float x1=p1.x;
+		float y1=p1.y;
+		float z1=p1.z;
+		float x2=p2.x;
+		float y2=p2.y;
+		float z2=p2.z;
+		return Point((y1*z2)-(z1*y2),(z1*x2)-(x1*z2),(x1*y2)-(y1*x2));
 	}
 	
-	static Point* normalize(Point* p){
-		float norm=sqrt((p->x * p->x) + (p->y * p->y) + (p->z * p->z));
+	static Point normalize(Point p){
+		float norm=sqrt((p.x * p.x) + (p.y * p.y) + (p.z * p.z));
 		if(norm==0.0f) return p;
-		return new Point(p->x/norm,p->y/norm,p->z/norm);
+		return Point(p.x/norm,p.y/norm,p.z/norm);
 	}	
 
 	static float sgn(float value){

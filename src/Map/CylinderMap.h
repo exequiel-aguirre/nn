@@ -16,23 +16,23 @@ class CylinderMap :public IMap {
 
     virtual ~CylinderMap(){}
             
-    Point* get(float theta,float v){
+    Point get(float theta,float v){
         float x=r*sin(theta);
         float y=v;
         float z=r*cos(theta);
-        return new Point(x,y,z);
+        return Point(x,y,z);
     }
 
-    Point* getNormal(float theta,float v){
+    Point getNormal(float theta,float v){
         float x_theta=r*cos(theta);
         float y_theta=0.0f;
         float z_theta=r*-sin(theta);
-        Point* p1=new Point(x_theta,y_theta,z_theta);
+        Point p1= Point(x_theta,y_theta,z_theta);
 
         float x_v=0.0f;
         float y_v=1.0f;
         float z_v=0.0f;
-        Point* p2=new Point(x_v,y_v,z_v);
+        Point p2= Point(x_v,y_v,z_v);
         
 
         return Utils::normalize(Utils::cross(p2,p1));

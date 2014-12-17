@@ -70,11 +70,11 @@ class FastStrategy :public CacheStrategy {
         vector<RawPoint> uvs;
         vector<RawPoint> normals;
         for(int i=0;i<modelObject.getSize();i++){
-          vertices.push_back(modelObject.getVertex(i)->getRawPoint());
+          vertices.push_back(modelObject.getVertex(i).getRawPoint());
           if(modelObject.hasUVs()){
-            uvs.push_back(modelObject.getUV(i)->getRawPoint());
+            uvs.push_back(modelObject.getUV(i).getRawPoint());
             }
-          normals.push_back(modelObject.getNormal(i)->getRawPoint());
+          normals.push_back(modelObject.getNormal(i).getRawPoint());
         }
 
         glGenBuffers(1, &vertexBuffer);         

@@ -11,9 +11,9 @@
 class ModelObject{
   private:
 
-    vector<Point*> vertices;
-    vector<Point*> uvs;
-    vector<Point*> normals;
+    vector<Point> vertices;
+    vector<Point> uvs;
+    vector<Point> normals;
 
     GLuint vertexBufferId;
     GLuint uvBufferId;
@@ -24,7 +24,7 @@ class ModelObject{
   public:	
 	  ModelObject(){}
 
-  	ModelObject(vector<Point*> vertices,vector<Point*> uvs,vector<Point*> normals){
+  	ModelObject(vector<Point> vertices,vector<Point> uvs,vector<Point> normals){
       this->vertices=vertices;
       this->uvs=uvs;
       this->normals=normals;
@@ -63,13 +63,13 @@ class ModelObject{
           vertices.push_back(map.get(u1,v1));
 
 
-          uvs.push_back(new Point(j%2,j%2,NULL));
-          uvs.push_back(new Point((j+1)%2,j%2,NULL));
-          uvs.push_back(new Point(j%2,(j+1)%2,NULL));
+          uvs.push_back( Point(j%2,j%2,NULL));
+          uvs.push_back( Point((j+1)%2,j%2,NULL));
+          uvs.push_back( Point(j%2,(j+1)%2,NULL));
 
-          uvs.push_back(new Point(j%2,(j+1)%2,NULL));
-          uvs.push_back(new Point((j+1)%2,j%2,NULL));
-          uvs.push_back(new Point((j+1)%2,(j+1)%2,NULL));
+          uvs.push_back( Point(j%2,(j+1)%2,NULL));
+          uvs.push_back( Point((j+1)%2,j%2,NULL));
+          uvs.push_back( Point((j+1)%2,(j+1)%2,NULL));
                     
           
           normals.push_back(map.getNormal(u0,v0));
@@ -84,28 +84,28 @@ class ModelObject{
       this->boundary= Boundary(map,vertices);
     }
 
-    vector<Point*>* getVertices(){
+    vector<Point>* getVertices(){
       return &vertices;
     }
 
-    vector<Point*>* getUVs(){
+    vector<Point>* getUVs(){
       return &uvs;
     }
 
-    vector<Point*>* getNormals(){
+    vector<Point>* getNormals(){
       return &normals;
     }
 
 
-  	Point* getVertex(int i){
+  	Point getVertex(int i){
   		return vertices[i];
   	}
 
-    Point* getUV(int i){
+    Point getUV(int i){
       return uvs[i];
     }
 
-  	Point* getNormal(int i){
+  	Point getNormal(int i){
   		return normals[i];
   	}
 

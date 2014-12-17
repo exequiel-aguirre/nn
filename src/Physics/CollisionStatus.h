@@ -19,8 +19,8 @@ class CollisionStatus{
     //collided in this frame
     bool collided=false;
     //point of impact and normal
-    Point* impactPoint=NULL;
-    Point* impactNormal=NULL;
+    Point impactPoint;
+    Point impactNormal;
     //distance to the other object in this frame
     float distance=10000;
     //the other component's mass
@@ -42,8 +42,6 @@ class CollisionStatus{
         yMax=false;
         zMin=false;
         zMax=false;
-        impactPoint=new Point(0.0f,0.0f,0.0f);
-        impactNormal=new Point(0.0f,0.0f,0.0f);
         collided=false;
         distance=10000;
         otherMass=0.0f;
@@ -96,19 +94,19 @@ class CollisionStatus{
         return this->zMax;
     }
 
-    CollisionStatus* setImpactPoint(Point* impactPoint){
-        this->impactPoint->set(impactPoint->x,impactPoint->y,impactPoint->z);
+    CollisionStatus* setImpactPoint(Point impactPoint){
+        this->impactPoint.set(impactPoint.x,impactPoint.y,impactPoint.z);
         return this;
     }
-    Point* getImpactPoint(){
+    Point getImpactPoint(){
         return impactPoint;
     }
 
-    CollisionStatus* setImpactNormal(Point* impactNormal){
-        this->impactNormal->set(impactNormal->x,impactNormal->y,impactNormal->z);
+    CollisionStatus* setImpactNormal(Point impactNormal){
+        this->impactNormal.set(impactNormal.x,impactNormal.y,impactNormal.z);
         return this;
     }
-    Point* getImpactNormal(){
+    Point getImpactNormal(){
         return impactNormal;
     }
 

@@ -23,18 +23,18 @@ class CacheStrategy :public IRenderStrategy {
     virtual ~CacheStrategy(){}    
     
     void render(){
-      Point* point;
+      Point point;
       glBegin(GLMode);        
           for(int i=0;i<modelObject.getSize();i++)
           {
             if(modelObject.hasUVs()){
               point=modelObject.getUV(i);
-              glTexCoord2f(point->x,point->y);
+              glTexCoord2f(point.x,point.y);
             }
             point=modelObject.getNormal(i);
-            glNormal3f(point->x,point->y,point->z);
+            glNormal3f(point.x,point.y,point.z);
             point=modelObject.getVertex(i);
-            glVertex3f(point->x,point->y,point->z);
+            glVertex3f(point.x,point.y,point.z);
           }     
         
       glEnd();

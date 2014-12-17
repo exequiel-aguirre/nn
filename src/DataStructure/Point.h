@@ -47,8 +47,8 @@ class Point{
 		return false;
 	}
 
-	Point* rotate(float phi,float theta,float psi){
-		if(phi==0 && theta==0 && psi==0) return this;
+	Point rotate(float phi,float theta,float psi){
+		if(phi==0 && theta==0 && psi==0) return *this;
 		float xr,yr,zr;
 		phi=phi*M_PI/180.0f;
 		theta=theta*M_PI/180.0f;
@@ -75,32 +75,32 @@ class Point{
 		y=yr;
 		z=zr;
 
-		return this;
+		return *this;
 	}
-	Point* translate(float x,float y,float z){
+	Point translate(float x,float y,float z){
 		this->x+=x;
 		this->y+=y;
 		this->z+=z;
 
-		return this;
+		return *this;
 	}
-	Point* crossCopy(Point* p){
+	Point crossCopy(Point p){
 		//y1 z2-z1 y2,z1 x2-x1 z2,x1 y2-y1 x2
 		float x1=this->x;
 		float y1=this->y;
 		float z1=this->z;
-		float x2=p->x;
-		float y2=p->y;
-		float z2=p->z;
-		return new Point((y1*z2)-(z1*y2),(z1*x2)-(x1*z2),(x1*y2)-(y1*x2));
+		float x2=p.x;
+		float y2=p.y;
+		float z2=p.z;
+		return Point((y1*z2)-(z1*y2),(z1*x2)-(x1*z2),(x1*y2)-(y1*x2));
 	}
-	Point* normalize(){
+	Point normalize(){
 		float norm=sqrt((x*x) + (y*y) + (z*z));
-		if(norm==0.0f) return this;
+		if(norm==0.0f) return *this;
 		x=x/norm;
 		y=y/norm;
 		z=z/norm;
-		return this;
+		return *this;
 	}
 };
 

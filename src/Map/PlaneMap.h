@@ -20,23 +20,23 @@ class PlaneMap :public IMap {
 
     virtual ~PlaneMap(){}
     
-   Point* get(float u,float v){
+   Point get(float u,float v){
         float x=u;
         float y=0.0f;
         float z=v;
-        return new Point(x,y,z);
+        return Point(x,y,z);
     }
  
- Point* getNormal(float u,float v){
+ Point getNormal(float u,float v){
         float x_u=1.0f;
         float y_u=0.0;
         float z_u=0.0f;
-        Point* p1=new Point(x_u,y_u,z_u);
+        Point p1= Point(x_u,y_u,z_u);
         
         float x_v=0.0f;
         float y_v=0.0f;
         float z_v=1.0f;
-        Point* p2=new Point(x_v,y_v,z_v);
+        Point p2= Point(x_v,y_v,z_v);
                 
         return Utils::normalize(Utils::cross(p2,p1));
     }

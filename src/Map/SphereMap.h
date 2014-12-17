@@ -15,23 +15,23 @@ class SphereMap :public IMap {
     virtual ~SphereMap(){}
     
         
-    Point* get(float theta,float phi){
+    Point get(float theta,float phi){
         float x=r*cos(theta)*sin(phi);
         float y=r*sin(theta)*sin(phi);
         float z=r*cos(phi);
-        return new Point(x,y,z);
+        return Point(x,y,z);
     }
 
-    Point* getNormal(float theta,float phi){
+    Point getNormal(float theta,float phi){
         float x_theta=r*-sin(theta)*sin(phi);
         float y_theta=r*cos(theta)*sin(phi);
         float z_theta=0.0f;
-        Point* p1=new Point(x_theta,y_theta,z_theta);
+        Point p1= Point(x_theta,y_theta,z_theta);
         
         float x_phi=r*cos(theta)*cos(phi);
         float y_phi=r*sin(theta)*cos(phi);
         float z_phi=r*-sin(phi);
-        Point* p2=new Point(x_phi,y_phi,z_phi);
+        Point p2= Point(x_phi,y_phi,z_phi);
 
         return Utils::normalize(Utils::cross(p2,p1));
     }

@@ -12,80 +12,80 @@ class ReducedPolygon{
   private:
     int MAX_LATS_LONGS=3;
     //TODO:remove the following 2 properties after use
-    vector<Point*> vertices;
-    vector<Point*> indexedVertices;
-    vector<std::pair<Point*,Point*>> trianglePlanes;
+    vector<Point> vertices;
+    vector<Point> indexedVertices;
+    vector<std::pair<Point,Point>> trianglePlanes;
     Position position;
-    vector<Point*> positionedVertices;
-    vector<Point*> positionedIndexedVertices;
+    vector<Point> positionedVertices;
+    vector<Point> positionedIndexedVertices;
     //TODO:find a better name. pair<point,normal>
     //here we are using the theorem of rotational invariance of cross product
-    vector<std::pair<Point*,Point*>> positionedTrianglePlanes;
+    vector<std::pair<Point,Point>> positionedTrianglePlanes;
   public:	
     ReducedPolygon(){}
 	 //TODO:here put this->vertices=new vector<>().(makes no sense to do the same as bounding box)
-    ReducedPolygon(vector<Point*> vertices){
+    ReducedPolygon(vector<Point> vertices){
       buildBoxVertices(vertices);
       buildIndexedVertices();
       buildTrianglePlanes();      
       buildPositionedVertices();
   	}
     //TODO:code duplication. Same function in ModelObject
-    void buildBoxVertices(vector<Point*> moVertices){      
+    void buildBoxVertices(vector<Point> moVertices){
       auto minMaxX=std::minmax_element(moVertices.begin(),moVertices.end(),
-        [](Point* p1, Point* p2) {
-              return p1->x < p2->x;
+        [](Point p1, Point p2) {
+              return p1.x < p2.x;
           });
       auto minMaxY=std::minmax_element(moVertices.begin(),moVertices.end(),
-        [](Point* p1, Point* p2) {
-              return p1->y < p2->y;
+        [](Point p1, Point p2) {
+              return p1.y < p2.y;
           });
       auto minMaxZ=std::minmax_element(moVertices.begin(),moVertices.end(),
-        [](Point* p1, Point* p2) {
-              return p1->z < p2->z;
+        [](Point p1, Point p2) {
+              return p1.z < p2.z;
           });
-      Point* boundaryMin=new Point((*minMaxX.first)->x,(*minMaxY.first)->y,(*minMaxZ.first)->z);
-      Point* boundaryMax=new Point((*minMaxX.second)->x,(*minMaxY.second)->y,(*minMaxZ.second)->z);
+      Point boundaryMin= Point((*minMaxX.first).x,(*minMaxY.first).y,(*minMaxZ.first).z);
+      Point boundaryMax= Point((*minMaxX.second).x,(*minMaxY.second).y,(*minMaxZ.second).z);
 
       //front rectangle
-      vertices.push_back(new Point(boundaryMin->x,boundaryMin->y,boundaryMin->z));
-      vertices.push_back(new Point(boundaryMax->x,boundaryMin->y,boundaryMin->z));
+      vertices.push_back( Point(boundaryMin.x,boundaryMin.y,boundaryMin.z));
+      vertices.push_back(Point(boundaryMax.x,boundaryMin.y,boundaryMin.z));
 
-      vertices.push_back(new Point(boundaryMax->x,boundaryMin->y,boundaryMin->z));
-      vertices.push_back(new Point(boundaryMax->x,boundaryMax->y,boundaryMin->z));
+      vertices.push_back(Point(boundaryMax.x,boundaryMin.y,boundaryMin.z));
+      vertices.push_back( Point(boundaryMax.x,boundaryMax.y,boundaryMin.z));
 
-      vertices.push_back(new Point(boundaryMax->x,boundaryMax->y,boundaryMin->z));
-      vertices.push_back(new Point(boundaryMin->x,boundaryMax->y,boundaryMin->z));
+      vertices.push_back( Point(boundaryMax.x,boundaryMax.y,boundaryMin.z));
+      vertices.push_back( Point(boundaryMin.x,boundaryMax.y,boundaryMin.z));
 
-      vertices.push_back(new Point(boundaryMin->x,boundaryMax->y,boundaryMin->z));
-      vertices.push_back(new Point(boundaryMin->x,boundaryMin->y,boundaryMin->z));
+      vertices.push_back( Point(boundaryMin.x,boundaryMax.y,boundaryMin.z));
+      vertices.push_back( Point(boundaryMin.x,boundaryMin.y,boundaryMin.z));
 
 
       //back rectangle
-      vertices.push_back(new Point(boundaryMin->x,boundaryMin->y,boundaryMax->z));
-      vertices.push_back(new Point(boundaryMax->x,boundaryMin->y,boundaryMax->z));
+      vertices.push_back( Point(boundaryMin.x,boundaryMin.y,boundaryMax.z));
+      vertices.push_back( Point(boundaryMax.x,boundaryMin.y,boundaryMax.z));
 
-      vertices.push_back(new Point(boundaryMax->x,boundaryMin->y,boundaryMax->z));
-      vertices.push_back(new Point(boundaryMax->x,boundaryMax->y,boundaryMax->z));
+      vertices.push_back( Point(boundaryMax.x,boundaryMin.y,boundaryMax.z));
+      vertices.push_back( Point(boundaryMax.x,boundaryMax.y,boundaryMax.z));
 
-      vertices.push_back(new Point(boundaryMax->x,boundaryMax->y,boundaryMax->z));
-      vertices.push_back(new Point(boundaryMin->x,boundaryMax->y,boundaryMax->z));
+      vertices.push_back( Point(boundaryMax.x,boundaryMax.y,boundaryMax.z));
+      vertices.push_back( Point(boundaryMin.x,boundaryMax.y,boundaryMax.z));
 
-      vertices.push_back(new Point(boundaryMin->x,boundaryMax->y,boundaryMax->z));
-      vertices.push_back(new Point(boundaryMin->x,boundaryMin->y,boundaryMax->z));
+      vertices.push_back( Point(boundaryMin.x,boundaryMax.y,boundaryMax.z));
+      vertices.push_back( Point(boundaryMin.x,boundaryMin.y,boundaryMax.z));
 
       //depth rectangle
-      vertices.push_back(new Point(boundaryMin->x,boundaryMin->y,boundaryMin->z));
-      vertices.push_back(new Point(boundaryMin->x,boundaryMin->y,boundaryMax->z));
+      vertices.push_back( Point(boundaryMin.x,boundaryMin.y,boundaryMin.z));
+      vertices.push_back( Point(boundaryMin.x,boundaryMin.y,boundaryMax.z));
 
-      vertices.push_back(new Point(boundaryMax->x,boundaryMin->y,boundaryMin->z));
-      vertices.push_back(new Point(boundaryMax->x,boundaryMin->y,boundaryMax->z));
+      vertices.push_back( Point(boundaryMax.x,boundaryMin.y,boundaryMin.z));
+      vertices.push_back( Point(boundaryMax.x,boundaryMin.y,boundaryMax.z));
 
-      vertices.push_back(new Point(boundaryMax->x,boundaryMax->y,boundaryMin->z));
-      vertices.push_back(new Point(boundaryMax->x,boundaryMax->y,boundaryMax->z));
+      vertices.push_back( Point(boundaryMax.x,boundaryMax.y,boundaryMin.z));
+      vertices.push_back( Point(boundaryMax.x,boundaryMax.y,boundaryMax.z));
 
-      vertices.push_back(new Point(boundaryMin->x,boundaryMax->y,boundaryMin->z));
-      vertices.push_back(new Point(boundaryMin->x,boundaryMax->y,boundaryMax->z));
+      vertices.push_back( Point(boundaryMin.x,boundaryMax.y,boundaryMin.z));
+      vertices.push_back( Point(boundaryMin.x,boundaryMax.y,boundaryMax.z));
 
     }
     ReducedPolygon(IMap& map){
@@ -135,9 +135,9 @@ class ReducedPolygon{
     void buildIndexedVertices(){      
       //convert all vertices to Point instances
       vector<Point> tmpVertices;
-      vector<Point*>::iterator it;
+      vector<Point>::iterator it;
       for(it=this->vertices.begin();it!=this->vertices.end();it++){
-        tmpVertices.push_back(Point((*it)->x,(*it)->y,(*it)->z));
+        tmpVertices.push_back(Point((*it).x,(*it).y,(*it).z));
       }
 
       //remove duplicated points
@@ -147,48 +147,48 @@ class ReducedPolygon{
       //make the indexedVertices      
       vector<Point>::iterator iti;
       for(iti=tmpVertices.begin();iti!=tmpVertices.end();iti++){        
-          this->indexedVertices.push_back(new Point((*iti).x,(*iti).y,(*iti).z));
+          this->indexedVertices.push_back( Point((*iti).x,(*iti).y,(*iti).z));
       }
     }
 
     void buildTrianglePlanes(){
       
-      vector<Point*>::iterator it;
+      vector<Point>::iterator it;
       for(it=vertices.begin();it!=vertices.end();it+=3){
           //get the vertices of the triangle
-          Point* v1=(*it);
-          Point* v2=*(it+1);
-          Point* v3=*(it+2);
+          Point v1=(*it);
+          Point v2=*(it+1);
+          Point v3=*(it+2);
           //get the normal vector
-          Point* v21=new Point(v2->x-v1->x,v2->y-v1->y,v2->z-v1->z);
-          Point* v31=new Point(v3->x-v1->x,v3->y-v1->y,v3->z-v1->z);
-          Point* n=v21->crossCopy(v31);
-          n->normalize();
+          Point v21=Point(v2.x-v1.x,v2.y-v1.y,v2.z-v1.z);
+          Point v31= Point(v3.x-v1.x,v3.y-v1.y,v3.z-v1.z);
+          Point n=v21.crossCopy(v31);
+          n.normalize();
           //get the x0 for the plane
-          Point* x0=new Point(v1->x,v1->y,v1->z);
+          Point x0=Point(v1.x,v1.y,v1.z);
           //add the pair that define the plane for this triangle
           this->trianglePlanes.push_back(std::make_pair(x0,n));
       }
     }
     void buildPositionedVertices(){
       
-      vector<Point*>::iterator it;
+      vector<Point>::iterator it;
       for(it=vertices.begin();it!=vertices.end();it++){
-          Point* p=new Point((*it)->x,(*it)->y,(*it)->z);
+          Point p= Point((*it).x,(*it).y,(*it).z);
           this->positionedVertices.push_back(transform(p));
       }
 
       
       for(it=indexedVertices.begin();it!=indexedVertices.end();it++){
-          Point* p=new Point((*it)->x,(*it)->y,(*it)->z);
+          Point p=Point((*it).x,(*it).y,(*it).z);
           this->positionedIndexedVertices.push_back(transform(p));
       }
 
-      vector<std::pair<Point*,Point*>>::iterator itp;
+      vector<std::pair<Point,Point>>::iterator itp;
       for(itp=trianglePlanes.begin();itp!=trianglePlanes.end();itp++){
-          Point* x0=new Point((*itp).first->x,(*itp).first->y,(*itp).first->z);
-          Point* n=new Point((*itp).second->x,(*itp).second->y,(*itp).second->z);
-          this->positionedTrianglePlanes.push_back(std::make_pair(transform(x0),n->rotate(position.getPhi(),position.getTheta(),position.getPsi())));//the normal needs just to rotate,no translate          
+          Point x0= Point((*itp).first.x,(*itp).first.y,(*itp).first.z);
+          Point n= Point((*itp).second.x,(*itp).second.y,(*itp).second.z);
+          this->positionedTrianglePlanes.push_back(std::make_pair(transform(x0),n.rotate(position.getPhi(),position.getTheta(),position.getPsi())));//the normal needs just to rotate,no translate          
       }
     }
 
@@ -200,50 +200,50 @@ class ReducedPolygon{
 
     void updatePositionedVertices(){
       for(int i=0;i<positionedVertices.size();i++){
-        Point* p=vertices[i];
-        Point* pp=positionedVertices[i];
-        pp->set(p->x,p->y,p->z);
+        Point p=vertices[i];
+        Point pp=positionedVertices[i];
+        pp.set(p.x,p.y,p.z);
         transform(pp);
       }
 
       for(int i=0;i<positionedIndexedVertices.size();i++){
-        Point* p=indexedVertices[i];
-        Point* pp=positionedIndexedVertices[i];
-        pp->set(p->x,p->y,p->z);
+        Point p=indexedVertices[i];
+        Point pp=positionedIndexedVertices[i];
+        pp.set(p.x,p.y,p.z);
         transform(pp);
       }
 
       for(int i=0;i<positionedTrianglePlanes.size();i++){
-        std::pair<Point*,Point*> p=trianglePlanes[i];
-        Point* x0=p.first;
-        Point* n=p.second;
-        std::pair<Point*,Point*> pp=positionedTrianglePlanes[i];
-        Point* px0=pp.first;
-        Point* pn=pp.second;
-        px0->set(x0->x,x0->y,x0->z);
-        pn->set(n->x,n->y,n->z);
+        std::pair<Point,Point> p=trianglePlanes[i];
+        Point x0=p.first;
+        Point n=p.second;
+        std::pair<Point,Point> pp=positionedTrianglePlanes[i];
+        Point px0=pp.first;
+        Point pn=pp.second;
+        px0.set(x0.x,x0.y,x0.z);
+        pn.set(n.x,n.y,n.z);
         transform(px0);
-        pn->rotate(position.getPhi(),position.getTheta(),position.getPsi());
+        pn.rotate(position.getPhi(),position.getTheta(),position.getPsi());
       }
     }
 
-    Point* transform(Point* p){
-      p->rotate(position.getPhi(),position.getTheta(),position.getPsi());
-      p->translate(position.getX(),position.getY(),position.getZ());
+    Point transform(Point p){
+      p.rotate(position.getPhi(),position.getTheta(),position.getPsi());
+      p.translate(position.getX(),position.getY(),position.getZ());
       return p;
     }
 
 
-    vector<Point*>* getPositionedVertices(){
+    vector<Point>* getPositionedVertices(){
       return &positionedVertices;
     }
 
     //TODO:change name?
-    vector<Point*>* getPositionedIndexedVertices(){
+    vector<Point>* getPositionedIndexedVertices(){
       return &positionedIndexedVertices;
     }
     
-    vector<std::pair<Point*,Point*>>* getPositionedTrianglePlanes(){
+    vector<std::pair<Point,Point>>* getPositionedTrianglePlanes(){
       return &positionedTrianglePlanes;
     }
     

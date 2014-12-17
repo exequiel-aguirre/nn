@@ -15,23 +15,23 @@ class ConeMap :public IMap {
 
     virtual ~ConeMap(){}
             
-    Point* get(float u,float theta){
+    Point get(float u,float theta){
         float x=u* cos(theta);
         float y=-u*(h/r);
         float z=u*sin(theta);
-        return new Point(x,y,z);
+        return Point(x,y,z);
     }
 
-    Point* getNormal(float u,float theta){
+    Point getNormal(float u,float theta){
         float x_u=cos(theta);
         float y_u=-(h/r);
         float z_u=sin(theta);
-        Point* p1=new Point(x_u,y_u,z_u);
+        Point p1= Point(x_u,y_u,z_u);
         
         float x_theta=u* -sin(theta);
         float y_theta=0.0f;
         float z_theta=u*cos(theta);
-        Point* p2=new Point(x_theta,y_theta,z_theta);
+        Point p2=Point(x_theta,y_theta,z_theta);
 
         return Utils::normalize(Utils::cross(p2,p1));
     }

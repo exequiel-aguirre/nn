@@ -8,53 +8,53 @@
 
 class EnclosingBox{
   private:
-    vector<Point*> vertices;
-    vector<Point*> positionedVertices;
+    vector<Point> vertices;
+    vector<Point> positionedVertices;
     Position position;
     Point diagonalMin;
     Point diagonalMax;
   public:	
     EnclosingBox(){}
-    EnclosingBox(vector<Point*> vertices){      
+    EnclosingBox(vector<Point> vertices){      
       buildBoxVertices(vertices);
       buildPositionedVertices();
   	}
 
-    void buildBoxVertices(vector<Point*> moVertices){
+    void buildBoxVertices(vector<Point> moVertices){
       buildDiagonals(moVertices);      
       //push the vertices of the boundary box
-      vertices.push_back(new Point(diagonalMin.x,diagonalMin.y,diagonalMin.z));
-      vertices.push_back(new Point(diagonalMax.x,diagonalMin.y,diagonalMin.z));
-      vertices.push_back(new Point(diagonalMax.x,diagonalMax.y,diagonalMin.z));
-      vertices.push_back(new Point(diagonalMin.x,diagonalMax.y,diagonalMin.z));
-      vertices.push_back(new Point(diagonalMin.x,diagonalMin.y,diagonalMax.z));
-      vertices.push_back(new Point(diagonalMax.x,diagonalMin.y,diagonalMax.z));
-      vertices.push_back(new Point(diagonalMax.x,diagonalMax.y,diagonalMax.z));
-      vertices.push_back(new Point(diagonalMin.x,diagonalMax.y,diagonalMax.z));
+      vertices.push_back( Point(diagonalMin.x,diagonalMin.y,diagonalMin.z));
+      vertices.push_back( Point(diagonalMax.x,diagonalMin.y,diagonalMin.z));
+      vertices.push_back( Point(diagonalMax.x,diagonalMax.y,diagonalMin.z));
+      vertices.push_back( Point(diagonalMin.x,diagonalMax.y,diagonalMin.z));
+      vertices.push_back( Point(diagonalMin.x,diagonalMin.y,diagonalMax.z));
+      vertices.push_back( Point(diagonalMax.x,diagonalMin.y,diagonalMax.z));
+      vertices.push_back( Point(diagonalMax.x,diagonalMax.y,diagonalMax.z));
+      vertices.push_back( Point(diagonalMin.x,diagonalMax.y,diagonalMax.z));
     }
 
-    void buildDiagonals(vector<Point*> moVertices){
+    void buildDiagonals(vector<Point> moVertices){
       auto minMaxX=std::minmax_element(moVertices.begin(),moVertices.end(),
-        [](Point* p1, Point* p2) {
-              return p1->x < p2->x;
+        [](Point p1, Point p2) {
+              return p1.x < p2.x;
           });
       auto minMaxY=std::minmax_element(moVertices.begin(),moVertices.end(),
-        [](Point* p1, Point* p2) {
-              return p1->y < p2->y;
+        [](Point p1, Point p2) {
+              return p1.y < p2.y;
           });
       auto minMaxZ=std::minmax_element(moVertices.begin(),moVertices.end(),
-        [](Point* p1, Point* p2) {
-              return p1->z < p2->z;
+        [](Point p1, Point p2) {
+              return p1.z < p2.z;
           });
-      diagonalMin=Point((*minMaxX.first)->x,(*minMaxY.first)->y,(*minMaxZ.first)->z);
-      diagonalMax=Point((*minMaxX.second)->x,(*minMaxY.second)->y,(*minMaxZ.second)->z);
+      diagonalMin=Point((*minMaxX.first).x,(*minMaxY.first).y,(*minMaxZ.first).z);
+      diagonalMax=Point((*minMaxX.second).x,(*minMaxY.second).y,(*minMaxZ.second).z);
     }
 
     void buildPositionedVertices(){
       //push the transformed vertices of the boundary box      
-      vector<Point*>::iterator it;
+      vector<Point>::iterator it;
       for(it=vertices.begin();it!=vertices.end();it++){
-          Point* p=new Point((*it)->x,(*it)->y,(*it)->z);
+          Point p=Point((*it).x,(*it).y,(*it).z);
           this->positionedVertices.push_back(transform(p));
       }
       buildDiagonals(positionedVertices);
@@ -68,17 +68,17 @@ class EnclosingBox{
 
     void updatePositionedVertices(){
       for(int i=0;i<positionedVertices.size();i++){
-        Point* p=vertices[i];
-        Point* pp=positionedVertices[i];
-        pp->set(p->x,p->y,p->z);
+        Point p=vertices[i];
+        Point pp=positionedVertices[i];
+        pp.set(p.x,p.y,p.z);
         transform(pp);
       }
       buildDiagonals(positionedVertices);
     }
 
-    Point* transform(Point* p){
-        p->rotate(position.getPhi(),position.getTheta(),position.getPsi());
-        p->translate(position.getX(),position.getY(),position.getZ());
+    Point transform(Point p){
+        p.rotate(position.getPhi(),position.getTheta(),position.getPsi());
+        p.translate(position.getX(),position.getY(),position.getZ());
         return p;
     }
 
