@@ -28,7 +28,7 @@ class PhysicsManager{
     void onBeforeDetectCollisions(){
       vector<Component*>::iterator it;
       for(it=components->begin();it!=components->end();it++){
-        (*it)->getCollisionStatus()->init();
+        (*it)->getCollisionStatus().init();
       }
     }
 
@@ -50,9 +50,9 @@ class PhysicsManager{
   }
 
     void onCollisionDetected(Component* c1,Component* c2){
-            float islx=c1->getCollisionStatus()->getIslx();
-            float isly=c1->getCollisionStatus()->getIsly();
-            float islz=c1->getCollisionStatus()->getIslz();
+            float islx=c1->getCollisionStatus().getIslx();
+            float isly=c1->getCollisionStatus().getIsly();
+            float islz=c1->getCollisionStatus().getIslz();
             //v1 and v2 final velocity, v1_i and v2_i initial velocity
             float v1,v2,v1_i,v2_i;
             float m1=c1->getMass();
@@ -88,8 +88,8 @@ class PhysicsManager{
                 c2->getVelocity()->setZ(v2);
             }
 
-            c1->getBoundary()->getCollisionStatus()->setOtherMass(c2->getMass());
-            c2->getBoundary()->getCollisionStatus()->setOtherMass(c1->getMass());
+            c1->getBoundary().getCollisionStatus().setOtherMass(c2->getMass());
+            c2->getBoundary().getCollisionStatus().setOtherMass(c1->getMass());
            // std::cout << typeid(*c1).name()<<" with "<< typeid(*c2).name()<< " : "<< c1->getBoundary()->getCollisionStatus()->getImpactNormal();
 
     }
@@ -97,7 +97,7 @@ class PhysicsManager{
       vector<Component*>::iterator it;
       for(it=components->begin();it!=components->end();it++){
 
-        CollisionStatus* status=(*it)->getCollisionStatus();
+        CollisionStatus status=(*it)->getCollisionStatus();
 
         //When the collisionStatus's normal is accurate enough,
         //we can replace the 4 "if's" with this.and also the GetXMax,etc
@@ -111,16 +111,16 @@ class PhysicsManager{
         else if((*it)->getMass()<1000){(the if should be more like if(*it)->hasMotion())
           (*it)->getAcceleration()->set(0.0,-9.8f,0.0f);
         }*/
-        if(status->getXMax() || status->getXMin()) (*it)->getAcceleration()->setX(0.0f);
+        if(status.getXMax() || status.getXMin()) (*it)->getAcceleration()->setX(0.0f);
 
-        if(status->getYMax() || status->getYMin()) (*it)->getAcceleration()->setY(0.0f);
+        if(status.getYMax() || status.getYMin()) (*it)->getAcceleration()->setY(0.0f);
         //gravity
-        if(!status->getYMax()) (*it)->getAcceleration()->setY(-9.8f);
+        if(!status.getYMax()) (*it)->getAcceleration()->setY(-9.8f);
 
-        if(status->getZMax() || status->getZMin()) (*it)->getAcceleration()->setZ(0.0f);
+        if(status.getZMax() || status.getZMin()) (*it)->getAcceleration()->setZ(0.0f);
 
         //rotation without slipping
-        if((*it)->getRotates() && (status->getYMax() || status->getYMin())){
+        if((*it)->getRotates() && (status.getYMax() || status.getYMin())){
           Velocity* v=(*it)->getVelocity();
           Point r=(*it)->getBoundaryLength();
           if(r.x!=0) v->setPhi(-(v->getZ()/r.x)*180.0f/M_PI);

@@ -52,7 +52,7 @@ class Container: public Component {
       //TODO:find a way to avoid this
       child->calculateBoundary();
     	childs->push_back(child);
-      if(child->getBoundary()!=NULL){//if the object has no boundary the collision detector won't work, and no physics can be applied
+      if(child->getModelObject()!=NULL){//if the object has no boundary the collision detector won't work, and no physics can be applied
         PhysicsManager::getInstance()->add(child);
       }
     	return this;

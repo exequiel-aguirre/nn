@@ -233,18 +233,18 @@ class ReducedPolygon{
       return p;
     }
 
-
-    vector<Point>* getPositionedVertices(){
-      return &positionedVertices;
+    //this method is just used for debugging...
+    vector<Point>& getPositionedVertices(){
+      return positionedVertices;
     }
 
     //TODO:change name?
-    vector<Point>* getPositionedIndexedVertices(){
-      return &positionedIndexedVertices;
+    vector<Point>& getPositionedIndexedVertices(){
+      return positionedIndexedVertices;
     }
     
-    vector<std::pair<Point,Point>>* getPositionedTrianglePlanes(){
-      return &positionedTrianglePlanes;
+    vector<std::pair<Point,Point>>& getPositionedTrianglePlanes(){
+      return positionedTrianglePlanes;
     }
     
 };

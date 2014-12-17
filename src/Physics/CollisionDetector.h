@@ -9,12 +9,12 @@ class CollisionDetector{
     CollisionDetector(){}
     virtual ~CollisionDetector(){}
     
-    bool detect(Boundary* b1,Boundary* b2){
+    bool detect(Boundary& b1,Boundary& b2){
 
-        Point min1=b1->getEnclosingBox()->getDiagonalMin();
-        Point max1=b1->getEnclosingBox()->getDiagonalMax();
-        Point min2=b2->getEnclosingBox()->getDiagonalMin();
-        Point max2=b2->getEnclosingBox()->getDiagonalMax();
+        Point min1=b1.getEnclosingBox().getDiagonalMin();
+        Point max1=b1.getEnclosingBox().getDiagonalMax();
+        Point min2=b2.getEnclosingBox().getDiagonalMin();
+        Point max2=b2.getEnclosingBox().getDiagonalMax();
         //this is the intersection segment length (how bad the crash was...)
         float islx=std::min(max1.x,max2.x)-std::max(min1.x,min2.x);
         float isly=std::min(max1.y,max2.y)-std::max(min1.y,min2.y);
@@ -24,7 +24,7 @@ class CollisionDetector{
             
             if(getSeparation(b1,b2) > EPSILON) return false;
 
-            b1->getCollisionStatus()->set(
+            b1.getCollisionStatus().set(
                 islx,
                 isly,
                 islz,
@@ -36,7 +36,7 @@ class CollisionDetector{
                 max1.z >= max2.z,
                 true
                 );
-            b2->getCollisionStatus()->set(
+            b2.getCollisionStatus().set(
                 islx,
                 isly,
                 islz,
@@ -56,26 +56,26 @@ class CollisionDetector{
     }
 
     //TODO:find a better name:We cannot call it distance, since separation(a,b)!=separation(b,a)
-    float getSeparation(Boundary* b1,Boundary* b2){
+    float getSeparation(Boundary& b1,Boundary& b2){
 
-        vector<Point>* vertices1=b1->getReducedPolygon()->getPositionedIndexedVertices();
+        vector<Point>& vertices1=b1.getReducedPolygon().getPositionedIndexedVertices();
         vector<Point>::iterator it1;
 
-        vector<std::pair<Point,Point>>* trianglePlanes2=b2->getReducedPolygon()->getPositionedTrianglePlanes();
+        vector<std::pair<Point,Point>>& trianglePlanes2=b2.getReducedPolygon().getPositionedTrianglePlanes();
         vector<std::pair<Point,Point>>::iterator it2;
         float d=1000000;
-        for(it1=vertices1->begin();it1!=vertices1->end();it1++){
+        for(it1=vertices1.begin();it1!=vertices1.end();it1++){
             //a point of c1
             Point p=*it1;//TODO:CHECK IF WE CAN AVOID THE &'s
-            for(it2=trianglePlanes2->begin();it2!=trianglePlanes2->end();it2++){
+            for(it2=trianglePlanes2.begin();it2!=trianglePlanes2.end();it2++){
                 //get the distance from p to the plane of each triangle of c2
                 Point x0=(*it2).first;
                 Point n=(*it2).second;
                 float d1=distance(p,x0,n);
                 if(d1<d){
                     d=d1;
-                    b1->getCollisionStatus()->setImpactPoint(p)->setImpactNormal(n)->setDistance(d);
-                    b2->getCollisionStatus()->setImpactPoint(p)->setImpactNormal(Point(-n.x,-n.y,-n.z))->setDistance(d);
+                    b1.getCollisionStatus().setImpactPoint(p).setImpactNormal(n).setDistance(d);
+                    b2.getCollisionStatus().setImpactPoint(p).setImpactNormal(Point(-n.x,-n.y,-n.z)).setDistance(d);
                 }
             }
         }

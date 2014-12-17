@@ -111,36 +111,34 @@ class Component {
     void calculateBoundary(){
       if(getModelObject()==NULL) return;
       //update the boundary
-      getModelObject()->getBoundary()->updatePosition(position->getX(),position->getY(),position->getZ(),
+      getModelObject()->getBoundary().updatePosition(position->getX(),position->getY(),position->getZ(),
           position->getPhi(),position->getTheta(),position->getPsi());
     }
 
-    Boundary* getBoundary(){
-      if(getModelObject()==NULL) return NULL;
+    Boundary& getBoundary(){
       return getModelObject()->getBoundary();
     }
 
-    CollisionStatus* getCollisionStatus(){
-      if(getModelObject()==NULL) return NULL;
-      return getModelObject()->getBoundary()->getCollisionStatus();
+    CollisionStatus& getCollisionStatus(){
+      return getModelObject()->getBoundary().getCollisionStatus();
     }
 
     Point getBoundaryMin(){      
-      return getModelObject()->getBoundary()->getEnclosingBox()->getDiagonalMin();
+      return getModelObject()->getBoundary().getEnclosingBox().getDiagonalMin();
     }
 
     Point getBoundaryMax(){      
-      return getModelObject()->getBoundary()->getEnclosingBox()->getDiagonalMax();
+      return getModelObject()->getBoundary().getEnclosingBox().getDiagonalMax();
     }
 
     Point getBoundaryLength(){      
-      return getModelObject()->getBoundary()->getEnclosingBox()->getLength();
+      return getModelObject()->getBoundary().getEnclosingBox().getLength();
     }
 
     virtual float getMass(){
       if(getModelObject()==NULL) return NULL;
       //a very rough approximation of volume
-      return getModelObject()->getBoundary()->getEnclosingBox()->getVolume()* massDensity;
+      return getModelObject()->getBoundary().getEnclosingBox().getVolume()* massDensity;
     }
 
 

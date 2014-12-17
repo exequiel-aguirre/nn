@@ -143,8 +143,8 @@ class ModelObject{
     }
 
 
-    Boundary* getBoundary(){
-      return &boundary;
+    Boundary& getBoundary(){
+      return boundary;
     }
     
 };

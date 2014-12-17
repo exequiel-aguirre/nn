@@ -94,17 +94,17 @@ class CollisionStatus{
         return this->zMax;
     }
 
-    CollisionStatus* setImpactPoint(Point impactPoint){
+    CollisionStatus& setImpactPoint(Point impactPoint){
         this->impactPoint.set(impactPoint.x,impactPoint.y,impactPoint.z);
-        return this;
+        return (*this);
     }
     Point getImpactPoint(){
         return impactPoint;
     }
 
-    CollisionStatus* setImpactNormal(Point impactNormal){
+    CollisionStatus& setImpactNormal(Point impactNormal){
         this->impactNormal.set(impactNormal.x,impactNormal.y,impactNormal.z);
-        return this;
+        return *this;
     }
     Point getImpactNormal(){
         return impactNormal;
@@ -113,14 +113,14 @@ class CollisionStatus{
     float getOtherMass(){
         return otherMass;
     }
-    CollisionStatus* setOtherMass(float otherMass){
+    CollisionStatus& setOtherMass(float otherMass){
         this->otherMass=otherMass;
-        return this;
+        return *this;
     }
 
-    CollisionStatus* setDistance(float distance){
+    CollisionStatus& setDistance(float distance){
         this->distance=distance;
-        return this;
+        return *this;
     }
     float getDistance(){
         return distance;

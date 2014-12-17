@@ -37,16 +37,16 @@ class Boundary{
       this->enclosingBox.updatePosition(x,y,z,phi,theta,psi);
     }
 
-    ReducedPolygon* getReducedPolygon(){
-      return &reducedPolygon;
+    ReducedPolygon& getReducedPolygon(){
+      return reducedPolygon;
     }
 
-    EnclosingBox* getEnclosingBox(){
-      return &enclosingBox;
+    EnclosingBox& getEnclosingBox(){
+      return enclosingBox;
     }
 
-    CollisionStatus* getCollisionStatus(){
-      return &collisionStatus;
+    CollisionStatus& getCollisionStatus(){
+      return collisionStatus;
     }
     
 };
