@@ -16,7 +16,7 @@ class Point{
 		this->z=z;
 	}
 	Point(){}
-	virtual ~Point(){}
+
 
 	void set(float x,float y,float z){
 		this->x=x;

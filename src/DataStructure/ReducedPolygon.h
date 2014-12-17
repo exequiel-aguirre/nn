@@ -201,14 +201,14 @@ class ReducedPolygon{
     void updatePositionedVertices(){
       for(int i=0;i<positionedVertices.size();i++){
         Point p=vertices[i];
-        Point pp=positionedVertices[i];
+        Point& pp=positionedVertices[i];
         pp.set(p.x,p.y,p.z);
         transform(pp);
       }
 
       for(int i=0;i<positionedIndexedVertices.size();i++){
         Point p=indexedVertices[i];
-        Point pp=positionedIndexedVertices[i];
+        Point& pp=positionedIndexedVertices[i];
         pp.set(p.x,p.y,p.z);
         transform(pp);
       }
@@ -217,9 +217,9 @@ class ReducedPolygon{
         std::pair<Point,Point> p=trianglePlanes[i];
         Point x0=p.first;
         Point n=p.second;
-        std::pair<Point,Point> pp=positionedTrianglePlanes[i];
-        Point px0=pp.first;
-        Point pn=pp.second;
+        std::pair<Point,Point>& pp=positionedTrianglePlanes[i];
+        Point& px0=pp.first;
+        Point& pn=pp.second;
         px0.set(x0.x,x0.y,x0.z);
         pn.set(n.x,n.y,n.z);
         transform(px0);
@@ -227,7 +227,7 @@ class ReducedPolygon{
       }
     }
 
-    Point transform(Point p){
+    Point transform(Point& p){
       p.rotate(position.getPhi(),position.getTheta(),position.getPsi());
       p.translate(position.getX(),position.getY(),position.getZ());
       return p;

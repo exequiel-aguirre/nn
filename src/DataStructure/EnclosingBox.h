@@ -69,14 +69,14 @@ class EnclosingBox{
     void updatePositionedVertices(){
       for(int i=0;i<positionedVertices.size();i++){
         Point p=vertices[i];
-        Point pp=positionedVertices[i];
+        Point& pp=positionedVertices[i];
         pp.set(p.x,p.y,p.z);
         transform(pp);
       }
       buildDiagonals(positionedVertices);
     }
-
-    Point transform(Point p){
+    //TODO:put this inside the point
+    Point transform(Point& p){
         p.rotate(position.getPhi(),position.getTheta(),position.getPsi());
         p.translate(position.getX(),position.getY(),position.getZ());
         return p;
