@@ -66,7 +66,7 @@ class CollisionDetector{
         float d=1000000;
         for(it1=vertices1.begin();it1!=vertices1.end();it1++){
             //a point of c1
-            Point p=*it1;//TODO:CHECK IF WE CAN AVOID THE &'s
+            Point p=*it1;
             for(it2=trianglePlanes2.begin();it2!=trianglePlanes2.end();it2++){
                 //get the distance from p to the plane of each triangle of c2
                 Point x0=(*it2).first;
