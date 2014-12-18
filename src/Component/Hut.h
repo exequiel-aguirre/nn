@@ -8,11 +8,11 @@
 class Hut: public Container {  
   
   public:
-	  Hut(Position* position):Container(position){
+	  Hut(Position&& position):Container(position){
 	  	  //roof
-		add(new Surface(new Position(0.0f,8.0f,0.0f),ConeMap(8.0f,5.0f),"img/hut_roof.bmp"));
+		add(new Surface(Position(0.0f,8.0f,0.0f),ConeMap(8.0f,5.0f),"img/hut_roof.bmp"));
 		 //wall
-		add(new Cylinder(new Position(0.0f,0.0f,0.0f),5.0f,4.0f,"img/hut_wall.bmp"));
+		add(new Cylinder(Position(0.0f,0.0f,0.0f),5.0f,4.0f,"img/hut_wall.bmp"));
 
 	  }		
 

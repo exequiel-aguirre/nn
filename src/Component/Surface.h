@@ -11,11 +11,11 @@
 class Surface: public Component {  
   
   public:
-	  Surface(Position* position,IMap&& map,GLenum GLMode):Component(position){
+	  Surface(Position position,IMap&& map,GLenum GLMode):Component(position){
 		this->setRenderStrategy(new FastStrategy(map,GLMode));
 	  }
 
-	  Surface(Position* position,IMap&& map,char* textureFilename):Component(position){
+	  Surface(Position position,IMap&& map,char* textureFilename):Component(position){
 		this->setRenderStrategy(new TextureStrategy(map,textureFilename));
 	  }
 

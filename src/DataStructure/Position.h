@@ -22,7 +22,7 @@ class Position {
         }
         
   		Position(float x,float y,float z,float phi,float theta,float psi){  			
-			this->x=x;
+            this->x=x;
 			this->y=y;
 			this->z=z;
 			this->phi=phi;
@@ -97,14 +97,14 @@ class Position {
     	this->psi=psi;
     }
 
-	Position* operator+=(const Position* position) {
-    	this->x+=position->x;
-    	this->y+=position->y;
-    	this->z+=position->z;
-    	this->phi+=position->phi;
-    	this->theta+=position->theta;
-    	this->psi+=position->psi;
-    	return this;
+	Position* operator+=(const Position position) {
+        this->x+=position.x;
+        this->y+=position.y;
+        this->z+=position.z;
+        this->phi+=position.phi;
+        this->theta+=position.theta;
+        this->psi+=position.psi;
+        return this;
   	}
   
 };

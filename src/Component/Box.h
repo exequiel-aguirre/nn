@@ -8,15 +8,15 @@
 class Box: public Container {  
   
   public:
-	  Box(Position* position):Container(position){
-		  add(new Plane(new Position(0.0f,0.0f,0.0f),2.0f,2.0f,"img/box.bmp",1,1));
-		  add(new Plane(new Position(0.0f,2.0f,0.0f),2.0f,2.0f,"img/box.bmp",1,1));
+	  Box(Position&& position):Container(position){
+		  add(new Plane(Position(0.0f,0.0f,0.0f),2.0f,2.0f,"img/box.bmp",1,1));
+		  add(new Plane(Position(0.0f,2.0f,0.0f),2.0f,2.0f,"img/box.bmp",1,1));
 
-		  add(new Plane(new Position(-1.0f,1.0f,0.0f,0.0f,0.0f,90.0f),2.0f,2.0f,"img/box.bmp",1,1));
-		  add(new Plane(new Position(1.0f,1.0f,0.0f,0.0f,0.0f,90.0f),2.0f,2.0f,"img/box.bmp",1,1));
+		  add(new Plane(Position(-1.0f,1.0f,0.0f,0.0f,0.0f,90.0f),2.0f,2.0f,"img/box.bmp",1,1));
+		  add(new Plane(Position(1.0f,1.0f,0.0f,0.0f,0.0f,90.0f),2.0f,2.0f,"img/box.bmp",1,1));
 
-		  add(new Plane(new Position(0.0f,1.0f,-1.0f,90.0f,0.0f),2.0f,2.0f,"img/box.bmp",1,1));
-		  add(new Plane(new Position(0.0f,1.0f,1.0f,90.0f,0.0f),2.0f,2.0f,"img/box.bmp",1,1));
+		  add(new Plane(Position(0.0f,1.0f,-1.0f,90.0f,0.0f),2.0f,2.0f,"img/box.bmp",1,1));
+		  add(new Plane(Position(0.0f,1.0f,1.0f,90.0f,0.0f),2.0f,2.0f,"img/box.bmp",1,1));
 
 	  }		
 

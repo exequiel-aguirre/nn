@@ -21,15 +21,15 @@ class BaseRotationMouseBehavior: public AbstractBehavior{
     {   
 	   	float deltaTheta=motion.xrel*DEFAULT_SPEED;
         float deltaPhi=motion.yrel*DEFAULT_SPEED;
-		Position* currentPosition=getComponent()->getPosition();
+        Position currentPosition=getComponent()->getPosition();
         //fmod to stop theta from growing too big
-        float newTheta=fmod((currentPosition->getTheta()+deltaTheta),360.0f);
+        float newTheta=fmod((currentPosition.getTheta()+deltaTheta),360.0f);
         //limit the looking up/down
-        float newPhi=currentPosition->getPhi()+deltaPhi;
+        float newPhi=currentPosition.getPhi()+deltaPhi;
         if(newPhi>90.0f) newPhi=90.0f;
         if(newPhi<-90.0f) newPhi=-90.0f;
-        Position* cp=getComponent()->getPosition();
-        getComponent()->setPosition(cp->getX(),cp->getY(),cp->getZ(),newPhi,newTheta,cp->getPsi());
+        Position cp=getComponent()->getPosition();
+        getComponent()->setPosition(cp.getX(),cp.getY(),cp.getZ(),newPhi,newTheta,cp.getPsi());
         
     }    
 

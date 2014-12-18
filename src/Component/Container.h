@@ -10,10 +10,13 @@ class Container: public Component {
   
   public:
   using Component::add;
-	Container(Position* position):Component(position)
+  Container(Position& position):Component(position)
 	{
     	this->childs=new vector<Component*>();
 	}
+
+  Container(Position&& position):Container(position){};
+
 	virtual ~Container(){}  
   
 
@@ -48,7 +51,7 @@ class Container: public Component {
 		
 	Container* add(Component* child)
 	{
-    	*(child->getPosition())+=(this->position);
+    	child->getPosition()+=(this->position);
       //TODO:find a way to avoid this
       child->calculateBoundary();
     	childs->push_back(child);

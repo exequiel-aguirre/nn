@@ -19,18 +19,16 @@ class Component {
     vector<IBehavior*>* behaviors;
     vector<IEffect*>* effects;
     //mechanic properties
-    Position* position;
-    Velocity* velocity;
-    Acceleration* acceleration;
+    Position position;
+    Velocity velocity;
+    Acceleration acceleration;
     float massDensity=1.0f;
     bool rotates=false;
   public:
-    Component(Position* position){
+    Component(Position position){
       this->position=position;
       this->behaviors=new vector<IBehavior*>();
       this->effects=new vector<IEffect*>();
-      this->velocity=new Velocity(0.0f,0.0f,0.0f);
-      this->acceleration=new Acceleration(0.0f,0.0f,0.0f);
     }
     virtual ~Component(){}  
     
@@ -39,13 +37,13 @@ class Component {
     //this method is called before the component is rendered.
     virtual void onBeforeRender(){
       //position the rendering
-      glTranslatef(this->position->getX(),this->position->getY(),this->position->getZ());     
+      glTranslatef(this->position.getX(),this->position.getY(),this->position.getZ());
       //rotate the x-axis (up and down)
-      glRotatef(this->position->getPhi(), 1.0f, 0.0f, 0.0f);
+      glRotatef(this->position.getPhi(), 1.0f, 0.0f, 0.0f);
       // Rotate on the y-axis (left and right)
-      glRotatef(this->position->getTheta(), 0.0f, 1.0f, 0.0f);
+      glRotatef(this->position.getTheta(), 0.0f, 1.0f, 0.0f);
       
-      glRotatef(this->position->getPsi(), 0.0f, 0.0f, 1.0f);
+      glRotatef(this->position.getPsi(), 0.0f, 0.0f, 1.0f);
 
       doEffects();
     }
@@ -58,43 +56,43 @@ class Component {
       //we restore the position to avoid messing with the other's component's location
       //mind that the group SO(3,R) is non-abelian, so we must do this in the opposite order than
       // onBeforeRender
-      glRotatef(-this->position->getPsi(), 0.0f, 0.0f, 1.0f);
-      glRotatef(-this->position->getTheta(), 0.0f, 1.0f, 0.0f);
-      glRotatef(-this->position->getPhi(), 1.0f, 0.0f, 0.0f);                 
-      glTranslatef(-this->position->getX(),-this->position->getY(),-this->position->getZ());        
+      glRotatef(-this->position.getPsi(), 0.0f, 0.0f, 1.0f);
+      glRotatef(-this->position.getTheta(), 0.0f, 1.0f, 0.0f);
+      glRotatef(-this->position.getPhi(), 1.0f, 0.0f, 0.0f);
+      glTranslatef(-this->position.getX(),-this->position.getY(),-this->position.getZ());
     }
     
-    Position* getPosition(){
-      return this->position;
+    Position& getPosition(){
+      return position;
     }
 
     void setPosition(float x,float y,float z){
-      this->position->set(x,y,z);
+      this->position.set(x,y,z);
     }
     void setPosition(float x,float y,float z,float phi,float theta,float psi){
-      this->position->set(x,y,z,phi,theta,psi);
+      this->position.set(x,y,z,phi,theta,psi);
       //position changes so boundaries change
       calculateBoundary();
     }
     
-    Velocity* getVelocity(){
-      return this->velocity;  
+    Velocity& getVelocity(){
+      return velocity;
     }
     void setVelocity(float x,float y,float z){
-      this->velocity->set(x,y,z);
+      this->velocity.set(x,y,z);
     }
     void setVelocity(float x,float y,float z,float phi,float theta,float psi){
-      this->velocity->set(x,y,z,phi,theta,psi);      
+      this->velocity.set(x,y,z,phi,theta,psi);
     }
     
-    Acceleration* getAcceleration(){
-      return this->acceleration;  
+    Acceleration& getAcceleration(){
+      return acceleration;
     }
     void setAcceleration(float x,float y,float z){
-      this->acceleration->set(x,y,z);
+      this->acceleration.set(x,y,z);
     }
     void setAcceleration(float x,float y,float z,float phi,float theta,float psi){
-      this->acceleration->set(x,y,z,phi,theta,psi);     
+      this->acceleration.set(x,y,z,phi,theta,psi);
     }
     
     ModelObject* getModelObject(){
@@ -111,8 +109,8 @@ class Component {
     void calculateBoundary(){
       if(getModelObject()==NULL) return;
       //update the boundary
-      getModelObject()->getBoundary().updatePosition(position->getX(),position->getY(),position->getZ(),
-          position->getPhi(),position->getTheta(),position->getPsi());
+      getModelObject()->getBoundary().updatePosition(position.getX(),position.getY(),position.getZ(),
+          position.getPhi(),position.getTheta(),position.getPsi());
     }
 
     Boundary& getBoundary(){

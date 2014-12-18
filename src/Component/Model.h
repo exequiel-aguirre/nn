@@ -9,10 +9,13 @@
 class Model: public Component {
 
   public:
-  	 Model(Position* position,IRenderStrategy* renderStrategy):Component(position){
+	Model(Position& position,IRenderStrategy* renderStrategy):Component(position){
 	  	this->setRenderStrategy(renderStrategy);
 	  }
-	  Model(Position* position,char* modelFilename):Model(position,new TextureStrategy(modelFilename,"img/human.bmp")){}	  
+
+	Model(Position&& position,IRenderStrategy* renderStrategy):Model(position,renderStrategy){}
+
+	Model(Position&& position,char* modelFilename):Model(position,new TextureStrategy(modelFilename,"img/human.bmp")){}
 
     virtual ~Model(){}
 

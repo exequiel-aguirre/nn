@@ -61,31 +61,31 @@ class PhysicsManager{
             //collision on X
             //check if the objects crashed into each other or just scratch the surface
             if(isly*islz>0){//the isly*islz is the area of the contact surface defined by the x-axis as normal
-                v1_i=c1->getVelocity()->getX();
-                v2_i=c2->getVelocity()->getX();
+                v1_i=c1->getVelocity().getX();
+                v2_i=c2->getVelocity().getX();
                 v1=((m1*v1_i) + (m2*v2_i) + (m2 * E *(v2_i-v1_i)))/(m1+m2);
                 v2=((m1*v1_i) + (m2*v2_i) + (m1 * E *(v1_i-v2_i)))/(m1+m2);
-                c1->getVelocity()->setX(v1);
-                c2->getVelocity()->setX(v2);
+                c1->getVelocity().setX(v1);
+                c2->getVelocity().setX(v2);
             }
 
             //collision on Y
             if(islx*islz>0){
-                v1_i=c1->getVelocity()->getY();
-                v2_i=c2->getVelocity()->getY();
+                v1_i=c1->getVelocity().getY();
+                v2_i=c2->getVelocity().getY();
                 v1=((m1*v1_i) + (m2*v2_i) + (m2 * E *(v2_i-v1_i)))/(m1+m2);
                 v2=((m1*v1_i) + (m2*v2_i) + (m1 * E *(v1_i-v2_i)))/(m1+m2);
-                c1->getVelocity()->setY(v1);
-                c2->getVelocity()->setY(v2);
+                c1->getVelocity().setY(v1);
+                c2->getVelocity().setY(v2);
             }
             //collision on Z
             if(islx*isly>0){
-                v1_i=c1->getVelocity()->getZ();
-                v2_i=c2->getVelocity()->getZ();
+                v1_i=c1->getVelocity().getZ();
+                v2_i=c2->getVelocity().getZ();
                 v1=((m1*v1_i) + (m2*v2_i) + (m2 * E *(v2_i-v1_i)))/(m1+m2);
                 v2=((m1*v1_i) + (m2*v2_i) + (m1 * E *(v1_i-v2_i)))/(m1+m2);
-                c1->getVelocity()->setZ(v1);
-                c2->getVelocity()->setZ(v2);
+                c1->getVelocity().setZ(v1);
+                c2->getVelocity().setZ(v2);
             }
 
             c1->getBoundary().getCollisionStatus().setOtherMass(c2->getMass());
@@ -111,20 +111,20 @@ class PhysicsManager{
         else if((*it)->getMass()<1000){(the if should be more like if(*it)->hasMotion())
           (*it)->getAcceleration()->set(0.0,-9.8f,0.0f);
         }*/
-        if(status.getXMax() || status.getXMin()) (*it)->getAcceleration()->setX(0.0f);
+        if(status.getXMax() || status.getXMin()) (*it)->getAcceleration().setX(0.0f);
 
-        if(status.getYMax() || status.getYMin()) (*it)->getAcceleration()->setY(0.0f);
+        if(status.getYMax() || status.getYMin()) (*it)->getAcceleration().setY(0.0f);
         //gravity
-        if(!status.getYMax()) (*it)->getAcceleration()->setY(-9.8f);
+        if(!status.getYMax()) (*it)->getAcceleration().setY(-9.8f);
 
-        if(status.getZMax() || status.getZMin()) (*it)->getAcceleration()->setZ(0.0f);
+        if(status.getZMax() || status.getZMin()) (*it)->getAcceleration().setZ(0.0f);
 
         //rotation without slipping
         if((*it)->getRotates() && (status.getYMax() || status.getYMin())){
-          Velocity* v=(*it)->getVelocity();
+          Velocity& v=(*it)->getVelocity();
           Point r=(*it)->getBoundaryLength();
-          if(r.x!=0) v->setPhi(-(v->getZ()/r.x)*180.0f/M_PI);
-          if(r.z!=0) v->setPsi(-(v->getX()/r.z)*180.0f/M_PI);
+          if(r.x!=0) v.setPhi(-(v.getZ()/r.x)*180.0f/M_PI);
+          if(r.z!=0) v.setPsi(-(v.getX()/r.z)*180.0f/M_PI);
         }
 
       }

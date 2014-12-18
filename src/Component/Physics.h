@@ -8,7 +8,7 @@
 
 class Physics: public Component { 	
   public:
-	  Physics():Component(new Position(0.0f,-100.0f,0.0f)){
+	  Physics():Component(Position(0.0f,-100.0f,0.0f)){
 		  
 	  }		
 

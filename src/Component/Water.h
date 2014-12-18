@@ -9,7 +9,7 @@
 class Water: public Surface {
   public:
 	  
-	Water(Position* position,float w,float h):Surface(position,CreasedDecorator(new PlaneMap(w,h)),"img/water.bmp"){}
+	Water(Position&& position,float w,float h):Surface(position,CreasedDecorator(new PlaneMap(w,h)),"img/water.bmp"){}
 
     virtual ~Water(){}    
     

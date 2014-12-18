@@ -23,7 +23,7 @@ class BaseTranslationKeyboardBehavior: public AbstractBehavior{
     	float deltaZ=0.0f;
         float directionXZ=0.0f;//direction angle in degrees for the X-Z plane (theta)
         float directionY=0.0f;//direction angle in degrees for the Y axis(phi)
-        Position* currentPosition=getComponent()->getPosition();
+        Position currentPosition=getComponent()->getPosition();
     	//TODO:do not commit this awful flag!
     	bool shouldUpdatePosition=true;
 
@@ -52,19 +52,19 @@ class BaseTranslationKeyboardBehavior: public AbstractBehavior{
         	}
     	}
     	if(shouldUpdatePosition){
-            deltaX=DEFAULT_SPEED * -sinf((currentPosition->getTheta()+directionXZ) * M_PI/180);//change from grads to rads and calculate the x component
-            deltaZ=DEFAULT_SPEED * cosf((currentPosition->getTheta()+directionXZ) * M_PI/180);//change from grads to rads and calculate the z component
+            deltaX=DEFAULT_SPEED * -sinf((currentPosition.getTheta()+directionXZ) * M_PI/180);//change from grads to rads and calculate the x component
+            deltaZ=DEFAULT_SPEED * cosf((currentPosition.getTheta()+directionXZ) * M_PI/180);//change from grads to rads and calculate the z component
 
             if(directionY!=0.0f){
-                deltaY=DEFAULT_SPEED * -cosf((currentPosition->getPhi()+directionY) * M_PI/180); //change from grads to rads and calculate the y component
+                deltaY=DEFAULT_SPEED * -cosf((currentPosition.getPhi()+directionY) * M_PI/180); //change from grads to rads and calculate the y component
 
-                deltaX=deltaX * cosf((currentPosition->getPhi()) * M_PI/180);
-                deltaZ=deltaZ * cosf((currentPosition->getPhi()) * M_PI/180);
+                deltaX=deltaX * cosf((currentPosition.getPhi()) * M_PI/180);
+                deltaZ=deltaZ * cosf((currentPosition.getPhi()) * M_PI/180);
             }
             
-    		getComponent()->setPosition(currentPosition->getX()+deltaX,
-                                        currentPosition->getY()+deltaY,
-                                        currentPosition->getZ()+deltaZ
+            getComponent()->setPosition(currentPosition.getX()+deltaX,
+                                        currentPosition.getY()+deltaY,
+                                        currentPosition.getZ()+deltaZ
                                         );
     	}
     }    

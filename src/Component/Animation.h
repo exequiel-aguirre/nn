@@ -7,7 +7,7 @@
 
 class Animation: public Model {
   public:  	 
-	Animation(Position* position,char* modelFilename):Model(position,new AnimationStrategy(modelFilename,"img/human.bmp")){}	  
+	Animation(Position&& position,char* modelFilename):Model(position,new AnimationStrategy(modelFilename,"img/human.bmp")){}
 
     virtual ~Animation(){}
 

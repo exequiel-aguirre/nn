@@ -12,11 +12,11 @@ class Light: public Component {
 	GLfloat lightDiffuse[4]= { 1.0f, 1.0f, 1.0f, 1.0f };	
   
   public:
-	  Light(Position* position):Component(position){	  	
+	  Light(Position&& position):Component(position){
 		glLightfv(GL_LIGHT1, GL_AMBIENT, lightAmbient);
 		glLightfv(GL_LIGHT1, GL_DIFFUSE, lightDiffuse);
 
-		GLfloat lightPosition[4]={position->getX(),position->getY(),position->getZ(),1.0f};
+		GLfloat lightPosition[4]={position.getX(),position.getY(),position.getZ(),1.0f};
 		glLightfv(GL_LIGHT1, GL_POSITION,lightPosition);
 		glEnable(GL_LIGHT1);
 
