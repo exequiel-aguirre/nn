@@ -16,8 +16,8 @@ class Component {
   private:
     IRenderStrategy* renderStrategy=NULL;
   protected:
-    vector<IBehavior*>* behaviors;
-    vector<IEffect*>* effects;
+    vector<IBehavior*> behaviors;
+    vector<IEffect*> effects;
     //mechanic properties
     Position position;
     Velocity velocity;
@@ -27,8 +27,6 @@ class Component {
   public:
     Component(Position position){
       this->position=position;
-      this->behaviors=new vector<IBehavior*>();
-      this->effects=new vector<IEffect*>();
     }
     virtual ~Component(){}  
     
@@ -142,21 +140,21 @@ class Component {
 
     Component* add(IBehavior* behavior){
       behavior->bind(this);
-      this->behaviors->push_back(behavior);
+      this->behaviors.push_back(behavior);
       ListenerManager::getInstance()->add(behavior);
       return this;
     
     }
 
     Component* add(IEffect* effect){      
-      this->effects->push_back(effect);      
+      this->effects.push_back(effect);
       return this;    
     }
 
     void doEffects(){
       vector<IEffect*>::iterator it;
       
-      for(it=effects->begin();it!=effects->end();it++)
+      for(it=effects.begin();it!=effects.end();it++)
       {
           (*it)->doEffect();
       }
@@ -165,7 +163,7 @@ class Component {
     void undoEffects(){
       vector<IEffect*>::iterator it;
       
-      for(it=effects->begin();it!=effects->end();it++)
+      for(it=effects.begin();it!=effects.end();it++)
       {
           (*it)->undoEffect();
       }

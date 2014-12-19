@@ -8,15 +8,12 @@ using std::vector;
 class PhysicsManager{
   private:
     static PhysicsManager* instance;    
-    vector<Component*>* components;
-    CollisionDetector* collisionDetector;
+    vector<Component*> components;
+    CollisionDetector collisionDetector;
     //TODO:this is component's property
     const float E=0.88f;//Coefficient of restitution,1 is perfectly elastic,0 is perfectly plastic
 
-    PhysicsManager(){
-      components=new vector<Component*>();
-      collisionDetector=new CollisionDetector();
-    }    
+    PhysicsManager(){}
     
    public:
     static PhysicsManager* getInstance(){
@@ -27,7 +24,7 @@ class PhysicsManager{
     
     void onBeforeDetectCollisions(){
       vector<Component*>::iterator it;
-      for(it=components->begin();it!=components->end();it++){
+      for(it=components.begin();it!=components.end();it++){
         (*it)->getCollisionStatus().init();
       }
     }
@@ -38,9 +35,9 @@ class PhysicsManager{
     	vector<Component*>::iterator it;
       vector<Component*>::iterator it2;
       //n(n-1)/2 calls with n being the amount of components
-    	for(it=components->begin();it!=components->end();it++){    		
-        for(it2=it+1;it2!=components->end();it2++){
-          if(collisionDetector->detect((*it)->getBoundary(),(*it2)->getBoundary())){
+      for(it=components.begin();it!=components.end();it++){
+        for(it2=it+1;it2!=components.end();it2++){
+          if(collisionDetector.detect((*it)->getBoundary(),(*it2)->getBoundary())){
             onCollisionDetected(*it,*it2);
           }
     	}
@@ -95,7 +92,7 @@ class PhysicsManager{
     }
     void onAfterDetectCollisions(){
       vector<Component*>::iterator it;
-      for(it=components->begin();it!=components->end();it++){
+      for(it=components.begin();it!=components.end();it++){
 
         CollisionStatus status=(*it)->getCollisionStatus();
 
@@ -131,7 +128,7 @@ class PhysicsManager{
     }
 
     void add(Component* component){
-      components->push_back(component);      
+      components.push_back(component);
     }
 
 

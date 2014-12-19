@@ -6,14 +6,11 @@
 
 class Container: public Component {
   private:
-    vector<Component*>* childs;
+    vector<Component*> childs;
   
   public:
   using Component::add;
-  Container(Position& position):Component(position)
-	{
-    	this->childs=new vector<Component*>();
-	}
+  Container(Position& position):Component(position){}
 
   Container(Position&& position):Container(position){};
 
@@ -22,7 +19,7 @@ class Container: public Component {
 
   void onBeforeRenderFrame(){
       vector<Component*>::iterator it;
-      for(it=childs->begin();it!=childs->end();it++)
+      for(it=childs.begin();it!=childs.end();it++)
       {
          (*it)->onBeforeRenderFrame(); 
       }
@@ -36,7 +33,7 @@ class Container: public Component {
 	{
     	vector<Component*>::iterator it;
       
-    	for(it=childs->begin();it!=childs->end();it++)
+      for(it=childs.begin();it!=childs.end();it++)
     	{
           (*it)->onBeforeRender();
         	(*it)->render();
@@ -51,14 +48,14 @@ class Container: public Component {
 		
 	Container* add(Component* child)
 	{
-    	child->getPosition()+=(this->position);
+      child->getPosition()+=(this->position);
       //TODO:find a way to avoid this
       child->calculateBoundary();
-    	childs->push_back(child);
+      childs.push_back(child);
       if(child->getModelObject()!=NULL){//if the object has no boundary the collision detector won't work, and no physics can be applied
         PhysicsManager::getInstance()->add(child);
       }
-    	return this;
+      return this;
 	}
 		
 		

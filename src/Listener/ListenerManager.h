@@ -7,10 +7,8 @@ class ListenerManager{
   private:
     static ListenerManager* instance;
     
-    vector<IListener*>* listeners;
-    ListenerManager(){
-      listeners=new vector<IListener*>();
-    }
+    vector<IListener*> listeners;
+    ListenerManager(){}
     
     
    public:
@@ -24,7 +22,7 @@ class ListenerManager{
 
     void callMouseListeners(SDL_MouseMotionEvent motion){
       vector<IListener*>::iterator it;
-      for(it=listeners->begin();it!=listeners->end();it++){
+      for(it=listeners.begin();it!=listeners.end();it++){
         (*it)->onMouseMotion(motion);
       }
     }
@@ -32,19 +30,19 @@ class ListenerManager{
     //TODO:make this call methods generic
     void callTimerListeners(){
       vector<IListener*>::iterator it;
-      for(it=listeners->begin();it!=listeners->end();it++){
+      for(it=listeners.begin();it!=listeners.end();it++){
         (*it)->onTimer();
       }    
     }    
     void callKeyboardListeners(SDL_Keycode key){
-    	vector<IListener*>::iterator it;
-    	for(it=listeners->begin();it!=listeners->end();it++){
-    		(*it)->onKeyDown(key) ;
-    	}
+      vector<IListener*>::iterator it;
+      for(it=listeners.begin();it!=listeners.end();it++){
+        (*it)->onKeyDown(key) ;
+      }
     }
 
     void add(IListener* listener){
-      listeners->push_back(listener);      
+      listeners.push_back(listener);
     }
 
 
