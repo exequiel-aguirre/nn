@@ -33,7 +33,7 @@ class SphereMap :public IMap {
         float z_phi=r*-sin(phi);
         Point p2= Point(x_phi,y_phi,z_phi);
 
-        return Utils::normalize(Utils::cross(p2,p1));
+        return (p2^p1).normalize();
     }
 
     float getUFrom(){        

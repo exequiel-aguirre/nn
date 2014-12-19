@@ -38,7 +38,7 @@ class PlaneMap :public IMap {
         float z_v=1.0f;
         Point p2= Point(x_v,y_v,z_v);
                 
-        return Utils::normalize(Utils::cross(p2,p1));
+        return (p2^p1).normalize();
     }
 
     float getUFrom(){        

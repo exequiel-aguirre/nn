@@ -33,7 +33,7 @@ class ConeMap :public IMap {
         float z_theta=u*cos(theta);
         Point p2=Point(x_theta,y_theta,z_theta);
 
-        return Utils::normalize(Utils::cross(p2,p1));
+        return (p2^p1).normalize();
     }
     
 

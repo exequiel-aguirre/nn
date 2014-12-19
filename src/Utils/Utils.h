@@ -128,23 +128,6 @@ class Utils{
 		
 	}
 
-	static Point cross(Point p1,Point p2){
-		//y1 z2-z1 y2,z1 x2-x1 z2,x1 y2-y1 x2
-		float x1=p1.x;
-		float y1=p1.y;
-		float z1=p1.z;
-		float x2=p2.x;
-		float y2=p2.y;
-		float z2=p2.z;
-		return Point((y1*z2)-(z1*y2),(z1*x2)-(x1*z2),(x1*y2)-(y1*x2));
-	}
-	
-	static Point normalize(Point p){
-		float norm=sqrt((p.x * p.x) + (p.y * p.y) + (p.z * p.z));
-		if(norm==0.0f) return p;
-		return Point(p.x/norm,p.y/norm,p.z/norm);
-	}	
-
 	static float sgn(float value){
 		if(value<0) return -1.0f;
 		if(value>0) return 1.0f;

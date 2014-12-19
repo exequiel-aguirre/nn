@@ -84,7 +84,9 @@ class Point{
 
 		return *this;
 	}
-	Point crossCopy(Point p){
+
+	//cross product
+	Point operator^(const Point& p) {
 		//y1 z2-z1 y2,z1 x2-x1 z2,x1 y2-y1 x2
 		float x1=this->x;
 		float y1=this->y;
@@ -94,6 +96,23 @@ class Point{
 		float z2=p.z;
 		return Point((y1*z2)-(z1*y2),(z1*x2)-(x1*z2),(x1*y2)-(y1*x2));
 	}
+
+	//dot product
+	float operator*(const Point &p){
+		return (x * p.x)+(y * p.y)+(z * p.z);
+	}
+
+	Point operator+(const Point &p){
+		return Point(x+p.x,y+p.y,z+p.z);
+	}
+	Point operator-(const Point &p){
+		return Point(x-p.x,y-p.y,z-p.z);
+	}
+
+	Point operator-(){
+		return Point(-x,-y,-z);
+	}
+
 	Point normalize(){
 		float norm=sqrt((x*x) + (y*y) + (z*z));
 		if(norm==0.0f) return *this;

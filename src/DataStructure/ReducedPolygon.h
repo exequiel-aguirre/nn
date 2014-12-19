@@ -132,23 +132,11 @@ class ReducedPolygon{
 
     }
 
-    void buildIndexedVertices(){      
-      //convert all vertices to Point instances
-      vector<Point> tmpVertices;
-      vector<Point>::iterator it;
-      for(it=this->vertices.begin();it!=this->vertices.end();it++){
-        tmpVertices.push_back(Point((*it).x,(*it).y,(*it).z));
-      }
-
+    void buildIndexedVertices(){
+      indexedVertices=vertices;
       //remove duplicated points
-      std::sort( tmpVertices.begin(), tmpVertices.end() );
-      tmpVertices.erase( std::unique( tmpVertices.begin(), tmpVertices.end() ), tmpVertices.end() );
-
-      //make the indexedVertices      
-      vector<Point>::iterator iti;
-      for(iti=tmpVertices.begin();iti!=tmpVertices.end();iti++){        
-          this->indexedVertices.push_back( Point((*iti).x,(*iti).y,(*iti).z));
-      }
+      std::sort( indexedVertices.begin(), indexedVertices.end() );
+      indexedVertices.erase( std::unique( indexedVertices.begin(), indexedVertices.end() ), indexedVertices.end() );
     }
 
     void buildTrianglePlanes(){
@@ -160,12 +148,10 @@ class ReducedPolygon{
           Point v2=*(it+1);
           Point v3=*(it+2);
           //get the normal vector
-          Point v21=Point(v2.x-v1.x,v2.y-v1.y,v2.z-v1.z);
-          Point v31= Point(v3.x-v1.x,v3.y-v1.y,v3.z-v1.z);
-          Point n=v21.crossCopy(v31);
+          Point n=(v2-v1)^(v3-v1);
           n.normalize();
           //get the x0 for the plane
-          Point x0=Point(v1.x,v1.y,v1.z);
+          Point x0=v1;
           //add the pair that define the plane for this triangle
           this->trianglePlanes.push_back(std::make_pair(x0,n));
       }
@@ -174,20 +160,20 @@ class ReducedPolygon{
       
       vector<Point>::iterator it;
       for(it=vertices.begin();it!=vertices.end();it++){
-          Point p= Point((*it).x,(*it).y,(*it).z);
+          Point p= *it;
           this->positionedVertices.push_back(transform(p));
       }
 
       
       for(it=indexedVertices.begin();it!=indexedVertices.end();it++){
-          Point p=Point((*it).x,(*it).y,(*it).z);
+          Point p=*it;
           this->positionedIndexedVertices.push_back(transform(p));
       }
 
       vector<std::pair<Point,Point>>::iterator itp;
       for(itp=trianglePlanes.begin();itp!=trianglePlanes.end();itp++){
-          Point x0= Point((*itp).first.x,(*itp).first.y,(*itp).first.z);
-          Point n= Point((*itp).second.x,(*itp).second.y,(*itp).second.z);
+          Point x0=(*itp).first;
+          Point n= (*itp).second;
           this->positionedTrianglePlanes.push_back(std::make_pair(transform(x0),n.rotate(position.getPhi(),position.getTheta(),position.getPsi())));//the normal needs just to rotate,no translate          
       }
     }
@@ -202,14 +188,14 @@ class ReducedPolygon{
       for(int i=0;i<positionedVertices.size();i++){
         Point p=vertices[i];
         Point& pp=positionedVertices[i];
-        pp.set(p.x,p.y,p.z);
+        pp=p;
         transform(pp);
       }
 
       for(int i=0;i<positionedIndexedVertices.size();i++){
         Point p=indexedVertices[i];
         Point& pp=positionedIndexedVertices[i];
-        pp.set(p.x,p.y,p.z);
+        pp=p;
         transform(pp);
       }
 
@@ -220,8 +206,8 @@ class ReducedPolygon{
         std::pair<Point,Point>& pp=positionedTrianglePlanes[i];
         Point& px0=pp.first;
         Point& pn=pp.second;
-        px0.set(x0.x,x0.y,x0.z);
-        pn.set(n.x,n.y,n.z);
+        px0=x0;
+        pn=n;
         transform(px0);
         pn.rotate(position.getPhi(),position.getTheta(),position.getPsi());
       }

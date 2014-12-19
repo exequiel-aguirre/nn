@@ -54,7 +54,7 @@ class EnclosingBox{
       //push the transformed vertices of the boundary box      
       vector<Point>::iterator it;
       for(it=vertices.begin();it!=vertices.end();it++){
-          Point p=Point((*it).x,(*it).y,(*it).z);
+          Point p=*it;
           this->positionedVertices.push_back(transform(p));
       }
       buildDiagonals(positionedVertices);
@@ -70,7 +70,7 @@ class EnclosingBox{
       for(int i=0;i<positionedVertices.size();i++){
         Point p=vertices[i];
         Point& pp=positionedVertices[i];
-        pp.set(p.x,p.y,p.z);
+        pp=p;
         transform(pp);
       }
       buildDiagonals(positionedVertices);

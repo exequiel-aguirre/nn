@@ -97,14 +97,14 @@ class Position {
     	this->psi=psi;
     }
 
-	Position* operator+=(const Position position) {
+	Position& operator+=(const Position position) {
         this->x+=position.x;
         this->y+=position.y;
         this->z+=position.z;
         this->phi+=position.phi;
         this->theta+=position.theta;
         this->psi+=position.psi;
-        return this;
+        return *this;
   	}
   
 };

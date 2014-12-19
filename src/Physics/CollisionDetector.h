@@ -66,16 +66,16 @@ class CollisionDetector{
         float d=1000000;
         for(it1=vertices1.begin();it1!=vertices1.end();it1++){
             //a point of c1
-            Point p=*it1;
+            Point& p=*it1;
             for(it2=trianglePlanes2.begin();it2!=trianglePlanes2.end();it2++){
                 //get the distance from p to the plane of each triangle of c2
-                Point x0=(*it2).first;
-                Point n=(*it2).second;
-                float d1=distance(p,x0,n);
+                Point& x0=(*it2).first;
+                Point& n=(*it2).second;
+                float d1=fabs(n * (p-x0));
                 if(d1<d){
                     d=d1;
                     b1.getCollisionStatus().setImpactPoint(p).setImpactNormal(n).setDistance(d);
-                    b2.getCollisionStatus().setImpactPoint(p).setImpactNormal(Point(-n.x,-n.y,-n.z)).setDistance(d);
+                    b2.getCollisionStatus().setImpactPoint(p).setImpactNormal(-n).setDistance(d);
                 }
             }
         }
@@ -83,9 +83,6 @@ class CollisionDetector{
         return d;
     }
 
-    float distance(Point& p,Point& x0,Point& n){
-        //n.(p-x0)
-        return fabs((n.x *(p.x-x0.x))+(n.y *(p.y-x0.y))+(n.z *(p.z-x0.z)));
-    }
+
 };
 #endif
