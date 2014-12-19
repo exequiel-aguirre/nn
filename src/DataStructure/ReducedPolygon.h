@@ -16,7 +16,6 @@ class ReducedPolygon{
     vector<Point> indexedVertices;
     vector<std::pair<Point,Point>> trianglePlanes;
     Position position;
-    vector<Point> positionedVertices;
     vector<Point> positionedIndexedVertices;
     //TODO:find a better name. pair<point,normal>
     //here we are using the theorem of rotational invariance of cross product
@@ -159,12 +158,6 @@ class ReducedPolygon{
     void buildPositionedVertices(){
       
       vector<Point>::iterator it;
-      for(it=vertices.begin();it!=vertices.end();it++){
-          Point p= *it;
-          this->positionedVertices.push_back(transform(p));
-      }
-
-      
       for(it=indexedVertices.begin();it!=indexedVertices.end();it++){
           Point p=*it;
           this->positionedIndexedVertices.push_back(transform(p));
@@ -185,12 +178,6 @@ class ReducedPolygon{
     }
 
     void updatePositionedVertices(){
-      for(int i=0;i<positionedVertices.size();i++){
-        Point p=vertices[i];
-        Point& pp=positionedVertices[i];
-        pp=p;
-        transform(pp);
-      }
 
       for(int i=0;i<positionedIndexedVertices.size();i++){
         Point p=indexedVertices[i];
@@ -217,11 +204,6 @@ class ReducedPolygon{
       p.rotate(position.getPhi(),position.getTheta(),position.getPsi());
       p.translate(position.getX(),position.getY(),position.getZ());
       return p;
-    }
-
-    //this method is just used for debugging...
-    vector<Point>& getPositionedVertices(){
-      return positionedVertices;
     }
 
     //TODO:change name?
