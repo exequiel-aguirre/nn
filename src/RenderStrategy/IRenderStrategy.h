@@ -15,7 +15,7 @@ class IRenderStrategy{
     
     virtual void render(){}
 
-    virtual ModelObject* getModelObject(){}
+    virtual ModelObject& getModelObject(){}
 
 };
 #endif

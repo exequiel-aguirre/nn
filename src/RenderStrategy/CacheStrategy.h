@@ -40,8 +40,8 @@ class CacheStrategy :public IRenderStrategy {
       glEnd();
     }
 
-    ModelObject*  getModelObject(){
-      return &modelObject;
+    ModelObject&  getModelObject(){
+      return modelObject;
     }  
 
     virtual ModelObject  loadModel(const char* modelFilename){

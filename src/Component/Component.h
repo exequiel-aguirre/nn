@@ -15,6 +15,7 @@
 class Component {  
   private:
     IRenderStrategy* renderStrategy=NULL;
+    ModelObject modelObject;
   protected:
     vector<IBehavior*> behaviors;
     vector<IEffect*> effects;
@@ -93,48 +94,48 @@ class Component {
       this->acceleration.set(x,y,z,phi,theta,psi);
     }
     
-    ModelObject* getModelObject(){
-      if(this->renderStrategy==NULL) return NULL;
-      return this->renderStrategy->getModelObject();
+    ModelObject& getModelObject(){
+      return modelObject;
     }
 
     void setRenderStrategy(IRenderStrategy* renderStrategy){
       this->renderStrategy=renderStrategy;
+      this->modelObject=renderStrategy->getModelObject();
       calculateBoundary();
     }
     
 
     void calculateBoundary(){
-      if(getModelObject()==NULL) return;
+      if(modelObject.getSize()==0) return;
       //update the boundary
-      getModelObject()->getBoundary().updatePosition(position.getX(),position.getY(),position.getZ(),
+      modelObject.getBoundary().updatePosition(position.getX(),position.getY(),position.getZ(),
           position.getPhi(),position.getTheta(),position.getPsi());
     }
 
     Boundary& getBoundary(){
-      return getModelObject()->getBoundary();
+      return modelObject.getBoundary();
     }
 
     CollisionStatus& getCollisionStatus(){
-      return getModelObject()->getBoundary().getCollisionStatus();
+      return modelObject.getBoundary().getCollisionStatus();
     }
 
     Point getBoundaryMin(){      
-      return getModelObject()->getBoundary().getEnclosingBox().getDiagonalMin();
+      return modelObject.getBoundary().getEnclosingBox().getDiagonalMin();
     }
 
     Point getBoundaryMax(){      
-      return getModelObject()->getBoundary().getEnclosingBox().getDiagonalMax();
+      return modelObject.getBoundary().getEnclosingBox().getDiagonalMax();
     }
 
     Point getBoundaryLength(){      
-      return getModelObject()->getBoundary().getEnclosingBox().getLength();
+      return modelObject.getBoundary().getEnclosingBox().getLength();
     }
 
     virtual float getMass(){
-      if(getModelObject()==NULL) return NULL;
+      if(modelObject.getSize()==0) return NULL;
       //a very rough approximation of volume
-      return getModelObject()->getBoundary().getEnclosingBox().getVolume()* massDensity;
+      return modelObject.getBoundary().getEnclosingBox().getVolume()* massDensity;
     }
 
 
