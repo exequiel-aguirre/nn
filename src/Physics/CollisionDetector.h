@@ -69,13 +69,14 @@ class CollisionDetector{
             Point& p=*it1;
             for(it2=trianglePlanes2.begin();it2!=trianglePlanes2.end();it2++){
                 //get the distance from p to the plane of each triangle of c2
-                Point& x0=(*it2).first;
-                Point& n=(*it2).second;
+                Point& x0=it2->first;
+                Point& n=it2->second;
                 float d1=fabs(n * (p-x0));
                 if(d1<d){
                     d=d1;
                     b1.getCollisionStatus().setImpactPoint(p).setImpactNormal(n).setDistance(d);
                     b2.getCollisionStatus().setImpactPoint(p).setImpactNormal(-n).setDistance(d);
+                    if(d==0) return d;//if the distance is zero, no need to keep on going
                 }
             }
         }

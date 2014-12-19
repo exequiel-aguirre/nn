@@ -13,7 +13,8 @@ class MotionBehavior: public AbstractBehavior{
   	MotionBehavior(){}    
 
     void bind(Component* hostComponent){
-      AbstractBehavior::bind(hostComponent);      
+      AbstractBehavior::bind(hostComponent);
+      hostComponent->setMoves(true);
       this->motion=Motion();
     }
     virtual ~MotionBehavior(){}   

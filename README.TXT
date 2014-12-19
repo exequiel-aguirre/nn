@@ -35,7 +35,6 @@ BUGS:
 
 TODOS:
 -CollisionDetector:
---if the velocity and acceleration is 0 for both objects do not calculate distance (or collision alltogether)
 - the rawPoint was created, but now inside point we have duplicated x,y,z. Besides that, if we modify point->x, rawPoint won't change, which I think is fine having in mind that we are using GL_STATIC_DRAW?
 -the modelObject should be created in the component and passed to the renderStrategy, not the other way around (?). After putting the modelObject in the component, the animation is bounding against the box (like it should, but it's odd that this change fix that...)
 -all the collide(), setCollide should be done within the component

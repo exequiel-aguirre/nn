@@ -25,6 +25,7 @@ class Component {
     Acceleration acceleration;
     float massDensity=1.0f;
     bool rotates=false;
+    bool moves=false;
   public:
     Component(Position position){
       this->position=position;
@@ -172,6 +173,13 @@ class Component {
 
     bool getRotates(){
       return rotates;
+    }
+
+    void setMoves(bool moves){
+      this->moves=moves;;
+    }
+    bool getMoves(){
+      return moves;
     }
 };
 #endif
