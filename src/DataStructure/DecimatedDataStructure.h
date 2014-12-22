@@ -9,6 +9,8 @@
 #include <assert.h>
 #include "Point.h"
 
+namespace nnd{
+
 class Triangle;
 class NPoint;
 
@@ -43,6 +45,7 @@ class NPoint:public Point{
 	void remove(NPoint* n);
 	void print();	
 	bool contains(Triangle* t);
+	bool contains(NPoint* p);
 };
 
 vector<NPoint* >   vertices;
@@ -165,7 +168,7 @@ void NPoint::remove(Triangle* t){
 }
 void NPoint::addUnique(NPoint* p){
 	vector<NPoint*>::iterator itp=std::find(neighbors.begin(),neighbors.end(),p);
-	if(itp!=neighbors.end() || neighbors.empty()){//TODO:check if I need to add this empty condition somewhere else
+	if(itp==neighbors.end()){
 		neighbors.push_back(p);		
 	}
 }
@@ -176,7 +179,11 @@ void NPoint::remove(NPoint* p){
 
 bool NPoint::contains(Triangle* t){
 	vector<Triangle*>::iterator itt=std::find(face.begin(),face.end(),t);
-	return (itt!=face.end() || face.empty());
+	return (itt!=face.end());
+}
+bool NPoint::contains(NPoint* p){
+	vector<NPoint*>::iterator itp=std::find(neighbors.begin(),neighbors.end(),p);
+	return (itp!=neighbors.end());
 }
 
 void NPoint::print(){
@@ -265,6 +272,7 @@ NPoint* getMinimumCostVertex(){
 }
 
 
+
 void collapse(NPoint* p1,NPoint* p2){
 	if(!p2){		
 		delete(p1);
@@ -296,7 +304,7 @@ vector<Point>& decimate(vector<Point>& moIndexedVertices,vector<vector<int>> moI
 	std::cout << "decimating...\n";
 	addVertex(moIndexedVertices);
 	addFaces(moIndexedTriangles);
-	
+
 	calculateAllCosts();
 	
 	//decimate
@@ -321,6 +329,8 @@ vector<Point>& decimate(vector<Point>& moIndexedVertices,vector<vector<int>> moI
 		decimatedVertices.push_back(v3);
 	}
 	return decimatedVertices;
+}
+
 }
 
 #endif

@@ -16,7 +16,7 @@ class DecimatedPolygon{
 	 
     DecimatedPolygon(vector<Point> vertices){
       build(vertices);
-      this->vertices=decimate(indexedVertices,indexedTriangles);
+      this->vertices=nnd::decimate(indexedVertices,indexedTriangles);
       //buildVertices();
   	}
     void build(vector<Point> vertices){
