@@ -98,8 +98,8 @@ class ReducedPolygon{
     void buildPolygonVertices(IMap& map){
       
       
-      int lats=std::min(map.getLats(),MAX_LATS_LONGS);
-      int longs=std::min(map.getLongs(),MAX_LATS_LONGS);
+      int lats=getLatsLongs(map,0.4);
+      int longs=lats;
       float u0,u1,v0,v1;
       int i, j;
       float uFrom=map.getUFrom();
@@ -129,6 +129,39 @@ class ReducedPolygon{
         }
       }
 
+    }
+
+    int getLatsLongs(IMap& map,float maxError){
+      float u0,u1,v0,v1;
+      int i, j, k;
+      float uFrom=map.getUFrom();
+      float uTo=map.getUTo();
+      float vFrom=map.getVFrom();
+      float vTo=map.getVTo();
+
+      for(k=0;k<map.getLats();k++)
+      {
+        float error=1.0;
+        //latitudes
+        //TODO: set i=0,and change "<="" -> "<"" and "i-1" -> "i","i"->"i+1"
+        for(i = 1; i <= k; i++)
+        {
+          v0= vFrom + (((vTo-vFrom)/k)* (i-1));
+          v1= vFrom + (((vTo-vFrom)/k)* i);
+
+          for(j = 0; j < k; j++)
+          {
+            u0=uFrom + (((uTo-uFrom)/k) * j);
+            u1=uFrom + (((uTo-uFrom)/k) * (j+1));
+            float cosAngle=map.getNormal(u0,v0) * map.getNormal(u1,v1);
+            float newError=1.0-fabs(cosAngle);
+            error=std::min(error,newError);
+          }
+        }
+
+        if(error<maxError) break;
+      }
+      return k;
     }
 
     void buildIndexedVertices(){
