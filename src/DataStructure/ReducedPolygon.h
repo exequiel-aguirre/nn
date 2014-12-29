@@ -22,71 +22,10 @@ class ReducedPolygon{
     vector<std::pair<Point,Point>> positionedTrianglePlanes;
   public:	
     ReducedPolygon(){}
-	 //TODO:here put this->vertices=new vector<>().(makes no sense to do the same as bounding box)
     ReducedPolygon(vector<Point> vertices){
-      buildBoxVertices(vertices);
-      buildIndexedVertices();
-      buildTrianglePlanes();      
-      buildPositionedVertices();
+      //there's no reducedPolygon implemented for loaded models.
   	}
-    //TODO:code duplication. Same function in ModelObject
-    void buildBoxVertices(vector<Point> moVertices){
-      auto minMaxX=std::minmax_element(moVertices.begin(),moVertices.end(),
-        [](Point p1, Point p2) {
-              return p1.x < p2.x;
-          });
-      auto minMaxY=std::minmax_element(moVertices.begin(),moVertices.end(),
-        [](Point p1, Point p2) {
-              return p1.y < p2.y;
-          });
-      auto minMaxZ=std::minmax_element(moVertices.begin(),moVertices.end(),
-        [](Point p1, Point p2) {
-              return p1.z < p2.z;
-          });
-      Point boundaryMin= Point((*minMaxX.first).x,(*minMaxY.first).y,(*minMaxZ.first).z);
-      Point boundaryMax= Point((*minMaxX.second).x,(*minMaxY.second).y,(*minMaxZ.second).z);
 
-      //front rectangle
-      vertices.push_back( Point(boundaryMin.x,boundaryMin.y,boundaryMin.z));
-      vertices.push_back(Point(boundaryMax.x,boundaryMin.y,boundaryMin.z));
-
-      vertices.push_back(Point(boundaryMax.x,boundaryMin.y,boundaryMin.z));
-      vertices.push_back( Point(boundaryMax.x,boundaryMax.y,boundaryMin.z));
-
-      vertices.push_back( Point(boundaryMax.x,boundaryMax.y,boundaryMin.z));
-      vertices.push_back( Point(boundaryMin.x,boundaryMax.y,boundaryMin.z));
-
-      vertices.push_back( Point(boundaryMin.x,boundaryMax.y,boundaryMin.z));
-      vertices.push_back( Point(boundaryMin.x,boundaryMin.y,boundaryMin.z));
-
-
-      //back rectangle
-      vertices.push_back( Point(boundaryMin.x,boundaryMin.y,boundaryMax.z));
-      vertices.push_back( Point(boundaryMax.x,boundaryMin.y,boundaryMax.z));
-
-      vertices.push_back( Point(boundaryMax.x,boundaryMin.y,boundaryMax.z));
-      vertices.push_back( Point(boundaryMax.x,boundaryMax.y,boundaryMax.z));
-
-      vertices.push_back( Point(boundaryMax.x,boundaryMax.y,boundaryMax.z));
-      vertices.push_back( Point(boundaryMin.x,boundaryMax.y,boundaryMax.z));
-
-      vertices.push_back( Point(boundaryMin.x,boundaryMax.y,boundaryMax.z));
-      vertices.push_back( Point(boundaryMin.x,boundaryMin.y,boundaryMax.z));
-
-      //depth rectangle
-      vertices.push_back( Point(boundaryMin.x,boundaryMin.y,boundaryMin.z));
-      vertices.push_back( Point(boundaryMin.x,boundaryMin.y,boundaryMax.z));
-
-      vertices.push_back( Point(boundaryMax.x,boundaryMin.y,boundaryMin.z));
-      vertices.push_back( Point(boundaryMax.x,boundaryMin.y,boundaryMax.z));
-
-      vertices.push_back( Point(boundaryMax.x,boundaryMax.y,boundaryMin.z));
-      vertices.push_back( Point(boundaryMax.x,boundaryMax.y,boundaryMax.z));
-
-      vertices.push_back( Point(boundaryMin.x,boundaryMax.y,boundaryMin.z));
-      vertices.push_back( Point(boundaryMin.x,boundaryMax.y,boundaryMax.z));
-
-    }
     ReducedPolygon(IMap& map){
       buildPolygonVertices(map);
       buildIndexedVertices();

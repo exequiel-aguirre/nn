@@ -63,6 +63,7 @@ class CollisionDetector{
 
         vector<std::pair<Point,Point>>& trianglePlanes2=b2.getReducedPolygon().getPositionedTrianglePlanes();
         vector<std::pair<Point,Point>>::iterator it2;
+        if(vertices1.empty() || trianglePlanes2.empty()) return 0;//there's no reducedPolygon implemented( for loaded models)
         float d=1000000;
         for(it1=vertices1.begin();it1!=vertices1.end();it1++){
             //a point of c1
