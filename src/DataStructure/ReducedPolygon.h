@@ -37,7 +37,7 @@ class ReducedPolygon{
     void buildPolygonVertices(IMap& map){
       
       
-      int lats=getLatsLongs(map,0.4);
+      int lats=getLatsLongs(map,0.2);
       int longs=lats;
       float u0,u1,v0,v1;
       int i, j;
@@ -114,6 +114,7 @@ class ReducedPolygon{
       
       vector<Point>::iterator it;
       for(it=vertices.begin();it!=vertices.end();it+=3){
+          if((*it)==(*(it+1)) || (*it)==(*(it+2)) || (*(it+1))==(*(it+2))) continue;//malformed triangle
           //get the vertices of the triangle
           Point v1=(*it);
           Point v2=*(it+1);
