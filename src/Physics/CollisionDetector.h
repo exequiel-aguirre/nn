@@ -57,20 +57,31 @@ class CollisionDetector{
 
     //TODO:find a better name:We cannot call it distance, since separation(a,b)!=separation(b,a)
     float getSeparation(Boundary& b1,Boundary& b2){
+        vector<Point> vertices;
+        vector<std::pair<Point,Point>> trianglePlanes;
+        vector<Point>::iterator itp;
+        vector<std::pair<Point,Point>>::iterator ittp;
+        //we use the reducedPolygon with more points for the vertices
+        if(b1.getReducedPolygon().getPositionedIndexedVertices().size()>b2.getReducedPolygon().getPositionedIndexedVertices().size())
+        {
+            vertices=b1.getReducedPolygon().getPositionedIndexedVertices();
+            trianglePlanes=b2.getReducedPolygon().getPositionedTrianglePlanes();
+        }
+        else
+        {
+            vertices=b2.getReducedPolygon().getPositionedIndexedVertices();
+            trianglePlanes=b1.getReducedPolygon().getPositionedTrianglePlanes();
+        }
 
-        vector<Point>& vertices1=b1.getReducedPolygon().getPositionedIndexedVertices();
-        vector<Point>::iterator it1;
-
-        vector<std::pair<Point,Point>>& trianglePlanes2=b2.getReducedPolygon().getPositionedTrianglePlanes();
-        vector<std::pair<Point,Point>>::iterator it2;
+        if(vertices.empty() || trianglePlanes.empty()) return 0;//there's no reducedPolygon implemented( for loaded models)
         float d=1000000;
-        for(it1=vertices1.begin();it1!=vertices1.end();it1++){
+        for(itp=vertices.begin();itp!=vertices.end();itp++){
             //a point of c1
-            Point& p=*it1;
-            for(it2=trianglePlanes2.begin();it2!=trianglePlanes2.end();it2++){
+            Point& p=*itp;
+            for(ittp=trianglePlanes.begin();ittp!=trianglePlanes.end();ittp++){
                 //get the distance from p to the plane of each triangle of c2
-                Point& x0=it2->first;
-                Point& n=it2->second;
+                Point& x0=ittp->first;
+                Point& n=ittp->second;
                 float d1=fabs(n * (p-x0));
                 if(d1<d){
                     d=d1;

@@ -22,71 +22,10 @@ class ReducedPolygon{
     vector<std::pair<Point,Point>> positionedTrianglePlanes;
   public:	
     ReducedPolygon(){}
-	 //TODO:here put this->vertices=new vector<>().(makes no sense to do the same as bounding box)
     ReducedPolygon(vector<Point> vertices){
-      buildBoxVertices(vertices);
-      buildIndexedVertices();
-      buildTrianglePlanes();      
-      buildPositionedVertices();
+      //there's no reducedPolygon implemented for loaded models.
   	}
-    //TODO:code duplication. Same function in ModelObject
-    void buildBoxVertices(vector<Point> moVertices){
-      auto minMaxX=std::minmax_element(moVertices.begin(),moVertices.end(),
-        [](Point p1, Point p2) {
-              return p1.x < p2.x;
-          });
-      auto minMaxY=std::minmax_element(moVertices.begin(),moVertices.end(),
-        [](Point p1, Point p2) {
-              return p1.y < p2.y;
-          });
-      auto minMaxZ=std::minmax_element(moVertices.begin(),moVertices.end(),
-        [](Point p1, Point p2) {
-              return p1.z < p2.z;
-          });
-      Point boundaryMin= Point((*minMaxX.first).x,(*minMaxY.first).y,(*minMaxZ.first).z);
-      Point boundaryMax= Point((*minMaxX.second).x,(*minMaxY.second).y,(*minMaxZ.second).z);
 
-      //front rectangle
-      vertices.push_back( Point(boundaryMin.x,boundaryMin.y,boundaryMin.z));
-      vertices.push_back(Point(boundaryMax.x,boundaryMin.y,boundaryMin.z));
-
-      vertices.push_back(Point(boundaryMax.x,boundaryMin.y,boundaryMin.z));
-      vertices.push_back( Point(boundaryMax.x,boundaryMax.y,boundaryMin.z));
-
-      vertices.push_back( Point(boundaryMax.x,boundaryMax.y,boundaryMin.z));
-      vertices.push_back( Point(boundaryMin.x,boundaryMax.y,boundaryMin.z));
-
-      vertices.push_back( Point(boundaryMin.x,boundaryMax.y,boundaryMin.z));
-      vertices.push_back( Point(boundaryMin.x,boundaryMin.y,boundaryMin.z));
-
-
-      //back rectangle
-      vertices.push_back( Point(boundaryMin.x,boundaryMin.y,boundaryMax.z));
-      vertices.push_back( Point(boundaryMax.x,boundaryMin.y,boundaryMax.z));
-
-      vertices.push_back( Point(boundaryMax.x,boundaryMin.y,boundaryMax.z));
-      vertices.push_back( Point(boundaryMax.x,boundaryMax.y,boundaryMax.z));
-
-      vertices.push_back( Point(boundaryMax.x,boundaryMax.y,boundaryMax.z));
-      vertices.push_back( Point(boundaryMin.x,boundaryMax.y,boundaryMax.z));
-
-      vertices.push_back( Point(boundaryMin.x,boundaryMax.y,boundaryMax.z));
-      vertices.push_back( Point(boundaryMin.x,boundaryMin.y,boundaryMax.z));
-
-      //depth rectangle
-      vertices.push_back( Point(boundaryMin.x,boundaryMin.y,boundaryMin.z));
-      vertices.push_back( Point(boundaryMin.x,boundaryMin.y,boundaryMax.z));
-
-      vertices.push_back( Point(boundaryMax.x,boundaryMin.y,boundaryMin.z));
-      vertices.push_back( Point(boundaryMax.x,boundaryMin.y,boundaryMax.z));
-
-      vertices.push_back( Point(boundaryMax.x,boundaryMax.y,boundaryMin.z));
-      vertices.push_back( Point(boundaryMax.x,boundaryMax.y,boundaryMax.z));
-
-      vertices.push_back( Point(boundaryMin.x,boundaryMax.y,boundaryMin.z));
-      vertices.push_back( Point(boundaryMin.x,boundaryMax.y,boundaryMax.z));
-
-    }
     ReducedPolygon(IMap& map){
       buildPolygonVertices(map);
       buildIndexedVertices();
@@ -98,8 +37,8 @@ class ReducedPolygon{
     void buildPolygonVertices(IMap& map){
       
       
-      int lats=std::min(map.getLats(),MAX_LATS_LONGS);
-      int longs=std::min(map.getLongs(),MAX_LATS_LONGS);
+      int lats=getLatsLongs(map,0.2);
+      int longs=lats;
       float u0,u1,v0,v1;
       int i, j;
       float uFrom=map.getUFrom();
@@ -131,6 +70,39 @@ class ReducedPolygon{
 
     }
 
+    int getLatsLongs(IMap& map,float maxError){
+      float u0,u1,v0,v1;
+      int i, j, k;
+      float uFrom=map.getUFrom();
+      float uTo=map.getUTo();
+      float vFrom=map.getVFrom();
+      float vTo=map.getVTo();
+
+      for(k=0;k<map.getLats();k++)
+      {
+        float error=1.0;
+        //latitudes
+        //TODO: set i=0,and change "<="" -> "<"" and "i-1" -> "i","i"->"i+1"
+        for(i = 1; i <= k; i++)
+        {
+          v0= vFrom + (((vTo-vFrom)/k)* (i-1));
+          v1= vFrom + (((vTo-vFrom)/k)* i);
+
+          for(j = 0; j < k; j++)
+          {
+            u0=uFrom + (((uTo-uFrom)/k) * j);
+            u1=uFrom + (((uTo-uFrom)/k) * (j+1));
+            float cosAngle=map.getNormal(u0,v0) * map.getNormal(u1,v1);
+            float newError=1.0-fabs(cosAngle);
+            error=std::min(error,newError);
+          }
+        }
+
+        if(error<maxError) break;
+      }
+      return k;
+    }
+
     void buildIndexedVertices(){
       indexedVertices=vertices;
       //remove duplicated points
@@ -142,6 +114,7 @@ class ReducedPolygon{
       
       vector<Point>::iterator it;
       for(it=vertices.begin();it!=vertices.end();it+=3){
+          if((*it)==(*(it+1)) || (*it)==(*(it+2)) || (*(it+1))==(*(it+2))) continue;//malformed triangle
           //get the vertices of the triangle
           Point v1=(*it);
           Point v2=*(it+1);
