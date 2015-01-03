@@ -48,46 +48,28 @@ class PhysicsManager{
   }
 
     void onCollisionDetected(Component* c1,Component* c2){
-            float islx=c1->getCollisionStatus().getIslx();
-            float isly=c1->getCollisionStatus().getIsly();
-            float islz=c1->getCollisionStatus().getIslz();
-            //v1 and v2 final velocity, v1_i and v2_i initial velocity
-            float v1,v2,v1_i,v2_i;
+                        
+            CollisionStatus& status1=c1->getCollisionStatus();
+            CollisionStatus& status2=c2->getCollisionStatus();
+            
             float m1=c1->getMass();
             float m2=c2->getMass();
-            //TODO:same thing for x,y and z. Put all these in a method
-            //collision on X
-            //check if the objects crashed into each other or just scratch the surface
-            if(isly*islz>0){//the isly*islz is the area of the contact surface defined by the x-axis as normal
-                v1_i=c1->getVelocity().getX();
-                v2_i=c2->getVelocity().getX();
-                v1=((m1*v1_i) + (m2*v2_i) + (m2 * E *(v2_i-v1_i)))/(m1+m2);
-                v2=((m1*v1_i) + (m2*v2_i) + (m1 * E *(v1_i-v2_i)))/(m1+m2);
-                c1->getVelocity().setX(v1);
-                c2->getVelocity().setX(v2);
-            }
+            Velocity v_r=c2->getVelocity()-c1->getVelocity();
+            Point n=status1.getImpactNormal();
+            float j_r=((v_r* -(1.0+E)) * n)/( (1.0/m1) +(1.0/m2) );
+            Velocity J_r=Velocity(j_r * n.x,j_r * n.y,j_r * n.z);
+            Velocity v1_i=c1->getVelocity();
+            Velocity v2_i=c2->getVelocity();
+            Velocity v1=v1_i - Velocity(1.0/m1 * j_r * n.x,1.0/m1 * j_r * n.y,1.0/m1 * j_r * n.z);
+            Velocity v2=v2_i + Velocity(1.0/m2 * j_r * n.x,1.0/m2 * j_r * n.y,1.0/m2 * j_r * n.z);
 
-            //collision on Y
-            if(islx*islz>0){
-                v1_i=c1->getVelocity().getY();
-                v2_i=c2->getVelocity().getY();
-                v1=((m1*v1_i) + (m2*v2_i) + (m2 * E *(v2_i-v1_i)))/(m1+m2);
-                v2=((m1*v1_i) + (m2*v2_i) + (m1 * E *(v1_i-v2_i)))/(m1+m2);
-                c1->getVelocity().setY(v1);
-                c2->getVelocity().setY(v2);
-            }
-            //collision on Z
-            if(islx*isly>0){
-                v1_i=c1->getVelocity().getZ();
-                v2_i=c2->getVelocity().getZ();
-                v1=((m1*v1_i) + (m2*v2_i) + (m2 * E *(v2_i-v1_i)))/(m1+m2);
-                v2=((m1*v1_i) + (m2*v2_i) + (m1 * E *(v1_i-v2_i)))/(m1+m2);
-                c1->getVelocity().setZ(v1);
-                c2->getVelocity().setZ(v2);
-            }
-
+            c1->setVelocity(v1.getX(),v1.getY(),v1.getZ());            
+            c2->setVelocity(v2.getX(),v2.getY(),v2.getZ());         
+                        
+            
             c1->getBoundary().getCollisionStatus().setOtherMass(c2->getMass());
             c2->getBoundary().getCollisionStatus().setOtherMass(c1->getMass());
+            //std::cout << islx << isly<<islz<<"\n";
            // std::cout << typeid(*c1).name()<<" with "<< typeid(*c2).name()<< " : "<< c1->getBoundary()->getCollisionStatus()->getImpactNormal();
 
     }
@@ -95,36 +77,23 @@ class PhysicsManager{
       vector<Component*>::iterator it;
       for(it=components.begin();it!=components.end();it++){
         if(!(*it)->getMoves()) continue;//if it doesn't move,makes no sense to add an acceleration to it
-        CollisionStatus status=(*it)->getCollisionStatus();
+        CollisionStatus& status=(*it)->getCollisionStatus();
 
         //When the collisionStatus's normal is accurate enough,
         //we can replace the 4 "if's" with this.and also the GetXMax,etc
-        /*Point* n=status->getImpactNormal();
+        Point n=status.getImpactNormal();
         float m=(*it)->getMass();
-        float m2=status->getOtherMass();
+        float m2=status.getOtherMass();
         float c=m2/(m2+m);//TODO:justify this
-        if(status->hasCollided()){
-           (*it)->getAcceleration()->set(c*9.8f * n->x,c*((9.8f * n->y)-9.8f),c * 9.8f * n->z);
+        if(status.hasCollided()){
+          float a=(*it)->getAcceleration().norm();
+          //std::cout <<typeid(*(*it)).name()<<" "<<c<<"\n"<< (*it)->getAcceleration();
+          (*it)->setAcceleration(c* a * n.x,c* a * n.y,c * a * n.z);
+          //std::cout << (*it)->getAcceleration()<<(*it)->getVelocity()<<&n<<"\n";
         }
-        else if((*it)->getMass()<1000){(the if should be more like if(*it)->hasMotion())
-          (*it)->getAcceleration()->set(0.0,-9.8f,0.0f);
-        }*/
-        if(status.getXMax() || status.getXMin()) (*it)->getAcceleration().setX(0.0f);
-
-        if(status.getYMax() || status.getYMin()) (*it)->getAcceleration().setY(0.0f);
-        //gravity
-        if(!status.getYMax()) (*it)->getAcceleration().setY(-9.8f);
-
-        if(status.getZMax() || status.getZMin()) (*it)->getAcceleration().setZ(0.0f);
-
-        //rotation without slipping
-        if((*it)->getRotates() && (status.getYMax() || status.getYMin())){
-          Velocity& v=(*it)->getVelocity();
-          Point r=(*it)->getBoundaryLength();
-          if(r.x!=0) v.setPhi(-(v.getZ()/r.x)*180.0f/M_PI);
-          if(r.z!=0) v.setPsi(-(v.getX()/r.z)*180.0f/M_PI);
+        else{
+          (*it)->getAcceleration().set(0.0,-9.8f,0.0f);
         }
-
       }
     }
 
