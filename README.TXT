@@ -34,6 +34,7 @@ BUGS:
 --bug the ReducedPolygon has some malformed vertices (two or more vertices equals) causin the normal to be zero, causing the distance to be 0 when it's not
 
 TODOS:
+-Performance: Maybe Point::rotate should return a Point& instead of (just) Point.
 -CollisionDetector:
 - the rawPoint was created, but now inside point we have duplicated x,y,z. Besides that, if we modify point->x, rawPoint won't change, which I think is fine having in mind that we are using GL_STATIC_DRAW?
 -the modelObject should be created in the component and passed to the renderStrategy, not the other way around (?). After putting the modelObject in the component, the animation is bounding against the box (like it should, but it's odd that this change fix that...)
