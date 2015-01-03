@@ -188,6 +188,14 @@ class ReducedPolygon{
       return positionedTrianglePlanes;
     }
     
+    //for debugging
+    vector<Point>& getVertices(){
+      return vertices;
+    }
+    vector<std::pair<Point,Point>>& getTrianglePlanes(){
+      return trianglePlanes;
+    }
+
 };
 
 #endif

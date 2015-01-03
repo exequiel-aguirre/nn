@@ -73,7 +73,14 @@ class CollisionDetector{
             trianglePlanes=b1.getReducedPolygon().getPositionedTrianglePlanes();
         }
 
-        if(vertices.empty() || trianglePlanes.empty()) return 0;//there's no reducedPolygon implemented( for loaded models)
+        //there's no reducedPolygon implemented( for loaded models)
+        //TODO:implement it.
+        if(vertices.empty() || trianglePlanes.empty()){
+            b1.getCollisionStatus().setImpactNormal(Point(0,1.0,0)).setDistance(0);
+            b2.getCollisionStatus().setImpactNormal(-Point(0,1.0,0)).setDistance(0);
+            return 0;
+        }
+
         float d=1000000;
         for(itp=vertices.begin();itp!=vertices.end();itp++){
             //a point of c1

@@ -51,7 +51,7 @@ class PhysicsManager{
                         
             CollisionStatus& status1=c1->getCollisionStatus();
             CollisionStatus& status2=c2->getCollisionStatus();
-            
+            //Impulse-Based Reaction Model
             float m1=c1->getMass();
             float m2=c2->getMass();
             Velocity v_r=c2->getVelocity()-c1->getVelocity();
