@@ -19,7 +19,7 @@
 #include "../Component/Physics.h"
 
 #include "../Behavior/MotionBehavior.h"
-#include "../Behavior/DragBehavior.h"
+
 
 
 class MyContainer:public Container{
@@ -29,7 +29,7 @@ class MyContainer:public Container{
 			Box* my3DBox2=new Box(Position(-3.0f,0.0f,-25.0f));
 			Hut* myHut=new Hut(Position(25.0f,0.0f,25.0f));
 			Mill* myMill=new Mill(Position(35.0f,0.0f,-35.0f));
-			//Torus* myTorus=new Torus(Position(-10.0f,1.0f,-17.0f,90.0f,0.0f,0.0f));
+			Torus* myTorus=new Torus(Position(-10.0f,1.0f,-17.0f,90.0f,0.0f,0.0f),2.0f,1.0f);
 			Ground* myGround=new Ground(Position(0.0f,0.0f,0.0f),100,100);
 			Mountain* myMountain=new Mountain(Position(10.0f,19.0f,-49.0f));
 			Tree* myTree1=new Tree(Position(5.0f,0.0f,5.0f));
@@ -58,7 +58,7 @@ class MyContainer:public Container{
 			add(my3DBox2->add(new MotionBehavior()));			
 			add(myHut);
 			add(myMill);
-			//add(myTorus->add(new MotionBehavior()));
+			add(myTorus);
 			add(myGround);			
 			add(myMountain);
 			add(myTree1);add(myTree2);add(myTree3);add(myTree4);add(myTree5);add(myTree6);
