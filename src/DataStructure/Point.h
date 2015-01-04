@@ -102,6 +102,13 @@ class Point{
 		return (x * p.x)+(y * p.y)+(z * p.z);
 	}
 
+	Point operator*(const float rhs){
+		return Point(x*rhs,y*rhs,z*rhs);
+	}
+	friend Point operator*(float lhs, Point rhs) {
+		return rhs*lhs;
+	}
+
 	Point operator+(const Point &p){
 		return Point(x+p.x,y+p.y,z+p.z);
 	}

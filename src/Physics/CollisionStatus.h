@@ -9,13 +9,6 @@ class CollisionStatus{
     float islx=0.0f;
     float isly=0.0f;
     float islz=0.0f;
-    //where was I when the collision happened
-    bool xMin=false;
-    bool xMax=false;
-    bool yMin=false;
-    bool yMax=false;
-    bool zMin=false;
-    bool zMax=false;
     //collided in this frame
     bool collided=false;
     //point of impact and normal
@@ -36,27 +29,15 @@ class CollisionStatus{
         islx=0.0f;
         isly=0.0f;
         islz=0.0f;
-        xMin=false;
-        xMax=false;
-        yMin=false;
-        yMax=false;
-        zMin=false;
-        zMax=false;
         collided=false;
         distance=10000;
         otherMass=0.0f;
     }
 
-    void set(float islx,float isly,float islz,bool xMin,bool xMax,bool yMin,bool yMax,bool zMin ,bool zMax,bool collided){
+    void set(float islx,float isly,float islz,bool collided){
         this->islx=islx;
         this->isly=isly;
         this->islz=islz;
-        if(xMin) this->xMin=xMin;
-        if(xMax) this->xMax=xMax;
-        if(yMin) this->yMin=yMin;
-        if(yMax) this->yMax=yMax;
-        if(zMin) this->zMin=zMin;
-        if(zMax) this->zMax=zMax;
         this->collided=collided;
     }
 
@@ -72,26 +53,6 @@ class CollisionStatus{
     }
     float getIslz(){
         return islz;
-    }
-    bool getXMin(){
-        return this->xMin;
-    }
-    bool getXMax(){
-        return this->xMax;
-    }
-
-    bool getYMin(){
-        return this->yMin;
-    }
-    bool getYMax(){
-        return this->yMax;
-    }
-
-    bool getZMin(){
-        return this->zMin;
-    }
-    bool getZMax(){
-        return this->zMax;
     }
 
     CollisionStatus& setImpactPoint(Point impactPoint){
@@ -125,5 +86,6 @@ class CollisionStatus{
     float getDistance(){
         return distance;
     }
+
 };
 #endif

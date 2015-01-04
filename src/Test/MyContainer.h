@@ -49,7 +49,7 @@ class MyContainer:public Container{
 			Sphere* mySphere=new Sphere(Position(0.0f,4.0f,-10.0f),0.39f);
 			Sphere* mySphere2=new Sphere(Position(-3.0f,8.0f,-20.0f),0.5f);
 			Sphere* mySphere3=new Sphere(Position(3.0f,6.0f,-20.0f),2.0f);
-			Sphere* mySphere4=new Sphere(Position(-18.0f,20.0f,-17.0f),0.5f);
+			Sphere* mySphere4=new Sphere(Position(-18.0f,40.0f,-30.0f),0.5f);
 			
 			Physics* physics=new Physics();
 			
@@ -75,7 +75,7 @@ class MyContainer:public Container{
 
 			add(new Plane(Position(-15.0f,8.0f,-20.0f,0.0f,0.0f,90.0f),5.0f,5.0f,"img/box.bmp",2,2));
 			add(new Plane(Position(15.0f,8.0f,-20.0f,0.0f,0.0f,90.0f),5.0f,5.0f,"img/box.bmp",2,2));
-			add(new Plane(Position(-18.0f,10.0f,-17.0f,45.0f,0.0f,0.0f),5.0f,200.0f,"img/box.bmp",2,2));
+			add(new Plane(Position(-18.0f,20.0f,-17.0f,45.0f,0.0f,0.0f),5.0f,50.0f,"img/box.bmp",2,2));
 
 			add(physics);
     }

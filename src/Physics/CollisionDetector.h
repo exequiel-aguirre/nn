@@ -28,24 +28,12 @@ class CollisionDetector{
                 islx,
                 isly,
                 islz,
-                min1.x <= min2.x,
-                max1.x >= max2.x,
-                min1.y <= min2.y,
-                max1.y >= max2.y,
-                min1.z <= min2.z,
-                max1.z >= max2.z,
                 true
                 );
             b2.getCollisionStatus().set(
                 islx,
                 isly,
                 islz,
-                min2.z <= min1.z,
-                max2.z >= max1.z,
-                min2.y <= min1.y,
-                max2.y >= max1.y,
-                min2.z <= min1.z,
-                max2.z >= max1.z,
                 true
                 );
 
