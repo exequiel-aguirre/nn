@@ -57,7 +57,6 @@ class PhysicsManager{
             Velocity v_r=c2->getVelocity()-c1->getVelocity();
             Point n=status1.getImpactNormal();
             float j_r=( (-(1.0+E) * v_r) * n )/( (1.0/m1) +(1.0/m2) );
-            Velocity J_r=Velocity(j_r * n);
             Velocity v1_i=c1->getVelocity();
             Velocity v2_i=c2->getVelocity();
             Velocity v1=v1_i - Velocity( (1.0/m1 * j_r) * n );

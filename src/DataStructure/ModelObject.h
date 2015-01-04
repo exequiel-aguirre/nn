@@ -84,19 +84,6 @@ class ModelObject{
       this->boundary= Boundary(map,vertices);
     }
 
-    vector<Point>* getVertices(){
-      return &vertices;
-    }
-
-    vector<Point>* getUVs(){
-      return &uvs;
-    }
-
-    vector<Point>* getNormals(){
-      return &normals;
-    }
-
-
   	Point getVertex(int i){
   		return vertices[i];
   	}
