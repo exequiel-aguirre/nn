@@ -63,7 +63,7 @@ class Debug{
     void renderReducedPolygon(){
     vector<Point> vertices=boundary.getReducedPolygon().getVertices();
         vector<Point>::iterator it;
-        glBegin(GL_LINES);
+        glBegin(GL_TRIANGLES);
         for(it=vertices.begin();it!=vertices.end();it+=3){      
               Point v1=(*it);
               Point v2=(*(it+1));
@@ -73,11 +73,11 @@ class Debug{
               glVertex3f(v1.x,v1.y,v1.z);
               glVertex3f(v2.x,v2.y,v2.z);
 
-              glVertex3f(v2.x,v2.y,v2.z);
+              //glVertex3f(v2.x,v2.y,v2.z);
               glVertex3f(v3.x,v3.y,v3.z);
 
-              glVertex3f(v3.x,v3.y,v3.z);
-              glVertex3f(v1.x,v1.y,v1.z);
+              //glVertex3f(v3.x,v3.y,v3.z);
+              //glVertex3f(v1.x,v1.y,v1.z);
         }
         glEnd();
 

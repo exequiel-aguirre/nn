@@ -37,7 +37,7 @@ class ReducedPolygon{
     void buildPolygonVertices(IMap& map){
       
       
-      int lats=getLatsLongs(map,0.2);
+      int lats=getLatsLongs(map,0.3);
       int longs=lats;
       float u0,u1,v0,v1;
       int i, j;

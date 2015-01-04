@@ -31,8 +31,8 @@ class Point{
 		return rawPoint;
 	}
 
-	friend std::ostream& operator<<(std::ostream& os , const Point* p){
-		os << "("<<p->x<<","<< p->y<<","<< p->z<<")"<< "\n";
+	friend std::ostream& operator<<(std::ostream& os , const Point p){
+		os << "("<<p.x<<","<< p.y<<","<< p.z<<")"<< "\n";
 	}
 
 	bool operator==(const Point& p){
@@ -127,6 +127,10 @@ class Point{
 		y=y/norm;
 		z=z/norm;
 		return *this;
+	}
+
+	float norm(){
+		return sqrt((x*x) + (y*y) + (z*z));
 	}
 };
 
