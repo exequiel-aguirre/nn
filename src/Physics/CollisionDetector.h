@@ -49,8 +49,9 @@ class CollisionDetector{
         vector<std::pair<Point,Point>> trianglePlanes;
         vector<Point>::iterator itp;
         vector<std::pair<Point,Point>>::iterator ittp;
-        //we use the reducedPolygon with more points for the vertices
-        if(b1.getReducedPolygon().getPositionedIndexedVertices().size()>b2.getReducedPolygon().getPositionedIndexedVertices().size())
+        //we use the reducedPolygon with more points for the vertices, and the normals of the other
+        bool usingB2Normals=b1.getReducedPolygon().getPositionedIndexedVertices().size()>b2.getReducedPolygon().getPositionedIndexedVertices().size();
+        if(usingB2Normals)
         {
             vertices=b1.getReducedPolygon().getPositionedIndexedVertices();
             trianglePlanes=b2.getReducedPolygon().getPositionedTrianglePlanes();
@@ -80,8 +81,8 @@ class CollisionDetector{
                 float d1=fabs(n * (p-x0));
                 if(d1<d){
                     d=d1;
-                    b1.getCollisionStatus().setImpactPoint(p).setImpactNormal(n).setDistance(d);
-                    b2.getCollisionStatus().setImpactPoint(p).setImpactNormal(-n).setDistance(d);
+                    if(d<EPSILON) b1.getCollisionStatus().setImpactPoint(p).setImpactNormal(usingB2Normals?n:-n).setDistance(d);
+                    if(d<EPSILON) b2.getCollisionStatus().setImpactPoint(p).setImpactNormal(usingB2Normals?-n:n).setDistance(d);
                     if(d==0) return d;//if the distance is zero, no need to keep on going
                 }
             }
