@@ -6,6 +6,7 @@
 #include "Point.h"
 #include "../Map/IMap.h"
 #include "Position.h"
+#include "Velocity.h"
 
 
 class ReducedPolygon{
@@ -14,12 +15,14 @@ class ReducedPolygon{
     //TODO:remove the following 2 properties after use
     vector<Point> vertices;
     vector<Point> indexedVertices;
-    vector<std::pair<Point,Point>> trianglePlanes;
+    vector<vector<Point>> triangles;
     Position position;
     vector<Point> positionedIndexedVertices;
-    //TODO:find a better name. pair<point,normal>
+    //vector<vertex0,vertex1,vertex2,normal>
     //here we are using the theorem of rotational invariance of cross product
-    vector<std::pair<Point,Point>> positionedTrianglePlanes;
+    vector<vector<Point>> positionedTriangles;
+    ////TODO:find a better name. This is the direction of the movement (x,y,z of the component's velocity)
+    Point motionRay;
   public:	
     ReducedPolygon(){}
     ReducedPolygon(vector<Point> vertices){
@@ -29,7 +32,7 @@ class ReducedPolygon{
     ReducedPolygon(IMap& map){
       buildPolygonVertices(map);
       buildIndexedVertices();
-      buildTrianglePlanes();      
+      buildTriangles();
       buildPositionedVertices();
     }     
 
@@ -110,7 +113,7 @@ class ReducedPolygon{
       indexedVertices.erase( std::unique( indexedVertices.begin(), indexedVertices.end() ), indexedVertices.end() );
     }
 
-    void buildTrianglePlanes(){
+    void buildTriangles(){
       
       vector<Point>::iterator it;
       for(it=vertices.begin();it!=vertices.end();it+=3){
@@ -122,10 +125,9 @@ class ReducedPolygon{
           //get the normal vector
           Point n=(v2-v1)^(v3-v1);
           n.normalize();
-          //get the x0 for the plane
-          Point x0=v1;
-          //add the pair that define the plane for this triangle
-          this->trianglePlanes.push_back(std::make_pair(x0,n));
+
+          //add this triangle
+          this->triangles.push_back({v1,v2,v3,n});
       }
     }
     void buildPositionedVertices(){
@@ -136,16 +138,20 @@ class ReducedPolygon{
           this->positionedIndexedVertices.push_back(transform(p));
       }
 
-      vector<std::pair<Point,Point>>::iterator itp;
-      for(itp=trianglePlanes.begin();itp!=trianglePlanes.end();itp++){
-          Point x0=(*itp).first;
-          Point n= (*itp).second;
-          this->positionedTrianglePlanes.push_back(std::make_pair(transform(x0),n.rotate(position.getPhi(),position.getTheta(),position.getPsi())));//the normal needs just to rotate,no translate          
+      vector<vector<Point>>::iterator itp;
+      for(itp=triangles.begin();itp!=triangles.end();itp++){
+          Point x0=(*itp)[0];
+          Point x1=(*itp)[1];
+          Point x2=(*itp)[2];
+          Point n= (*itp)[3];
+
+          this->positionedTriangles.push_back({transform(x0),transform(x1),transform(x2),n.rotate(position.getPhi(),position.getTheta(),position.getPsi())});//the normal needs just to rotate,no translate          
       }
     }
 
-    void updatePosition(float x,float y,float z,float phi,float theta,float psi){
-      this->position.set(x,y,z,phi,theta,psi);
+    void update(Position position,Velocity velocity){
+      this->position=position;
+      this->motionRay=Point(velocity.getX(),velocity.getY(),velocity.getZ());
       //position changes vertices position change
       updatePositionedVertices();
     }
@@ -159,16 +165,24 @@ class ReducedPolygon{
         transform(pp);
       }
 
-      for(int i=0;i<positionedTrianglePlanes.size();i++){
-        std::pair<Point,Point> p=trianglePlanes[i];
-        Point x0=p.first;
-        Point n=p.second;
-        std::pair<Point,Point>& pp=positionedTrianglePlanes[i];
-        Point& px0=pp.first;
-        Point& pn=pp.second;
+      for(int i=0;i<positionedTriangles.size();i++){
+        vector<Point> p=triangles[i];
+        Point x0=p[0];
+        Point x1=p[1];
+        Point x2=p[2];
+        Point n=p[3];
+        vector<Point>& pp=positionedTriangles[i];
+        Point& px0=pp[0];
+        Point& px1=pp[1];
+        Point& px2=pp[2];
+        Point& pn=pp[3];
         px0=x0;
+        px1=x1;
+        px2=x2;
         pn=n;
         transform(px0);
+        transform(px1);
+        transform(px2);
         pn.rotate(position.getPhi(),position.getTheta(),position.getPsi());
       }
     }
@@ -184,16 +198,20 @@ class ReducedPolygon{
       return positionedIndexedVertices;
     }
     
-    vector<std::pair<Point,Point>>& getPositionedTrianglePlanes(){
-      return positionedTrianglePlanes;
+    vector<vector<Point>>& getPositionedTriangles(){
+      return positionedTriangles;
     }
     
+    Point& getMotionRay(){
+      return motionRay;
+    }
+
     //for debugging
     vector<Point>& getVertices(){
       return vertices;
     }
-    vector<std::pair<Point,Point>>& getTrianglePlanes(){
-      return trianglePlanes;
+    vector<vector<Point>>& getTriangles(){
+      return triangles;
     }
 
 };

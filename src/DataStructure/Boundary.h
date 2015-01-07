@@ -32,9 +32,9 @@ class Boundary{
 
     
 
-    void updatePosition(float x,float y,float z,float phi,float theta,float psi){
-      this->reducedPolygon.updatePosition(x,y,z,phi,theta,psi);
-      this->enclosingBox.updatePosition(x,y,z,phi,theta,psi);
+    void update(Position position,Velocity velocity){
+      this->reducedPolygon.update(position,velocity);
+      this->enclosingBox.update(position);
     }
 
     ReducedPolygon& getReducedPolygon(){

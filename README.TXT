@@ -29,12 +29,16 @@ ANIMATION:
 -export as obj ticking export include normal,include uvs,triangulate faces,animation,apply modifiers,objects as OBJ objects. (the first three are for any model whatsoever)
 
 BUGS:
+-When 2 objects with std::numeric_limits<float>::max() collide, everything goes to hell (for example, most things just dissapear)
 -blending effect not working so well...
 - we are setting velocity and acceleration to object with no motion. The objects don't move, but the collision is affected (for example, objects not bounding like they should) 
 --bug the ReducedPolygon has some malformed vertices (two or more vertices equals) causin the normal to be zero, causing the distance to be 0 when it's not
 
 TODOS:
--Performance: Maybe Point::rotate should return a Point& instead of (just) Point.
+-Performance: 
+--Maybe Point::rotate should return a Point& instead of (just) Point.
+--The animation::render is making a copy of the model object on each call
+--Maybe we should update the reduced polygonm, just when we use it.(i.e just before the getSeparation)
 -CollisionDetector:
 - the rawPoint was created, but now inside point we have duplicated x,y,z. Besides that, if we modify point->x, rawPoint won't change, which I think is fine having in mind that we are using GL_STATIC_DRAW?
 -the modelObject should be created in the component and passed to the renderStrategy, not the other way around (?). After putting the modelObject in the component, the animation is bounding against the box (like it should, but it's odd that this change fix that...)

@@ -46,38 +46,43 @@ class CollisionDetector{
     //TODO:find a better name:We cannot call it distance, since separation(a,b)!=separation(b,a)
     float getSeparation(Boundary& b1,Boundary& b2){
         vector<Point> vertices;
-        vector<std::pair<Point,Point>> trianglePlanes;
+        vector<vector<Point>> triangles;
         vector<Point>::iterator itp;
-        vector<std::pair<Point,Point>>::iterator ittp;
+        vector<vector<Point>>::iterator itt;
         //we use the reducedPolygon with more points for the vertices, and the normals of the other
         bool usingB2Normals=b1.getReducedPolygon().getPositionedIndexedVertices().size()>b2.getReducedPolygon().getPositionedIndexedVertices().size();
         if(usingB2Normals)
         {
             vertices=b1.getReducedPolygon().getPositionedIndexedVertices();
-            trianglePlanes=b2.getReducedPolygon().getPositionedTrianglePlanes();
+            triangles=b2.getReducedPolygon().getPositionedTriangles();
         }
         else
         {
             vertices=b2.getReducedPolygon().getPositionedIndexedVertices();
-            trianglePlanes=b1.getReducedPolygon().getPositionedTrianglePlanes();
+            triangles=b1.getReducedPolygon().getPositionedTriangles();
         }
 
         //there's no reducedPolygon implemented( for loaded models)
         //TODO:implement it.
-        if(vertices.empty() || trianglePlanes.empty()){
+        if(vertices.empty() || triangles.empty()){
             b1.getCollisionStatus().setImpactNormal(Point(0,1.0,0)).setDistance(0);
             b2.getCollisionStatus().setImpactNormal(-Point(0,1.0,0)).setDistance(0);
             return 0;
         }
 
+        Point pv=usingB2Normals?b1.getReducedPolygon().getMotionRay():b2.getReducedPolygon().getMotionRay();
+        Point tv=!usingB2Normals?b1.getReducedPolygon().getMotionRay():b2.getReducedPolygon().getMotionRay();
         float d=1000000;
         for(itp=vertices.begin();itp!=vertices.end();itp++){
             //a point of c1
             Point& p=*itp;
-            for(ittp=trianglePlanes.begin();ittp!=trianglePlanes.end();ittp++){
-                //get the distance from p to the plane of each triangle of c2
-                Point& x0=ittp->first;
-                Point& n=ittp->second;
+            for(itt=triangles.begin();itt!=triangles.end();itt++){
+                vector<Point>& triangle=(*itt);
+                //check if the point is going to intersect this triangle
+                //if(!willIntersect(p,pv,triangle,tv)) continue;
+                //get the distance from p to the plane of the triangle of c2
+                Point& x0=triangle[0];
+                Point& n=triangle[3];
                 float d1=fabs(n * (p-x0));
                 if(d1<d){
                     d=d1;
@@ -89,6 +94,26 @@ class CollisionDetector{
         }
 
         return d;
+    }
+
+    bool willIntersect(Point& p,Point& pv, vector<Point>& triangle,Point& tv){
+        Point rv=pv-tv;
+        Point& x0=triangle[0];
+        Point& n=triangle[3];
+        //get the intersection point
+        float t=(n*(x0-p))/(n*rv);
+        if(isnan(t) || t>1.0 || t<0.0) return false;//TODO:check if t is nan just when (n*v)==0
+        Point ip=p + t*rv;
+
+        return pointInTriangle(ip,triangle[0],triangle[1],triangle[2]);
+    }
+    bool pointInTriangle(Point& p,Point& a,Point& b,Point& c){
+        return sameSide(p,a,b,c) && sameSide(p,b,a,c) && sameSide(p,c,a,b);
+    }
+    bool sameSide(Point& p1,Point& p2,Point& a,Point& b){
+        Point cp1=(b-a)^(p1-a);
+        Point cp2=(b-a)^(p2-a);
+        return ((cp1 * cp2) >= 0);
     }
 
 

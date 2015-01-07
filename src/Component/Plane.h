@@ -3,12 +3,13 @@
 
 #include "Surface.h"
 #include "../Map/PlaneMap.h"
-#include <limits>
+
 
 
 
 class Plane: public Surface {
   private:
+    const float EARTH_MASS=5.972 * pow(10,24);
     const float DEFAULT_W=100.0f;
     const float DEFAULT_H=100.0f;
   public:	  
@@ -19,7 +20,7 @@ class Plane: public Surface {
     virtual ~Plane(){}    
     
     float getMass(){
-      return std::numeric_limits<float>::max()-10.0;
+      return EARTH_MASS;
     }
 
 };

@@ -60,8 +60,8 @@ class EnclosingBox{
       buildDiagonals(positionedVertices);
     }
 
-    void updatePosition(float x,float y,float z,float phi,float theta,float psi){
-      this->position.set(x,y,z,phi,theta,psi);
+    void update(Position position){
+      this->position=position;
       //position changes vertices position change
       updatePositionedVertices();
     }

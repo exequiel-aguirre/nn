@@ -109,8 +109,7 @@ class Component {
     void calculateBoundary(){
       if(modelObject.getSize()==0) return;
       //update the boundary
-      modelObject.getBoundary().updatePosition(position.getX(),position.getY(),position.getZ(),
-          position.getPhi(),position.getTheta(),position.getPsi());
+      modelObject.getBoundary().update(position,velocity);
     }
 
     Boundary& getBoundary(){

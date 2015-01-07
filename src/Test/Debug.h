@@ -81,17 +81,34 @@ class Debug{
         }
         glEnd();
 
-        vector<std::pair<Point,Point>> trianglePlanes=boundary.getReducedPolygon().getTrianglePlanes();
-        vector<std::pair<Point,Point>>::iterator itp;
-        glBegin(GL_LINES);
+        vector<vector<Point>> trianglePlanes=boundary.getReducedPolygon().getTriangles();
+        vector<vector<Point>>::iterator itt;
+        /*glBegin(GL_LINES);
         for(itp=trianglePlanes.begin();itp!=trianglePlanes.end();itp++){
             Point x0=(*itp).first;
             Point n=(*itp).second;
             glVertex3f(x0.x,x0.y,x0.z);
             glVertex3f(x0.x+n.x, x0.y+n.y, x0.z+n.z);
         }
-        glEnd();
-    }      
+        glEnd();*/
+    }
+    //to be called from the onAfterRender() (because this are positioned vertices )
+    void renderNormals(){
+
+      glBegin(GL_LINES);
+        Point x0=boundary.getCollisionStatus().getImpactPoint();
+        Point n=boundary.getCollisionStatus().getImpactNormal();
+       // glVertex3f(x0.x,x0.y,x0.z);
+       // glVertex3f(x0.x+n.x, x0.y+n.y, x0.z+n.z);
+      glEnd();
+
+      glBegin(GL_LINES);
+        Point c0=boundary.getCollisionStatus().getImpactPoint();
+        Point v=boundary.getReducedPolygon().getMotionRay();
+        glVertex3f(c0.x,c0.y,c0.z);
+        glVertex3f(c0.x+v.x, c0.y+v.y, c0.z+v.z);
+      glEnd();
+    }
 
 };
 #endif
