@@ -23,6 +23,7 @@ class ReducedPolygon{
     vector<vector<Point>> positionedTriangles;
     ////TODO:find a better name. This is the direction of the movement (x,y,z of the component's velocity)
     Point motionRay;
+    float pointDensity;
   public:	
     ReducedPolygon(){}
     ReducedPolygon(vector<Point> vertices){
@@ -34,13 +35,14 @@ class ReducedPolygon{
       buildIndexedVertices();
       buildTriangles();
       buildPositionedVertices();
+      buildPointDensity();
     }     
 
     //TODO:code duplication. Same function in ModelObject
     void buildPolygonVertices(IMap& map){
       
       
-      int lats=getLatsLongs(map,0.3);
+      int lats=getLatsLongs(map,0.2);
       int longs=lats;
       float u0,u1,v0,v1;
       int i, j;
@@ -193,6 +195,29 @@ class ReducedPolygon{
       return p;
     }
 
+    void buildPointDensity(){
+       auto minMaxX=std::minmax_element(indexedVertices.begin(),indexedVertices.end(),
+        [](Point p1, Point p2) {
+              return p1.x < p2.x;
+          });
+      auto minMaxY=std::minmax_element(indexedVertices.begin(),indexedVertices.end(),
+        [](Point p1, Point p2) {
+              return p1.y < p2.y;
+          });
+      auto minMaxZ=std::minmax_element(indexedVertices.begin(),indexedVertices.end(),
+        [](Point p1, Point p2) {
+              return p1.z < p2.z;
+          });
+      Point diagonalMin=Point((*minMaxX.first).x,(*minMaxY.first).y,(*minMaxZ.first).z);
+      Point diagonalMax=Point((*minMaxX.second).x,(*minMaxY.second).y,(*minMaxZ.second).z);
+
+      float aproximateVolume=1.0;
+      if((diagonalMax.x - diagonalMin.x)>0.1) aproximateVolume*=(diagonalMax.x - diagonalMin.x);
+      if((diagonalMax.y - diagonalMin.y)>0.1) aproximateVolume*=(diagonalMax.y - diagonalMin.y);
+      if((diagonalMax.z - diagonalMin.z)>0.1) aproximateVolume*=(diagonalMax.z - diagonalMin.z);
+      pointDensity=indexedVertices.size()/aproximateVolume;
+    }
+
     //TODO:change name?
     vector<Point>& getPositionedIndexedVertices(){
       return positionedIndexedVertices;
@@ -206,12 +231,19 @@ class ReducedPolygon{
       return motionRay;
     }
 
+    float getPointDensity(){
+      return pointDensity;
+    }
     //for debugging
     vector<Point>& getVertices(){
       return vertices;
     }
     vector<vector<Point>>& getTriangles(){
       return triangles;
+    }
+
+    Point getPositionPoint(){
+      return Point(position.getX(),position.getY(),position.getZ());
     }
 
 };

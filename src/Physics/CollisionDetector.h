@@ -50,7 +50,7 @@ class CollisionDetector{
         vector<Point>::iterator itp;
         vector<vector<Point>>::iterator itt;
         //we use the reducedPolygon with more points for the vertices, and the normals of the other
-        bool usingB2Normals=b1.getReducedPolygon().getPositionedIndexedVertices().size()>b2.getReducedPolygon().getPositionedIndexedVertices().size();
+        bool usingB2Normals=b1.getReducedPolygon().getPointDensity()>b2.getReducedPolygon().getPointDensity();
         if(usingB2Normals)
         {
             vertices=b1.getReducedPolygon().getPositionedIndexedVertices();
@@ -79,7 +79,7 @@ class CollisionDetector{
             for(itt=triangles.begin();itt!=triangles.end();itt++){
                 vector<Point>& triangle=(*itt);
                 //check if the point is going to intersect this triangle
-                //if(!willIntersect(p,pv,triangle,tv)) continue;
+                if(!willIntersect(p,pv,triangle,tv)) continue;
                 //get the distance from p to the plane of the triangle of c2
                 Point& x0=triangle[0];
                 Point& n=triangle[3];
