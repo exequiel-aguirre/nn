@@ -46,20 +46,26 @@ class CollisionDetector{
     //TODO:find a better name:We cannot call it distance, since separation(a,b)!=separation(b,a)
     float getSeparation(Boundary& b1,Boundary& b2){
         vector<Point> vertices;
-        vector<vector<Point>> triangles;
+        Point pv;//point velocity
         vector<Point>::iterator itp;
+        vector<vector<Point>> triangles;
+        Point tv;//triangle velocity
         vector<vector<Point>>::iterator itt;
         //we use the reducedPolygon with more points for the vertices, and the normals of the other
         bool usingB2Normals=b1.getReducedPolygon().getPointDensity()>b2.getReducedPolygon().getPointDensity();
         if(usingB2Normals)
         {
             vertices=b1.getReducedPolygon().getPositionedIndexedVertices();
+            pv=b1.getReducedPolygon().getMotionRay();
             triangles=b2.getReducedPolygon().getPositionedTriangles();
+            tv=b2.getReducedPolygon().getMotionRay();
         }
         else
         {
             vertices=b2.getReducedPolygon().getPositionedIndexedVertices();
+            pv=b2.getReducedPolygon().getMotionRay();
             triangles=b1.getReducedPolygon().getPositionedTriangles();
+            tv=b1.getReducedPolygon().getMotionRay();
         }
 
         //there's no reducedPolygon implemented( for loaded models)
@@ -70,8 +76,6 @@ class CollisionDetector{
             return 0;
         }
 
-        Point pv=usingB2Normals?b1.getReducedPolygon().getMotionRay():b2.getReducedPolygon().getMotionRay();
-        Point tv=!usingB2Normals?b1.getReducedPolygon().getMotionRay():b2.getReducedPolygon().getMotionRay();
         float d=1000000;
         for(itp=vertices.begin();itp!=vertices.end();itp++){
             //a point of c1
@@ -97,7 +101,7 @@ class CollisionDetector{
     }
 
     bool willIntersect(Point& p,Point& pv, vector<Point>& triangle,Point& tv){
-        Point rv=pv-tv;
+        Point rv=pv-tv;//relative velocity. (so we can think of the triangle as not moving)
         Point& x0=triangle[0];
         Point& n=triangle[3];
         //get the intersection point
