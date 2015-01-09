@@ -83,9 +83,9 @@ class ReducedPolygon{
       float vFrom=map.getVFrom();
       float vTo=map.getVTo();
 
-      for(k=0;k<map.getLats();k++)
+      for(k=1;k<5;k++)
       {
-        float error=1.0;
+        float error=0.0;
         //latitudes
         //TODO: set i=0,and change "<="" -> "<"" and "i-1" -> "i","i"->"i+1"
         for(i = 1; i <= k; i++)
@@ -97,9 +97,13 @@ class ReducedPolygon{
           {
             u0=uFrom + (((uTo-uFrom)/k) * j);
             u1=uFrom + (((uTo-uFrom)/k) * (j+1));
-            float cosAngle=map.getNormal(u0,v0) * map.getNormal(u1,v1);
-            float newError=1.0-fabs(cosAngle);
-            error=std::min(error,newError);
+            float cosAngle=map.getNormal(u0,v0) * map.getNormal(u1/2.0,v1/2.0);
+            float newError=(1.0-cosAngle)/2.0;
+            error=std::max(error,newError);
+
+            cosAngle=map.getNormal(u0,v0) * map.getNormal(u1/2.0,v0/2.0);
+            newError=(1.0-cosAngle)/2.0;
+            error=std::max(error,newError);
           }
         }
 

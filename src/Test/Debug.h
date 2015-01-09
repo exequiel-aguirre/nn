@@ -6,6 +6,7 @@
 class Debug{
 	Boundary boundary;
   public:
+    Debug(){}
     Debug(Boundary& boundary){
     	this->boundary=boundary;
     }
@@ -80,30 +81,43 @@ class Debug{
               //glVertex3f(v1.x,v1.y,v1.z);
         }
         glEnd();
+    }
 
-        vector<vector<Point>> trianglePlanes=boundary.getReducedPolygon().getTriangles();
+    //to be called from the onRender() (because this are NOT positioned vertices )
+    void renderNormals(){
+        vector<vector<Point>> triangles=boundary.getReducedPolygon().getTriangles();
         vector<vector<Point>>::iterator itt;
-        /*glBegin(GL_LINES);
-        for(itp=trianglePlanes.begin();itp!=trianglePlanes.end();itp++){
-            Point x0=(*itp).first;
-            Point n=(*itp).second;
+        glBegin(GL_LINES);
+        for(itt=triangles.begin();itt!=triangles.end();itt++){
+            Point x0=(*itt)[0];
+            Point n=(*itt)[3];
             glVertex3f(x0.x,x0.y,x0.z);
             glVertex3f(x0.x+n.x, x0.y+n.y, x0.z+n.z);
         }
-        glEnd();*/
+        glEnd();
     }
     //to be called from the onAfterRender() (because this are positioned vertices )
-    void renderNormals(){
-
+    void renderImpactNormal(){
       glBegin(GL_LINES);
         Point x0=boundary.getCollisionStatus().getImpactPoint();
         Point n=boundary.getCollisionStatus().getImpactNormal();
-       // glVertex3f(x0.x,x0.y,x0.z);
-       // glVertex3f(x0.x+n.x, x0.y+n.y, x0.z+n.z);
+        glVertex3f(x0.x,x0.y,x0.z);
+        glVertex3f(x0.x+n.x, x0.y+n.y, x0.z+n.z);
       glEnd();
 
+    }
+
+    void renderLine( Point c0,Point v){
       glBegin(GL_LINES);
-        Point c0=boundary.getCollisionStatus().getImpactPoint();
+        glVertex3f(c0.x,c0.y,c0.z);
+        glVertex3f(c0.x+v.x, c0.y+v.y, c0.z+v.z);
+      glEnd();
+    }
+
+    //to be called from the onAfterRender() (because this are positioned vertices )
+    void renderMotionRay(){
+      glBegin(GL_LINES);
+        Point c0=boundary.getReducedPolygon().getPositionPoint();
         Point v=boundary.getReducedPolygon().getMotionRay();
         glVertex3f(c0.x,c0.y,c0.z);
         glVertex3f(c0.x+v.x, c0.y+v.y, c0.z+v.z);

@@ -40,6 +40,7 @@ TODOS:
 --The animation::render is making a copy of the model object on each call
 --Maybe we should update the reduced polygonm, just when we use it.(i.e just before the getSeparation)
 -CollisionDetector:
+- Maybe we should use t instead of d, to detect a collision. (instead of (d<EPSILON) (t<1.0/60.0))
 - the rawPoint was created, but now inside point we have duplicated x,y,z. Besides that, if we modify point->x, rawPoint won't change, which I think is fine having in mind that we are using GL_STATIC_DRAW?
 -the modelObject should be created in the component and passed to the renderStrategy, not the other way around (?). After putting the modelObject in the component, the animation is bounding against the box (like it should, but it's odd that this change fix that...)
 -all the collide(), setCollide should be done within the component
