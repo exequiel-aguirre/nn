@@ -106,6 +106,14 @@ class Position {
         this->psi+=position.psi;
         return *this;
   	}
+
+    friend std::ostream& operator<<(std::ostream& os , const Position p){
+        os << "("<<p.x<<","<< p.y<<","<< p.z<<")"<< "\n";
+    }
+
+    float norm(){
+        return sqrt((x*x) + (y*y) + (z*z));
+    }
   
 };
 

@@ -71,19 +71,20 @@ class CollisionDetector{
         //there's no reducedPolygon implemented( for loaded models)
         //TODO:implement it.
         if(vertices.empty() || triangles.empty()){
-            b1.getCollisionStatus().setImpactNormal(Point(0,1.0,0)).setDistance(0);
-            b2.getCollisionStatus().setImpactNormal(-Point(0,1.0,0)).setDistance(0);
+            b1.getCollisionStatus().setImpactNormal(-Point(0,1.0,0)).setDistance(0);
+            b2.getCollisionStatus().setImpactNormal(Point(0,1.0,0)).setDistance(0);
             return 0;
         }
 
         float d=1000000;
+        float srv=(pv-tv).norm();
         for(itp=vertices.begin();itp!=vertices.end();itp++){
             //a point of c1
             Point& p=*itp;
             for(itt=triangles.begin();itt!=triangles.end();itt++){
                 vector<Point>& triangle=(*itt);
-                //check if the point is going to intersect this triangle
-                if(!willIntersect(p,pv,triangle,tv)) continue;
+                //check if the (moving) point is going to intersect this triangle
+                if(srv>0.0 && !willIntersect(p,pv,triangle,tv)) continue;
                 //get the distance from p to the plane of the triangle of c2
                 Point& x0=triangle[0];
                 Point& n=triangle[3];
@@ -106,7 +107,7 @@ class CollisionDetector{
         Point& n=triangle[3];
         //get the intersection point
         float t=(n*(x0-p))/(n*rv);
-        if(isnan(t) || t>1.0 || t<0.0) return false;//TODO:check if t is nan just when (n*v)==0
+        if(isnan(t) || t<0.0) return false;//TODO:check if t is nan just when (n*v)==0
         Point ip=p + t*rv;
 
         return pointInTriangle(ip,triangle[0],triangle[1],triangle[2]);

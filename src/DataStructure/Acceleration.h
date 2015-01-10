@@ -11,9 +11,6 @@ class Acceleration:public Position{
     
     virtual ~Acceleration(){}
 
-    float norm(){
-		return sqrt((x*x) + (y*y) + (z*z));
-	}
 };
 
 #endif
