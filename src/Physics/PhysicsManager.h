@@ -87,9 +87,9 @@ class PhysicsManager{
           Acceleration& acceleration=(*it)->getAcceleration();
           Velocity& velocity=(*it)->getVelocity();
           (*it)->setAcceleration(
-              acceleration.getX() +(c* a * n.x),
-              acceleration.getY() +(c* a * n.y),
-              acceleration.getZ() +(c * a * n.z));
+              acceleration.getX() +(c* fabs(acceleration.getX()) * n.x),//fabs, since the direction is given by n
+              acceleration.getY() +(c* fabs(acceleration.getY()) * n.y),
+              acceleration.getZ() +(c * fabs(acceleration.getZ()) * n.z));
 
           //The next 3 lines, are for preventing eternal-bouncing
           //TODO:find a way of avoiding this
