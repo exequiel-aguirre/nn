@@ -36,9 +36,12 @@ BUGS:
 
 TODOS:
 -Performance: 
---Maybe Point::rotate should return a Point& instead of (just) Point.
+
 --The animation::render is making a copy of the model object on each call
---Maybe we should update the reduced polygonm, just when we use it.(i.e just before the getSeparation)
+--CollisionDetector:
+--- put if(float d1>EPSILON) just before the willIntersect call. (d1 is cheaper than the willIntersect)
+---calculate (b-a) just once
+--update reduced polygon on demand: add a flag isUpToDate=(this->position==position) on the ReducedPolygon::update
 -CollisionDetector:
 - Maybe we should use t instead of d, to detect a collision. (instead of (d<EPSILON) (t<1.0/60.0))
 - the rawPoint was created, but now inside point we have duplicated x,y,z. Besides that, if we modify point->x, rawPoint won't change, which I think is fine having in mind that we are using GL_STATIC_DRAW?
