@@ -90,12 +90,6 @@ class PhysicsManager{
               acceleration.getX() +(c* fabs(acceleration.getX()) * n.x),//fabs, since the direction is given by n
               acceleration.getY() +(c* fabs(acceleration.getY()) * n.y),
               acceleration.getZ() +(c * fabs(acceleration.getZ()) * n.z));
-
-          //The next 3 lines, are for preventing eternal-bouncing
-          //TODO:find a way of avoiding this
-          Point lv=Point(velocity.getX(),velocity.getY(),velocity.getZ());
-          Point la=Point(acceleration.getX(),acceleration.getY(),acceleration.getZ());
-          if(((1.0/60.0)*lv + (1.0/3600.0)*la).norm()<0.05) (*it)->setVelocity(0,0,0);
         }
         else{
           (*it)->getAcceleration().set(0.0,-9.8f,0.0f);

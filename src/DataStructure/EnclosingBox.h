@@ -46,6 +46,7 @@ class EnclosingBox{
         [](Point p1, Point p2) {
               return p1.z < p2.z;
           });
+
       diagonalMin=Point((*minMaxX.first).x,(*minMaxY.first).y,(*minMaxZ.first).z);
       diagonalMax=Point((*minMaxX.second).x,(*minMaxY.second).y,(*minMaxZ.second).z);
     }
@@ -76,17 +77,17 @@ class EnclosingBox{
       buildDiagonals(positionedVertices);
     }
     //TODO:put this inside the point
-    Point transform(Point& p){
+    Point& transform(Point& p){
         p.rotate(position.getPhi(),position.getTheta(),position.getPsi());
         p.translate(position.getX(),position.getY(),position.getZ());
         return p;
     }
 
-    Point getDiagonalMin(){
+    Point& getDiagonalMin(){
       return diagonalMin;
     }
 
-    Point getDiagonalMax(){
+    Point& getDiagonalMax(){
       return diagonalMax;
     }
 

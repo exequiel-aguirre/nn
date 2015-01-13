@@ -10,11 +10,11 @@ class CollisionDetector{
     virtual ~CollisionDetector(){}
     
     bool detect(Boundary& b1,Boundary& b2){
-        //we make the enclosing box bigger, to avoid interpenetreting.TODO:avoid this
-        Point min1=b1.getEnclosingBox().getDiagonalMin()-(EPSILON * Point(1,1,1));
-        Point max1=b1.getEnclosingBox().getDiagonalMax()+(EPSILON * Point(1,1,1));
-        Point min2=b2.getEnclosingBox().getDiagonalMin()-(EPSILON * Point(1,1,1));
-        Point max2=b2.getEnclosingBox().getDiagonalMax()+(EPSILON * Point(1,1,1));
+
+        Point& min1=b1.getEnclosingBox().getDiagonalMin();
+        Point& max1=b1.getEnclosingBox().getDiagonalMax();
+        Point& min2=b2.getEnclosingBox().getDiagonalMin();
+        Point& max2=b2.getEnclosingBox().getDiagonalMax();
         //this is the intersection segment length (how bad the crash was...)
         float islx=std::min(max1.x,max2.x)-std::max(min1.x,min2.x);
         float isly=std::min(max1.y,max2.y)-std::max(min1.y,min2.y);
