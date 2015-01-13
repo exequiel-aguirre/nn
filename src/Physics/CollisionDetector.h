@@ -77,14 +77,15 @@ class CollisionDetector{
         }
 
         float d=1000000;
-        float srv=(pv-tv).norm();
+        Point rv=pv-tv;//relative velocity. (so we can think of the triangle as not moving)
+        float srv=rv.norm();
         for(itp=vertices.begin();itp!=vertices.end();itp++){
             //a point of c1
             Point& p=*itp;
             for(itt=triangles.begin();itt!=triangles.end();itt++){
                 vector<Point>& triangle=(*itt);
                 //check if the (moving) point is going to intersect this triangle
-                if(srv>0.0 && !willIntersect(p,pv,triangle,tv)) continue;
+                if(srv>0.0 && !willIntersect(p,triangle,rv)) continue;
                 //get the distance from p to the plane of the triangle of c2
                 Point& x0=triangle[0];
                 Point& n=triangle[3];
@@ -101,8 +102,7 @@ class CollisionDetector{
         return d;
     }
 
-    bool willIntersect(Point& p,Point& pv, vector<Point>& triangle,Point& tv){
-        Point rv=pv-tv;//relative velocity. (so we can think of the triangle as not moving)
+    bool willIntersect(Point& p,vector<Point>& triangle,Point& rv){
         Point& x0=triangle[0];
         Point& n=triangle[3];
         //get the intersection point

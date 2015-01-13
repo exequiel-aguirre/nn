@@ -59,10 +59,10 @@ class Debug{
           
         glEnd();
     }
-    
+
     //to be called from the onRender() (because this are NOT positioned vertices )
     void renderReducedPolygon(){
-    vector<Point> vertices=boundary.getReducedPolygon().getVertices();
+        vector<Point> vertices=boundary.getReducedPolygon().getVertices();
         vector<Point>::iterator it;
         glBegin(GL_TRIANGLES);
         for(it=vertices.begin();it!=vertices.end();it+=3){      
@@ -83,19 +83,7 @@ class Debug{
         glEnd();
     }
 
-    //to be called from the onRender() (because this are NOT positioned vertices )
-    void renderNormals(){
-        vector<vector<Point>> triangles=boundary.getReducedPolygon().getTriangles();
-        vector<vector<Point>>::iterator itt;
-        glBegin(GL_LINES);
-        for(itt=triangles.begin();itt!=triangles.end();itt++){
-            Point x0=(*itt)[0];
-            Point n=(*itt)[3];
-            glVertex3f(x0.x,x0.y,x0.z);
-            glVertex3f(x0.x+n.x, x0.y+n.y, x0.z+n.z);
-        }
-        glEnd();
-    }
+    
     //to be called from the onAfterRender() (because this are positioned vertices )
     void renderImpactNormal(){
       glBegin(GL_LINES);
@@ -124,5 +112,27 @@ class Debug{
       glEnd();
     }
 
+    //to be called from the onAfterRender() (because this are positioned vertices )
+    void renderPositionedTriangles(){
+       vector<vector<Point>> positionedTriangles=boundary.getReducedPolygon().getPositionedTriangles();
+        vector<vector<Point>>::iterator it;
+        glBegin(GL_TRIANGLES);
+        for(it=positionedTriangles.begin();it!=positionedTriangles.end();it++){
+              Point v1=(*it)[0];
+              Point v2=(*it)[1];
+              Point v3=(*it)[2];
+              Point n=(*it)[3];
+              glNormal3f(n.x,n.y,n.z);
+              glVertex3f(v1.x,v1.y,v1.z);
+              glVertex3f(v2.x,v2.y,v2.z);
+
+              //glVertex3f(v2.x,v2.y,v2.z);
+              glVertex3f(v3.x,v3.y,v3.z);
+
+              //glVertex3f(v3.x,v3.y,v3.z);
+              //glVertex3f(v1.x,v1.y,v1.z);
+        }
+        glEnd();
+    }
 };
 #endif

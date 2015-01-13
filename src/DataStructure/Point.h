@@ -47,7 +47,7 @@ class Point{
 		return false;
 	}
 
-	Point rotate(float phi,float theta,float psi){
+	Point& rotate(float phi,float theta,float psi){
 		if(phi==0 && theta==0 && psi==0) return *this;
 		float xr,yr,zr;
 		phi=phi*M_PI/180.0f;
@@ -77,7 +77,7 @@ class Point{
 
 		return *this;
 	}
-	Point translate(float x,float y,float z){
+	Point& translate(float x,float y,float z){
 		this->x+=x;
 		this->y+=y;
 		this->z+=z;

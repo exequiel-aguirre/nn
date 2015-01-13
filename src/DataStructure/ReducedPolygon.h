@@ -15,7 +15,8 @@ class ReducedPolygon{
     //TODO:remove the following 2 properties after use
     vector<Point> vertices;
     vector<Point> indexedVertices;
-    vector<vector<Point>> triangles;
+    //std::tuple<v0Index,v1Index,v2Index,normal>
+    vector<std::tuple<int,int,int,Point>> indexedTriangles;
     Position position;
     vector<Point> positionedIndexedVertices;
     //vector<vertex0,vertex1,vertex2,normal>
@@ -33,7 +34,6 @@ class ReducedPolygon{
     ReducedPolygon(IMap& map){
       buildPolygonVertices(map);
       buildIndexedVertices();
-      buildTriangles();
       buildPositionedVertices();
       buildPointDensity();
     }     
@@ -117,25 +117,26 @@ class ReducedPolygon{
       //remove duplicated points
       std::sort( indexedVertices.begin(), indexedVertices.end() );
       indexedVertices.erase( std::unique( indexedVertices.begin(), indexedVertices.end() ), indexedVertices.end() );
-    }
 
-    void buildTriangles(){
-      
+      //build index triangles
       vector<Point>::iterator it;
       for(it=vertices.begin();it!=vertices.end();it+=3){
           if((*it)==(*(it+1)) || (*it)==(*(it+2)) || (*(it+1))==(*(it+2))) continue;//malformed triangle
           //get the vertices of the triangle
-          Point v1=(*it);
+          Point v1=*it;
           Point v2=*(it+1);
           Point v3=*(it+2);
+          int v1Index=std::find(indexedVertices.begin(),indexedVertices.end(),v1)-indexedVertices.begin();
+          int v2Index=std::find(indexedVertices.begin(),indexedVertices.end(),v2)-indexedVertices.begin();
+          int v3Index=std::find(indexedVertices.begin(),indexedVertices.end(),v3)-indexedVertices.begin();
           //get the normal vector
           Point n=(v2-v1)^(v3-v1);
           n.normalize();
-
           //add this triangle
-          this->triangles.push_back({v1,v2,v3,n});
+          this->indexedTriangles.push_back(std::make_tuple(v1Index,v2Index,v3Index,n));
       }
     }
+
     void buildPositionedVertices(){
       
       vector<Point>::iterator it;
@@ -144,14 +145,13 @@ class ReducedPolygon{
           this->positionedIndexedVertices.push_back(transform(p));
       }
 
-      vector<vector<Point>>::iterator itp;
-      for(itp=triangles.begin();itp!=triangles.end();itp++){
-          Point x0=(*itp)[0];
-          Point x1=(*itp)[1];
-          Point x2=(*itp)[2];
-          Point n= (*itp)[3];
-
-          this->positionedTriangles.push_back({transform(x0),transform(x1),transform(x2),n.rotate(position.getPhi(),position.getTheta(),position.getPsi())});//the normal needs just to rotate,no translate          
+      vector<std::tuple<int,int,int,Point>>::iterator itt;
+      for(itt=indexedTriangles.begin();itt!=indexedTriangles.end();itt++){
+          Point v1=positionedIndexedVertices[std::get<0>((*itt))];//here we are loading
+          Point v2=positionedIndexedVertices[std::get<1>((*itt))];//the already
+          Point v3=positionedIndexedVertices[std::get<2>((*itt))];//positioned vertices
+          Point n=std::get<3>((*itt));
+          this->positionedTriangles.push_back({v1,v2,v3,n.rotate(position.getPhi(),position.getTheta(),position.getPsi())});//the normal needs just to rotate,no translate
       }
     }
 
@@ -172,28 +172,27 @@ class ReducedPolygon{
       }
 
       for(int i=0;i<positionedTriangles.size();i++){
-        vector<Point> p=triangles[i];
-        Point x0=p[0];
-        Point x1=p[1];
-        Point x2=p[2];
-        Point n=p[3];
+        std::tuple<int,int,int,Point> p=indexedTriangles[i];
+        int v1Index=std::get<0>(p);
+        int v2Index=std::get<1>(p);
+        int v3Index=std::get<2>(p);
+        Point n=std::get<3>(p);
+
         vector<Point>& pp=positionedTriangles[i];
-        Point& px0=pp[0];
-        Point& px1=pp[1];
-        Point& px2=pp[2];
+        Point& pv1=pp[0];
+        Point& pv2=pp[1];
+        Point& pv3=pp[2];
         Point& pn=pp[3];
-        px0=x0;
-        px1=x1;
-        px2=x2;
+
+        pv1=positionedIndexedVertices[v1Index];
+        pv2=positionedIndexedVertices[v2Index];
+        pv3=positionedIndexedVertices[v3Index];
         pn=n;
-        transform(px0);
-        transform(px1);
-        transform(px2);
         pn.rotate(position.getPhi(),position.getTheta(),position.getPsi());
       }
     }
 
-    Point transform(Point& p){
+    Point& transform(Point& p){
       p.rotate(position.getPhi(),position.getTheta(),position.getPsi());
       p.translate(position.getX(),position.getY(),position.getZ());
       return p;
@@ -241,9 +240,6 @@ class ReducedPolygon{
     //for debugging
     vector<Point>& getVertices(){
       return vertices;
-    }
-    vector<vector<Point>>& getTriangles(){
-      return triangles;
     }
 
     Point getPositionPoint(){
