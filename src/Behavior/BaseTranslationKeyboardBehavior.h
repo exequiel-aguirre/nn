@@ -12,8 +12,12 @@
 class BaseTranslationKeyboardBehavior: public AbstractBehavior{	  
   protected:
     const float DEFAULT_SPEED=0.5f;
+    bool godMode=false;
   public:
 	BaseTranslationKeyboardBehavior(){}
+    BaseTranslationKeyboardBehavior(bool godMode){
+        this->godMode=godMode;
+    }
     virtual ~BaseTranslationKeyboardBehavior(){}   
     
     //todo:make an "function" object with the responsability of generating the new position
@@ -55,7 +59,7 @@ class BaseTranslationKeyboardBehavior: public AbstractBehavior{
             deltaX=DEFAULT_SPEED * -sinf((currentPosition.getTheta()+directionXZ) * M_PI/180);//change from grads to rads and calculate the x component
             deltaZ=DEFAULT_SPEED * cosf((currentPosition.getTheta()+directionXZ) * M_PI/180);//change from grads to rads and calculate the z component
 
-            if(directionY!=0.0f){
+            if(directionY!=0.0f && godMode){
                 deltaY=DEFAULT_SPEED * -cosf((currentPosition.getPhi()+directionY) * M_PI/180); //change from grads to rads and calculate the y component
 
                 deltaX=deltaX * cosf((currentPosition.getPhi()) * M_PI/180);

@@ -15,6 +15,7 @@
 #include "../Component/Mill.h"
 #include "../Component/Ground.h"
 #include "../Component/Camera.h"
+#include "../Component/InteractiveCamera.h"
 #include "../Component/Light.h"
 #include "../Component/Physics.h"
 
@@ -44,7 +45,7 @@ class MyContainer:public Container{
 			Water* myWaterL=new Water(Position(-100.0f,0.0f,0.0f),100,300);
 			Model* myModel=new Model(Position(-15.0f,0.0f,-19.0f),"3DModel/monkey.obj");
 			Animation* myAnimation=new Animation(Position(0.0f,0.4f,-0.0f),"3DModel/human.obj");
-			Camera* myCamera=new Camera(Position(0.0f,-2.0f,0.0f));
+			InteractiveCamera* myInteractiveCamera=new InteractiveCamera(Position(0.0f,-3.0f,0.0f));
 			Light* myLight=new Light(Position(40.0f,40.0f,40.0f));
 			Sphere* mySphere=new Sphere(Position(0.0f,4.0f,-10.0f),0.39f);
 			Sphere* mySphere2=new Sphere(Position(-3.0f,8.0f,-20.0f),0.5f);
@@ -65,7 +66,7 @@ class MyContainer:public Container{
 			add(myWaterF);add(myWaterR);add(myWaterB);add(myWaterL);
 			add(myModel->add(new MotionBehavior()));
 			myAnimation->getVelocity().setZ(8.0f);add(myAnimation->add(new MotionBehavior()));
-			add(myCamera);
+			add(myInteractiveCamera);
 			add(myLight);
 			add(mySphere->add(new MotionBehavior()));
 			mySphere2->getVelocity().setX(40.0f);add(mySphere2->add(new MotionBehavior()));

@@ -8,12 +8,15 @@
 
 class Camera: public Component { 	
   public:
-	  Camera(Position&& position):Component(position){
+	  Camera(Position position,bool godMode):Component(position){
 		  //by default this behavior is added in order to create the sensation of,moving through the components.
 		  //TODO:this should be in a super class, like "decorativeComponent" or something like that
-		  add(new BaseTranslationKeyboardBehavior());
+		  add(new BaseTranslationKeyboardBehavior(godMode));
 		  add(new BaseRotationMouseBehavior());
-	  }		
+         }
+
+	  Camera(Position&& position,bool godMode):Camera(position,godMode){}
+	  Camera(Position&& position):Camera(position,true){}
 
     virtual ~Camera(){}
     
