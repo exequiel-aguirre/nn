@@ -66,9 +66,9 @@ class BaseTranslationKeyboardBehavior: public AbstractBehavior{
                 deltaZ=deltaZ * cosf((currentPosition.getPhi()) * M_PI/180);
             }
             
-            getComponent()->setPosition(currentPosition.getX()+deltaX,
-                                        currentPosition.getY()+deltaY,
-                                        currentPosition.getZ()+deltaZ
+            getComponent()->setPosition(currentPosition.getX()-deltaX,
+                                        currentPosition.getY()-deltaY,
+                                        currentPosition.getZ()-deltaZ
                                         );
     	}
     }    

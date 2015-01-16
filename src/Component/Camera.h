@@ -31,7 +31,7 @@ class Camera: public Component {
 	 
 		// Translate the ModelView matrix to the position of our camera - everything should now be drawn relative
 		// to this position!
-		glTranslatef( this->position.getX(), this->position.getY(), this->position.getZ() );
+		glTranslatef( -this->position.getX(), -this->position.getY(), -this->position.getZ() );
     }
 
 };

@@ -31,12 +31,12 @@ ANIMATION:
 BUGS:
 -When 2 objects with std::numeric_limits<float>::max() collide, everything goes to hell (for example, most things just dissapear)
 -blending effect not working so well...
-- we are setting velocity and acceleration to object with no motion. The objects don't move, but the collision is affected (for example, objects not bounding like they should) 
---bug the ReducedPolygon has some malformed vertices (two or more vertices equals) causin the normal to be zero, causing the distance to be 0 when it's not
+
 
 TODOS:
--Performance: 
+-Change the sign in the camera for the angles as well (and swap the order of the rotates)(should be the exact opposite of the Component::onBeforeRender)
 
+-Performance: 
 --The animation::render is making a copy of the model object on each call
 --CollisionDetector:
 --- put if(float d1>EPSILON) just before the willIntersect call. (d1 is cheaper than the willIntersect)
@@ -56,83 +56,3 @@ TODOS:
 -try template for ciclyc reference.
 -remove all warnings
 
-Notes:
--To see the diagonals the collisionDetector use, put this at the end of Component::afterRender
-	if(boundaryMin==NULL) return;
-	      glBegin(GL_LINES);
-	        glVertex3f(boundaryMin->x,boundaryMin->y,boundaryMin->z);
-	        glVertex3f(boundaryMax->x,boundaryMax->y,boundaryMax->z);
-	      glEnd();
-
-
-or the whole box
-
-if(getModelObject()==NULL) return;
-      Point* boundaryMin= getModelObject()->getBoundary()->getEnclosingBox()->getDiagonalMin();
-      Point* boundaryMax= getModelObject()->getBoundary()->getEnclosingBox()->getDiagonalMax();
-        glBegin(GL_LINES);
-
-          //front rectangle
-          glVertex3f(boundaryMin->x,boundaryMin->y,boundaryMin->z);
-          glVertex3f(boundaryMax->x,boundaryMin->y,boundaryMin->z);
-
-          glVertex3f(boundaryMax->x,boundaryMin->y,boundaryMin->z);
-          glVertex3f(boundaryMax->x,boundaryMax->y,boundaryMin->z);
-
-          glVertex3f(boundaryMax->x,boundaryMax->y,boundaryMin->z);
-          glVertex3f(boundaryMin->x,boundaryMax->y,boundaryMin->z);
-
-          glVertex3f(boundaryMin->x,boundaryMax->y,boundaryMin->z);
-          glVertex3f(boundaryMin->x,boundaryMin->y,boundaryMin->z);
-
-
-          //back rectangle
-          glVertex3f(boundaryMin->x,boundaryMin->y,boundaryMax->z);
-          glVertex3f(boundaryMax->x,boundaryMin->y,boundaryMax->z);
-
-          glVertex3f(boundaryMax->x,boundaryMin->y,boundaryMax->z);
-          glVertex3f(boundaryMax->x,boundaryMax->y,boundaryMax->z);
-
-          glVertex3f(boundaryMax->x,boundaryMax->y,boundaryMax->z);
-          glVertex3f(boundaryMin->x,boundaryMax->y,boundaryMax->z);
-
-          glVertex3f(boundaryMin->x,boundaryMax->y,boundaryMax->z);
-          glVertex3f(boundaryMin->x,boundaryMin->y,boundaryMax->z);
-
-          //depth rectangle
-          glVertex3f(boundaryMin->x,boundaryMin->y,boundaryMin->z);
-          glVertex3f(boundaryMin->x,boundaryMin->y,boundaryMax->z);
-
-          glVertex3f(boundaryMax->x,boundaryMin->y,boundaryMin->z);
-          glVertex3f(boundaryMax->x,boundaryMin->y,boundaryMax->z);
-
-          glVertex3f(boundaryMax->x,boundaryMax->y,boundaryMin->z);
-          glVertex3f(boundaryMax->x,boundaryMax->y,boundaryMax->z);
-
-          glVertex3f(boundaryMin->x,boundaryMax->y,boundaryMin->z);
-          glVertex3f(boundaryMin->x,boundaryMax->y,boundaryMax->z);
-
-          
-        glEnd();
-
-and the MOVO vertices and MOVO normals
-if(getModelObject()==NULL) return;
-      vector<Point*>* vertices=getModelObject()->getBoundary()->getModelObjectVO()->getPositionedVertices();
-      vector<Point*>::iterator it;
-      glBegin(GL_TRIANGLES);
-      for(it=vertices->begin();it!=vertices->end();it++){
-          Point* p=(*it);
-          glVertex3f(p->x,p->y,p->z);
-      }
-      glEnd();
-
-      vector<std::pair<Point*,Point*>>* trianglePlanes=getModelObject()->getBoundary()->getModelObjectVO()->getPositionedTrianglePlanes();
-      vector<std::pair<Point*,Point*>>::iterator itp;
-      glBegin(GL_LINES);
-      for(itp=trianglePlanes->begin();itp!=trianglePlanes->end();itp++){
-          Point* x0=(*itp).first;
-          Point* n=(*itp).second;
-          glVertex3f(x0->x,x0->y,x0->z);
-          glVertex3f(x0->x+n->x, x0->y+n->y, x0->z+n->z);
-      }
-      glEnd();

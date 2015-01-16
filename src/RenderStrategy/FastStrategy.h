@@ -12,6 +12,7 @@ class FastStrategy :public CacheStrategy {
     
     FastStrategy(char* modelFilename,GLenum GLMode):CacheStrategy(loadModel(modelFilename),GLMode){}
     FastStrategy(IMap& map,GLenum GLMode):CacheStrategy(loadModel(map),GLMode){}
+    FastStrategy(IMap&& map,GLenum GLMode):FastStrategy(map,GLMode){}
 
     virtual ~FastStrategy(){
       GLuint vertexBuffer=modelObject.getVertexBufferId();
