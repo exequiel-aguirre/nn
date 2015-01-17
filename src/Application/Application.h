@@ -34,6 +34,9 @@ class Application:public IListener {
     void onMouseMotion(SDL_MouseMotionEvent motion){
       ListenerManager::getInstance()->callMouseListeners(motion);
     }
+    void onMouseButtonDown(SDL_MouseButtonEvent button){
+      ListenerManager::getInstance()->callMouseListeners(button);
+    }
     
     void render(){
         world.onBeforeRenderFrame();

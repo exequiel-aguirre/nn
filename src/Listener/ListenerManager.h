@@ -27,6 +27,13 @@ class ListenerManager{
       }
     }
 
+    void callMouseListeners(SDL_MouseButtonEvent button){
+      vector<IListener*>::iterator it;
+      for(it=listeners.begin();it!=listeners.end();it++){
+        (*it)->onMouseButtonDown(button);
+      }
+    }
+
     //TODO:make this call methods generic
     void callTimerListeners(){
       vector<IListener*>::iterator it;

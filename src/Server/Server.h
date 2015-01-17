@@ -83,6 +83,12 @@ public:
 						break;
 					}
 
+					case SDL_MOUSEBUTTONDOWN:
+					{
+						Application::getInstance()->onMouseButtonDown(event.button);
+					}
+
+
 					//EXE-TODO:MIGRATE WITH SDL_WINDOWEVENT
 					case SDL_WINDOWEVENT:
 					{
