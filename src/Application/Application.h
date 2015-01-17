@@ -3,19 +3,16 @@
 
 #include "../Listener/IListener.h"
 #include "../Listener/ListenerManager.h"
-#include "../Component/Component.h"
+#include "../Component/Container.h"
 #include <vector>
 
 
 class Application:public IListener {
-  private:    
-    //todo:this should be an special component like a container
-    Component* currentComponent;   
+  private:
+    Container world=Container(Position(0,0,0));
     static Application* application;    
     
-    Application(){
-      this->currentComponent=NULL;      
-    }
+    Application(){}
     
   public:   
     
@@ -39,18 +36,21 @@ class Application:public IListener {
     }
     
     void render(){
-      if(currentComponent!=NULL)
-      {
-        currentComponent->onBeforeRenderFrame();
-        currentComponent->onBeforeRender();
-        currentComponent->render();
-        currentComponent->onAfterRender();
-      }
+        world.onBeforeRenderFrame();
+        world.onBeforeRender();
+        world.render();
+        world.onAfterRender();
     }
    
-    
-    void setCurrentComponent(Component* currentComponent){
-      this->currentComponent=currentComponent;
+    void setWorld(Container&& world){
+      setWorld(world);
+    }
+    void setWorld(Container& world){
+      this->world=world;
+    }
+
+    Container& getWorld(){
+      return world;
     }
     
     

@@ -23,7 +23,7 @@ public:
 	bool start()
 	{
 		window=new NNWindow(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, false, "Title");		
-		Application::getInstance()->setCurrentComponent(new MyContainer(Position(0.0f,0.0f,0.0f)));
+		Application::getInstance()->setWorld(MyContainer(Position(0.0f,0.0f,0.0f)));
 		run();
 		return true;
 	}
