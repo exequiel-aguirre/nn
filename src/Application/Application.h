@@ -25,16 +25,16 @@ class Application:public IListener {
     
     void onCreate(){}
     void onDestroy(){}
-    void onKeyDown(SDL_Keycode key){
-    	ListenerManager::getInstance()->callKeyboardListeners(key);
+    void onKeyboardEvent(SDL_KeyboardEvent keyEvent){
+      ListenerManager::getInstance()->callKeyboardListeners(keyEvent);
     }
     void onTimer(){
       ListenerManager::getInstance()->callTimerListeners();    
     }
-    void onMouseMotion(SDL_MouseMotionEvent motion){
+    void onMouseMotionEvent(SDL_MouseMotionEvent motion){
       ListenerManager::getInstance()->callMouseListeners(motion);
     }
-    void onMouseButtonDown(SDL_MouseButtonEvent button){
+    void onMouseButtonEvent(SDL_MouseButtonEvent button){
       ListenerManager::getInstance()->callMouseListeners(button);
     }
     

@@ -41,10 +41,11 @@ class ListenerManager{
         (*it)->onTimer();
       }    
     }    
-    void callKeyboardListeners(SDL_Keycode key){
+    void callKeyboardListeners(SDL_KeyboardEvent keyEvent){
       vector<IListener*>::iterator it;
       for(it=listeners.begin();it!=listeners.end();it++){
-        (*it)->onKeyDown(key) ;
+        if(keyEvent.type==SDL_KEYDOWN )(*it)->onKeyDown(keyEvent.keysym.sym);
+        if(keyEvent.type==SDL_KEYUP )(*it)->onKeyUp(keyEvent.keysym.sym);
       }
     }
 

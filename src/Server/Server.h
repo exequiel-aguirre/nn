@@ -64,7 +64,7 @@ public:
 						{
 							return false;
 						}
-						Application::getInstance()->onKeyDown(sym);												
+						Application::getInstance()->onKeyboardEvent(event.key);
 						break;
 						
 					}
@@ -73,19 +73,19 @@ public:
 					
 					case SDL_KEYUP:
 					{
-						//SDL_Keycode sym = event.key.keysym.sym;						
+						Application::getInstance()->onKeyboardEvent(event.key);
 						break;
 					}
 
 					case SDL_MOUSEMOTION:
 					{	
-						Application::getInstance()->onMouseMotion(event.motion);
+						Application::getInstance()->onMouseMotionEvent(event.motion);
 						break;
 					}
 
 					case SDL_MOUSEBUTTONDOWN:
 					{
-						Application::getInstance()->onMouseButtonDown(event.button);
+						Application::getInstance()->onMouseButtonEvent(event.button);
 					}
 
 
