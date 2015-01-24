@@ -5,6 +5,7 @@
 class CollisionDetector{
   private:
     const float EPSILON=0.2f;
+    const float DELTA=0.0000000001;
   public:
     CollisionDetector(){}
     virtual ~CollisionDetector(){}
@@ -78,17 +79,16 @@ class CollisionDetector{
 
         float d=1000000;
         Point rv=pv-tv;//relative velocity. (so we can think of the triangle as not moving)
-        float srv=rv.norm();
         for(itp=vertices.begin();itp!=vertices.end();itp++){
             //a point of c1
             Point& p=*itp;
             for(itt=triangles.begin();itt!=triangles.end();itt++){
                 vector<Point>& triangle=(*itt);
-                //check if the (moving) point is going to intersect this triangle
-                if(srv>0.0 && !willIntersect(p,triangle,rv)) continue;
-                //get the distance from p to the plane of the triangle of c2
                 Point& x0=triangle[0];
                 Point& n=triangle[3];
+                //check if the (moving towards) point is going to intersect this triangle
+                if(fabs(n*rv)>DELTA && !willIntersect(p,triangle,rv)) continue;
+                //get the distance from p to the plane of the triangle of c2
                 float d1=fabs(n * (p-x0));
                 if(d1<d){
                     d=d1;
