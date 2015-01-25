@@ -10,8 +10,6 @@ class PhysicsManager{
     static PhysicsManager* instance;    
     vector<Component*> components;
     CollisionDetector collisionDetector;
-    //TODO:this is component's property
-    const float E=0.88f;//Coefficient of restitution,1 is perfectly elastic,0 is perfectly plastic
 
     PhysicsManager(){}
     
@@ -48,7 +46,9 @@ class PhysicsManager{
   }
 
     void onCollisionDetected(Component* c1,Component* c2){
-                        
+            //e is the Coefficient of restitution for this collision,1 is perfectly elastic,0 is perfectly plastic
+            //We based this on the elasticity of the components(not physically justified)
+            float e=std::min(c1->getElasticity(),c2->getElasticity());
             CollisionStatus& status1=c1->getCollisionStatus();
             CollisionStatus& status2=c2->getCollisionStatus();
             //Impulse-Based Reaction Model
@@ -56,7 +56,7 @@ class PhysicsManager{
             float m2=c2->getMass();
             Velocity v_r=c2->getVelocity()-c1->getVelocity();
             Point n=status1.getImpactNormal();
-            float j_r=( (-(1.0+E) * v_r) * n )/( (1.0/m1) +(1.0/m2) );
+            float j_r=( (-(1.0+e) * v_r) * n )/( (1.0/m1) +(1.0/m2) );
             Velocity v1_i=c1->getVelocity();
             Velocity v2_i=c2->getVelocity();
             Velocity v1=v1_i - Velocity( (1.0/m1 * j_r) * n );

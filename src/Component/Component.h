@@ -24,6 +24,7 @@ class Component {
     Velocity velocity;
     Acceleration acceleration;
     float massDensity=1.0f;
+    float elasticity=0.88f;
     bool rotates=false;
     bool moves=false;
   public:
@@ -136,6 +137,10 @@ class Component {
       if(modelObject.getSize()==0) return NULL;
       //a very rough approximation of volume
       return modelObject.getBoundary().getEnclosingBox().getVolume()* massDensity;
+    }
+
+    virtual float getElasticity(){
+      return elasticity;
     }
 
 

@@ -11,6 +11,8 @@
 class InteractiveCamera: public Camera {
   private:
     Gun gun=Gun(Position(1.0f,-1.0f,-4.0f,90.0f,0.0f,0.0f));
+  protected:
+    float elasticity=0.0f;
   public:
 	  InteractiveCamera(Position position):Camera(position,false,[=](float deltaX,float deltaY,float deltaZ){ this->onTranslation(deltaX,deltaY,deltaZ);}){
           //enable physics(both lines are needed)
@@ -72,6 +74,10 @@ class InteractiveCamera: public Camera {
       }
     }
 
+
+    float getElasticity(){
+      return elasticity;
+    }
 };
 
 
