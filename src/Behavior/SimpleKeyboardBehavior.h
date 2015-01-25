@@ -7,16 +7,21 @@
 
 class SimpleKeyboardBehavior: public AbstractBehavior{
   private:
-    std::function<void(SDL_Keycode)> callback;
+    std::function<void(SDL_Keycode)> onKeyDownCallback;
+    std::function<void(SDL_Keycode)> onKeyUpCallback;
   public:
-	SimpleKeyboardBehavior(std::function<void(SDL_Keycode)> callback){
-        this->callback=callback;
+	SimpleKeyboardBehavior(std::function<void(SDL_Keycode)> onKeyDownCallback,std::function<void(SDL_Keycode)> onKeyUpCallback){
+        this->onKeyDownCallback=onKeyDownCallback;
+        this->onKeyUpCallback=onKeyUpCallback;
     }
     
     virtual ~SimpleKeyboardBehavior(){}
     
     void  onKeyDown(SDL_Keycode key){
-    	this->callback(key);
+      this->onKeyDownCallback(key);
+    }
+    void  onKeyUp(SDL_Keycode key){
+      this->onKeyUpCallback(key);
     }    
 
 

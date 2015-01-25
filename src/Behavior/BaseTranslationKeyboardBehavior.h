@@ -13,11 +13,21 @@ class BaseTranslationKeyboardBehavior: public AbstractBehavior{
   protected:
     const float DEFAULT_SPEED=0.5f;
     bool godMode=false;
+    std::function<void(float,float,float)> onTranslationCallback;
   public:
 	BaseTranslationKeyboardBehavior(){}
+    BaseTranslationKeyboardBehavior(bool godMode,std::function<void(float,float,float)> onTranslationCallback){
+        this->godMode=godMode;
+        this->onTranslationCallback=onTranslationCallback;//custom translation
+    }
     BaseTranslationKeyboardBehavior(bool godMode){
         this->godMode=godMode;
+        this->onTranslationCallback=
+            [=](float deltaX,float deltaY,float deltaZ){
+                this->onTranslation(deltaX,deltaY,deltaZ);//default translation
+            };
     }
+
     virtual ~BaseTranslationKeyboardBehavior(){}   
     
     //todo:make an "function" object with the responsability of generating the new position
@@ -66,13 +76,17 @@ class BaseTranslationKeyboardBehavior: public AbstractBehavior{
                 deltaZ=deltaZ * cosf((currentPosition.getPhi()) * M_PI/180);
             }
             
-            getComponent()->setPosition(currentPosition.getX()-deltaX,
-                                        currentPosition.getY()-deltaY,
-                                        currentPosition.getZ()-deltaZ
-                                        );
+            this->onTranslationCallback(deltaX,deltaY,deltaZ);
     	}
     }    
 
+    void onTranslation(float deltaX,float deltaY,float deltaZ){
+        Position currentPosition=this->getComponent()->getPosition();
+        getComponent()->setPosition(currentPosition.getX()-deltaX,
+                                        currentPosition.getY()-deltaY,
+                                        currentPosition.getZ()-deltaZ
+                                        );
+    }
 
 };
 #endif
