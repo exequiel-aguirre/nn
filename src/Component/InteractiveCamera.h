@@ -17,7 +17,7 @@ class InteractiveCamera: public Camera {
 	  InteractiveCamera(Position position):Camera(position,false,[=](float deltaX,float deltaY,float deltaZ){ this->onTranslation(deltaX,deltaY,deltaZ);}){
           //enable physics(both lines are needed)
           add(new MotionBehavior());
-          setRenderStrategy(new FastStrategy(SphereMap(2.0),GL_LINES));
+          setRenderStrategy(new FastStrategy(EllipsoidMap(1.0,2.0,1.0),GL_LINES));
           //add a key behavior for the actions
           add(new SimpleKeyboardBehavior(
               [=](SDL_Keycode key){//behavior callback
@@ -74,7 +74,11 @@ class InteractiveCamera: public Camera {
       }
     }
 
-
+    //This is so the reduced polygon doesn't get rotated when we look up/down
+    void calculateBoundary(){
+      //update the boundary
+      getBoundary().update(Position(position.getX(),position.getY(),position.getZ()),velocity);
+    }
     float getElasticity(){
       return elasticity;
     }

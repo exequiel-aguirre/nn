@@ -2,7 +2,7 @@
 #define SphereH
 
 #include "Surface.h"
-#include "../Map/SphereMap.h"
+#include "../Map/EllipsoidMap.h"
 
 
 
@@ -10,13 +10,13 @@ class Sphere: public Surface {
   private:
 	const float DEFAULT_R=1.0f;
   public:
-	Sphere(Position&& position):Surface(position,SphereMap(DEFAULT_R),GL_LINES){
+	Sphere(Position&& position):Surface(position,EllipsoidMap(DEFAULT_R,DEFAULT_R,DEFAULT_R),GL_LINES){
     this->rotates=true;
   }
-	Sphere(Position&& position,float r):Surface(position,SphereMap(r),GL_LINES){
+	Sphere(Position&& position,float r):Surface(position,EllipsoidMap(r,r,r),GL_LINES){
     this->rotates=true;
   }
-	Sphere(Position&& position,float r,char* textureFilename):Surface(position,SphereMap(r),textureFilename){
+	Sphere(Position&& position,float r,char* textureFilename):Surface(position,EllipsoidMap(r,r,r),textureFilename){
     this->rotates=true;
   }
 

@@ -3,6 +3,7 @@
 
 #include "../Component/Container.h"
 #include "../Component/Sphere.h"
+#include "../Component/Ellipsoid.h"
 #include "../Component/Torus.h"
 #include "../Component/Plane.h"
 #include "../Component/Mountain.h"
@@ -51,6 +52,7 @@ class MyContainer:public Container{
 			Sphere* mySphere2=new Sphere(Position(-3.0f,8.0f,-20.0f),0.5f);
 			Sphere* mySphere3=new Sphere(Position(3.0f,6.0f,-20.0f),2.0f);
 			Sphere* mySphere4=new Sphere(Position(-18.0f,40.0f,-30.0f),0.5f);
+			Ellipsoid* myEllipsoid=new Ellipsoid(Position(-0.0f,6.0f,-20.0f),1.0f,2.0f,1.0f);
 			
 			Physics* physics=new Physics();
 			
@@ -72,6 +74,7 @@ class MyContainer:public Container{
 			mySphere2->getVelocity().setX(40.0f);add(mySphere2->add(new MotionBehavior()));
 			add(mySphere3->add(new MotionBehavior()));
 			add(mySphere4->add(new MotionBehavior()));
+			add(myEllipsoid->add(new MotionBehavior()));
 
 
 			add(new Plane(Position(-15.0f,8.0f,-20.0f,0.0f,0.0f,90.0f),5.0f,5.0f,"img/box.bmp",2,2));

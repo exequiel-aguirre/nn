@@ -10,6 +10,7 @@
 #include "../DataStructure/ModelObject.h"
 #include "../RenderStrategy/IRenderStrategy.h"
 #include "../Physics/CollisionStatus.h"
+#include "../Test/Debug.h"
 
 
 class Component {  
@@ -107,7 +108,7 @@ class Component {
     }
     
 
-    void calculateBoundary(){
+    virtual void calculateBoundary(){
       if(modelObject.getSize()==0) return;
       //update the boundary
       modelObject.getBoundary().update(position,velocity);
