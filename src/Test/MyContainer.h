@@ -61,7 +61,7 @@ class MyContainer:public Container{
 			add(my3DBox2->add(new MotionBehavior()));			
 			add(myHut);
 			add(myMill);
-			add(myTorus);
+			add(myTorus->add(new MotionBehavior()));
 			add(myGround);			
 			add(myMountain);
 			add(myTree1);add(myTree2);add(myTree3);add(myTree4);add(myTree5);add(myTree6);

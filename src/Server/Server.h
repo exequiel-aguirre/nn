@@ -86,6 +86,7 @@ public:
 					case SDL_MOUSEBUTTONDOWN:
 					{
 						Application::getInstance()->onMouseButtonEvent(event.button);
+						break;
 					}
 
 

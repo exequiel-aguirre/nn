@@ -64,3 +64,13 @@ TODOS:
 -try template for ciclyc reference.
 -remove all warnings
 
+Notes:
+-Weird bug,
+	Program received signal SIGSEGV, Segmentation fault.
+	0x0804a86e in ListenerManager::callMouseListeners (this=0x81fabe0, button=...) at src/Server/../Application/../Listener/ListenerManager.h:33
+	33              (*it)->onMouseButtonDown(button);
+
+	This just happens if the the ball's motionBehavior was the 17's element in the vector.
+	The solution was to reserve more places in the vector on the constructor.
+	Most likely, this happens when the vector needs to resize.
+

@@ -8,7 +8,9 @@ class ListenerManager{
     static ListenerManager* instance;
     
     vector<IListener*> listeners;
-    ListenerManager(){}
+    ListenerManager(){
+      listeners.reserve(20);//weird bugfix
+    }
     
     
    public:
