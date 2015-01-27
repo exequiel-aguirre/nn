@@ -28,6 +28,14 @@ ANIMATION:
 -now select human(top one) on the right and with "makewalk:edit actions" on the left, click global edit and fixate location. (if you select a frame where the human is in the center of the action you will fixate it there.(which is the intended))
 -export as obj ticking export include normal,include uvs,triangulate faces,animation,apply modifiers,objects as OBJ objects. (the first three are for any model whatsoever)
 
+BLENDER BACKGROUND JOBS:
+-open blender, remove camera,light and the cube and press ctrl+u, to save an empty scene as default
+>blender --background  --python src/script/join.py -- 3DModel/human_6.obj
+
+-Make the default "open with" for the obj with
+>blender --python src/script/import_obj.py --
+
+
 BUGS:
 -When 2 objects with std::numeric_limits<float>::max() collide, everything goes to hell (for example, most things just dissapear)
 -blending effect not working so well...

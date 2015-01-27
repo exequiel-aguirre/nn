@@ -69,13 +69,6 @@ class CollisionDetector{
             tv=b1.getReducedPolygon().getMotionRay();
         }
 
-        //there's no reducedPolygon implemented( for loaded models)
-        //TODO:implement it.
-        if(vertices.empty() || triangles.empty()){
-            b1.getCollisionStatus().setImpactNormal(-Point(0,1.0,0)).setDistance(0);
-            b2.getCollisionStatus().setImpactNormal(Point(0,1.0,0)).setDistance(0);
-            return 0;
-        }
 
         float d=1000000;
         Point rv=pv-tv;//relative velocity. (so we can think of the triangle as not moving)

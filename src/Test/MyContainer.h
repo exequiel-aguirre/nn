@@ -44,8 +44,8 @@ class MyContainer:public Container{
 			Water* myWaterR=new Water(Position(100.0f,0.0f,0.0f),100,300);
 			Water* myWaterB=new Water(Position(0.0f,0.0f,100.0f),100,100);
 			Water* myWaterL=new Water(Position(-100.0f,0.0f,0.0f),100,300);
-			Model* myModel=new Model(Position(-15.0f,0.0f,-19.0f),"3DModel/monkey.obj");
-			Animation* myAnimation=new Animation(Position(0.0f,0.4f,-0.0f),"3DModel/human.obj");
+			Model* myModel=new Model(Position(-15.0f,4.0f,-19.0f),"3DModel/monkey.obj");
+			Animation* myAnimation=new Animation(Position(2.0f,2.5f,-15.0f),"3DModel/human.obj");
 			InteractiveCamera* myInteractiveCamera=new InteractiveCamera(Position(0.0f,3.0f,0.0f));
 			Light* myLight=new Light(Position(40.0f,40.0f,40.0f));
 			Sphere* mySphere=new Sphere(Position(0.0f,4.0f,-10.0f),0.39f);

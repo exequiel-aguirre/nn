@@ -7,6 +7,7 @@
 #include "../Map/IMap.h"
 #include "Position.h"
 #include "Velocity.h"
+#include "../Map/EllipsoidMap.h"
 
 
 class ReducedPolygon{
@@ -27,11 +28,33 @@ class ReducedPolygon{
     float pointDensity;
   public:	
     ReducedPolygon(){}
-    ReducedPolygon(vector<Point> vertices){
-      //there's no reducedPolygon implemented for loaded models.
-  	}
+    //we simplify the models as ellipsoids
+    ReducedPolygon(vector<Point> vertices):ReducedPolygon(getModelMap(vertices)){}
+
+    EllipsoidMap getModelMap(vector<Point> vertices){
+       auto minMaxX=std::minmax_element(vertices.begin(),vertices.end(),
+        [](Point p1, Point p2) {
+              return p1.x < p2.x;
+          });
+      auto minMaxY=std::minmax_element(vertices.begin(),vertices.end(),
+        [](Point p1, Point p2) {
+              return p1.y < p2.y;
+          });
+      auto minMaxZ=std::minmax_element(vertices.begin(),vertices.end(),
+        [](Point p1, Point p2) {
+              return p1.z < p2.z;
+          });
+      float rx=((*minMaxX.second).x - (*minMaxX.first).x)/2.0;
+      float ry=((*minMaxY.second).y - (*minMaxY.first).y)/2.0;
+      float rz=((*minMaxZ.second).z - (*minMaxZ.first).z)/2.0;
+
+      return EllipsoidMap(rx,ry,rz);
+    }
+
+    ReducedPolygon(IMap&& map):ReducedPolygon(map){}
 
     ReducedPolygon(IMap& map){
+
       buildPolygonVertices(map);
       buildIndexedVertices();
       buildPositionedVertices();
@@ -40,7 +63,6 @@ class ReducedPolygon{
 
     //TODO:code duplication. Same function in ModelObject
     void buildPolygonVertices(IMap& map){
-      
       
       int lats=getLatsLongs(map,0.2);
       int longs=lats;
