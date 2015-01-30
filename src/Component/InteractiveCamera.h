@@ -13,6 +13,8 @@ class InteractiveCamera: public Camera {
     Gun gun=Gun(Position(1.0f,-1.0f,-4.0f,90.0f,0.0f,0.0f));
   protected:
     float elasticity=0.0f;
+    const float U_D=0.05;
+    float u_d=0.0;
   public:
 	  InteractiveCamera(Position position):Camera(position,false,[=](float deltaX,float deltaY,float deltaZ){ this->onTranslation(deltaX,deltaY,deltaZ);}){
           //enable physics(both lines are needed)
@@ -53,6 +55,7 @@ class InteractiveCamera: public Camera {
       if(getCollisionStatus().hasCollided()) this->setVelocity(-deltaX*10,-deltaY*10,-deltaZ*10);
     }
     void onKeyDown(SDL_Keycode key){
+        this->u_d=0.0;//disable friction
         switch(key){
           case SDLK_SPACE:
           {
@@ -62,6 +65,7 @@ class InteractiveCamera: public Camera {
         }
     }
      void onKeyUp(SDL_Keycode key){
+        this->u_d=U_D;//enable friction
         if(getCollisionStatus().hasCollided()) this->setVelocity(0,0,0);
      }
 
@@ -72,6 +76,11 @@ class InteractiveCamera: public Camera {
           gun.fire(position);
         }
       }
+    }
+
+    void onAfterCollision(){
+      Velocity v=this->getVelocity() * (1.0-this->u_d);
+      this->setVelocity(v.getX(),v.getY(),v.getZ());
     }
 
     //This is so the reduced polygon doesn't get rotated when we look up/down

@@ -90,6 +90,7 @@ class PhysicsManager{
               acceleration.getX() +(c* fabs(acceleration.getX()) * n.x),//fabs, since the direction is given by n
               acceleration.getY() +(c* fabs(acceleration.getY()) * n.y),
               acceleration.getZ() +(c * fabs(acceleration.getZ()) * n.z));
+          (*it)->onAfterCollision();
         }
         else{
           (*it)->getAcceleration().set(0.0,-9.8f,0.0f);

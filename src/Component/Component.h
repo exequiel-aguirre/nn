@@ -63,7 +63,9 @@ class Component {
       glRotatef(-this->position.getPhi(), 1.0f, 0.0f, 0.0f);
       glTranslatef(-this->position.getX(),-this->position.getY(),-this->position.getZ());
     }
-    
+
+    virtual void onAfterCollision(){}
+
     Position& getPosition(){
       return position;
     }
