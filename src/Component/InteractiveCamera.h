@@ -19,7 +19,7 @@ class InteractiveCamera: public Camera {
 	  InteractiveCamera(Position position):Camera(position,false,[=](float deltaX,float deltaY,float deltaZ){ this->onTranslation(deltaX,deltaY,deltaZ);}){
           //enable physics(both lines are needed)
           add(new MotionBehavior());
-          setRenderStrategy(new FastStrategy(EllipsoidMap(1.0,2.0,1.0),GL_LINES));
+          setRenderStrategy(new FastStrategy(EllipsoidMap(1.0,2.0,1.0),GL_POINTS));
           //add a key behavior for the actions
           add(new SimpleKeyboardBehavior(
               [=](SDL_Keycode key){//behavior callback
