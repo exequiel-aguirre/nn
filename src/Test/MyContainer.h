@@ -18,6 +18,7 @@
 #include "../Component/Camera.h"
 #include "../Component/InteractiveCamera.h"
 #include "../Component/Background.h"
+#include "../Effect/Fog.h"
 #include "../Component/Light.h"
 #include "../Component/Physics.h"
 
@@ -48,7 +49,8 @@ class MyContainer:public Container{
 			Model* myModel=new Model(Position(-15.0f,4.0f,-19.0f),"3DModel/monkey.obj");
 			Animation* myAnimation=new Animation(Position(2.0f,2.5f,-15.0f),"3DModel/human.obj");
 			InteractiveCamera* myInteractiveCamera=new InteractiveCamera(Position(0.0f,3.0f,0.0f));
-			Background* myBackground=new Background({1.000, 0.941, 0.961,1});
+			//Background* myBackground=new Background({1.000, 0.941, 0.961,1});
+			//Fog* myFog=new Fog();
 			Light* myLight=new Light(Position(40.0f,40.0f,40.0f));
 			Sphere* mySphere=new Sphere(Position(0.0f,4.0f,-10.0f),0.39f);
 			Sphere* mySphere2=new Sphere(Position(-3.0f,8.0f,-20.0f),0.5f);
@@ -59,6 +61,7 @@ class MyContainer:public Container{
 			Physics* physics=new Physics();
 			
 			//add(myBackground);
+			//add(myFog);
 			add(my3DBox);
 			add(my3DBox2->add(new MotionBehavior()));			
 			add(myHut);
