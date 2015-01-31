@@ -28,11 +28,19 @@ class Gun: public Cylinder {
         Application::getInstance()->getWorld().add(ball);
       }
 
-      ball->setPosition(cameraPosition.getX(),cameraPosition.getY(),cameraPosition.getZ());
-      float vX=DEFAULT_BALL_SPEED * sinf((cameraPosition.getTheta()) * M_PI/180);
-      float vZ=DEFAULT_BALL_SPEED * -cosf((cameraPosition.getTheta()) * M_PI/180);
-      float vY=DEFAULT_BALL_SPEED * cosf((cameraPosition.getPhi()) * M_PI/180);
-      ball->setVelocity(vX,0,vZ);
+      float sinTheta=sinf(cameraPosition.getTheta() * M_PI/180);
+      float cosTheta=cosf(cameraPosition.getTheta() * M_PI/180);
+      float tanPhi=tanf(cameraPosition.getPhi() * M_PI/180);
+      ball->setPosition(
+        cameraPosition.getX()+(2*  sinTheta),
+        cameraPosition.getY()+(2* -tanPhi),
+        cameraPosition.getZ()+(2* -cosTheta));
+
+      float vX=DEFAULT_BALL_SPEED *  sinTheta;
+      float vY=DEFAULT_BALL_SPEED * -tanPhi;
+      float vZ=DEFAULT_BALL_SPEED * -cosTheta;
+
+      ball->setVelocity(vX,vY,vZ);
     }       
     
 
