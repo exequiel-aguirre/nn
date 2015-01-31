@@ -52,7 +52,13 @@ class InteractiveCamera: public Camera {
     }
 
     void onTranslation(float deltaX,float deltaY,float deltaZ){
-      if(getCollisionStatus().hasCollided()) this->setVelocity(-deltaX*10,-deltaY*10,-deltaZ*10);
+      if(getCollisionStatus().hasCollided()){
+        //We take in account the normal, to avoid penetration.
+        Point v=Point(-deltaX*10,-deltaY*10,-deltaZ*10);
+        Point n=getCollisionStatus().getImpactNormal();
+        v=v- ((v*n)*n);
+        this->setVelocity(v.x,v.y,v.z);
+      }
     }
     void onKeyDown(SDL_Keycode key){
         this->u_d=0.0;//disable friction
