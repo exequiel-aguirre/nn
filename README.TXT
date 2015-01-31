@@ -37,6 +37,7 @@ BLENDER BACKGROUND JOBS:
 
 
 BUGS:
+-The background needs to be the first component to call the onBeforeRenderFrame....
 -When 2 objects with std::numeric_limits<float>::max() collide, everything goes to hell (for example, most things just dissapear)
 -blending effect not working so well...
 
