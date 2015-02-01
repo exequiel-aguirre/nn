@@ -7,6 +7,7 @@
 #include "../Component/Torus.h"
 #include "../Component/Plane.h"
 #include "../Component/Mountain.h"
+#include "../Component/Cloud.h"
 #include "../Component/Tree.h"
 #include "../Component/Water.h"
 #include "../Component/Model.h"
@@ -36,6 +37,12 @@ class MyContainer:public Container{
 			Torus* myTorus=new Torus(Position(-10.0f,1.0f,-17.0f,90.0f,0.0f,0.0f),2.0f,1.0f);
 			Ground* myGround=new Ground(Position(0.0f,0.0f,0.0f),100,100);
 			Mountain* myMountain=new Mountain(Position(10.0f,19.0f,-49.0f));
+			Cloud* myCloud1=new Cloud(Position(-100.0f,90.0f,-70.0f),15.0f,2.0f,10.0f);
+			Cloud* myCloud2=new Cloud(Position(100.0f,90.0f,70.0f),15.0f,2.0f,20.0f);
+			Cloud* myCloud3=new Cloud(Position(100.0f,90.0f,-40.0f),5.0f,2.0f,15.0f);
+			Cloud* myCloud4=new Cloud(Position(-10.0f,85.0f,-120.0f),5.0f,2.0f,10.0f);
+			Cloud* myCloud5=new Cloud(Position(-20.0f,85.0f,100.0f),15.0f,2.0f,10.0f);
+			Cloud* myCloud6=new Cloud(Position(50.0f,100.0f,-100.0f),15.0f,2.0f,5.0f);
 			Tree* myTree1=new Tree(Position(5.0f,0.0f,5.0f));
 			Tree* myTree2=new Tree(Position(5.0f,0.0f,10.0f));
 			Tree* myTree3=new Tree(Position(5.0f,0.0f,15.0f));
@@ -50,7 +57,7 @@ class MyContainer:public Container{
 			Animation* myAnimation=new Animation(Position(2.0f,2.5f,-15.0f),"3DModel/human.obj");
 			InteractiveCamera* myInteractiveCamera=new InteractiveCamera(Position(0.0f,3.0f,0.0f));
 			//Background* myBackground=new Background({1.000, 0.941, 0.961,1});
-			//Fog* myFog=new Fog();
+			Fog* myFog=new Fog();
 			Light* myLight=new Light(Position(40.0f,40.0f,40.0f));
 			Sphere* mySphere=new Sphere(Position(0.0f,4.0f,-10.0f),0.39f);
 			Sphere* mySphere2=new Sphere(Position(-3.0f,8.0f,-20.0f),0.5f);
@@ -61,7 +68,7 @@ class MyContainer:public Container{
 			Physics* physics=new Physics();
 			
 			//add(myBackground);
-			//add(myFog);
+			add(myFog);
 			add(my3DBox);
 			add(my3DBox2->add(new MotionBehavior()));			
 			add(myHut);
@@ -69,6 +76,7 @@ class MyContainer:public Container{
 			add(myTorus->add(new MotionBehavior()));
 			add(myGround);			
 			add(myMountain);
+			add(myCloud1);add(myCloud2);add(myCloud3);add(myCloud4);add(myCloud5);add(myCloud6);
 			add(myTree1);add(myTree2);add(myTree3);add(myTree4);add(myTree5);add(myTree6);
 			add(myWaterF);add(myWaterR);add(myWaterB);add(myWaterL);
 			add(myModel->add(new MotionBehavior()));
