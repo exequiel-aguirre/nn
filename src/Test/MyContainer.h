@@ -13,6 +13,7 @@
 #include "../Component/Model.h"
 #include "../Component/Animation.h"
 #include "../Component/Box.h"
+#include "../Component/SkyBox.h"
 #include "../Component/Hut.h"
 #include "../Component/Mill.h"
 #include "../Component/Ground.h"
@@ -32,6 +33,7 @@ class MyContainer:public Container{
     MyContainer(Position&& position):Container(position){
 			Box* my3DBox=new Box(Position(3.0f,0.0f,-25.0f));
 			Box* my3DBox2=new Box(Position(-3.0f,0.0f,-25.0f));
+			//SkyBox* mySkyBox=new SkyBox(Position(0.0f,-1.0f,0.0f),400,400,400,"img/bottom.bmp","img/top.bmp","img/left.bmp","img/right.bmp","img/back.bmp","img/front.bmp");
 			Hut* myHut=new Hut(Position(25.0f,0.0f,25.0f));
 			Mill* myMill=new Mill(Position(35.0f,0.0f,-35.0f));
 			Torus* myTorus=new Torus(Position(-10.0f,1.0f,-17.0f,90.0f,0.0f,0.0f),2.0f,1.0f);
@@ -71,6 +73,7 @@ class MyContainer:public Container{
 			add(myFog);
 			add(my3DBox);
 			add(my3DBox2->add(new MotionBehavior()));			
+			//add(mySkyBox);
 			add(myHut);
 			add(myMill);
 			add(myTorus->add(new MotionBehavior()));

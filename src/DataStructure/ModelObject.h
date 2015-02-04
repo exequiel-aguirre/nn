@@ -63,13 +63,13 @@ class ModelObject{
           vertices.push_back(map.get(u1,v1));
 
 
-          uvs.push_back( Point(j%2,j%2,NULL));
-          uvs.push_back( Point((j+1)%2,j%2,NULL));
           uvs.push_back( Point(j%2,(j+1)%2,NULL));
-
-          uvs.push_back( Point(j%2,(j+1)%2,NULL));
-          uvs.push_back( Point((j+1)%2,j%2,NULL));
           uvs.push_back( Point((j+1)%2,(j+1)%2,NULL));
+          uvs.push_back( Point(j%2,j%2,NULL));
+
+          uvs.push_back( Point(j%2,j%2,NULL));
+          uvs.push_back( Point((j+1)%2,(j+1)%2,NULL));
+          uvs.push_back( Point((j+1)%2,j%2,NULL));
                     
           
           normals.push_back(map.getNormal(u0,v0));
