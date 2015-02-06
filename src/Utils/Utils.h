@@ -7,6 +7,7 @@
 #include <algorithm>
 #include "../DataStructure/Point.h"
 #include "../DataStructure/ModelObject.h"
+#include "../Map/HeightMap.h"
 
 
 
@@ -128,6 +129,21 @@ class Utils{
 		
 		return  ModelObject(vertices,uvs,normals);
 		
+	}
+
+
+	static HeightMap loadHeightMap(float w,float h,const char* filename){
+		SDL_Surface* bmpFile=SDL_LoadBMP(filename);
+		if(bmpFile == NULL ) std::cout <<  SDL_GetError();
+
+		//Convert the pixels to 32 bit
+	    Uint16* bmpPixels = (Uint16 *)bmpFile->pixels;
+	    //make a copy
+	    vector<Uint16> pixels=vector<Uint16>(bmpPixels,bmpPixels+(bmpFile->w * bmpFile->h));
+		SDL_FreeSurface(bmpFile);
+
+		//making the lats=2*bmp->width seems to do well.It may be a bit expensive though
+		return HeightMap(w,h,2*bmpFile->w,2*bmpFile->h,pixels,bmpFile->w,bmpFile->h);
 	}
 
 };
