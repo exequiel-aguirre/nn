@@ -9,13 +9,14 @@ class HeightMap :public IMap {
     int lats;
     int longs;
     //TODO:make it an float vector?
-    vector<Uint16> pixels;
+    vector<Uint8> pixels;
     int imageWidth;
     int imageHeight;
-    const Uint16 MAX_HEIGHT=50;
-    const float FACTOR=MAX_HEIGHT/(pow(2,16));
+    const Uint8 MAX_HEIGHT=300;
+    const float FACTOR=MAX_HEIGHT/(pow(2,7));
+    const Uint8 SEA_LEVEL=pow(2,7);
   public:
-	HeightMap(float w,float h,int lats,int longs,vector<Uint16> pixels,int imageWidth,int imageHeight){
+	HeightMap(float w,float h,int lats,int longs,vector<Uint8> pixels,int imageWidth,int imageHeight){
         this->w=w;
         this->h=h;
         this->lats=lats;
@@ -31,7 +32,7 @@ class HeightMap :public IMap {
         //Move the domain to [0,w]x[x,h] and then scale it to [0,imageWidth-1]x[0,imageHeight-1]
         int x=(int)((u + this->w/2) * (this->imageWidth-1)/this->w);
         int z=(int)((v + this->h/2) * (this->imageHeight-1)/this->h);
-        float y=(pixels[ ( z * this->imageWidth ) + x ])*FACTOR;
+        float y=(pixels[ ( z * this->imageWidth ) + x ] - SEA_LEVEL)*FACTOR;
 
         return Point(u,y,v);
     }

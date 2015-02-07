@@ -39,7 +39,7 @@ class MyContainer:public Container{
 			Mill* myMill=new Mill(Position(35.0f,0.0f,-35.0f));
 			Torus* myTorus=new Torus(Position(-10.0f,1.0f,-17.0f,90.0f,0.0f,0.0f),2.0f,1.0f);
 			Ground* myGround=new Ground(Position(0.0f,0.0f,0.0f),100,100);
-			Terrain* myTerrain=new Terrain(Position(0.0f,1.0f,-5.0f),2,2,"img/terrain.bmp");
+			Terrain* myTerrain=new Terrain(Position(-100.0f,0.0f,-0.0f),100,300,"img/terrain.bmp");
 			Mountain* myMountain=new Mountain(Position(10.0f,19.0f,-49.0f));
 			Cloud* myCloud1=new Cloud(Position(-100.0f,90.0f,-70.0f),15.0f,2.0f,10.0f);
 			Cloud* myCloud2=new Cloud(Position(100.0f,90.0f,70.0f),15.0f,2.0f,20.0f);
@@ -84,7 +84,7 @@ class MyContainer:public Container{
 			add(myMountain);
 			add(myCloud1);add(myCloud2);add(myCloud3);add(myCloud4);add(myCloud5);add(myCloud6);
 			add(myTree1);add(myTree2);add(myTree3);add(myTree4);add(myTree5);add(myTree6);
-			add(myWaterF);add(myWaterR);add(myWaterB);add(myWaterL);
+			add(myWaterF);add(myWaterR);add(myWaterB);//add(myWaterL);
 			add(myModel->add(new MotionBehavior()));
 			myAnimation->getVelocity().setZ(8.0f);add(myAnimation->add(new MotionBehavior()));
 			add(myInteractiveCamera);

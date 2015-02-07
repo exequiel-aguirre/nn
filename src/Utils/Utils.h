@@ -136,10 +136,11 @@ class Utils{
 		SDL_Surface* bmpFile=SDL_LoadBMP(filename);
 		if(bmpFile == NULL ) std::cout <<  SDL_GetError();
 
-		//Convert the pixels to 32 bit
-	    Uint16* bmpPixels = (Uint16 *)bmpFile->pixels;
+		//Convert the pixels to 8 bit
+	    Uint8* bmpPixels = (Uint8 *)bmpFile->pixels;
+
 	    //make a copy
-	    vector<Uint16> pixels=vector<Uint16>(bmpPixels,bmpPixels+(bmpFile->w * bmpFile->h));
+	    vector<Uint8> pixels=vector<Uint8>(bmpPixels,bmpPixels+(bmpFile->w * bmpFile->h));
 		SDL_FreeSurface(bmpFile);
 
 		//making the lats=2*bmp->width seems to do well.It may be a bit expensive though
