@@ -41,6 +41,7 @@ class ModelObject{
       float uTo=map.getUTo();
       float vFrom=map.getVFrom();
       float vTo=map.getVTo();
+      bool repeat=map.repeat;
       
       //latitudes
       //TODO: set i=0,and change "<="" -> "<"" and "i-1" -> "i","i"->"i+1"
@@ -62,14 +63,31 @@ class ModelObject{
           vertices.push_back(map.get(u0,v1));
           vertices.push_back(map.get(u1,v1));
 
+          if(repeat)
+          {
+            uvs.push_back( Point(j%2,(j+1)%2,NULL));
+            uvs.push_back( Point((j+1)%2,(j+1)%2,NULL));
+            uvs.push_back( Point(j%2,j%2,NULL));
 
-          uvs.push_back( Point(j%2,(j+1)%2,NULL));
-          uvs.push_back( Point((j+1)%2,(j+1)%2,NULL));
-          uvs.push_back( Point(j%2,j%2,NULL));
+            uvs.push_back( Point(j%2,j%2,NULL));
+            uvs.push_back( Point((j+1)%2,(j+1)%2,NULL));
+            uvs.push_back( Point((j+1)%2,j%2,NULL));
+          }
+          else
+          {
+            float u0s=(u0-uFrom)/(uTo-uFrom);
+            float u1s=(u1-uFrom)/(uTo-uFrom);
+            float v0s=(v0-vFrom)/(vTo-vFrom);
+            float v1s=(v1-vFrom)/(vTo-vFrom);
 
-          uvs.push_back( Point(j%2,j%2,NULL));
-          uvs.push_back( Point((j+1)%2,(j+1)%2,NULL));
-          uvs.push_back( Point((j+1)%2,j%2,NULL));
+            uvs.push_back( Point(u0s,v0s,NULL));
+            uvs.push_back( Point(u0s,v1s,NULL));
+            uvs.push_back( Point(u1s,v0s,NULL));
+
+            uvs.push_back( Point(u1s,v0s,NULL));
+            uvs.push_back( Point(u0s,v1s,NULL));
+            uvs.push_back( Point(u1s,v1s,NULL));
+          }
                     
           
           normals.push_back(map.getNormal(u0,v0));

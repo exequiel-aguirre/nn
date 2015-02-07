@@ -39,7 +39,7 @@ class MyContainer:public Container{
 			Mill* myMill=new Mill(Position(35.0f,0.0f,-35.0f));
 			Torus* myTorus=new Torus(Position(-10.0f,1.0f,-17.0f,90.0f,0.0f,0.0f),2.0f,1.0f);
 			Ground* myGround=new Ground(Position(0.0f,0.0f,0.0f),100,100);
-			Terrain* myTerrain=new Terrain(Position(-100.0f,0.0f,-0.0f),100,300,"img/terrain.bmp");
+			Terrain* myTerrain=new Terrain(Position(-100.0f,0.0f,-0.0f),100,300,"img/terrain.bmp","img/ground.bmp");
 			Mountain* myMountain=new Mountain(Position(10.0f,19.0f,-49.0f));
 			Cloud* myCloud1=new Cloud(Position(-100.0f,90.0f,-70.0f),15.0f,2.0f,10.0f);
 			Cloud* myCloud2=new Cloud(Position(100.0f,90.0f,70.0f),15.0f,2.0f,20.0f);

@@ -8,7 +8,10 @@
 
 class IMap{  
   public:
-	IMap(){}		
+	//repeat Texture
+	bool repeat=true;//TODO:this is most likely the wrong place to put this.
+
+	IMap(){}
 
     virtual ~IMap(){}
     

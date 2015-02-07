@@ -24,6 +24,7 @@ class HeightMap :public IMap {
         this->pixels=pixels;
         this->imageWidth=imageWidth;
         this->imageHeight=imageHeight;
+        this->repeat=true;
       }    
 
     virtual ~HeightMap(){}
