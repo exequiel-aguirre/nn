@@ -12,13 +12,11 @@ class BlendingEffect:public IEffect{
 
 	void doEffect(){
 		glEnable(GL_BLEND);
-        glDisable(GL_DEPTH_TEST);
-    	glColor4f(1.0f,1.0f,1.0f,0.5f);
 		glBlendFunc(GL_SRC_ALPHA,GL_ONE);
+		glColor4f(0.5f, 0.5f, 0.9f, 0.5f);
 	}
 	void undoEffect(){
 		glDisable(GL_BLEND);
-        glEnable(GL_DEPTH_TEST);    	
 	}
 
 

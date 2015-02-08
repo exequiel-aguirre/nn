@@ -22,6 +22,7 @@
 #include "../Component/InteractiveCamera.h"
 #include "../Component/Background.h"
 #include "../Effect/Fog.h"
+#include "../Effect/Reflection.h"
 #include "../Component/Light.h"
 #include "../Component/Physics.h"
 
@@ -32,6 +33,7 @@
 class MyContainer:public Container{
   public:
     MyContainer(Position&& position):Container(position){
+			add(new Reflection());
 			Box* my3DBox=new Box(Position(3.0f,0.0f,-25.0f));
 			Box* my3DBox2=new Box(Position(-3.0f,0.0f,-25.0f));
 			//SkyBox* mySkyBox=new SkyBox(Position(0.0f,-1.0f,0.0f),400,400,400,"img/skybox_bottom.bmp","img/skybox_top.bmp","img/skybox_left.bmp","img/skybox_right.bmp","img/skybox_back.bmp","img/skybox_front.bmp");
@@ -39,8 +41,8 @@ class MyContainer:public Container{
 			Mill* myMill=new Mill(Position(35.0f,0.0f,-35.0f));
 			Torus* myTorus=new Torus(Position(-10.0f,1.0f,-17.0f,90.0f,0.0f,0.0f),2.0f,1.0f);
 			Ground* myGround=new Ground(Position(0.0f,0.0f,0.0f),100,100);
-			Terrain* myTerrainL=new Terrain(Position(0.0f,0.0f,0.0f),100,300,"img/terrain.bmp","img/ground.bmp");
-			Terrain* myTerrainR=new Terrain(Position(0.0f,0.0f,0.0f),100,300,"img/terrain.bmp","img/ground.bmp");
+			Terrain* myTerrainL=new Terrain(Position(-100.0f,0.0f,0.0f),100,300,"img/terrain.bmp","img/ground.bmp");
+			Terrain* myTerrainR=new Terrain(Position(100.0f,0.0f,0.0f),100,300,"img/terrain.bmp","img/ground.bmp");
 			Mountain* myMountain=new Mountain(Position(10.0f,19.0f,-49.0f));
 			Cloud* myCloud1=new Cloud(Position(-100.0f,90.0f,-70.0f),15.0f,2.0f,10.0f);
 			Cloud* myCloud2=new Cloud(Position(100.0f,90.0f,70.0f),15.0f,2.0f,20.0f);
@@ -55,7 +57,7 @@ class MyContainer:public Container{
 			Tree* myTree5=new Tree(Position(-5.0f,0.0f,10.0f));
 			Tree* myTree6=new Tree(Position(-5.0f,0.0f,15.0f));
 			Water* myWaterF=new Water(Position(0.0f,0.0f,-100.0f),100,100);
-			Water* myWaterR=new Water(Position(100.0f,0.0f,0.0f),100,300,false);
+			Water* myWaterR=new Water(Position(100.0f,0.0f,0.0f),100,300);
 			Water* myWaterB=new Water(Position(0.0f,0.0f,100.0f),100,100);
 			Water* myWaterL=new Water(Position(-100.0f,0.0f,0.0f),100,300);
 			Model* myModel=new Model(Position(-15.0f,4.0f,-19.0f),"3DModel/monkey.obj");
@@ -72,7 +74,13 @@ class MyContainer:public Container{
 			
 			Physics* physics=new Physics();
 
-
+			add(myWaterF);add(myWaterB);
+			//adding the terrain first and water after, results in transparent water
+			add(myTerrainR);
+			add(myWaterR);
+			//adding the water first and terrain after, results in reflecting water
+			add(myWaterL);
+			add(myTerrainL);
 			//add(myBackground);
 			add(myFog);
 			add(my3DBox);
@@ -85,7 +93,7 @@ class MyContainer:public Container{
 			add(myMountain);
 			add(myCloud1);add(myCloud2);add(myCloud3);add(myCloud4);add(myCloud5);add(myCloud6);
 			add(myTree1);add(myTree2);add(myTree3);add(myTree4);add(myTree5);add(myTree6);
-			add(myWaterF);add(myWaterR->add(myTerrainR));add(myWaterB);add(myWaterL->add(myTerrainL));
+
 			add(myModel->add(new MotionBehavior()));
 			myAnimation->getVelocity().setZ(8.0f);add(myAnimation->add(new MotionBehavior()));
 			add(myInteractiveCamera);

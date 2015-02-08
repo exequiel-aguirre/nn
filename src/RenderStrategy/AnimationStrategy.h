@@ -26,8 +26,8 @@ class AnimationStrategy: public TextureStrategy {
     
     void render(){
 		frames++;
-		if(frames>2){
-			frames=frames%2;
+		if(frames>4){
+			frames=frames%4;
 			currentModelObject++;    			
 			if(currentModelObject==modelObjects.end()){
 				currentModelObject=modelObjects.begin();

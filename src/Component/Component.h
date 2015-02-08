@@ -28,7 +28,7 @@ class Component {
     float elasticity=0.88f;
     bool rotates=false;
     bool moves=false;
-
+    bool reflects=true;
   public:
     Component(Position position){
       this->position=position;
@@ -188,6 +188,9 @@ class Component {
     }
     bool getMoves(){
       return moves;
+    }
+    virtual bool getReflects(){
+      return reflects;
     }
 
 };

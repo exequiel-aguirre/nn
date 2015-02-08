@@ -57,6 +57,10 @@ class Container: public Component {
       }
       return this;
 	}
+
+  vector<Component*> getChilds(){
+    return this->childs;
+  }
 		
 };
 #endif
