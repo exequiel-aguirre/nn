@@ -5,7 +5,7 @@
 #include <vector>
 
 class Container: public Component {
-  private:
+  protected:
     vector<Component*> childs;
   
   public:
@@ -57,11 +57,6 @@ class Container: public Component {
       }
       return this;
 	}
-
-  vector<Component*> getChilds(){
-    return this->childs;
-  }
-
 		
 };
 #endif

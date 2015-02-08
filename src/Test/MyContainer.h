@@ -39,7 +39,8 @@ class MyContainer:public Container{
 			Mill* myMill=new Mill(Position(35.0f,0.0f,-35.0f));
 			Torus* myTorus=new Torus(Position(-10.0f,1.0f,-17.0f,90.0f,0.0f,0.0f),2.0f,1.0f);
 			Ground* myGround=new Ground(Position(0.0f,0.0f,0.0f),100,100);
-			Terrain* myTerrain=new Terrain(Position(-100.0f,0.0f,-0.0f),100,300,"img/terrain.bmp","img/ground.bmp");
+			Terrain* myTerrainL=new Terrain(Position(0.0f,0.0f,0.0f),100,300,"img/terrain.bmp","img/ground.bmp");
+			Terrain* myTerrainR=new Terrain(Position(0.0f,0.0f,0.0f),100,300,"img/terrain.bmp","img/ground.bmp");
 			Mountain* myMountain=new Mountain(Position(10.0f,19.0f,-49.0f));
 			Cloud* myCloud1=new Cloud(Position(-100.0f,90.0f,-70.0f),15.0f,2.0f,10.0f);
 			Cloud* myCloud2=new Cloud(Position(100.0f,90.0f,70.0f),15.0f,2.0f,20.0f);
@@ -54,7 +55,7 @@ class MyContainer:public Container{
 			Tree* myTree5=new Tree(Position(-5.0f,0.0f,10.0f));
 			Tree* myTree6=new Tree(Position(-5.0f,0.0f,15.0f));
 			Water* myWaterF=new Water(Position(0.0f,0.0f,-100.0f),100,100);
-			Water* myWaterR=new Water(Position(100.0f,0.0f,0.0f),100,300);
+			Water* myWaterR=new Water(Position(100.0f,0.0f,0.0f),100,300,false);
 			Water* myWaterB=new Water(Position(0.0f,0.0f,100.0f),100,100);
 			Water* myWaterL=new Water(Position(-100.0f,0.0f,0.0f),100,300);
 			Model* myModel=new Model(Position(-15.0f,4.0f,-19.0f),"3DModel/monkey.obj");
@@ -71,8 +72,7 @@ class MyContainer:public Container{
 			
 			Physics* physics=new Physics();
 
-			//water needs to be rendered first in order to make the reflection work...TODO:find a way of avoiding this
-			add(myWaterF);add(myWaterR);add(myWaterB);add(myWaterL);
+
 			//add(myBackground);
 			add(myFog);
 			add(my3DBox);
@@ -82,11 +82,10 @@ class MyContainer:public Container{
 			add(myMill);
 			add(myTorus->add(new MotionBehavior()));
 			add(myGround);
-			add(myTerrain);
 			add(myMountain);
 			add(myCloud1);add(myCloud2);add(myCloud3);add(myCloud4);add(myCloud5);add(myCloud6);
 			add(myTree1);add(myTree2);add(myTree3);add(myTree4);add(myTree5);add(myTree6);
-
+			add(myWaterF);add(myWaterR->add(myTerrainR));add(myWaterB);add(myWaterL->add(myTerrainL));
 			add(myModel->add(new MotionBehavior()));
 			myAnimation->getVelocity().setZ(8.0f);add(myAnimation->add(new MotionBehavior()));
 			add(myInteractiveCamera);
