@@ -70,7 +70,9 @@ class MyContainer:public Container{
 			Ellipsoid* myEllipsoid=new Ellipsoid(Position(-0.0f,6.0f,-20.0f),1.0f,2.0f,1.0f);
 			
 			Physics* physics=new Physics();
-			
+
+			//water needs to be rendered first in order to make the reflection work...TODO:find a way of avoiding this
+			add(myWaterF);add(myWaterR);add(myWaterB);add(myWaterL);
 			//add(myBackground);
 			add(myFog);
 			add(my3DBox);
@@ -84,7 +86,7 @@ class MyContainer:public Container{
 			add(myMountain);
 			add(myCloud1);add(myCloud2);add(myCloud3);add(myCloud4);add(myCloud5);add(myCloud6);
 			add(myTree1);add(myTree2);add(myTree3);add(myTree4);add(myTree5);add(myTree6);
-			add(myWaterF);add(myWaterR);add(myWaterB);//add(myWaterL);
+
 			add(myModel->add(new MotionBehavior()));
 			myAnimation->getVelocity().setZ(8.0f);add(myAnimation->add(new MotionBehavior()));
 			add(myInteractiveCamera);

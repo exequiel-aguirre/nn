@@ -42,7 +42,7 @@ BUGS:
 -The skybox isn't working so well, it's obvious that is a box. Also we should be using just a Box with the textures, but with all the rotation needed(see comment on the skybox) the normals get messed up
 -The background needs to be the first component to call the onBeforeRenderFrame....
 -When 2 objects with std::numeric_limits<float>::max() collide, everything goes to hell (for example, most things just dissapear)
--blending effect not working so well...
+-blending effect not working so well...(maybe removing glDisable(GL_DEPTH_TEST);)
 
 
 TODOS:
