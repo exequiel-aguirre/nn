@@ -14,7 +14,7 @@ class Reflection:public IEffect{
 		//this is not ok...
 		float reflectionY=Application::getInstance()->getWorld().getPosition().getY();
 		
-		double reflectPlane[] = {0.0f, -1.0f, 0.0f, reflectionY-0.01};
+		double reflectPlane[] = {0.0f, -1.0f, 0.0f, reflectionY};
 		glEnable(GL_CLIP_PLANE0);
 		glClipPlane(GL_CLIP_PLANE0, reflectPlane);
 		//start reflection
