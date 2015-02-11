@@ -102,6 +102,19 @@ class Debug{
       glEnd();
     }
 
+    void renderNormals(){
+        vector<vector<Point>> positionedTriangles=boundary.getReducedPolygon().getPositionedTriangles();
+        vector<vector<Point>>::iterator it;
+        glBegin(GL_LINES);
+        for(it=positionedTriangles.begin();it!=positionedTriangles.end();it++){
+              Point v1=(*it)[0];
+              Point n=(*it)[3];
+              glVertex3f(v1.x,v1.y,v1.z);
+              glVertex3f(v1.x+n.x,v1.y+n.y,v1.z+n.z);
+        }
+        glEnd();
+    }
+
     //to be called from the onAfterRender() (because this are positioned vertices )
     void renderMotionRay(){
       glBegin(GL_LINES);

@@ -48,13 +48,13 @@ class MyContainer:public Container{
 			Water* myWaterF=new Water(Position(0.0f,0.0f,-125.0f),350,100);
 			Water* myWaterB=new Water(Position(0.0f,0.0f,125.0f),350,100);
 			Water* myLakeWater=new Water(Position(0.0f,0.0f,0.0f),50,50);
-			Tree* myTree1=new Tree(Position(25.0f,0.01f,-5.0f));
+			Tree* myTree1=new Tree(Position(25.0f,0.01f,-15.0f));
 			Tree* myTree2=new Tree(Position(25.0f,0.01f,0.0f));
-			Tree* myTree3=new Tree(Position(25.0f,0.01f,5.0f));
-			Tree* myTree4=new Tree(Position(-25.0f,0.01f,-5.0f));
+			Tree* myTree3=new Tree(Position(25.0f,0.01f,15.0f));
+			Tree* myTree4=new Tree(Position(-25.0f,0.01f,-15.0f));
 			Tree* myTree5=new Tree(Position(-25.0f,0.01f,0.0f));
-			Tree* myTree6=new Tree(Position(-25.0f,0.01f,5.0f));
-			Mountain* myMountain=new Mountain(Position(10.0f,19.0f,-70.0f));
+			Tree* myTree6=new Tree(Position(-25.0f,0.01f,15.0f));
+			Mountain* myMountain=new Mountain(Position(100.0f,57.0f,-70.0f));
 			Cloud* myCloud1=new Cloud(Position(-100.0f,90.0f,-70.0f),15.0f,2.0f,10.0f);
 			Cloud* myCloud2=new Cloud(Position(100.0f,90.0f,70.0f),15.0f,2.0f,20.0f);
 			Cloud* myCloud3=new Cloud(Position(100.0f,90.0f,-40.0f),5.0f,2.0f,15.0f);
@@ -68,7 +68,7 @@ class MyContainer:public Container{
 			Mill* myMill=new Mill(Position(10.0f,0.0f,-25.0f));
 			Torus* myTorus=new Torus(Position(-70.0f,1.0f,-19.0f,90.0f,0.0f,0.0f),2.0f,1.0f);
 			Model* myModel=new Model(Position(-65.0f,4.0f,-19.0f),"3DModel/monkey.obj");
-			Animation* myAnimation=new Animation(Position(-40.0f,3.0f,-15.0f),"3DModel/human.obj");
+			Animation* myAnimation=new Animation(Position(-40.0f,1.8f,-15.0f),"3DModel/human.obj");
 			Sphere* mySphere=new Sphere(Position(-50.0f,4.0f,-10.0f),0.39f);
 			Sphere* mySphere2=new Sphere(Position(-60.0f,8.0f,-20.0f),0.5f);
 			Sphere* mySphere3=new Sphere(Position(-50.0f,6.0f,-20.0f),2.0f);
@@ -107,7 +107,7 @@ class MyContainer:public Container{
 			add(myMill);
 			add(myTorus->add(new MotionBehavior()));
 			add(myModel->add(new MotionBehavior()));
-			myAnimation->getVelocity().setZ(8.0f);add(myAnimation->add(new MotionBehavior()));
+			myAnimation->getVelocity().setZ(1.8f);add(myAnimation->add(new MotionBehavior()));
 			add(mySphere->add(new MotionBehavior()));
 			mySphere2->getVelocity().setX(40.0f);add(mySphere2->add(new MotionBehavior()));
 			add(mySphere3->add(new MotionBehavior()));
