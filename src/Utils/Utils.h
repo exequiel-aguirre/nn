@@ -141,10 +141,12 @@ class Utils{
 
 	    //make a copy
 	    vector<Uint8> pixels=vector<Uint8>(bmpPixels,bmpPixels+(bmpFile->w * bmpFile->h));
+		float bmpWidth=bmpFile->w;
+		float bmpHeight=bmpFile->h;
 		SDL_FreeSurface(bmpFile);
 
 		//making the lats=2*bmp->width seems to do well.It may be a bit expensive though
-		return HeightMap(w,h,2*bmpFile->w,2*bmpFile->h,pixels,bmpFile->w,bmpFile->h);
+		return HeightMap(w,h,2*bmpWidth,2*bmpHeight,pixels,bmpWidth,bmpHeight);
 	}
 
 };
