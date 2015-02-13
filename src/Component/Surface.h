@@ -11,13 +11,9 @@
 class Surface: public Component {  
   
   public:
-	  Surface(Position position,IMap&& map,GLenum GLMode):Component(position){
-		this->setRenderStrategy(new FastStrategy(map,GLMode));
-	  }
+	  Surface(Position position,IMap&& map,GLenum GLMode):Component(position,new FastStrategy(map,GLMode)){}
 
-	  Surface(Position position,IMap&& map,char* textureFilename):Component(position){
-		this->setRenderStrategy(new TextureStrategy(map,textureFilename));
-	  }
+	  Surface(Position position,IMap&& map,char* textureFilename):Component(position,new TextureStrategy(map,textureFilename)){}
 
     virtual ~Surface(){}
 

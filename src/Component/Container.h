@@ -23,29 +23,19 @@ class Container: public Component {
       {
          (*it)->onBeforeRenderFrame(); 
       }
-  }
-  void onBeforeRender(){
-    //do not translate anything
-    doEffects();
   } 
-  
+
 	void render()
 	{
-      this->onBeforeRender();
-
+      Component::render();
       vector<Component*>::iterator it;
       for(it=childs.begin();it!=childs.end();it++)
     	{
         	(*it)->render();
       }
-
-      this->onAfterRender();
 	}
-  void onAfterRender(){
-    //do not translate anything
-    undoEffects();
-  }
-		
+
+
 	Container* add(Component* child)
 	{
       child->getPosition()+=(this->position);

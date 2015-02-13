@@ -16,10 +16,9 @@ class InteractiveCamera: public Camera {
     const float U_D=0.05;
     float u_d=0.0;
   public:
-	  InteractiveCamera(Position position):Camera(position,false,[=](float deltaX,float deltaY,float deltaZ){ this->onTranslation(deltaX,deltaY,deltaZ);}){
-          //enable physics(both lines are needed)
+	  InteractiveCamera(Position position):Camera(position,false,[=](float deltaX,float deltaY,float deltaZ){ this->onTranslation(deltaX,deltaY,deltaZ);},new FastStrategy(EllipsoidMap(1.0,2.0,1.0),GL_POINTS)){
+          //enable physics(both, the this line and a render strategy with a geometry are needed)
           add(new MotionBehavior());
-          setRenderStrategy(new FastStrategy(EllipsoidMap(1.0,2.0,1.0),GL_POINTS));
           //add a key behavior for the actions
           add(new SimpleKeyboardBehavior(
               [=](SDL_Keycode key){//behavior callback

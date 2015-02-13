@@ -9,7 +9,8 @@
 class FastStrategy :public CacheStrategy {   
 
   public:
-    
+
+    FastStrategy(ModelObject modelObject,GLenum GLMode):CacheStrategy(modelObject,GLMode){}
     FastStrategy(char* modelFilename,GLenum GLMode):CacheStrategy(loadModel(modelFilename),GLMode){}
     FastStrategy(IMap& map,GLenum GLMode):CacheStrategy(loadModel(map),GLMode){}
     FastStrategy(IMap&& map,GLenum GLMode):FastStrategy(map,GLMode){}
@@ -25,7 +26,9 @@ class FastStrategy :public CacheStrategy {
     }    
     
     
-    void render(){
+    void render(Position& position){
+        this->onBeforeRender(position);
+
         GLuint vertexBuffer=modelObject.getVertexBufferId();
         GLuint uvBuffer=modelObject.getUVBufferId();
         GLuint normalBuffer=modelObject.getNormalBufferId();
@@ -47,7 +50,8 @@ class FastStrategy :public CacheStrategy {
 
 
         glDrawArrays(GLMode, 0, this->modelObject.getSize());
-        
+
+        this->onAfterRender(position);
     }
 
     ModelObject  loadModel(const char* modelFilename){

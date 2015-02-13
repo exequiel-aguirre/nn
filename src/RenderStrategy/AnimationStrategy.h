@@ -24,7 +24,7 @@ class AnimationStrategy: public TextureStrategy {
 
     virtual ~AnimationStrategy(){}
     
-    void render(){
+    void render(Position& position){
 		frames++;
 		if(frames>4){
 			frames=frames%4;
@@ -35,7 +35,7 @@ class AnimationStrategy: public TextureStrategy {
     	}
     	//we set the current model object and ask the parent strategy to render normally
 		this->modelObject=(*currentModelObject);
-		TextureStrategy::render();
+		TextureStrategy::render(position);
     }
 
 

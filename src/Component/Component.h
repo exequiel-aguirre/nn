@@ -9,6 +9,7 @@
 #include "../Effect/IEffect.h"
 #include "../DataStructure/ModelObject.h"
 #include "../RenderStrategy/IRenderStrategy.h"
+#include "../RenderStrategy/FastStrategy.h"
 #include "../Physics/CollisionStatus.h"
 #include "../Test/Debug.h"
 
@@ -19,7 +20,6 @@ class Component {
     ModelObject modelObject;
   protected:
     vector<IBehavior*> behaviors;
-    vector<IEffect*> effects;
     //mechanic properties
     Position position;
     Velocity velocity;
@@ -30,41 +30,21 @@ class Component {
     bool moves=false;
     bool reflects=true;
   public:
-    Component(Position position){
+    Component(Position position,IRenderStrategy* renderStrategy){
       this->position=position;
+      this->renderStrategy=renderStrategy;
+      this->modelObject=renderStrategy->getModelObject();
+      this->calculateBoundary();
     }
+    Component(Position position):Component(position,new FastStrategy(ModelObject(),GL_POINTS)){}//by default we set a render strategy with an empty model object, so no geometry will be rendered)(the GLMode is never actually used)
+
     virtual ~Component(){}  
     
     //this method is called before any component is rendered.
     virtual void onBeforeRenderFrame(){}
-    //this method is called before the component is rendered.
-    virtual void onBeforeRender(){
-      //position the rendering
-      glTranslatef(this->position.getX(),this->position.getY(),this->position.getZ());
-      //rotate the x-axis (up and down)
-      glRotatef(this->position.getPhi(), 1.0f, 0.0f, 0.0f);
-      // Rotate on the y-axis (left and right)
-      glRotatef(this->position.getTheta(), 0.0f, 1.0f, 0.0f);
-      
-      glRotatef(this->position.getPsi(), 0.0f, 0.0f, 1.0f);
 
-      doEffects();
-    }
     virtual void render(){
-      this->onBeforeRender();
-      if(this->renderStrategy!=NULL) this->renderStrategy->render();
-      this->onAfterRender();
-    }
-    //this method is called after the components are rendered.
-    virtual void onAfterRender(){
-      undoEffects();
-      //we restore the position to avoid messing with the other's component's location
-      //mind that the group SO(3,R) is non-abelian, so we must do this in the opposite order than
-      // onBeforeRender
-      glRotatef(-this->position.getPsi(), 0.0f, 0.0f, 1.0f);
-      glRotatef(-this->position.getTheta(), 0.0f, 1.0f, 0.0f);
-      glRotatef(-this->position.getPhi(), 1.0f, 0.0f, 0.0f);
-      glTranslatef(-this->position.getX(),-this->position.getY(),-this->position.getZ());
+      if(this->renderStrategy!=NULL) this->renderStrategy->render(this->position);
     }
 
     virtual void onAfterCollision(){}
@@ -106,12 +86,6 @@ class Component {
       return modelObject;
     }
 
-    void setRenderStrategy(IRenderStrategy* renderStrategy){
-      this->renderStrategy=renderStrategy;
-      this->modelObject=renderStrategy->getModelObject();
-      calculateBoundary();
-    }
-    
 
     virtual void calculateBoundary(){
       if(modelObject.getSize()==0) return;
@@ -158,28 +132,12 @@ class Component {
     
     }
 
-    Component* add(IEffect* effect){      
-      this->effects.push_back(effect);
+    Component* add(IEffect* effect){
+      if(this->renderStrategy!=NULL) this->renderStrategy->add(effect);
       return this;    
     }
 
-    void doEffects(){
-      vector<IEffect*>::iterator it;
-      
-      for(it=effects.begin();it!=effects.end();it++)
-      {
-          (*it)->doEffect();
-      }
-    }
 
-    void undoEffects(){
-      vector<IEffect*>::iterator it;
-      
-      for(it=effects.begin();it!=effects.end();it++)
-      {
-          (*it)->undoEffect();
-      }
-    }
 
     bool getRotates(){
       return rotates;

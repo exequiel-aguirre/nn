@@ -19,7 +19,7 @@ class Camera: public Component {
 	  Camera(Position&& position):Camera(position,true){}
 
 	  //contructor for a customized translation behavior
-	  Camera(Position position,bool godMode,std::function<void(float,float,float)> onTranslationCallback):Component(position){
+	  Camera(Position position,bool godMode,std::function<void(float,float,float)> onTranslationCallback,IRenderStrategy* renderStrategy):Component(position,renderStrategy){
 		  add(new BaseTranslationKeyboardBehavior(godMode,onTranslationCallback));
 		  add(new BaseRotationMouseBehavior());
          }

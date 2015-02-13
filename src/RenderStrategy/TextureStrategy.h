@@ -23,11 +23,11 @@ class TextureStrategy :public FastStrategy {
     virtual ~TextureStrategy(){}    
     
     
-    void render(){
+    void render(Position& position){
       glEnable(GL_TEXTURE_2D);
       glBindTexture(GL_TEXTURE_2D,texture);
 
-      FastStrategy::render();
+      FastStrategy::render(position);
 
       glDisable(GL_TEXTURE_2D);
     }

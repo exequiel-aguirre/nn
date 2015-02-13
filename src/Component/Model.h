@@ -9,9 +9,7 @@
 class Model: public Component {
 
   public:
-	Model(Position& position,IRenderStrategy* renderStrategy):Component(position){
-	  	this->setRenderStrategy(renderStrategy);
-	  }
+	Model(Position& position,IRenderStrategy* renderStrategy):Component(position,renderStrategy){}
 
 	Model(Position&& position,IRenderStrategy* renderStrategy):Model(position,renderStrategy){}
 

@@ -16,7 +16,8 @@ class RealTimeStrategy :public IRenderStrategy {
 
     virtual ~RealTimeStrategy(){}    
     
-    void render(){
+    void render(Position& position){
+      this->onAfterRender(position);
       int lats=24;
       int longs=24;
       float u0,u1,v0,v1;
@@ -45,6 +46,8 @@ class RealTimeStrategy :public IRenderStrategy {
              glVertex3f(point->x,point->y,point->z);
            }
          glEnd();
+
+         this->onAfterRender(position);
       }
 
       for(i = 0; i < lats; i++) 
