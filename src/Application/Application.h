@@ -40,9 +40,7 @@ class Application:public IListener {
     
     void render(){
         world.onBeforeRenderFrame();
-        world.onBeforeRender();
         world.render();
-        world.onAfterRender();
     }
    
     void setWorld(Container&& world){

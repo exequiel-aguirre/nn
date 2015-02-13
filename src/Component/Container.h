@@ -31,15 +31,15 @@ class Container: public Component {
   
 	void render()
 	{
-    	vector<Component*>::iterator it;
-      
+      this->onBeforeRender();
+
+      vector<Component*>::iterator it;
       for(it=childs.begin();it!=childs.end();it++)
     	{
-          (*it)->onBeforeRender();
         	(*it)->render();
-          (*it)->onAfterRender();
+      }
 
-      	}
+      this->onAfterRender();
 	}
   void onAfterRender(){
     //do not translate anything

@@ -30,10 +30,9 @@ class Reflection:public IEffect{
 			vector<Component*> worldChilds=Application::getInstance()->getWorld().getChilds();
 			for(it=worldChilds.begin();it!=worldChilds.end();it++)
 			{
-				if((*it)->getReflects()){         
-					(*it)->onBeforeRender();
+				if((*it)->getReflects())
+				{
 					(*it)->render();
-					(*it)->onAfterRender();
 				}
 			}
 			//Restore all the changes

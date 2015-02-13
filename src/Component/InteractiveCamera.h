@@ -43,9 +43,7 @@ class InteractiveCamera: public Camera {
     void onBeforeRenderFrame(){
         glPushMatrix();        
         glLoadIdentity();
-        gun.onBeforeRender();
         gun.render();
-        gun.onAfterRender();
         glPopMatrix();
 
         Camera::onBeforeRenderFrame();

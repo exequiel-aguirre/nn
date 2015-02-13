@@ -51,7 +51,9 @@ class Component {
       doEffects();
     }
     virtual void render(){
+      this->onBeforeRender();
       if(this->renderStrategy!=NULL) this->renderStrategy->render();
+      this->onAfterRender();
     }
     //this method is called after the components are rendered.
     virtual void onAfterRender(){
