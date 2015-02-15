@@ -19,14 +19,8 @@ protected:
     RenderStrategy3(IMap&& map,GLenum GLMode):CacheStrategy(map,GLMode){}
 
     virtual ~RenderStrategy3(){}    
-    
-    void onBeforeRender(Position& position){        
-        glTranslatef(position.getX(),position.getY(),position.getZ());
-        glRotatef(position.getPhi(), 1.0f, 0.0f, 0.0f);
-        glRotatef(position.getTheta(), 0.0f, 1.0f, 0.0f);
-        glRotatef(position.getPsi(), 0.0f, 0.0f, 1.0f);
-    }
-    
+
+
     void render(Position& position){
 
         onBeforeRender(position);
@@ -36,13 +30,6 @@ protected:
         glBindVertexArray(0);
         glUseProgram(0);
         onAfterRender(position);
-    }
-    
-    void onAfterRender(Position& position){
-        glRotatef(-position.getPsi(), 0.0f, 0.0f, 1.0f);
-        glRotatef(-position.getTheta(), 0.0f, 1.0f, 0.0f);
-        glRotatef(-position.getPhi(), 1.0f, 0.0f, 0.0f);
-        glTranslatef(-position.getX(),-position.getY(),-position.getZ());
     }
 
     //TODO:put these two methods as one. Use FastStrategy::loadModel!!!(and make bufferModel virtual there)
