@@ -38,7 +38,6 @@ BLENDER BACKGROUND JOBS:
 
 BUGS:
 -glclipplane and shader's don't get along... implement the clipplane with glsl
--all the geometries are using textures either you specify it or not..
 -add a getNormals to creasedDecorator. This is causing the water's reduced polygon to be a plane.
 --Maybe we can use the same approach than in the heightMap
 -The skybox isn't working so well, it's obvious that is a box. Also we should be using just a Box with the textures, but with all the rotation needed(see comment on the skybox) the normals get messed up
@@ -48,6 +47,7 @@ BUGS:
 
 
 TODOS:
+-Merge textureStrategy into renderStrategy3, and remove it. Also remove fastStrategy. (Merge Cache strategy into renderStrategy3 and remove?)
 -Change the sign in the camera for the angles as well (and swap the order of the rotates)(should be the exact opposite of the Component::onBeforeRender)
 
 -Performance: 

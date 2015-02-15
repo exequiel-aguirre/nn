@@ -12,7 +12,7 @@
 class Surface: public Component {  
   
   public:
-	  Surface(Position position,IMap&& map,GLenum GLMode):Component(position,new RenderStrategy3(map,GLMode)){}
+	  Surface(Position position,IMap&& map,GLenum GLMode):Component(position,new TextureStrategy(map,NULL)){}
 
 	  Surface(Position position,IMap&& map,char* textureFilename):Component(position,new TextureStrategy(map,textureFilename)){}
 

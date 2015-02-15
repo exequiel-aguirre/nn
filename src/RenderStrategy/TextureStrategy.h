@@ -8,7 +8,7 @@
 class TextureStrategy :public RenderStrategy3 {
   private:
     GLuint  texture;
-    char* defaultTextureFilename="img/ground.bmp";
+    char* defaultTextureFilename="img/default.bmp";
     
   public:
     TextureStrategy(char* modelFilename,char* textureFilename):RenderStrategy3(modelFilename,GL_TRIANGLES){
