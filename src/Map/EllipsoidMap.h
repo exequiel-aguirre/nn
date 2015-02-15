@@ -8,6 +8,7 @@ class EllipsoidMap :public IMap {
     float a;
     float b;
     float c;
+    const float EPSILON=0.000001;
 
   public:
 	  EllipsoidMap(float a,float b,float c){
@@ -47,10 +48,10 @@ class EllipsoidMap :public IMap {
         return 2*M_PI;
     }
     float getVFrom(){
-        return 0;
+        return 0+EPSILON;
     } 
     float getVTo(){
-        return M_PI;
+        return M_PI-EPSILON;
     }
 
     int getLats(){
