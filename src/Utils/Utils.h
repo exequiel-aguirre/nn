@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <fstream>
+#include <sstream>
 #include <string> 
 #include <algorithm>
 #include "../DataStructure/Point.h"
@@ -147,6 +148,19 @@ class Utils{
 
 		//making the lats=2*bmp->width seems to do well.It may be a bit expensive though
 		return HeightMap(w,h,2*bmpWidth,2*bmpHeight,pixels,bmpWidth,bmpHeight);
+	}
+
+	static std::string loadShader(char* filename){
+		std::string line;
+		std::stringstream content;
+		std::ifstream file (filename,std::ifstream::in);
+		while(!file.eof()){
+			std::getline(file,line);
+			content<<line<< std::endl;
+		}
+		file.close();
+
+		return content.str();
 	}
 
 };

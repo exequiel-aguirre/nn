@@ -1,21 +1,21 @@
 #ifndef TextureStrategyH
 #define TextureStrategyH
 
-#include "FastStrategy.h"
+#include "RenderStrategy3.h"
 #include "../Utils/Utils.h"
 
 
-class TextureStrategy :public FastStrategy {   
+class TextureStrategy :public RenderStrategy3 {
   private:
     GLuint  texture;
     char* defaultTextureFilename="img/ground.bmp";
     
   public:
-    TextureStrategy(char* modelFilename,char* textureFilename):FastStrategy(modelFilename,GL_TRIANGLES){
+    TextureStrategy(char* modelFilename,char* textureFilename):RenderStrategy3(modelFilename,GL_TRIANGLES){
         if(textureFilename==NULL) textureFilename=defaultTextureFilename;
         texture=Utils::loadTexture(textureFilename);
     }
-	   TextureStrategy(IMap& map,char* textureFilename):FastStrategy(map,GL_TRIANGLES){
+	   TextureStrategy(IMap& map,char* textureFilename):RenderStrategy3(map,GL_TRIANGLES){
         if(textureFilename==NULL) textureFilename=defaultTextureFilename;
         texture=Utils::loadTexture(textureFilename);
     }
@@ -27,7 +27,7 @@ class TextureStrategy :public FastStrategy {
       glEnable(GL_TEXTURE_2D);
       glBindTexture(GL_TEXTURE_2D,texture);
 
-      FastStrategy::render(position);
+      RenderStrategy3::render(position);
 
       glDisable(GL_TEXTURE_2D);
     }

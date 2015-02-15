@@ -18,6 +18,7 @@ class ModelObject{
     GLuint vertexBufferId;
     GLuint uvBufferId;
     GLuint normalBufferId;
+    GLuint vaoId;
 
     Boundary boundary;
   	
@@ -147,6 +148,13 @@ class ModelObject{
       return normalBufferId;
     }
 
+    void setVAOId(GLuint vaoId){
+      this->vaoId=vaoId;
+    }
+
+    GLuint getVAOId(){
+      return vaoId;
+    }
 
     Boundary& getBoundary(){
       return boundary;

@@ -38,7 +38,7 @@ class CacheStrategy :public IRenderStrategy {
       doEffects();
     }
 
-    void render(Position& position){
+    virtual void render(Position& position){
       this->onBeforeRender(position);
 
       Point point;
