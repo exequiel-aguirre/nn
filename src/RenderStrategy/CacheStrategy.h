@@ -21,10 +21,9 @@ class CacheStrategy :public IRenderStrategy {
   CacheStrategy(ModelObject modelObject,char* textureFilename,GLenum GLMode){
         this->GLMode=GLMode;        
         this->modelObject=modelObject;
-        if(textureFilename==NULL) textureFilename=defaultTextureFilename;
-        texture=Utils::loadTexture(textureFilename);
+        this->texture=loadTexture(textureFilename);
   }
-  //TODO:create a loadTexture for the is null logic?
+
 	CacheStrategy(IMap& map,char* textureFilename,GLenum GLMode):CacheStrategy(loadModel(map),textureFilename,GLMode){}
   CacheStrategy(char* modelFilename,char* textureFilename,GLenum GLMode):CacheStrategy(loadModel(modelFilename),textureFilename,GLMode){}
   
@@ -45,7 +44,6 @@ class CacheStrategy :public IRenderStrategy {
       doEffects();
 
       //texture
-      glEnable(GL_TEXTURE_2D);
       glBindTexture(GL_TEXTURE_2D,texture);
     }
 
@@ -72,7 +70,6 @@ class CacheStrategy :public IRenderStrategy {
 
     //this method is called after the components are rendered.
     virtual void onAfterRender(Position& position){
-      glDisable(GL_TEXTURE_2D);
       undoEffects();
       //we restore the position to avoid messing with the other's component's location
       //mind that the group SO(3,R) is non-abelian, so we must do this in the opposite order than
@@ -93,6 +90,11 @@ class CacheStrategy :public IRenderStrategy {
 
     virtual ModelObject  loadModel(IMap& map){
       return ModelObject(map);
+    }
+
+    GLuint loadTexture(char* textureFilename){
+      if(textureFilename==NULL) textureFilename=defaultTextureFilename;
+      return Utils::loadTexture(textureFilename);
     }
 
    void add(IEffect* effect){
