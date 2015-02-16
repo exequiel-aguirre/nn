@@ -2,7 +2,7 @@
 #define ModelH
 
 #include "Component.h"
-#include "../RenderStrategy/TextureStrategy.h"
+#include "../RenderStrategy/RenderStrategy3.h"
 
 
 
@@ -13,7 +13,7 @@ class Model: public Component {
 
 	Model(Position&& position,IRenderStrategy* renderStrategy):Model(position,renderStrategy){}
 
-	Model(Position&& position,char* modelFilename):Model(position,new TextureStrategy(modelFilename,"img/human.bmp")){}
+	Model(Position&& position,char* modelFilename):Model(position,new RenderStrategy3(modelFilename,"img/human.bmp",GL_TRIANGLES)){}
 
     virtual ~Model(){}
 

@@ -1,7 +1,7 @@
 #ifndef AnimationStrategyH
 #define AnimationStrategyH
 
-#include "TextureStrategy.h"
+#include "RenderStrategy3.h"
 #include "../Utils/Utils.h"
 #include "../DataStructure/ModelObject.h"
 #include <vector>
@@ -9,14 +9,14 @@
 
 
 
-class AnimationStrategy: public TextureStrategy {  
+class AnimationStrategy: public RenderStrategy3 {
   protected:	
 	vector<ModelObject> modelObjects;
 	vector<ModelObject>::iterator currentModelObject;
 	unsigned int frames=0;
 
   public:
-	  AnimationStrategy(char* modelFilename,char* textureFilename):TextureStrategy(modelFilename,textureFilename){		
+	  AnimationStrategy(char* modelFilename,char* textureFilename):RenderStrategy3(modelFilename,textureFilename,GL_TRIANGLES){
 		modelObjects.push_back(this->modelObject);
 		this->loadAnimation(modelFilename);
 		currentModelObject=modelObjects.begin();
@@ -35,7 +35,7 @@ class AnimationStrategy: public TextureStrategy {
     	}
     	//we set the current model object and ask the parent strategy to render normally
 		this->modelObject=(*currentModelObject);
-		TextureStrategy::render(position);
+		RenderStrategy3::render(position);
     }
 
 

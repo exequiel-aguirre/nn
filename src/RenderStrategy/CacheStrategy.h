@@ -13,13 +13,20 @@ class CacheStrategy :public IRenderStrategy {
   protected:
     GLenum GLMode;
     ModelObject modelObject;
+    //TODO:move this to model object?
+    GLuint  texture;
+    char* defaultTextureFilename="img/default.bmp";
+
   public:
-  CacheStrategy(ModelObject modelObject,GLenum GLMode){
+  CacheStrategy(ModelObject modelObject,char* textureFilename,GLenum GLMode){
         this->GLMode=GLMode;        
         this->modelObject=modelObject;
+        if(textureFilename==NULL) textureFilename=defaultTextureFilename;
+        texture=Utils::loadTexture(textureFilename);
   }
-	CacheStrategy(IMap& map,GLenum GLMode):CacheStrategy(loadModel(map),GLMode){}
-  CacheStrategy(char* modelFilename,GLenum GLMode):CacheStrategy(loadModel(modelFilename),GLMode){}
+  //TODO:create a loadTexture for the is null logic?
+	CacheStrategy(IMap& map,char* textureFilename,GLenum GLMode):CacheStrategy(loadModel(map),textureFilename,GLMode){}
+  CacheStrategy(char* modelFilename,char* textureFilename,GLenum GLMode):CacheStrategy(loadModel(modelFilename),textureFilename,GLMode){}
   
 
     virtual ~CacheStrategy(){}    
@@ -36,6 +43,10 @@ class CacheStrategy :public IRenderStrategy {
       glRotatef(position.getPsi(), 0.0f, 0.0f, 1.0f);
 
       doEffects();
+
+      //texture
+      glEnable(GL_TEXTURE_2D);
+      glBindTexture(GL_TEXTURE_2D,texture);
     }
 
     virtual void render(Position& position){
@@ -61,6 +72,7 @@ class CacheStrategy :public IRenderStrategy {
 
     //this method is called after the components are rendered.
     virtual void onAfterRender(Position& position){
+      glDisable(GL_TEXTURE_2D);
       undoEffects();
       //we restore the position to avoid messing with the other's component's location
       //mind that the group SO(3,R) is non-abelian, so we must do this in the opposite order than

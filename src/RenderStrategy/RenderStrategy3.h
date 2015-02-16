@@ -13,10 +13,10 @@ protected:
     GLuint programId;
   public:
 
-    RenderStrategy3(ModelObject modelObject,GLenum GLMode):CacheStrategy(modelObject,GLMode){}
-    RenderStrategy3(char* modelFilename,GLenum GLMode):CacheStrategy(loadModel(modelFilename),GLMode){}
-    RenderStrategy3(IMap& map,GLenum GLMode):CacheStrategy(loadModel(map),GLMode){}
-    RenderStrategy3(IMap&& map,GLenum GLMode):CacheStrategy(map,GLMode){}
+    RenderStrategy3(ModelObject modelObject,char* textureFilename,GLenum GLMode):CacheStrategy(modelObject,textureFilename,GLMode){}
+    RenderStrategy3(char* modelFilename,char* textureFilename,GLenum GLMode):CacheStrategy(loadModel(modelFilename),textureFilename,GLMode){}
+    RenderStrategy3(IMap& map,char* textureFilename,GLenum GLMode):CacheStrategy(loadModel(map),textureFilename,GLMode){}
+    RenderStrategy3(IMap&& map,char* textureFilename,GLenum GLMode):CacheStrategy(map,textureFilename,GLMode){}
 
     virtual ~RenderStrategy3(){}    
 
@@ -26,7 +26,7 @@ protected:
         onBeforeRender(position);
         glUseProgram(programId);
         glBindVertexArray(this->modelObject.getVAOId());
-        glDrawArrays(GL_TRIANGLES, 0, this->modelObject.getSize());
+        glDrawArrays(GLMode, 0, this->modelObject.getSize());
         glBindVertexArray(0);
         glUseProgram(0);
         onAfterRender(position);
