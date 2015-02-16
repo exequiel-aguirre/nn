@@ -12,7 +12,11 @@ void main()
 {
 	gl_Position=gl_ModelViewProjectionMatrix * vec4(vertex, 1.0);
 
+	//to pass to the fragment shader
 	vertex0 = vec3(gl_ModelViewMatrix * vec4(vertex,1.0));
 	uv0 = uv;	
    	normal0 = normalize(gl_NormalMatrix * normal);
+
+	//this is for the reflection
+	gl_ClipVertex=vec4(vertex0,1.0);
 }
