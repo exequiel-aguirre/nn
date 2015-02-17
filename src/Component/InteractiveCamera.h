@@ -16,7 +16,7 @@ class InteractiveCamera: public Camera {
     const float U_D=0.05;
     float u_d=0.0;
   public:
-	  InteractiveCamera(Position position):Camera(position,false,[=](float deltaX,float deltaY,float deltaZ){ this->onTranslation(deltaX,deltaY,deltaZ);},new RenderStrategy3(EllipsoidMap(1.0,2.0,1.0),NULL,GL_POINTS)){
+	  InteractiveCamera(Position position):Camera(position,false,[=](float deltaX,float deltaY,float deltaZ){ this->onTranslation(deltaX,deltaY,deltaZ);},new RenderStrategy(EllipsoidMap(1.0,2.0,1.0),NULL,GL_POINTS)){
           //enable physics(both, the this line and a render strategy with a geometry are needed)
           add(new MotionBehavior());
           //add a key behavior for the actions

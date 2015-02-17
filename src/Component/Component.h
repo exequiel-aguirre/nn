@@ -9,7 +9,7 @@
 #include "../Effect/IEffect.h"
 #include "../DataStructure/ModelObject.h"
 #include "../RenderStrategy/IRenderStrategy.h"
-#include "../RenderStrategy/RenderStrategy3.h"
+#include "../RenderStrategy/RenderStrategy.h"
 #include "../Physics/CollisionStatus.h"
 #include "../Test/Debug.h"
 
@@ -36,7 +36,7 @@ class Component {
       this->modelObject=renderStrategy->getModelObject();
       this->calculateBoundary();
     }
-    Component(Position position):Component(position,new RenderStrategy3(ModelObject(),NULL,GL_POINTS)){}//by default we set a render strategy with an empty model object, so no geometry will be rendered)(the GLMode is never actually used)
+    Component(Position position):Component(position,new RenderStrategy(ModelObject(),NULL,GL_POINTS)){}//by default we set a render strategy with an empty model object, so no geometry will be rendered)(the GLMode is never actually used)
 
     virtual ~Component(){}  
     

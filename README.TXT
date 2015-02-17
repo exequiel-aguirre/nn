@@ -5,9 +5,6 @@ To compile:
 >g++ src/main.cpp -std=c++11 -w -lGL  -lSDL2 -lGLEW
 
 
-// glut was not used, but in that case it would be...
->apt-get install build-essential mesa-common-dev libsdl2-dev freeglut3-dev
->g++ src/main.cpp -w  -lglut -lGL -lGLU  -lSDL2
 
 DEBUG:
 >gdb ./a.out
@@ -46,7 +43,6 @@ BUGS:
 
 
 TODOS:
--Merge textureStrategy into renderStrategy3, and remove it. Also remove fastStrategy. (Merge Cache strategy into renderStrategy3 and remove?)
 -Change the sign in the camera for the angles as well (and swap the order of the rotates)(should be the exact opposite of the Component::onBeforeRender)
 
 -Performance: 
@@ -64,8 +60,7 @@ TODOS:
 ---most likely because it's render each component separately.We could implement some merge method, that agregates each component in the same modelobject and render it as a whole.
 -implement a factory so we can avoid thius chaotics constructors
 -add a getNormals to creasedDecorator
--make TextureStrategy and AnimatonStrategy a decorator, so we could call something like
-	new Animation(new TexturureStrategy(new CacheStrategy(modelFilename),textureFilename))(?)
+-make AnimatonStrategy a decorator(?)
 -try template for ciclyc reference.
 -remove all warnings
 

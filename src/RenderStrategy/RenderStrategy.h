@@ -1,25 +1,50 @@
-#ifndef RenderStrategy3H
-#define RenderStrategy3H
+#ifndef RenderStrategyH
+#define RenderStrategyH
 
-#include "CacheStrategy.h"
+#include "IRenderStrategy.h"
 #include "../Utils/Utils.h"
 #include "../DataStructure/RawPoint.h"
 
-//TODO:extend FastStrategy
-class RenderStrategy3 :public CacheStrategy {
+class RenderStrategy :public IRenderStrategy {
 
-protected:
-    //put this on the modelObject?
+  private:
+    vector<IEffect*> effects;
+    char* defaultTextureFilename="img/default.bmp";
+  protected:
+    GLenum GLMode;
+    ModelObject modelObject;
+    //TODO:move these two to model object?
+    GLuint  texture;
     GLuint programId;
   public:
 
-    RenderStrategy3(ModelObject modelObject,char* textureFilename,GLenum GLMode):CacheStrategy(modelObject,textureFilename,GLMode){}
-    RenderStrategy3(char* modelFilename,char* textureFilename,GLenum GLMode):CacheStrategy(loadModel(modelFilename),textureFilename,GLMode){}
-    RenderStrategy3(IMap& map,char* textureFilename,GLenum GLMode):CacheStrategy(loadModel(map),textureFilename,GLMode){}
-    RenderStrategy3(IMap&& map,char* textureFilename,GLenum GLMode):CacheStrategy(map,textureFilename,GLMode){}
+    RenderStrategy(ModelObject modelObject,char* textureFilename,GLenum GLMode){
+        this->modelObject=modelObject;
+        this->texture=loadTexture(textureFilename);
+        this->GLMode=GLMode;
+    }
+    RenderStrategy(char* modelFilename,char* textureFilename,GLenum GLMode):RenderStrategy(loadModel(modelFilename),textureFilename,GLMode){}
+    RenderStrategy(IMap& map,char* textureFilename,GLenum GLMode):RenderStrategy(loadModel(map),textureFilename,GLMode){}
+    RenderStrategy(IMap&& map,char* textureFilename,GLenum GLMode):RenderStrategy(map,textureFilename,GLMode){}
 
-    virtual ~RenderStrategy3(){}    
+    virtual ~RenderStrategy(){}
 
+    //this method is called before the component is rendered.
+    virtual void onBeforeRender(Position& position){
+      //position the rendering
+      glTranslatef(position.getX(),position.getY(),position.getZ());
+      //rotate the x-axis (up and down)
+      glRotatef(position.getPhi(), 1.0f, 0.0f, 0.0f);
+      // Rotate on the y-axis (left and right)
+      glRotatef(position.getTheta(), 0.0f, 1.0f, 0.0f);
+
+      glRotatef(position.getPsi(), 0.0f, 0.0f, 1.0f);
+
+      doEffects();
+
+      //texture
+      glBindTexture(GL_TEXTURE_2D,texture);
+    }
 
     void render(Position& position){
 
@@ -32,9 +57,21 @@ protected:
         onAfterRender(position);
     }
 
-    //TODO:put these two methods as one. Use FastStrategy::loadModel!!!(and make bufferModel virtual there)
+    //this method is called after the components are rendered.
+    virtual void onAfterRender(Position& position){
+      undoEffects();
+      //we restore the position to avoid messing with the other's component's location
+      //mind that the group SO(3,R) is non-abelian, so we must do this in the opposite order than
+      // onBeforeRender
+      glRotatef(-position.getPsi(), 0.0f, 0.0f, 1.0f);
+      glRotatef(-position.getTheta(), 0.0f, 1.0f, 0.0f);
+      glRotatef(-position.getPhi(), 1.0f, 0.0f, 0.0f);
+      glTranslatef(-position.getX(),-position.getY(),-position.getZ());
+    }
+
+    //TODO:put these two methods as one.
     virtual ModelObject  loadModel(const char* modelFilename){
-        ModelObject modelObject=CacheStrategy::loadModel(modelFilename);
+        ModelObject modelObject=Utils::loadModel(modelFilename);
         buildShaders("src/RenderStrategy/Shader/Basic.vs","src/RenderStrategy/Shader/Basic.fs");
         bufferModel(modelObject);
 
@@ -43,11 +80,16 @@ protected:
     
 
     virtual ModelObject loadModel(IMap& map){
-        ModelObject modelObject=CacheStrategy::loadModel(map);
+        ModelObject modelObject=ModelObject(map);
         buildShaders("src/RenderStrategy/Shader/Basic.vs","src/RenderStrategy/Shader/Basic.fs");
         bufferModel(modelObject);
 
         return modelObject;
+    }
+
+    GLuint loadTexture(char* textureFilename){
+      if(textureFilename==NULL) textureFilename=defaultTextureFilename;
+      return Utils::loadTexture(textureFilename);
     }
 
     void bufferModel(ModelObject& modelObject){
@@ -155,7 +197,31 @@ protected:
 
     }
 
+    ModelObject&  getModelObject(){
+      return modelObject;
+    }
 
+   void add(IEffect* effect){
+      this->effects.push_back(effect);
+    }
+
+    void doEffects(){
+      vector<IEffect*>::iterator it;
+
+      for(it=effects.begin();it!=effects.end();it++)
+      {
+          (*it)->doEffect();
+      }
+    }
+
+    void undoEffects(){
+      vector<IEffect*>::iterator it;
+
+      for(it=effects.begin();it!=effects.end();it++)
+      {
+          (*it)->undoEffect();
+      }
+    }
 };
 
 
