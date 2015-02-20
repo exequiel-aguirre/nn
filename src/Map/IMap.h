@@ -6,10 +6,10 @@
 *This represent a map f:R^2->R^3
 */
 
-class IMap{  
+class IMap{
+  protected:
+    const float EPSILON=0.000001;
   public:
-	//repeat Texture
-	bool repeat=true;//TODO:this is most likely the wrong place to put this.
 
 	IMap(){}
 

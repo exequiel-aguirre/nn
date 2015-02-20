@@ -8,7 +8,6 @@ class EllipsoidMap :public IMap {
     float a;
     float b;
     float c;
-    const float EPSILON=0.000001;
 
   public:
 	  EllipsoidMap(float a,float b,float c){

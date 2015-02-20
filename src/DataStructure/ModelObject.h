@@ -41,7 +41,6 @@ class ModelObject{
       float uTo=map.getUTo();
       float vFrom=map.getVFrom();
       float vTo=map.getVTo();
-      bool repeat=map.repeat;
       
       //latitudes
       //TODO: set i=0,and change "<="" -> "<"" and "i-1" -> "i","i"->"i+1"

@@ -38,16 +38,16 @@ class ConeMap :public IMap {
     
 
     float getUFrom(){        
-        return 0;
+        return 0+EPSILON;
     }
     float getUTo(){        
-        return r;
+        return r-EPSILON;
     }
     float getVFrom(){
-        return 0;
+        return 0+EPSILON;
     } 
     float getVTo(){
-        return 2*M_PI;
+        return 2*M_PI-EPSILON;
     } 
 
     int getLats(){

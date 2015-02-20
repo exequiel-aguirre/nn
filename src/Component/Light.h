@@ -17,13 +17,13 @@ class Light: public Component {
 		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, lightSpecular);
 		glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 128.0f);
 
-		glLightfv(GL_LIGHT1, GL_AMBIENT, lightAmbient);
-		glLightfv(GL_LIGHT1, GL_DIFFUSE, lightDiffuse);
-		glLightfv(GL_LIGHT1, GL_SPECULAR, lightSpecular);
+		glLightfv(GL_LIGHT0, GL_AMBIENT, lightAmbient);
+		glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
+		glLightfv(GL_LIGHT0, GL_SPECULAR, lightSpecular);
 
 		GLfloat lightPosition[4]={position.getX(),position.getY(),position.getZ(),1.0f};
-		glLightfv(GL_LIGHT1, GL_POSITION,lightPosition);
-		glEnable(GL_LIGHT1);
+		glLightfv(GL_LIGHT0, GL_POSITION,lightPosition);
+		glEnable(GL_LIGHT0);
 
 		//turn off the light
 		toggleLight();
