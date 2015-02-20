@@ -15,7 +15,7 @@
 class Utils{
   public:
 	
-	static GLuint loadTexture(char* fileName){
+	static GLuint loadTexture(const char* fileName){
 		GLuint	texture;	
 		SDL_Surface* bmpFile=SDL_LoadBMP(fileName);		
 		if(bmpFile == NULL ) std::cout <<  SDL_GetError();
@@ -30,6 +30,18 @@ class Utils{
 		return texture;	
 	}
 
+	static GLuint loadTextureDetail(char* filename){
+		std:string str(filename);
+		str.replace(str.find(".bmp"), 4, "");
+		std::stringstream filenameDetail;
+		filenameDetail<<str<<"_detail"<<".bmp";
+		std::ifstream f(filenameDetail.str().c_str());
+		if(f.good()){
+			return loadTexture(filenameDetail.str().c_str());
+		}else{
+			return NULL;
+		}
+	}
 	
 	static ModelObject loadModel(const char* filename){
 		vector< Point > tempVertices;

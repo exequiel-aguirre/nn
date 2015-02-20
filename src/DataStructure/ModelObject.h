@@ -13,11 +13,9 @@ class ModelObject{
 
     vector<Point> vertices;
     vector<Point> uvs;
+    vector<Point> uvsDetail;
     vector<Point> normals;
 
-    GLuint vertexBufferId;
-    GLuint uvBufferId;
-    GLuint normalBufferId;
     GLuint vaoId;
 
     Boundary boundary;
@@ -28,6 +26,7 @@ class ModelObject{
   	ModelObject(vector<Point> vertices,vector<Point> uvs,vector<Point> normals){
       this->vertices=vertices;
       this->uvs=uvs;
+      this->uvsDetail=uvs;//TODO:is this ok?(more like a walk around)
       this->normals=normals;
       this->boundary= Boundary(vertices);
   	}
@@ -64,31 +63,30 @@ class ModelObject{
           vertices.push_back(map.get(u0,v1));
           vertices.push_back(map.get(u1,v1));
 
-          if(repeat)
-          {
-            uvs.push_back( Point(j%2,(j+1)%2,NULL));
-            uvs.push_back( Point((j+1)%2,(j+1)%2,NULL));
-            uvs.push_back( Point(j%2,j%2,NULL));
 
-            uvs.push_back( Point(j%2,j%2,NULL));
-            uvs.push_back( Point((j+1)%2,(j+1)%2,NULL));
-            uvs.push_back( Point((j+1)%2,j%2,NULL));
-          }
-          else
-          {
-            float u0s=(u0-uFrom)/(uTo-uFrom);
-            float u1s=(u1-uFrom)/(uTo-uFrom);
-            float v0s=(v0-vFrom)/(vTo-vFrom);
-            float v1s=(v1-vFrom)/(vTo-vFrom);
+          //uvs
+          float u0s=(u0-uFrom)/(uTo-uFrom);
+          float u1s=(u1-uFrom)/(uTo-uFrom);
+          float v0s=(v0-vFrom)/(vTo-vFrom);
+          float v1s=(v1-vFrom)/(vTo-vFrom);
 
-            uvs.push_back( Point(u0s,v0s,NULL));
-            uvs.push_back( Point(u0s,v1s,NULL));
-            uvs.push_back( Point(u1s,v0s,NULL));
+          uvs.push_back( Point(u0s,v0s,NULL));
+          uvs.push_back( Point(u0s,v1s,NULL));
+          uvs.push_back( Point(u1s,v0s,NULL));
 
-            uvs.push_back( Point(u1s,v0s,NULL));
-            uvs.push_back( Point(u0s,v1s,NULL));
-            uvs.push_back( Point(u1s,v1s,NULL));
-          }
+          uvs.push_back( Point(u1s,v0s,NULL));
+          uvs.push_back( Point(u0s,v1s,NULL));
+          uvs.push_back( Point(u1s,v1s,NULL));
+
+
+          uvsDetail.push_back( Point(j%2,(j+1)%2,NULL));
+          uvsDetail.push_back( Point((j+1)%2,(j+1)%2,NULL));
+          uvsDetail.push_back( Point(j%2,j%2,NULL));
+
+          uvsDetail.push_back( Point(j%2,j%2,NULL));
+          uvsDetail.push_back( Point((j+1)%2,(j+1)%2,NULL));
+          uvsDetail.push_back( Point((j+1)%2,j%2,NULL));
+
                     
           
           normals.push_back(map.getNormal(u0,v0));
@@ -111,6 +109,10 @@ class ModelObject{
       return uvs[i];
     }
 
+    Point getUVDetail(int i){
+      return uvsDetail[i];
+    }
+
   	Point getNormal(int i){
   		return normals[i];
   	}
@@ -121,31 +123,6 @@ class ModelObject{
 
     bool hasUVs(){
       return uvs.size()>0;
-    }
-
-
-    void setVertexBufferId(GLuint vertexBufferId){
-      this->vertexBufferId=vertexBufferId;
-    }
-
-    GLuint getVertexBufferId(){
-      return vertexBufferId;
-    }
-
-    void setUVBufferId(GLuint uvBufferId){
-      this->uvBufferId=uvBufferId;
-    }
-
-    GLuint getUVBufferId(){
-      return uvBufferId;
-    }
-
-    void setNormalBufferId(GLuint normalBufferId){
-      this->normalBufferId=normalBufferId;
-    }
-
-    GLuint getNormalBufferId(){
-      return normalBufferId;
     }
 
     void setVAOId(GLuint vaoId){

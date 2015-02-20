@@ -38,11 +38,11 @@ class MyContainer:public Container{
 			Ground* myGroundL=new Ground(Position(-100.0f,0.01f,0.0f),150,50);
 			Ground* myGroundF=new Ground(Position(0.0f,0.01f,-50.0f),350,50);
 			Ground* myGroundB=new Ground(Position(0.0f,0.01f,50.0f),350,50);
-			Terrain* myLakeTerrain=new Terrain(Position(0.0f,0.01f,0.0f),50,50,"img/hole.bmp","img/ground.bmp");
-			Terrain* myTerrainR=new Terrain(Position(225.0f,0.01f,0.0f),100,350,"img/terrain.bmp","img/ground.bmp");
-			Terrain* myTerrainL=new Terrain(Position(-225.0f,0.01f,0.0f),100,350,"img/terrain.bmp","img/ground.bmp");
-			Terrain* myTerrainF=new Terrain(Position(0.0f,0.01f,-125.0f),350,100,"img/terrain.bmp","img/ground.bmp");
-			Terrain* myTerrainB=new Terrain(Position(0.0f,0.01f,125.0f),350,100,"img/terrain.bmp","img/ground.bmp");
+			Terrain* myLakeTerrain=new Terrain(Position(0.0f,0.01f,0.0f),50,50,"img/heightMap/hole.bmp","img/ground.bmp");
+			Terrain* myTerrainR=new Terrain(Position(225.0f,0.01f,0.0f),100,350,"img/heightMap/terrain.bmp","img/terrain.bmp");
+			Terrain* myTerrainL=new Terrain(Position(-225.0f,0.01f,0.0f),100,350,"img/heightMap/terrain.bmp","img/terrain.bmp");
+			Terrain* myTerrainF=new Terrain(Position(0.0f,0.01f,-125.0f),350,100,"img/heightMap/terrain.bmp","img/terrain.bmp");
+			Terrain* myTerrainB=new Terrain(Position(0.0f,0.01f,125.0f),350,100,"img/heightMap/terrain.bmp","img/terrain.bmp");
 			Water* myWaterR=new Water(Position(225.0f,0.0f,0.0f),100,300);
 			Water* myWaterL=new Water(Position(-225.0f,0.0f,0.0f),100,300);
 			Water* myWaterF=new Water(Position(0.0f,0.0f,-125.0f),350,100);

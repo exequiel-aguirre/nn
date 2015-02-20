@@ -2,9 +2,11 @@
 
 varying vec3 vertex0;
 varying vec2 uv0;
+varying vec2 uvDetail0;
 varying vec3 normal0;
 
-uniform sampler2D sampler;
+uniform sampler2D texture,textureDetail;
+uniform float mixWeight;
 
 void main()
 {
@@ -26,6 +28,6 @@ void main()
 	Ispec = clamp(Ispec, 0.0, 1.0); 
 
 	// the texture affected by all the previous terms
-	gl_FragColor = texture2D(sampler, uv0) *
+	gl_FragColor = (texture2D(texture, uv0)*(1.0-mixWeight) + texture2D(textureDetail, uvDetail0)*mixWeight )*
 		(gl_FrontLightModelProduct.sceneColor + Iamb + Idiff + Ispec); 
 }

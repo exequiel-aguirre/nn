@@ -15,13 +15,14 @@ class RenderStrategy :public IRenderStrategy {
     ModelObject modelObject;
     //TODO:move these two to model object?
     GLuint  texture;
+    GLuint  textureDetail;
     GLuint programId;
   public:
 
     RenderStrategy(ModelObject modelObject,char* textureFilename,GLenum GLMode){
         this->modelObject=modelObject;
-        this->texture=loadTexture(textureFilename);
         this->GLMode=GLMode;
+        buildTexture(textureFilename);
     }
     RenderStrategy(char* modelFilename,char* textureFilename,GLenum GLMode):RenderStrategy(loadModel(modelFilename),textureFilename,GLMode){}
     RenderStrategy(IMap& map,char* textureFilename,GLenum GLMode):RenderStrategy(loadModel(map),textureFilename,GLMode){}
@@ -43,7 +44,10 @@ class RenderStrategy :public IRenderStrategy {
       doEffects();
 
       //texture
+      glActiveTexture(GL_TEXTURE0);
       glBindTexture(GL_TEXTURE_2D,texture);
+      glActiveTexture(GL_TEXTURE1);
+      glBindTexture(GL_TEXTURE_2D,textureDetail);
     }
 
     void render(Position& position){
@@ -87,25 +91,44 @@ class RenderStrategy :public IRenderStrategy {
         return modelObject;
     }
 
-    GLuint loadTexture(char* textureFilename){
+    void buildTexture(char* textureFilename){
       if(textureFilename==NULL) textureFilename=defaultTextureFilename;
-      return Utils::loadTexture(textureFilename);
+      this->texture=Utils::loadTexture(textureFilename);
+
+      //TODO:find a better way
+      //here we are forcing everything to have 2 textures.
+      //This saves the need to do checks here and in the fragment shader.
+      this->textureDetail=Utils::loadTextureDetail(textureFilename);
+      GLfloat mixWeight;
+      if(textureDetail!=NULL){
+        mixWeight=0.5;
+      }else{
+        mixWeight=0.0;
+      }
+
+      glUseProgram(programId);
+      glUniform1i(glGetUniformLocation(programId, "texture"),0);
+      glUniform1i(glGetUniformLocation(programId, "textureDetail"),1);
+      glUniform1f(glGetUniformLocation(programId, "mixWeight"),mixWeight);
     }
 
     void bufferModel(ModelObject& modelObject){
         GLuint vertexBufferId;
         GLuint uvBufferId;
+        GLuint uvDetailBufferId;
         GLuint normalBufferId;
         GLuint vaoId;
 
         vector<RawPoint> vertices;
         vector<RawPoint> uvs;
+        vector<RawPoint> uvsDetail;
         vector<RawPoint> normals;
         for(int i=0;i<modelObject.getSize();i++){
           vertices.push_back(modelObject.getVertex(i).getRawPoint());
           if(modelObject.hasUVs()){
             uvs.push_back(modelObject.getUV(i).getRawPoint());
-            }
+            uvsDetail.push_back(modelObject.getUVDetail(i).getRawPoint());
+          }
           normals.push_back(modelObject.getNormal(i).getRawPoint());
         }
 
@@ -124,18 +147,20 @@ class RenderStrategy :public IRenderStrategy {
         glEnableVertexAttribArray(1);
         glVertexAttribPointer(1, 3, GL_FLOAT, 0, 0, 0);
 
+        glGenBuffers(1, &uvDetailBufferId);
+        glBindBuffer(GL_ARRAY_BUFFER, uvDetailBufferId);
+        glBufferData(GL_ARRAY_BUFFER, uvsDetail.size() * sizeof(RawPoint), &uvsDetail[0], GL_STATIC_DRAW);
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 3, GL_FLOAT, 0, 0, 0);
+
         glGenBuffers(1, &normalBufferId);
         glBindBuffer(GL_ARRAY_BUFFER, normalBufferId);        
         glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(RawPoint), &normals[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 3, GL_FLOAT, GL_TRUE, 0, 0);
+        glEnableVertexAttribArray(3);
+        glVertexAttribPointer(3, 3, GL_FLOAT, GL_TRUE, 0, 0);
 
         glBindVertexArray(0);
 
-
-        modelObject.setVertexBufferId(vertexBufferId);// these three are not actually
-        modelObject.setUVBufferId(uvBufferId);        // used for this strategy,
-        modelObject.setNormalBufferId(normalBufferId);// but we include them for completeness
         modelObject.setVAOId(vaoId);
     }
 
@@ -151,7 +176,9 @@ class RenderStrategy :public IRenderStrategy {
 
         glBindAttribLocation(programId, 0, "vertex");
         glBindAttribLocation(programId, 1, "uv");
-        glBindAttribLocation(programId, 2, "normal");
+        glBindAttribLocation(programId, 2, "uvDetail");
+        glBindAttribLocation(programId, 3, "normal");
+
 
         glLinkProgram(programId);
         checkErrors(programId,GL_LINK_STATUS,true);
@@ -192,7 +219,7 @@ class RenderStrategy :public IRenderStrategy {
                 glGetShaderInfoLog(id, sizeof(infoLog), NULL, infoLog);
             }
             std::cout << infoLog<<std::endl;
-            //exit(4);
+            exit(EXIT_FAILURE);
         }
 
     }
