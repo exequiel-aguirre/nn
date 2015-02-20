@@ -27,7 +27,8 @@ void main()
 		* pow(max(dot(R,E),0.0),0.3*gl_FrontMaterial.shininess);
 	Ispec = clamp(Ispec, 0.0, 1.0); 
 
-	// the texture affected by all the previous terms
-	gl_FragColor = (texture2D(texture, uv0)*(1.0-mixWeight) + texture2D(textureDetail, uvDetail0)*mixWeight )*
-		(gl_FrontLightModelProduct.sceneColor + Iamb + Idiff + Ispec); 
+	//apply texture and texture detail
+	gl_FragColor = mix(texture2D(texture, uv0),texture2D(textureDetail, uvDetail0),mixWeight);
+	//apply the light
+	gl_FragColor *=(gl_FrontLightModelProduct.sceneColor + Iamb + Idiff + Ispec);
 }
