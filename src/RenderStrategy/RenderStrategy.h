@@ -9,7 +9,7 @@ class RenderStrategy :public IRenderStrategy {
 
   private:
     vector<IEffect*> effects;
-    char* defaultTextureFilename="img/default.bmp";
+
   protected:
     GLenum GLMode;
     ModelObject modelObject;
@@ -17,16 +17,23 @@ class RenderStrategy :public IRenderStrategy {
     GLuint  texture;
     GLuint  textureDetail;
     GLuint programId;
+    char* vertexShaderFilename="src/RenderStrategy/Shader/Basic.vs";
+    char* fragmentShaderFilename="src/RenderStrategy/Shader/Basic.fs";
+    char* defaultTextureFilename="img/default.bmp";
+
   public:
 
     RenderStrategy(ModelObject modelObject,char* textureFilename,GLenum GLMode){
         this->modelObject=modelObject;
         this->GLMode=GLMode;
+        buildShaders(this->vertexShaderFilename,this->fragmentShaderFilename);
+        bufferModel(this->modelObject);
         buildTexture(textureFilename);
     }
-    RenderStrategy(char* modelFilename,char* textureFilename,GLenum GLMode):RenderStrategy(loadModel(modelFilename),textureFilename,GLMode){}
-    RenderStrategy(IMap& map,char* textureFilename,GLenum GLMode):RenderStrategy(loadModel(map),textureFilename,GLMode){}
+    RenderStrategy(char* modelFilename,char* textureFilename,GLenum GLMode):RenderStrategy(Utils::loadModel(modelFilename),textureFilename,GLMode){}
+    RenderStrategy(IMap& map,char* textureFilename,GLenum GLMode):RenderStrategy(ModelObject(map),textureFilename,GLMode){}
     RenderStrategy(IMap&& map,char* textureFilename,GLenum GLMode):RenderStrategy(map,textureFilename,GLMode){}
+
 
     virtual ~RenderStrategy(){}
 
@@ -73,23 +80,6 @@ class RenderStrategy :public IRenderStrategy {
       glTranslatef(-position.getX(),-position.getY(),-position.getZ());
     }
 
-    //TODO:put these two methods as one.
-    virtual ModelObject  loadModel(const char* modelFilename){
-        ModelObject modelObject=Utils::loadModel(modelFilename);
-        buildShaders("src/RenderStrategy/Shader/Basic.vs","src/RenderStrategy/Shader/Basic.fs");
-        bufferModel(modelObject);
-
-        return modelObject;
-    }
-    
-
-    virtual ModelObject loadModel(IMap& map){
-        ModelObject modelObject=ModelObject(map);
-        buildShaders("src/RenderStrategy/Shader/Basic.vs","src/RenderStrategy/Shader/Basic.fs");
-        bufferModel(modelObject);
-
-        return modelObject;
-    }
 
     void buildTexture(char* textureFilename){
       if(textureFilename==NULL) textureFilename=defaultTextureFilename;

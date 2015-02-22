@@ -50,7 +50,10 @@ class AnimationStrategy: public RenderStrategy {
 	  		std::ifstream f(tmp.str().c_str());
 		    if (f.good()) {
 		        f.close();
-		        modelObjects.push_back(this->loadModel(tmp.str().c_str()));
+				ModelObject modelObject=Utils::loadModel(tmp.str().c_str());
+				buildShaders(this->vertexShaderFilename,this->fragmentShaderFilename);
+				bufferModel(modelObject);
+				modelObjects.push_back(modelObject);
 			}
 			else
 			{
