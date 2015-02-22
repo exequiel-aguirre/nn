@@ -29,6 +29,7 @@ class Component {
     bool rotates=false;
     bool moves=false;
     bool reflects=true;
+    bool collides=true;
   public:
     Component(Position position,IRenderStrategy* renderStrategy){
       this->position=position;
@@ -90,7 +91,7 @@ class Component {
     virtual void calculateBoundary(){
       if(modelObject.getSize()==0) return;
       //update the boundary
-      modelObject.getBoundary().update(position,velocity);
+      if(collides) modelObject.getBoundary().update(position,velocity);
     }
 
     Boundary& getBoundary(){
@@ -149,8 +150,19 @@ class Component {
     bool getMoves(){
       return moves;
     }
-    virtual bool getReflects(){
+    Component* setReflects(bool reflects){
+      this->reflects=reflects;
+      return this;
+    }
+    bool getReflects(){
       return reflects;
+    }
+    bool getCollides(){
+      return collides;
+    }
+    Component* setCollides(bool collides){
+      this->collides=collides;
+      return this;
     }
 
 };
