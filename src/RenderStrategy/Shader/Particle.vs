@@ -10,7 +10,6 @@ uniform float time;
 varying vec3 vertex0;
 varying vec2 uv0;
 varying vec2 uvDetail0;
-varying vec3 normal0;
 
 void main()
 {
@@ -26,9 +25,8 @@ void main()
 	vertex0 = vec3(gl_ModelViewMatrix * vec4(vertex1,1.0));
 	uv0 = uv;	
 	uvDetail0 = uvDetail;
-   	normal0 = normalize(gl_NormalMatrix * normal);
 
 	//this is for the reflection
 	gl_ClipVertex=vec4(vertex0,1.0);
-	gl_PointSize=5.0;
+	gl_PointSize=4.0;
 }

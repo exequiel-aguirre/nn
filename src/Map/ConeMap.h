@@ -7,11 +7,17 @@ class ConeMap :public IMap {
   private:
     float r;
     float h;
+    int lats=12;
+    int longs=12;
   public:
-	  ConeMap(float r,float h){
+	  ConeMap(float r,float h,int lats,int longs){
         this->r=r;
         this->h=h;
+        this->lats=lats;
+        this->longs=longs;
       }
+
+       ConeMap(float r,float h):ConeMap(r,h,12,12){}
 
     virtual ~ConeMap(){}
             
@@ -51,10 +57,10 @@ class ConeMap :public IMap {
     } 
 
     int getLats(){
-        return 12;
+        return lats;
     }
     int getLongs(){
-        return 12;
+        return longs;
     } 
 
 };
