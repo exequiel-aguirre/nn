@@ -17,22 +17,24 @@ class RenderStrategy :public IRenderStrategy {
     GLuint  texture;
     GLuint  textureDetail;
     GLuint programId;
-    char* vertexShaderFilename="src/RenderStrategy/Shader/Basic.vs";
-    char* fragmentShaderFilename="src/RenderStrategy/Shader/Basic.fs";
-    char* defaultTextureFilename="img/default.bmp";
+    static constexpr char* DEFAULT_VERTEX_SHADER_FILENAME="src/RenderStrategy/Shader/Basic.vs";
+    static constexpr char* DEFAULT_FRAGMENT_SHADER_FILENAME="src/RenderStrategy/Shader/Basic.fs";
+    static constexpr char* DEFAULT_TEXTURE_FILENAME="img/default.bmp";
 
   public:
 
-    RenderStrategy(ModelObject modelObject,char* textureFilename,GLenum GLMode){
+    RenderStrategy(ModelObject modelObject,char* textureFilename,GLenum GLMode,char* vertexShaderFilename,char* fragmentShaderFilename){
         this->modelObject=modelObject;
         this->GLMode=GLMode;
-        buildShaders(this->vertexShaderFilename,this->fragmentShaderFilename);
+        buildShaders(vertexShaderFilename,fragmentShaderFilename);
         bufferModel(this->modelObject);
         buildTexture(textureFilename);
     }
-    RenderStrategy(char* modelFilename,char* textureFilename,GLenum GLMode):RenderStrategy(Utils::loadModel(modelFilename),textureFilename,GLMode){}
-    RenderStrategy(IMap& map,char* textureFilename,GLenum GLMode):RenderStrategy(ModelObject(map),textureFilename,GLMode){}
+    RenderStrategy(ModelObject modelObject,char* textureFilename,GLenum GLMode):RenderStrategy(modelObject,textureFilename,GLMode,DEFAULT_VERTEX_SHADER_FILENAME,DEFAULT_FRAGMENT_SHADER_FILENAME){}
+    RenderStrategy(char* modelFilename,char* textureFilename,GLenum GLMode):RenderStrategy(Utils::loadModel(modelFilename),textureFilename,GLMode,DEFAULT_VERTEX_SHADER_FILENAME,DEFAULT_FRAGMENT_SHADER_FILENAME){}
+    RenderStrategy(IMap& map,char* textureFilename,GLenum GLMode):RenderStrategy(ModelObject(map),textureFilename,GLMode,DEFAULT_VERTEX_SHADER_FILENAME,DEFAULT_FRAGMENT_SHADER_FILENAME){}
     RenderStrategy(IMap&& map,char* textureFilename,GLenum GLMode):RenderStrategy(map,textureFilename,GLMode){}
+    RenderStrategy(IMap& map,char* textureFilename,GLenum GLMode,char* vertexShaderFilename,char* fragmentShaderFilename ):RenderStrategy(ModelObject(map),textureFilename,GLMode,vertexShaderFilename,fragmentShaderFilename){}
 
 
     virtual ~RenderStrategy(){}
@@ -61,6 +63,7 @@ class RenderStrategy :public IRenderStrategy {
 
         onBeforeRender(position);
         glUseProgram(programId);
+        if(glGetUniformLocation(programId, "time")!=-1) glUniform1f(glGetUniformLocation(programId, "time"),SDL_GetTicks()/100.0);//TODO:we are forcing all to do this, but just particles actually use it...
         glBindVertexArray(this->modelObject.getVAOId());
         glDrawArrays(GLMode, 0, this->modelObject.getSize());
         glBindVertexArray(0);
@@ -82,7 +85,7 @@ class RenderStrategy :public IRenderStrategy {
 
 
     void buildTexture(char* textureFilename){
-      if(textureFilename==NULL) textureFilename=defaultTextureFilename;
+      if(textureFilename==NULL) textureFilename=DEFAULT_TEXTURE_FILENAME;
       this->texture=Utils::loadTexture(textureFilename);
 
       //TODO:find a better way

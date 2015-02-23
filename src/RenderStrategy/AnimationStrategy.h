@@ -51,7 +51,7 @@ class AnimationStrategy: public RenderStrategy {
 		    if (f.good()) {
 		        f.close();
 				ModelObject modelObject=Utils::loadModel(tmp.str().c_str());
-				buildShaders(this->vertexShaderFilename,this->fragmentShaderFilename);
+				buildShaders(RenderStrategy::DEFAULT_VERTEX_SHADER_FILENAME,RenderStrategy::DEFAULT_FRAGMENT_SHADER_FILENAME);
 				bufferModel(modelObject);
 				modelObjects.push_back(modelObject);
 			}

@@ -9,40 +9,21 @@ class Emitter: public Container {
   public:
 
 	  Emitter(Position position):Container(position){
-	  	//for performance we disable these two
-	  	setReflects(false);
-	  	setCollides(false);
-	  	add(new BlendingEffect());
-	  	for(int i=0;i<512;i++){
-	  		float x=i*0.1/512.0;
-	  		Plane* particle=new Plane(Position(x,x,x,90.0,0,0),0.05,0.05,"img/particle.bmp",1,1);
-	  		particle->add(new MotionBehavior())->add(new BlendingEffect())->setCollides(false);	  		
-	  		add(particle);
-	  	}
+		add(new BlendingEffect());
+		Plane* particles1=new Plane(Position(0,0,0,90.0,0,0),0.2,0.2,"img/particle.bmp",40,40,GL_POINTS,"src/RenderStrategy/Shader/Particle.vs","src/RenderStrategy/Shader/Particle.fs");
+		Plane* particles2=new Plane(Position(0,0,0,00.0,0,90.0),0.2,0.2,"img/particle.bmp",40,40,GL_POINTS,"src/RenderStrategy/Shader/Particle.vs","src/RenderStrategy/Shader/Particle.fs");  		
+		particles1->add(new MotionBehavior())->add(new BlendingEffect())->setCollides(false);
+		particles2->add(new MotionBehavior())->add(new BlendingEffect())->setCollides(false);
+		add(particles1)->add(particles2);
 	  }
 
 	virtual ~Emitter(){}
 
-	//TODO:this is not the place...
-	void onBeforeRenderFrame(){
-		Container::onBeforeRenderFrame();
-
-		vector<Component*>::iterator it;
-		for(it=childs.begin();it!=childs.end();it++)
-		{
-			float x=(*it)->getPosition().getX()-position.getX();
-			float y=(*it)->getPosition().getY()-position.getY();
-			float z=(*it)->getPosition().getZ()-position.getZ();
-			float n=sqrt(x*x+y*y +z*z);
-			if(fabs(n)<0.001) n=1.0;
-			//(*it)->setVelocity((rand()%100)/100.0-0.5,(rand()%100)/100.0-0.5,0);
-			//(*it)->setVelocity(sin(y),sin(x),sin(z));
-			(*it)->setVelocity(-y/n+(rand()%100)/100.0 -0.5,x/n+(rand()%100)/100.0-0.5,0.0);
-
-			//(*it)->setVelocity(-z/(n*n),0.0,x/(n*n));
-		}
+	void render(){
+		glEnable(GL_PROGRAM_POINT_SIZE);
+			Container::render();
+		glDisable(GL_PROGRAM_POINT_SIZE);
 	}
-
 };
 
 

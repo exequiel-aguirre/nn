@@ -47,6 +47,7 @@ TODOS:
 -Change the sign in the camera for the angles as well (and swap the order of the rotates)(should be the exact opposite of the Component::onBeforeRender)
 
 -Performance: 
+--The render strategy is calling glGetUniformLocation(programId, "time") on every render, but we could call it just once,save it a a member var and use that
 --The animation::render is making a copy of the model object on each call
 --CollisionDetector:
 --- put if(float d1>EPSILON) just before the willIntersect call. (d1 is cheaper than the willIntersect)

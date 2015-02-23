@@ -14,14 +14,14 @@ class SkyBox: public Container {
 
 
 	  SkyBox(Position position,float w,float h,float d,char* bottom,char* top,char* left,char* right,char* back,char* front):Container(position){
-		  add(new Plane(Position(0.0f,0.0f,0.0f,0.0f,-90.0f),d,w,bottom,1,1));
-		  add(new Plane(Position(0.0f,h,0.0f,180.0f,-90.0f,0.0f),d,w,top,1,1));
+		  add(new Plane(Position(0.0f,0.0f,0.0f,0.0f,-90.0f),d,w,bottom));
+		  add(new Plane(Position(0.0f,h,0.0f,180.0f,-90.0f,0.0f),d,w,top));
 
-		  add(new Plane(Position(-w/2.0f,h/2.0f,0.0f,0.0f,180.0f,90.0f),h,d,left,1,1));
-		  add(new Plane(Position(w/2.0f,h/2.0f,0.0f,0.0f,0.0f,90.0f),h,d,right,1,1));
+		  add(new Plane(Position(-w/2.0f,h/2.0f,0.0f,0.0f,180.0f,90.0f),h,d,left));
+		  add(new Plane(Position(w/2.0f,h/2.0f,0.0f,0.0f,0.0f,90.0f),h,d,right));
 
-		  add(new Plane(Position(0.0f,h/2.0f,-d/2.0f,90.0f,90.0f,0.0f),h,w,back,1,1));
-		  add(new Plane(Position(0.0f,h/2.0f,d/2.0f,-90.0f,-90.0f,0.0f),h,w,front,1,1));
+		  add(new Plane(Position(0.0f,h/2.0f,-d/2.0f,90.0f,90.0f,0.0f),h,w,back));
+		  add(new Plane(Position(0.0f,h/2.0f,d/2.0f,-90.0f,-90.0f,0.0f),h,w,front));
 
 	  }		
 

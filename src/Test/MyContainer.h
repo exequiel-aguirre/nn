@@ -115,10 +115,10 @@ class MyContainer:public Container{
 			add(mySphere3->add(new MotionBehavior()));
 			add(mySphere4->add(new MotionBehavior()));
 			add(myEllipsoid->add(new MotionBehavior()));
-			//add(new Emitter(Position(-50,0.5,-7.0)));
-			add(new Plane(Position(-65.0f,8.0f,-20.0f,0.0f,0.0f,90.0f),5.0f,5.0f,"img/box.bmp",2,2));
-			add(new Plane(Position(-45.0f,8.0f,-20.0f,0.0f,0.0f,90.0f),5.0f,5.0f,"img/box.bmp",2,2));
-			add(new Plane(Position(-70.0f,20.0f,-17.0f,45.0f,0.0f,0.0f),5.0f,50.0f,"img/box.bmp",2,2));
+			add(new Emitter(Position(-50,0.2,-7.0)));
+			add(new Plane(Position(-65.0f,8.0f,-20.0f,0.0f,0.0f,90.0f),5.0f,5.0f,"img/box.bmp"));
+			add(new Plane(Position(-45.0f,8.0f,-20.0f,0.0f,0.0f,90.0f),5.0f,5.0f,"img/box.bmp"));
+			add(new Plane(Position(-70.0f,20.0f,-17.0f,45.0f,0.0f,0.0f),5.0f,50.0f,"img/box.bmp"));
 
 			//add(mySkyBox);
 			//add(myBackground);
