@@ -4,7 +4,8 @@
 #include "Container.h"
 #include "Plane.h"
 #include "../Effect/BlendingEffect.h"
-
+//TODO:when we generate the plane we are putting repeated points, so we are seeing just 2/3 of the points drawn.
+//Find a way of either removing duplicated points or detach them to show all
 class Emitter: public Container {  	
   public:
 

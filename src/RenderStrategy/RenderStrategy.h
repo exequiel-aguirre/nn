@@ -17,6 +17,7 @@ class RenderStrategy :public IRenderStrategy {
     GLuint  texture;
     GLuint  textureDetail;
     GLuint programId;
+    GLuint timeLocation;
     static constexpr char* DEFAULT_VERTEX_SHADER_FILENAME="src/RenderStrategy/Shader/Basic.vs";
     static constexpr char* DEFAULT_FRAGMENT_SHADER_FILENAME="src/RenderStrategy/Shader/Basic.fs";
     static constexpr char* DEFAULT_TEXTURE_FILENAME="img/default.bmp";
@@ -29,6 +30,7 @@ class RenderStrategy :public IRenderStrategy {
         buildShaders(vertexShaderFilename,fragmentShaderFilename);
         bufferModel(this->modelObject);
         buildTexture(textureFilename);
+        this->timeLocation=glGetUniformLocation(programId, "time");
     }
     RenderStrategy(ModelObject modelObject,char* textureFilename,GLenum GLMode):RenderStrategy(modelObject,textureFilename,GLMode,DEFAULT_VERTEX_SHADER_FILENAME,DEFAULT_FRAGMENT_SHADER_FILENAME){}
     RenderStrategy(char* modelFilename,char* textureFilename,GLenum GLMode):RenderStrategy(Utils::loadModel(modelFilename),textureFilename,GLMode,DEFAULT_VERTEX_SHADER_FILENAME,DEFAULT_FRAGMENT_SHADER_FILENAME){}
@@ -63,7 +65,7 @@ class RenderStrategy :public IRenderStrategy {
 
         onBeforeRender(position);
         glUseProgram(programId);
-        if(glGetUniformLocation(programId, "time")!=-1) glUniform1f(glGetUniformLocation(programId, "time"),SDL_GetTicks()/100.0);//TODO:we are forcing all to do this, but just particles actually use it...
+        if(timeLocation!=-1) glUniform1f(timeLocation,SDL_GetTicks()/100.0);//TODO:we are forcing all to do this, but just particles actually use it...
         glBindVertexArray(this->modelObject.getVAOId());
         glDrawArrays(GLMode, 0, this->modelObject.getSize());
         glBindVertexArray(0);
