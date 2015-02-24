@@ -30,7 +30,6 @@ class RenderStrategy :public IRenderStrategy {
         buildShaders(vertexShaderFilename,fragmentShaderFilename);
         bufferModel(this->modelObject);
         buildTexture(textureFilename);
-        this->timeLocation=glGetUniformLocation(programId, "time");
     }
     RenderStrategy(ModelObject modelObject,char* textureFilename,GLenum GLMode):RenderStrategy(modelObject,textureFilename,GLMode,DEFAULT_VERTEX_SHADER_FILENAME,DEFAULT_FRAGMENT_SHADER_FILENAME){}
     RenderStrategy(char* modelFilename,char* textureFilename,GLenum GLMode):RenderStrategy(Utils::loadModel(modelFilename),textureFilename,GLMode,DEFAULT_VERTEX_SHADER_FILENAME,DEFAULT_FRAGMENT_SHADER_FILENAME){}
@@ -179,6 +178,9 @@ class RenderStrategy :public IRenderStrategy {
         checkErrors(programId,GL_LINK_STATUS,true);
         glValidateProgram(programId);
         checkErrors(programId,GL_LINK_STATUS,true);
+
+        //just for the particle shaders
+        this->timeLocation=glGetUniformLocation(programId, "time");
         
     }
 
