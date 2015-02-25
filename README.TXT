@@ -48,6 +48,7 @@ TODOS:
 
 -Performance: 
 --The animation::render is making a copy of the model object on each call
+--Particles: Hardcode the color instead of using texture.Most likely the gpu will thank us
 --CollisionDetector:
 --- put if(float d1>EPSILON) just before the willIntersect call. (d1 is cheaper than the willIntersect)
 ---calculate (b-a) just once
