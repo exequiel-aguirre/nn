@@ -22,7 +22,7 @@ public:
 	virtual ~Server(){}	
 	bool start()
 	{
-		window=new NNWindow(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, false, "Title");		
+		window=new NNWindow(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, false, "nn");
 		Application::getInstance()->setWorld(MyContainer(Position(0.0f,0.0f,0.0f)));
 		run();
 		return true;
@@ -36,6 +36,7 @@ public:
 				Application::getInstance()->render();
 				window->refresh();
 			}
+			delete(window);
 		}
 	
 	

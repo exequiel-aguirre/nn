@@ -107,6 +107,18 @@ class Position {
         return *this;
   	}
 
+    Position operator+(const Position& position) {
+        return Position(x+position.x,y+position.y,z+position.z,phi+position.phi,theta+position.theta,psi+position.psi);
+    }
+
+    Position operator-() {
+        return Position(-x,-y,-z,-phi,-theta,-psi);
+    }
+
+    Position operator-(const Position& position) {
+        return Position(x-position.x,y-position.y,z-position.z,phi-position.phi,theta-position.theta,psi-position.psi);
+    }
+
     friend std::ostream& operator<<(std::ostream& os , const Position p){
         os << "("<<p.x<<","<< p.y<<","<< p.z<<")"<< "\n";
     }

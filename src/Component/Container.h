@@ -35,12 +35,22 @@ class Container: public Component {
       }
 	}
 
+  void setPosition(float x,float y,float z,float phi,float theta,float psi){
+    Position deltaPosition=Position(x,y,z,phi,theta,psi)-position;
+    Component::setPosition(x,y,z,phi,theta,psi);
+    vector<Component*>::iterator it;
+      for(it=childs.begin();it!=childs.end();it++)
+      {
+          Position p=(*it)->getPosition()+deltaPosition;
+          (*it)->setPosition(p.getX(),p.getY(),p.getZ(),p.getPhi(),p.getTheta(),p.getPsi());
+      }
+  }
 
 	Container* add(Component* child)
 	{
-      child->getPosition()+=(this->position);
-      //TODO:find a way to avoid this
-      child->calculateBoundary();
+      Position p=child->getPosition()+this->position;
+      child->setPosition(p.getX(),p.getY(),p.getZ(),p.getPhi(),p.getTheta(),p.getPsi());
+
       childs.push_back(child);
       if(child->getModelObject().getSize()!=0 && child->getCollides()){//if the object has no boundary the collision detector won't work, and no physics can be applied
         PhysicsManager::getInstance()->add(child);

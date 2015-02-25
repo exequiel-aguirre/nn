@@ -57,7 +57,7 @@ class Component {
     void setPosition(float x,float y,float z){
       this->position.set(x,y,z);
     }
-    void setPosition(float x,float y,float z,float phi,float theta,float psi){
+    virtual void setPosition(float x,float y,float z,float phi,float theta,float psi){
       this->position.set(x,y,z,phi,theta,psi);
       //position changes so boundaries change
       calculateBoundary();

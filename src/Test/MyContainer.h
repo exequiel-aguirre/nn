@@ -18,7 +18,7 @@
 #include "../Component/Mill.h"
 #include "../Component/Ground.h"
 #include "../Component/Terrain.h"
-#include "../Component/Emitter.h"
+#include "../Component/FirePlace.h"
 #include "../Component/Camera.h"
 #include "../Component/InteractiveCamera.h"
 #include "../Component/Background.h"
@@ -115,7 +115,7 @@ class MyContainer:public Container{
 			add(mySphere3->add(new MotionBehavior()));
 			add(mySphere4->add(new MotionBehavior()));
 			add(myEllipsoid->add(new MotionBehavior()));
-			add(new Emitter(Position(-50,0.3,-7.0)));
+			add(new FirePlace(Position(10,0.0,25.0)));
 			add(new Plane(Position(-65.0f,8.0f,-20.0f,0.0f,0.0f,90.0f),5.0f,5.0f,"img/box.bmp"));
 			add(new Plane(Position(-45.0f,8.0f,-20.0f,0.0f,0.0f,90.0f),5.0f,5.0f,"img/box.bmp"));
 			add(new Plane(Position(-70.0f,20.0f,-17.0f,45.0f,0.0f,0.0f),5.0f,50.0f,"img/box.bmp"));
