@@ -13,9 +13,7 @@ class RenderStrategy :public IRenderStrategy {
   protected:
     GLenum GLMode;
     ModelObject modelObject;
-    //TODO:move these two to model object?
-    GLuint  texture;
-    GLuint  textureDetail;
+
     GLuint programId;
     GLuint timeLocation;
     static constexpr char* DEFAULT_VERTEX_SHADER_FILENAME="src/RenderStrategy/Shader/Basic.vs";
@@ -29,7 +27,7 @@ class RenderStrategy :public IRenderStrategy {
         this->GLMode=GLMode;
         buildShaders(vertexShaderFilename,fragmentShaderFilename);
         bufferModel(this->modelObject);
-        buildTexture(textureFilename);
+        buildTexture(this->modelObject,textureFilename);
     }
     RenderStrategy(ModelObject modelObject,char* textureFilename,GLenum GLMode):RenderStrategy(modelObject,textureFilename,GLMode,DEFAULT_VERTEX_SHADER_FILENAME,DEFAULT_FRAGMENT_SHADER_FILENAME){}
     RenderStrategy(char* modelFilename,char* textureFilename,GLenum GLMode):RenderStrategy(Utils::loadModel(modelFilename),textureFilename,GLMode,DEFAULT_VERTEX_SHADER_FILENAME,DEFAULT_FRAGMENT_SHADER_FILENAME){}
@@ -55,9 +53,9 @@ class RenderStrategy :public IRenderStrategy {
 
       //texture
       glActiveTexture(GL_TEXTURE0);
-      glBindTexture(GL_TEXTURE_2D,texture);
+      glBindTexture(GL_TEXTURE_2D,modelObject.getTextureId());
       glActiveTexture(GL_TEXTURE1);
-      glBindTexture(GL_TEXTURE_2D,textureDetail);
+      glBindTexture(GL_TEXTURE_2D,modelObject.getTextureDetailId());
     }
 
     void render(Position& position){
@@ -85,16 +83,16 @@ class RenderStrategy :public IRenderStrategy {
     }
 
 
-    void buildTexture(char* textureFilename){
+    void buildTexture(ModelObject& modelObject,char* textureFilename){
       if(textureFilename==NULL) textureFilename=DEFAULT_TEXTURE_FILENAME;
-      this->texture=Utils::loadTexture(textureFilename);
+      modelObject.setTextureId(Utils::loadTexture(textureFilename));
 
       //TODO:find a better way
       //here we are forcing everything to have 2 textures.
       //This saves the need to do checks here and in the fragment shader.
-      this->textureDetail=Utils::loadTextureDetail(textureFilename);
+      modelObject.setTextureDetailId(Utils::loadTextureDetail(textureFilename));
       GLfloat mixWeight;
-      if(textureDetail!=NULL){
+      if(modelObject.getTextureDetailId()!=NULL){
         mixWeight=0.5;
       }else{
         mixWeight=0.0;

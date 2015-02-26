@@ -18,7 +18,7 @@ class AnimationStrategy: public RenderStrategy {
   public:
 	  AnimationStrategy(char* modelFilename,char* textureFilename):RenderStrategy(modelFilename,textureFilename,GL_TRIANGLES){
 		modelObjects.push_back(this->modelObject);
-		this->loadAnimation(modelFilename);
+		this->loadAnimation(modelFilename,textureFilename);
 		currentModelObject=modelObjects.begin();
 	 }		
 
@@ -39,7 +39,7 @@ class AnimationStrategy: public RenderStrategy {
     }
 
 
-    int loadAnimation(char* modelFilename){
+    int loadAnimation(char* modelFilename,char* textureFilename){
     	//load the animation.
 	  	std:string str(modelFilename);
 	  	str.replace(str.find(".obj"), 4, "");
@@ -51,8 +51,9 @@ class AnimationStrategy: public RenderStrategy {
 		    if (f.good()) {
 		        f.close();
 				ModelObject modelObject=Utils::loadModel(tmp.str().c_str());
-				buildShaders(RenderStrategy::DEFAULT_VERTEX_SHADER_FILENAME,RenderStrategy::DEFAULT_FRAGMENT_SHADER_FILENAME);
 				bufferModel(modelObject);
+				buildTexture(modelObject,textureFilename);
+
 				modelObjects.push_back(modelObject);
 			}
 			else

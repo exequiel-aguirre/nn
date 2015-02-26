@@ -17,6 +17,8 @@ class ModelObject{
     vector<Point> normals;
 
     GLuint vaoId;
+    GLuint  textureId;
+    GLuint  textureDetailId;
 
     Boundary boundary;
   	
@@ -130,6 +132,22 @@ class ModelObject{
 
     GLuint getVAOId(){
       return vaoId;
+    }
+
+    void setTextureId(GLuint textureId){
+      this->textureId=textureId;
+    }
+
+    GLuint getTextureId(){
+      return textureId;
+    }
+
+    void setTextureDetailId(GLuint textureDetailId){
+      this->textureDetailId=textureDetailId;
+    }
+
+    GLuint getTextureDetailId(){
+      return textureDetailId;
     }
 
     Boundary& getBoundary(){
