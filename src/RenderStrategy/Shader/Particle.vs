@@ -7,9 +7,6 @@ attribute vec3 normal;
 
 uniform float time;
 
-varying vec3 vertex0;
-varying vec2 uv0;
-varying vec2 uvDetail0;
 
 void main()
 {
@@ -21,12 +18,8 @@ void main()
 
 	gl_Position=gl_ModelViewProjectionMatrix * vec4(vertex1, 1.0);
 
-	//to pass to the fragment shader
-	vertex0 = vec3(gl_ModelViewMatrix * vec4(vertex1,1.0));
-	uv0 = uv;	
-	uvDetail0 = uvDetail;
-
 	//this is for the reflection
-	gl_ClipVertex=vec4(vertex0,1.0);
+	gl_ClipVertex=gl_ModelViewMatrix * vec4(vertex1,1.0);
+
 	gl_PointSize=4.0;
 }

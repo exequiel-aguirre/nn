@@ -45,10 +45,9 @@ BUGS:
 
 TODOS:
 -Change the sign in the camera for the angles as well (and swap the order of the rotates)(should be the exact opposite of the Component::onBeforeRender)
-
+-The Render strategy is assigning a texture always, but the particles shaders don't use any
 -Performance: 
 --The animation::render is making a copy of the model object on each call
---Particles: Hardcode the color instead of using texture.Most likely the gpu will thank us
 --CollisionDetector:
 --- put if(float d1>EPSILON) just before the willIntersect call. (d1 is cheaper than the willIntersect)
 ---calculate (b-a) just once
