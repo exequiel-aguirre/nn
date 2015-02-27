@@ -1,27 +1,18 @@
 #ifndef RenderStrategyH
 #define RenderStrategyH
 
-#include "IRenderStrategy.h"
+#include "../DataStructure/ModelObject.h"
+#include "Shader/Shader.h"
 #include "../Utils/Utils.h"
 #include "../DataStructure/RawPoint.h"
 
-class RenderStrategy :public IRenderStrategy {
+class RenderStrategy {
 
   private:
     vector<IEffect*> effects;
 
-  protected:
-    GLuint programId;
-    GLuint timeLocation;
-    static constexpr char* DEFAULT_SHADER_NAME="Basic";
-    static constexpr char* DEFAULT_TEXTURE_FILENAME="img/default.bmp";
-
   public:
 
-    RenderStrategy(char* shaderName){
-        if(shaderName==NULL) shaderName=DEFAULT_SHADER_NAME;
-        buildShaders(Utils::getVertexShaderFilename(shaderName).c_str(),Utils::getFragmentShaderFilename(shaderName).c_str());
-    }
     RenderStrategy(){}
 
     virtual ~RenderStrategy(){}
@@ -46,11 +37,11 @@ class RenderStrategy :public IRenderStrategy {
       glBindTexture(GL_TEXTURE_2D,modelObject.getTextureDetailId());
     }
 
-    void render(Position& position,ModelObject& modelObject){
+    void render(Position& position,ModelObject& modelObject,Shader& shader){
 
         onBeforeRender(position,modelObject);
-        glUseProgram(programId);
-        if(timeLocation!=-1) glUniform1f(timeLocation,SDL_GetTicks()/100.0);//TODO:we are forcing all to do this, but just particles actually use it...
+        glUseProgram(shader.getProgramId());
+        if(shader.getTimeLocation()!=-1) glUniform1f(shader.getTimeLocation(),SDL_GetTicks()/100.0);//TODO:we are forcing all to do this, but just particles actually use it...
         glBindVertexArray(modelObject.getVAOId());
         glDrawArrays(modelObject.getGLMode(), 0, modelObject.getSize());
         glBindVertexArray(0);
@@ -72,33 +63,14 @@ class RenderStrategy :public IRenderStrategy {
 
 
     //TODO:change name. (configureModelObject?)
-    ModelObject& initModelObject(ModelObject& modelObject,char* textureFilename,GLenum GLMode){
+    ModelObject& initModelObject(ModelObject& modelObject,char* textureFilename,GLenum GLMode,Shader& shader){
         bufferModel(modelObject);
-        buildTexture(modelObject,textureFilename);
+        shader.buildTexture(modelObject,textureFilename);//TODO:this is a bit off.
         modelObject.setGLMode(GLMode);
         return modelObject;
     }
 
-    void buildTexture(ModelObject& modelObject,char* textureFilename){
-      if(textureFilename==NULL) textureFilename=DEFAULT_TEXTURE_FILENAME;
-      modelObject.setTextureId(Utils::loadTexture(textureFilename));
 
-      //TODO:find a better way
-      //here we are forcing everything to have 2 textures.
-      //This saves the need to do checks here and in the fragment shader.
-      modelObject.setTextureDetailId(Utils::loadTextureDetail(textureFilename));
-      GLfloat mixWeight;
-      if(modelObject.getTextureDetailId()!=NULL){
-        mixWeight=0.5;
-      }else{
-        mixWeight=0.0;
-      }
-
-      glUseProgram(programId);
-      glUniform1i(glGetUniformLocation(programId, "texture"),0);
-      glUniform1i(glGetUniformLocation(programId, "textureDetail"),1);
-      glUniform1f(glGetUniformLocation(programId, "mixWeight"),mixWeight);
-    }
 
     void bufferModel(ModelObject& modelObject){
         GLuint vertexBufferId;
@@ -150,69 +122,6 @@ class RenderStrategy :public IRenderStrategy {
         glBindVertexArray(0);
 
         modelObject.setVAOId(vaoId);
-    }
-
-
-    void buildShaders(const char* vertexFilename,const char* fragmentFilename){
-        programId=glCreateProgram();
-
-        GLuint vertexShaderId=createShader(vertexFilename,GL_VERTEX_SHADER);
-        GLuint fragmentShaderId=createShader(fragmentFilename,GL_FRAGMENT_SHADER);        
-
-        glAttachShader(programId,vertexShaderId);
-        glAttachShader(programId,fragmentShaderId);
-
-        glBindAttribLocation(programId, 0, "vertex");
-        glBindAttribLocation(programId, 1, "uv");
-        glBindAttribLocation(programId, 2, "uvDetail");
-        glBindAttribLocation(programId, 3, "normal");
-
-
-        glLinkProgram(programId);
-        checkErrors(programId,GL_LINK_STATUS,true);
-        glValidateProgram(programId);
-        checkErrors(programId,GL_LINK_STATUS,true);
-
-        //just for the particle shaders
-        this->timeLocation=glGetUniformLocation(programId, "time");
-        
-    }
-
-    GLuint createShader(const char* filename,GLenum type){
-        GLuint shaderId=glCreateShader(type);
-        std::string shaderSourceString=Utils::loadShader(filename);
-        const GLchar* shaderSource=shaderSourceString.c_str();
-        glShaderSource(shaderId,1,&shaderSource,NULL);
-        glCompileShader(shaderId);
-        checkErrors(shaderId,GL_COMPILE_STATUS,false);
-
-        return shaderId;        
-    }
-
-    void checkErrors(GLuint id,GLuint statusCode,bool isProgram){
-        GLint success=0;
-        GLchar infoLog[1024]={0};
-
-        if(isProgram){
-            glGetProgramiv(id, statusCode,&success);
-        }
-        else
-        {
-            glGetShaderiv(id, statusCode,&success);
-        }
-
-        if(success == GL_FALSE){
-            if(isProgram){
-                glGetProgramInfoLog(id, sizeof(infoLog), NULL, infoLog);
-            }
-            else
-            {
-                glGetShaderInfoLog(id, sizeof(infoLog), NULL, infoLog);
-            }
-            std::cout << infoLog<<std::endl;
-            exit(EXIT_FAILURE);
-        }
-
     }
 
    void add(IEffect* effect){

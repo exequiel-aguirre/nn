@@ -9,13 +9,15 @@
 #include "../Effect/IEffect.h"
 #include "../DataStructure/ModelObject.h"
 #include "../RenderStrategy/RenderStrategy.h"
+#include "../RenderStrategy/Shader/Shader.h"
 #include "../Physics/CollisionStatus.h"
 
 
 class Component {  
   protected:
-    RenderStrategy renderStrategy;
     ModelObject modelObject;
+    RenderStrategy renderStrategy;
+    Shader shader;
 
     vector<IBehavior*> behaviors;
     //mechanic properties
@@ -32,8 +34,8 @@ class Component {
     Component(Position position,ModelObject modelObject,char* textureFilename,GLenum GLMode,char* shaderName){
       this->position=position;
       this->modelObject=modelObject;
-      this->renderStrategy=RenderStrategy(shaderName);
-      this->renderStrategy.initModelObject(this->modelObject,textureFilename,GLMode);
+      this->shader=Shader(shaderName);
+      this->renderStrategy.initModelObject(this->modelObject,textureFilename,GLMode,shader);
       this->calculateBoundary();
     }
 
@@ -47,7 +49,7 @@ class Component {
     virtual void onBeforeRenderFrame(){}
 
     virtual void render(){
-      renderStrategy.render(this->position,this->modelObject);
+      renderStrategy.render(this->position,this->modelObject,this->shader);
     }
 
     virtual void onAfterCollision(){}
