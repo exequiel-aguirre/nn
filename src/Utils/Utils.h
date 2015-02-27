@@ -14,7 +14,12 @@
 
 class Utils{
   public:
-	
+	static constexpr char* SHADER_PATH="src/RenderStrategy/Shader/";
+	static constexpr char* VERTEX_SHADER_EXT=".vs";
+	static constexpr char* FRAGMENT_SHADER_EXT=".fs";
+	static constexpr char* TEXTURE_DETAIL_SUFFIX="_detail";
+	static constexpr char* TEXTURE_EXT=".bmp";
+
 	static GLuint loadTexture(const char* fileName){
 		GLuint	texture;	
 		SDL_Surface* bmpFile=SDL_LoadBMP(fileName);		
@@ -32,9 +37,9 @@ class Utils{
 
 	static GLuint loadTextureDetail(char* filename){
 		std:string str(filename);
-		str.replace(str.find(".bmp"), 4, "");
+		str.replace(str.find(TEXTURE_EXT), 4, "");
 		std::stringstream filenameDetail;
-		filenameDetail<<str<<"_detail"<<".bmp";
+		filenameDetail<<str<<TEXTURE_DETAIL_SUFFIX<<TEXTURE_EXT;
 		std::ifstream f(filenameDetail.str().c_str());
 		if(f.good()){
 			return loadTexture(filenameDetail.str().c_str());
@@ -162,7 +167,7 @@ class Utils{
 		return HeightMap(w,h,2*bmpWidth,2*bmpHeight,pixels,bmpWidth,bmpHeight);
 	}
 
-	static std::string loadShader(char* filename){
+	static std::string loadShader(const char* filename){
 		std::string line;
 		std::stringstream content;
 		std::ifstream file (filename,std::ifstream::in);
@@ -173,6 +178,18 @@ class Utils{
 		file.close();
 
 		return content.str();
+	}
+
+	static std::string getVertexShaderFilename(char* shaderName){
+		return getShaderFilename(shaderName,VERTEX_SHADER_EXT);
+	}
+	static std::string getFragmentShaderFilename(char* shaderName){
+		return getShaderFilename(shaderName,FRAGMENT_SHADER_EXT);
+	}
+	static std::string getShaderFilename(char* shaderName,char* ext){
+		std::stringstream shaderFilename;
+		shaderFilename<<SHADER_PATH<<shaderName<<ext;
+		return shaderFilename.str();
 	}
 
 };

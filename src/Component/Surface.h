@@ -12,7 +12,7 @@ class Surface: public Component {
 
 	  Surface(Position position,IMap&& map,char* textureFilename):Component(position,new RenderStrategy(map,textureFilename,GL_TRIANGLES)){}
 
-	  Surface(Position position,IMap&& map,char* textureFilename,GLenum GLMode,char* vertexShaderFilename,char* fragmentShaderFilename):Component(position,new RenderStrategy(map,textureFilename,GLMode,vertexShaderFilename,fragmentShaderFilename)){}
+	  Surface(Position position,IMap&& map,char* textureFilename,GLenum GLMode,char* shaderName):Component(position,new RenderStrategy(map,textureFilename,GLMode,shaderName)){}
 
     virtual ~Surface(){}
 

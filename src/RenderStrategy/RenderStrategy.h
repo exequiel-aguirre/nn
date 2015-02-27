@@ -16,24 +16,23 @@ class RenderStrategy :public IRenderStrategy {
 
     GLuint programId;
     GLuint timeLocation;
-    static constexpr char* DEFAULT_VERTEX_SHADER_FILENAME="src/RenderStrategy/Shader/Basic.vs";
-    static constexpr char* DEFAULT_FRAGMENT_SHADER_FILENAME="src/RenderStrategy/Shader/Basic.fs";
+    static constexpr char* DEFAULT_SHADER_NAME="Basic";
     static constexpr char* DEFAULT_TEXTURE_FILENAME="img/default.bmp";
 
   public:
 
-    RenderStrategy(ModelObject modelObject,char* textureFilename,GLenum GLMode,char* vertexShaderFilename,char* fragmentShaderFilename){
+    RenderStrategy(ModelObject modelObject,char* textureFilename,GLenum GLMode,char* shaderName){
         this->modelObject=modelObject;
         this->GLMode=GLMode;
-        buildShaders(vertexShaderFilename,fragmentShaderFilename);
+        buildShaders(Utils::getVertexShaderFilename(shaderName).c_str(),Utils::getFragmentShaderFilename(shaderName).c_str());
         bufferModel(this->modelObject);
         buildTexture(this->modelObject,textureFilename);
     }
-    RenderStrategy(ModelObject modelObject,char* textureFilename,GLenum GLMode):RenderStrategy(modelObject,textureFilename,GLMode,DEFAULT_VERTEX_SHADER_FILENAME,DEFAULT_FRAGMENT_SHADER_FILENAME){}
-    RenderStrategy(char* modelFilename,char* textureFilename,GLenum GLMode):RenderStrategy(Utils::loadModel(modelFilename),textureFilename,GLMode,DEFAULT_VERTEX_SHADER_FILENAME,DEFAULT_FRAGMENT_SHADER_FILENAME){}
-    RenderStrategy(IMap& map,char* textureFilename,GLenum GLMode):RenderStrategy(ModelObject(map),textureFilename,GLMode,DEFAULT_VERTEX_SHADER_FILENAME,DEFAULT_FRAGMENT_SHADER_FILENAME){}
+    RenderStrategy(ModelObject modelObject,char* textureFilename,GLenum GLMode):RenderStrategy(modelObject,textureFilename,GLMode,DEFAULT_SHADER_NAME){}
+    RenderStrategy(char* modelFilename,char* textureFilename,GLenum GLMode):RenderStrategy(Utils::loadModel(modelFilename),textureFilename,GLMode,DEFAULT_SHADER_NAME){}
+    RenderStrategy(IMap& map,char* textureFilename,GLenum GLMode):RenderStrategy(ModelObject(map),textureFilename,GLMode,DEFAULT_SHADER_NAME){}
     RenderStrategy(IMap&& map,char* textureFilename,GLenum GLMode):RenderStrategy(map,textureFilename,GLMode){}
-    RenderStrategy(IMap& map,char* textureFilename,GLenum GLMode,char* vertexShaderFilename,char* fragmentShaderFilename ):RenderStrategy(ModelObject(map),textureFilename,GLMode,vertexShaderFilename,fragmentShaderFilename){}
+    RenderStrategy(IMap& map,char* textureFilename,GLenum GLMode,char* shaderName):RenderStrategy(ModelObject(map),textureFilename,GLMode,shaderName){}
 
 
     virtual ~RenderStrategy(){}
@@ -157,7 +156,7 @@ class RenderStrategy :public IRenderStrategy {
     }
 
 
-    void buildShaders(char* vertexFilename,char* fragmentFilename){
+    void buildShaders(const char* vertexFilename,const char* fragmentFilename){
         programId=glCreateProgram();
 
         GLuint vertexShaderId=createShader(vertexFilename,GL_VERTEX_SHADER);
@@ -182,7 +181,7 @@ class RenderStrategy :public IRenderStrategy {
         
     }
 
-    GLuint createShader(char* filename,GLenum type){
+    GLuint createShader(const char* filename,GLenum type){
         GLuint shaderId=glCreateShader(type);
         std::string shaderSourceString=Utils::loadShader(filename);
         const GLchar* shaderSource=shaderSourceString.c_str();

@@ -16,7 +16,7 @@ class Plane: public Surface {
 	Plane(Position&& position):Surface(position,PlaneMap(DEFAULT_W,DEFAULT_H),GL_LINES){}
 	Plane(Position&& position,float w,float h):Surface(position,PlaneMap(w,h),GL_LINES){}
 	Plane(Position&& position,float w,float h,char* textureFilename):Surface(position,PlaneMap(w,h),textureFilename){}
-	Plane(Position&& position,float w,float h,char* textureFilename,int lats,int longs,GLenum GLMode,char* vertexShaderFilename,char* fragmentShaderFilename):Surface(position,PlaneMap(w,h,lats,longs),textureFilename,GLMode,vertexShaderFilename,fragmentShaderFilename){}
+
     virtual ~Plane(){}    
     
     float getMass(){
