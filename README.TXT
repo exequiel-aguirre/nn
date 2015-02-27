@@ -47,7 +47,6 @@ TODOS:
 -Change the sign in the camera for the angles as well (and swap the order of the rotates)(should be the exact opposite of the Component::onBeforeRender)
 -The Render strategy is assigning a texture always, but the particles shaders don't use any
 -Performance: 
---The animation::render is making a copy of the model object on each call
 --CollisionDetector:
 --- put if(float d1>EPSILON) just before the willIntersect call. (d1 is cheaper than the willIntersect)
 ---calculate (b-a) just once
@@ -55,13 +54,11 @@ TODOS:
 -CollisionDetector:
 - Maybe we should use t instead of d, to detect a collision. (instead of (d<EPSILON) (t<1.0/60.0))
 - the rawPoint was created, but now inside point we have duplicated x,y,z. Besides that, if we modify point->x, rawPoint won't change, which I think is fine having in mind that we are using GL_STATIC_DRAW?
--the modelObject should be created in the component and passed to the renderStrategy, not the other way around (?). After putting the modelObject in the component, the animation is bounding against the box (like it should, but it's odd that this change fix that...)
 -all the collide(), setCollide should be done within the component
 -check why the performance decreased so much by the new box.
 ---most likely because it's render each component separately.We could implement some merge method, that agregates each component in the same modelobject and render it as a whole.
 -implement a factory so we can avoid thius chaotics constructors
 -add a getNormals to creasedDecorator
--make AnimatonStrategy a decorator(?)
 -try template for ciclyc reference.
 -remove all warnings
 

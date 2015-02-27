@@ -11,9 +11,6 @@ class RenderStrategy :public IRenderStrategy {
     vector<IEffect*> effects;
 
   protected:
-    GLenum GLMode;
-    ModelObject modelObject;
-
     GLuint programId;
     GLuint timeLocation;
     static constexpr char* DEFAULT_SHADER_NAME="Basic";
@@ -21,24 +18,16 @@ class RenderStrategy :public IRenderStrategy {
 
   public:
 
-    RenderStrategy(ModelObject modelObject,char* textureFilename,GLenum GLMode,char* shaderName){
-        this->modelObject=modelObject;
-        this->GLMode=GLMode;
+    RenderStrategy(char* shaderName){
+        if(shaderName==NULL) shaderName=DEFAULT_SHADER_NAME;
         buildShaders(Utils::getVertexShaderFilename(shaderName).c_str(),Utils::getFragmentShaderFilename(shaderName).c_str());
-        bufferModel(this->modelObject);
-        buildTexture(this->modelObject,textureFilename);
     }
-    RenderStrategy(ModelObject modelObject,char* textureFilename,GLenum GLMode):RenderStrategy(modelObject,textureFilename,GLMode,DEFAULT_SHADER_NAME){}
-    RenderStrategy(char* modelFilename,char* textureFilename,GLenum GLMode):RenderStrategy(Utils::loadModel(modelFilename),textureFilename,GLMode,DEFAULT_SHADER_NAME){}
-    RenderStrategy(IMap& map,char* textureFilename,GLenum GLMode):RenderStrategy(ModelObject(map),textureFilename,GLMode,DEFAULT_SHADER_NAME){}
-    RenderStrategy(IMap&& map,char* textureFilename,GLenum GLMode):RenderStrategy(map,textureFilename,GLMode){}
-    RenderStrategy(IMap& map,char* textureFilename,GLenum GLMode,char* shaderName):RenderStrategy(ModelObject(map),textureFilename,GLMode,shaderName){}
-
+    RenderStrategy(){}
 
     virtual ~RenderStrategy(){}
 
     //this method is called before the component is rendered.
-    virtual void onBeforeRender(Position& position){
+    virtual void onBeforeRender(Position& position,ModelObject& modelObject){
       //position the rendering
       glTranslatef(position.getX(),position.getY(),position.getZ());
       //rotate the x-axis (up and down)
@@ -57,13 +46,13 @@ class RenderStrategy :public IRenderStrategy {
       glBindTexture(GL_TEXTURE_2D,modelObject.getTextureDetailId());
     }
 
-    void render(Position& position){
+    void render(Position& position,ModelObject& modelObject){
 
-        onBeforeRender(position);
+        onBeforeRender(position,modelObject);
         glUseProgram(programId);
         if(timeLocation!=-1) glUniform1f(timeLocation,SDL_GetTicks()/100.0);//TODO:we are forcing all to do this, but just particles actually use it...
-        glBindVertexArray(this->modelObject.getVAOId());
-        glDrawArrays(GLMode, 0, this->modelObject.getSize());
+        glBindVertexArray(modelObject.getVAOId());
+        glDrawArrays(modelObject.getGLMode(), 0, modelObject.getSize());
         glBindVertexArray(0);
         glUseProgram(0);
         onAfterRender(position);
@@ -81,6 +70,14 @@ class RenderStrategy :public IRenderStrategy {
       glTranslatef(-position.getX(),-position.getY(),-position.getZ());
     }
 
+
+    //TODO:change name. (configureModelObject?)
+    ModelObject& initModelObject(ModelObject& modelObject,char* textureFilename,GLenum GLMode){
+        bufferModel(modelObject);
+        buildTexture(modelObject,textureFilename);
+        modelObject.setGLMode(GLMode);
+        return modelObject;
+    }
 
     void buildTexture(ModelObject& modelObject,char* textureFilename){
       if(textureFilename==NULL) textureFilename=DEFAULT_TEXTURE_FILENAME;
@@ -216,10 +213,6 @@ class RenderStrategy :public IRenderStrategy {
             exit(EXIT_FAILURE);
         }
 
-    }
-
-    ModelObject&  getModelObject(){
-      return modelObject;
     }
 
    void add(IEffect* effect){

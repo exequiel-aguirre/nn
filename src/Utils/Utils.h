@@ -19,6 +19,7 @@ class Utils{
 	static constexpr char* FRAGMENT_SHADER_EXT=".fs";
 	static constexpr char* TEXTURE_DETAIL_SUFFIX="_detail";
 	static constexpr char* TEXTURE_EXT=".bmp";
+	static constexpr char* MODEL_EXT=".obj";
 
 	static GLuint loadTexture(const char* fileName){
 		GLuint	texture;	
@@ -147,6 +148,15 @@ class Utils{
 		
 		return  ModelObject(vertices,uvs,normals);
 		
+	}
+
+	static std::string getAnimationFrameFilename(char* modelFilename,int frame){
+		std:string str(modelFilename);
+		str.replace(str.find(MODEL_EXT), 4, "");
+		std::stringstream animationFrameFilename;
+		animationFrameFilename<<str<<"_"<<frame<<MODEL_EXT;
+
+		return animationFrameFilename.str();
 	}
 
 

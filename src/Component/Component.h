@@ -8,17 +8,15 @@
 #include "../Listener/ListenerManager.h"
 #include "../Effect/IEffect.h"
 #include "../DataStructure/ModelObject.h"
-#include "../RenderStrategy/IRenderStrategy.h"
 #include "../RenderStrategy/RenderStrategy.h"
 #include "../Physics/CollisionStatus.h"
-#include "../Test/Debug.h"
 
 
 class Component {  
-  private:
-    IRenderStrategy* renderStrategy=NULL;
-    ModelObject modelObject;
   protected:
+    RenderStrategy renderStrategy;
+    ModelObject modelObject;
+
     vector<IBehavior*> behaviors;
     //mechanic properties
     Position position;
@@ -31,13 +29,17 @@ class Component {
     bool reflects=true;
     bool collides=true;
   public:
-    Component(Position position,IRenderStrategy* renderStrategy){
+    Component(Position position,ModelObject modelObject,char* textureFilename,GLenum GLMode,char* shaderName){
       this->position=position;
-      this->renderStrategy=renderStrategy;
-      this->modelObject=renderStrategy->getModelObject();
+      this->modelObject=modelObject;
+      this->renderStrategy=RenderStrategy(shaderName);
+      this->renderStrategy.initModelObject(this->modelObject,textureFilename,GLMode);
       this->calculateBoundary();
     }
-    Component(Position position):Component(position,new RenderStrategy(ModelObject(),NULL,GL_POINTS)){}//by default we set a render strategy with an empty model object, so no geometry will be rendered)(the GLMode is never actually used)
+
+    Component(Position position,ModelObject modelObject,char* textureFilename,GLenum GLMode):Component(position,modelObject,textureFilename,GLMode,NULL){}
+    Component(Position position,ModelObject modelObject,GLenum GLMode):Component(position,modelObject,NULL,GLMode,NULL){}
+    Component(Position position):Component(position,ModelObject(),NULL,GL_POINTS,NULL){}//by default we set a render strategy with an empty model object, so no geometry will be rendered)(the GLMode is never actually used)
 
     virtual ~Component(){}  
     
@@ -45,7 +47,7 @@ class Component {
     virtual void onBeforeRenderFrame(){}
 
     virtual void render(){
-      if(this->renderStrategy!=NULL) this->renderStrategy->render(this->position);
+      renderStrategy.render(this->position,this->modelObject);
     }
 
     virtual void onAfterCollision(){}
@@ -134,7 +136,7 @@ class Component {
     }
 
     Component* add(IEffect* effect){
-      if(this->renderStrategy!=NULL) this->renderStrategy->add(effect);
+      this->renderStrategy.add(effect);
       return this;    
     }
 

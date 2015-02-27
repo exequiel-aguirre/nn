@@ -14,9 +14,9 @@ class IRenderStrategy{
 
     virtual ~IRenderStrategy(){}
     
-    virtual void render(Position& position){}
+    virtual void render(Position& position,ModelObject& modelObject){}
 
-    virtual ModelObject& getModelObject(){}
+    virtual ModelObject& initModelObject(ModelObject& modelObject,char* textureFilename){}
 
     virtual void add(IEffect* effect){}
 

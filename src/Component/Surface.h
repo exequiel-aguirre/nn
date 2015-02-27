@@ -3,16 +3,16 @@
 
 #include "Component.h"
 #include "../Map/IMap.h"
-#include "../RenderStrategy/RenderStrategy.h"
+#include "../DataStructure/ModelObject.h"
 
 class Surface: public Component {  
   
   public:
-	  Surface(Position position,IMap&& map,GLenum GLMode):Component(position,new RenderStrategy(map,NULL,GLMode)){}
+	  Surface(Position position,IMap&& map,GLenum GLMode):Component(position,ModelObject(map),GLMode){}
 
-	  Surface(Position position,IMap&& map,char* textureFilename):Component(position,new RenderStrategy(map,textureFilename,GL_TRIANGLES)){}
+	  Surface(Position position,IMap&& map,char* textureFilename):Component(position,ModelObject(map),textureFilename,GL_TRIANGLES){}
 
-	  Surface(Position position,IMap&& map,char* textureFilename,GLenum GLMode,char* shaderName):Component(position,new RenderStrategy(map,textureFilename,GLMode,shaderName)){}
+	  Surface(Position position,IMap&& map,char* textureFilename,GLenum GLMode,char* shaderName):Component(position,ModelObject(map),textureFilename,GLMode,shaderName){}
 
     virtual ~Surface(){}
 

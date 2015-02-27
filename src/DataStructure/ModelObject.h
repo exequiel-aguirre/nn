@@ -17,6 +17,7 @@ class ModelObject{
     vector<Point> normals;
 
     GLuint vaoId;
+    GLenum GLMode;
     GLuint  textureId;
     GLuint  textureDetailId;
 
@@ -33,6 +34,7 @@ class ModelObject{
       this->boundary= Boundary(vertices);
   	}
 
+    ModelObject(IMap&& map):ModelObject(map){}
     ModelObject(IMap& map){
 
       int lats=map.getLats();
@@ -132,6 +134,14 @@ class ModelObject{
 
     GLuint getVAOId(){
       return vaoId;
+    }
+
+    void setGLMode(GLenum GLMode){
+      this->GLMode=GLMode;
+    }
+
+    GLenum getGLMode(){
+      return GLMode;
     }
 
     void setTextureId(GLuint textureId){
