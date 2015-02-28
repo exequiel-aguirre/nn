@@ -40,12 +40,14 @@ class RenderStrategy {
     void render(Position& position,ModelObject& modelObject,Shader& shader){
 
         onBeforeRender(position,modelObject);
-        if(getCurrentProgramId()!= shader.getProgramId()) glUseProgram(shader.getProgramId());
-        if(shader.getTimeLocation()!=-1) glUniform1f(shader.getTimeLocation(),SDL_GetTicks()/100.0);//TODO:we are forcing all to do this, but just particles actually use it...
-        if(shader.getMixWeightLocation()!=-1) glUniform1f(shader.getMixWeightLocation(),modelObject.getMixWeight());//TODO:check the performance impact of this line
-        glBindVertexArray(modelObject.getVAOId());
-        glDrawArrays(modelObject.getGLMode(), 0, modelObject.getSize());
-        glBindVertexArray(0);
+        if(modelObject.getSize()!=0){//if there is an empty modelObject, there isn't anything to render
+          if(getCurrentProgramId()!= shader.getProgramId()) glUseProgram(shader.getProgramId());
+          if(shader.getTimeLocation()!=-1) glUniform1f(shader.getTimeLocation(),SDL_GetTicks()/100.0);//TODO:we are forcing all to do this, but just particles actually use it...
+          if(shader.getMixWeightLocation()!=-1) glUniform1f(shader.getMixWeightLocation(),modelObject.getMixWeight());//TODO:check the performance impact of this line
+          glBindVertexArray(modelObject.getVAOId());
+          glDrawArrays(modelObject.getGLMode(), 0, modelObject.getSize());
+          glBindVertexArray(0);
+        }
         onAfterRender(position);
     }
 
