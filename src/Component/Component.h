@@ -9,6 +9,7 @@
 #include "../Effect/IEffect.h"
 #include "../DataStructure/ModelObject.h"
 #include "../RenderStrategy/RenderStrategy.h"
+#include "../RenderStrategy/Shader/ShaderManager.h"
 #include "../RenderStrategy/Shader/Shader.h"
 #include "../Physics/CollisionStatus.h"
 
@@ -30,11 +31,13 @@ class Component {
     bool moves=false;
     bool reflects=true;
     bool collides=true;
+    static constexpr char* DEFAULT_SHADER_NAME="Basic";
   public:
     Component(Position position,ModelObject modelObject,char* textureFilename,GLenum GLMode,char* shaderName){
       this->position=position;
       this->modelObject=modelObject;
-      this->shader=Shader(shaderName);
+      if(shaderName==NULL) shaderName=DEFAULT_SHADER_NAME;
+      this->shader=this->shader=ShaderManager::getInstance().getShader(shaderName);
       this->renderStrategy.initModelObject(this->modelObject,textureFilename,GLMode,shader);
       this->calculateBoundary();
     }

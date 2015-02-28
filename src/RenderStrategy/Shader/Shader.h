@@ -7,16 +7,19 @@
 class Shader {
 
   private:
+    char* name;
+
     GLuint programId;
     GLuint timeLocation;
-    static constexpr char* DEFAULT_SHADER_NAME="Basic";
+    GLuint mixWeightLocation;
+
     static constexpr char* DEFAULT_TEXTURE_FILENAME="img/default.bmp";
 
   public:
 
     Shader(char* shaderName){
-        if(shaderName==NULL) shaderName=DEFAULT_SHADER_NAME;
         buildShaders(Utils::getVertexShaderFilename(shaderName).c_str(),Utils::getFragmentShaderFilename(shaderName).c_str());
+        this->name=shaderName;
     }
     Shader(){}
 
@@ -30,17 +33,16 @@ class Shader {
       //here we are forcing everything to have 2 textures.
       //This saves the need to do checks here and in the fragment shader.
       modelObject.setTextureDetailId(Utils::loadTextureDetail(textureFilename));
-      GLfloat mixWeight;
+      //TODO;move this if to the modelObject?
       if(modelObject.getTextureDetailId()!=NULL){
-        mixWeight=0.5;
+        modelObject.setMixWeight(0.5);
       }else{
-        mixWeight=0.0;
+        modelObject.setMixWeight(0.0);
       }
 
       glUseProgram(programId);
       glUniform1i(glGetUniformLocation(programId, "texture"),0);
       glUniform1i(glGetUniformLocation(programId, "textureDetail"),1);
-      glUniform1f(glGetUniformLocation(programId, "mixWeight"),mixWeight);
     }
 
     void buildShaders(const char* vertexFilename,const char* fragmentFilename){
@@ -63,8 +65,11 @@ class Shader {
         glValidateProgram(programId);
         checkErrors(programId,GL_LINK_STATUS,true);
 
+        //textures mix weight
+        this->mixWeightLocation=glGetUniformLocation(programId, "mixWeight");
         //just for the particle shaders
         this->timeLocation=glGetUniformLocation(programId, "time");
+
         
     }
 
@@ -112,7 +117,13 @@ class Shader {
     GLuint getTimeLocation(){
       return timeLocation;
     }
+    GLuint getMixWeightLocation(){
+      return mixWeightLocation;
+    }
 
+    char* getName(){
+        return name;
+    }
 };
 
 

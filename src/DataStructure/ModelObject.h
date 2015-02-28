@@ -20,6 +20,7 @@ class ModelObject{
     GLenum GLMode;
     GLuint  textureId;
     GLuint  textureDetailId;
+    GLfloat mixWeight;
 
     Boundary boundary;
   	
@@ -158,6 +159,13 @@ class ModelObject{
 
     GLuint getTextureDetailId(){
       return textureDetailId;
+    }
+    void setMixWeight(GLfloat mixWeight){
+      this->mixWeight=mixWeight;
+    }
+
+    GLfloat getMixWeight(){
+      return mixWeight;
     }
 
     Boundary& getBoundary(){

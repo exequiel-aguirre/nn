@@ -40,13 +40,19 @@ class RenderStrategy {
     void render(Position& position,ModelObject& modelObject,Shader& shader){
 
         onBeforeRender(position,modelObject);
-        glUseProgram(shader.getProgramId());
+        if(getCurrentProgramId()!= shader.getProgramId()) glUseProgram(shader.getProgramId());
         if(shader.getTimeLocation()!=-1) glUniform1f(shader.getTimeLocation(),SDL_GetTicks()/100.0);//TODO:we are forcing all to do this, but just particles actually use it...
+        if(shader.getMixWeightLocation()!=-1) glUniform1f(shader.getMixWeightLocation(),modelObject.getMixWeight());//TODO:check the performance impact of this line
         glBindVertexArray(modelObject.getVAOId());
         glDrawArrays(modelObject.getGLMode(), 0, modelObject.getSize());
         glBindVertexArray(0);
-        glUseProgram(0);
         onAfterRender(position);
+    }
+
+    GLint getCurrentProgramId(){
+      GLint currentProgramId=0;
+      glGetIntegerv(GL_CURRENT_PROGRAM,&currentProgramId);
+      return currentProgramId;
     }
 
     //this method is called after the components are rendered.
