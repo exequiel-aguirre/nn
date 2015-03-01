@@ -125,7 +125,7 @@ class RenderStrategy {
         glBindBuffer(GL_ARRAY_BUFFER, normalBufferId);        
         glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(RawPoint), &normals[0], GL_STATIC_DRAW);
         glEnableVertexAttribArray(3);
-        glVertexAttribPointer(3, 3, GL_FLOAT, GL_TRUE, 0, 0);
+        glVertexAttribPointer(3, 3, GL_FLOAT, 0, 0, 0);
 
         glBindVertexArray(0);
 

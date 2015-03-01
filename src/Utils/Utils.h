@@ -146,6 +146,7 @@ class Utils{
 			normals.push_back(normal);
 		}
 		
+		if(uvs.size()==0) uvs=vector<Point>(vertices.size(),Point(0,0,0));//if there are no uvs, initilize them
 		return  ModelObject(vertices,uvs,normals);
 		
 	}
