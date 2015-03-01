@@ -33,8 +33,10 @@ class RenderStrategy {
       //texture
       glActiveTexture(GL_TEXTURE0);
       glBindTexture(GL_TEXTURE_2D,modelObject.getTextureId());
-      glActiveTexture(GL_TEXTURE1);
-      glBindTexture(GL_TEXTURE_2D,modelObject.getTextureDetailId());
+      if(modelObject.getTextureDetailId()!=NULL){
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D,modelObject.getTextureDetailId());
+      }
     }
 
     void render(Position& position,ModelObject& modelObject,Shader& shader){
