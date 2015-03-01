@@ -13,8 +13,6 @@ class Shader {
     GLuint timeLocation;
     GLuint mixWeightLocation;
 
-    static constexpr char* DEFAULT_TEXTURE_FILENAME="img/default.bmp";
-
   public:
 
     Shader(char* shaderName){
@@ -25,24 +23,17 @@ class Shader {
 
     virtual ~Shader(){}
 
-    void buildTexture(ModelObject& modelObject,char* textureFilename){
-      if(textureFilename==NULL) textureFilename=DEFAULT_TEXTURE_FILENAME;
-      modelObject.setTextureId(Utils::loadTexture(textureFilename));
+    //TODO:change name
+    void useProgram(GLfloat mixWeight){
+        if(getCurrentProgramId()!= programId) glUseProgram(programId);//this is for performace:glUseProgram is expensive
+        if(timeLocation!=-1) glUniform1f(timeLocation,SDL_GetTicks()/100.0);//TODO:we are forcing all to do this, but just particles actually use it...
+        if(mixWeightLocation!=-1) glUniform1f(mixWeightLocation,mixWeight);//TODO:check the performance impact of this line
+    }
 
-      //TODO:find a better way
-      //here we are forcing everything to have 2 textures.
-      //This saves the need to do checks here and in the fragment shader.
-      modelObject.setTextureDetailId(Utils::loadTextureDetail(textureFilename));
-      //TODO;move this if to the modelObject?
-      if(modelObject.getTextureDetailId()!=NULL){
-        modelObject.setMixWeight(0.5);
-      }else{
-        modelObject.setMixWeight(0.0);
-      }
-
-      glUseProgram(programId);
-      glUniform1i(glGetUniformLocation(programId, "texture"),0);
-      glUniform1i(glGetUniformLocation(programId, "textureDetail"),1);
+    GLint getCurrentProgramId(){
+      GLint currentProgramId=0;
+      glGetIntegerv(GL_CURRENT_PROGRAM,&currentProgramId);
+      return currentProgramId;
     }
 
     void buildShaders(const char* vertexFilename,const char* fragmentFilename){
@@ -65,7 +56,10 @@ class Shader {
         glValidateProgram(programId);
         checkErrors(programId,GL_LINK_STATUS,true);
 
-        //textures mix weight
+        //textures
+        glUseProgram(programId);
+        glUniform1i(glGetUniformLocation(programId, "texture"),0);
+        glUniform1i(glGetUniformLocation(programId, "textureDetail"),1);
         this->mixWeightLocation=glGetUniformLocation(programId, "mixWeight");
         //just for the particle shaders
         this->timeLocation=glGetUniformLocation(programId, "time");
@@ -108,17 +102,6 @@ class Shader {
             exit(EXIT_FAILURE);
         }
 
-    }
-
-    GLuint getProgramId(){
-      return programId;
-    }
-
-    GLuint getTimeLocation(){
-      return timeLocation;
-    }
-    GLuint getMixWeightLocation(){
-      return mixWeightLocation;
     }
 
     char* getName(){

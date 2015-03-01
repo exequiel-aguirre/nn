@@ -36,9 +36,9 @@ class Component {
     Component(Position position,ModelObject modelObject,char* textureFilename,GLenum GLMode,char* shaderName){
       this->position=position;
       this->modelObject=modelObject;
+      this->renderStrategy.initModelObject(this->modelObject,textureFilename,GLMode);
       if(shaderName==NULL) shaderName=DEFAULT_SHADER_NAME;
       this->shader=this->shader=ShaderManager::getInstance().getShader(shaderName);
-      this->renderStrategy.initModelObject(this->modelObject,textureFilename,GLMode,shader);
       this->calculateBoundary();
     }
 

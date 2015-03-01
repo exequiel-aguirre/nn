@@ -145,25 +145,18 @@ class ModelObject{
       return GLMode;
     }
 
-    void setTextureId(GLuint textureId){
+    void setTexturesId(GLuint textureId,GLuint textureDetailId){
       this->textureId=textureId;
+      this->textureDetailId=textureDetailId;
+      mixWeight=(textureDetailId!=NULL)?0.5:0.0;
     }
 
     GLuint getTextureId(){
       return textureId;
     }
-
-    void setTextureDetailId(GLuint textureDetailId){
-      this->textureDetailId=textureDetailId;
-    }
-
     GLuint getTextureDetailId(){
       return textureDetailId;
     }
-    void setMixWeight(GLfloat mixWeight){
-      this->mixWeight=mixWeight;
-    }
-
     GLfloat getMixWeight(){
       return mixWeight;
     }

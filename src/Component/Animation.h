@@ -43,7 +43,7 @@ class Animation: public Model {
 		    if (f.good()) {
 				f.close();
 				ModelObject modelObject=Utils::loadModel(frameFilename.c_str());
-				this->renderStrategy.initModelObject(modelObject,textureFilename,GL_TRIANGLES,shader);
+				this->renderStrategy.initModelObject(modelObject,textureFilename,GL_TRIANGLES);
 
 				modelObjects.push_back(modelObject);
 			}

@@ -10,7 +10,7 @@ class RenderStrategy {
 
   private:
     vector<IEffect*> effects;
-
+    static constexpr char* DEFAULT_TEXTURE_FILENAME="img/default.bmp";
   public:
 
     RenderStrategy(){}
@@ -41,20 +41,12 @@ class RenderStrategy {
 
         onBeforeRender(position,modelObject);
         if(modelObject.getSize()!=0){//if there is an empty modelObject, there isn't anything to render
-          if(getCurrentProgramId()!= shader.getProgramId()) glUseProgram(shader.getProgramId());
-          if(shader.getTimeLocation()!=-1) glUniform1f(shader.getTimeLocation(),SDL_GetTicks()/100.0);//TODO:we are forcing all to do this, but just particles actually use it...
-          if(shader.getMixWeightLocation()!=-1) glUniform1f(shader.getMixWeightLocation(),modelObject.getMixWeight());//TODO:check the performance impact of this line
+          shader.useProgram(modelObject.getMixWeight());
           glBindVertexArray(modelObject.getVAOId());
           glDrawArrays(modelObject.getGLMode(), 0, modelObject.getSize());
           glBindVertexArray(0);
         }
         onAfterRender(position);
-    }
-
-    GLint getCurrentProgramId(){
-      GLint currentProgramId=0;
-      glGetIntegerv(GL_CURRENT_PROGRAM,&currentProgramId);
-      return currentProgramId;
     }
 
     //this method is called after the components are rendered.
@@ -71,14 +63,17 @@ class RenderStrategy {
 
 
     //TODO:change name. (configureModelObject?)
-    ModelObject& initModelObject(ModelObject& modelObject,char* textureFilename,GLenum GLMode,Shader& shader){
+    ModelObject& initModelObject(ModelObject& modelObject,char* textureFilename,GLenum GLMode){
         bufferModel(modelObject);
-        shader.buildTexture(modelObject,textureFilename);//TODO:this is a bit off.
+        buildTexture(modelObject,textureFilename);
         modelObject.setGLMode(GLMode);
         return modelObject;
     }
 
-
+    void buildTexture(ModelObject& modelObject,char* textureFilename){
+      if(textureFilename==NULL) textureFilename=DEFAULT_TEXTURE_FILENAME;
+      modelObject.setTexturesId(Utils::loadTexture(textureFilename),Utils::loadTextureDetail(textureFilename));
+    }
 
     void bufferModel(ModelObject& modelObject){
         GLuint vertexBufferId;
