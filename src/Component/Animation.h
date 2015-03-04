@@ -13,7 +13,7 @@ class Animation: public Model {
   public:  	 
 	Animation(Position&& position,char* modelFilename):Model(position,modelFilename){
 		modelObjects.push_back(this->modelObject);
-		this->loadAnimation(modelFilename,"img/human.bmp");//TODO:avoid hardcoding this
+		this->loadAnimation(modelFilename);
 		currentModelObject=modelObjects.begin();
 	}
 
@@ -30,11 +30,11 @@ class Animation: public Model {
 			}
 		}
 
-		this->renderStrategy.render(this->position,(*currentModelObject),shader);
+		this->renderStrategy.render(this->position,(*currentModelObject),shader,texture);
     }
 
 
-    int loadAnimation(char* modelFilename,char* textureFilename){
+    int loadAnimation(char* modelFilename){
 		//load the animation.
 		for(int i=0;i<30;i++)
 		{
@@ -43,7 +43,7 @@ class Animation: public Model {
 		    if (f.good()) {
 				f.close();
 				ModelObject modelObject=Utils::loadModel(frameFilename.c_str());
-				this->renderStrategy.initModelObject(modelObject,textureFilename,GL_TRIANGLES);
+				this->renderStrategy.initModelObject(modelObject,GL_TRIANGLES);
 
 				modelObjects.push_back(modelObject);
 			}

@@ -9,8 +9,9 @@
 #include "../Effect/IEffect.h"
 #include "../DataStructure/ModelObject.h"
 #include "../RenderStrategy/RenderStrategy.h"
-#include "../RenderStrategy/Shader/ShaderManager.h"
+#include "../RenderStrategy/ResourceManager.h"
 #include "../RenderStrategy/Shader/Shader.h"
+#include "../RenderStrategy/Texture.h"
 #include "../Physics/CollisionStatus.h"
 
 
@@ -19,6 +20,8 @@ class Component {
     ModelObject modelObject;
     RenderStrategy renderStrategy;
     Shader shader;
+    Texture texture;
+
 
     vector<IBehavior*> behaviors;
     //mechanic properties
@@ -32,13 +35,16 @@ class Component {
     bool reflects=true;
     bool collides=true;
     static constexpr char* DEFAULT_SHADER_NAME="Basic";
+    static constexpr char* DEFAULT_TEXTURE_FILENAME="img/default.bmp";
   public:
     Component(Position position,ModelObject modelObject,char* textureFilename,GLenum GLMode,char* shaderName){
       this->position=position;
       this->modelObject=modelObject;
-      this->renderStrategy.initModelObject(this->modelObject,textureFilename,GLMode);
+      this->renderStrategy.initModelObject(this->modelObject,GLMode);
       if(shaderName==NULL) shaderName=DEFAULT_SHADER_NAME;
-      this->shader=this->shader=ShaderManager::getInstance().getShader(shaderName);
+      this->shader=ResourceManager::getInstance().getShader(shaderName);
+      if(textureFilename==NULL) textureFilename=DEFAULT_TEXTURE_FILENAME;
+      this->texture=ResourceManager::getInstance().getTexture(textureFilename);
       this->calculateBoundary();
     }
 
@@ -52,7 +58,7 @@ class Component {
     virtual void onBeforeRenderFrame(){}
 
     virtual void render(){
-      renderStrategy.render(this->position,this->modelObject,this->shader);
+      renderStrategy.render(this->position,this->modelObject,this->shader,this->texture);
     }
 
     virtual void onAfterCollision(){}

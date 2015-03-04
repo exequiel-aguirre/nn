@@ -3,6 +3,7 @@
 
 #include "../DataStructure/ModelObject.h"
 #include "Shader/Shader.h"
+#include "Texture.h"
 #include "../Utils/Utils.h"
 #include "../DataStructure/RawPoint.h"
 
@@ -10,7 +11,6 @@ class RenderStrategy {
 
   private:
     vector<IEffect*> effects;
-    static constexpr char* DEFAULT_TEXTURE_FILENAME="img/default.bmp";
   public:
 
     RenderStrategy(){}
@@ -18,7 +18,7 @@ class RenderStrategy {
     virtual ~RenderStrategy(){}
 
     //this method is called before the component is rendered.
-    virtual void onBeforeRender(Position& position,ModelObject& modelObject){
+    virtual void onBeforeRender(Position& position){
       //position the rendering
       glTranslatef(position.getX(),position.getY(),position.getZ());
       //rotate the x-axis (up and down)
@@ -29,21 +29,14 @@ class RenderStrategy {
       glRotatef(position.getPsi(), 0.0f, 0.0f, 1.0f);
 
       doEffects();
-
-      //texture
-      glActiveTexture(GL_TEXTURE0);
-      glBindTexture(GL_TEXTURE_2D,modelObject.getTextureId());
-      if(modelObject.getTextureDetailId()!=NULL){
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D,modelObject.getTextureDetailId());
-      }
     }
 
-    void render(Position& position,ModelObject& modelObject,Shader& shader){
+    void render(Position& position,ModelObject& modelObject,Shader& shader,Texture& texture){
 
-        onBeforeRender(position,modelObject);
+        onBeforeRender(position);
         if(modelObject.getSize()!=0){//if there is an empty modelObject, there isn't anything to render
-          shader.useProgram(modelObject.getMixWeight());
+          texture.bind();
+          shader.useProgram(texture.getMixWeight());
           glBindVertexArray(modelObject.getVAOId());
           glDrawArrays(modelObject.getGLMode(), 0, modelObject.getSize());
           glBindVertexArray(0);
@@ -63,18 +56,11 @@ class RenderStrategy {
       glTranslatef(-position.getX(),-position.getY(),-position.getZ());
     }
 
-
     //TODO:change name. (configureModelObject?)
-    ModelObject& initModelObject(ModelObject& modelObject,char* textureFilename,GLenum GLMode){
+    ModelObject& initModelObject(ModelObject& modelObject,GLenum GLMode){
         bufferModel(modelObject);
-        buildTexture(modelObject,textureFilename);
         modelObject.setGLMode(GLMode);
         return modelObject;
-    }
-
-    void buildTexture(ModelObject& modelObject,char* textureFilename){
-      if(textureFilename==NULL) textureFilename=DEFAULT_TEXTURE_FILENAME;
-      modelObject.setTexturesId(Utils::loadTexture(textureFilename),Utils::loadTextureDetail(textureFilename));
     }
 
     void bufferModel(ModelObject& modelObject){
