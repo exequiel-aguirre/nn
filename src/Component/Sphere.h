@@ -16,7 +16,7 @@ class Sphere: public Surface {
 	Sphere(Position&& position,float r):Surface(position,EllipsoidMap(r,r,r),GL_TRIANGLES){
     this->rotates=true;
   }
-	Sphere(Position&& position,float r,char* textureFilename):Surface(position,EllipsoidMap(r,r,r),textureFilename){
+	Sphere(Position&& position,float r,const char* textureFilename):Surface(position,EllipsoidMap(r,r,r),textureFilename){
     this->rotates=true;
   }
 

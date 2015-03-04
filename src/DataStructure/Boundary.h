@@ -4,8 +4,8 @@
 #include <vector>
 #include "Point.h"
 #include "../Map/IMap.h"
-#include "ReducedPolygon.h";
-#include "EnclosingBox.h";
+#include "ReducedPolygon.h"
+#include "EnclosingBox.h"
 #include "../Physics/CollisionStatus.h"
 
 

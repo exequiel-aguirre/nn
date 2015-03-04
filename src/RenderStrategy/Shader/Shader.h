@@ -7,7 +7,7 @@
 class Shader {
 
   private:
-    char* name;
+    std::string name;
 
     GLuint programId;
     GLuint timeLocation;
@@ -16,7 +16,7 @@ class Shader {
   public:
     static GLuint currentProgramId;
 
-    Shader(char* shaderName){
+    Shader(const char* shaderName){
         buildShaders(Utils::getVertexShaderFilename(shaderName).c_str(),Utils::getFragmentShaderFilename(shaderName).c_str());
         this->name=shaderName;
     }
@@ -102,8 +102,8 @@ class Shader {
 
     }
 
-    char* getName(){
-        return name;
+    const char* getName(){
+        return name.c_str();
     }
 };
 GLuint Shader::currentProgramId=0;

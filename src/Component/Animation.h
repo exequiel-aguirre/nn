@@ -11,7 +11,7 @@ class Animation: public Model {
 	unsigned int frames=0;
 
   public:  	 
-	Animation(Position&& position,char* modelFilename):Model(position,modelFilename){
+	Animation(Position&& position,const char* modelFilename):Model(position,modelFilename){
 		modelObjects.push_back(this->modelObject);
 		this->loadAnimation(modelFilename);
 		currentModelObject=modelObjects.begin();
@@ -34,7 +34,7 @@ class Animation: public Model {
     }
 
 
-    int loadAnimation(char* modelFilename){
+    int loadAnimation(const char* modelFilename){
 		//load the animation.
 		for(int i=0;i<30;i++)
 		{

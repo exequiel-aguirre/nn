@@ -16,10 +16,10 @@ class Texture {
     static GLuint activeId;
     static GLuint activeDetailId;
 
-    Texture(char* filename){
+    Texture(const char* filename){
         this->id=Utils::loadTexture(filename);
         this->detailId=Utils::loadTextureDetail(filename);
-        this->mixWeight=(detailId!=NULL)?0.5:0.0;
+        this->mixWeight=(detailId!=0)?0.5:0.0;
         this->filename=filename;
     }
     Texture(){}
@@ -32,7 +32,7 @@ class Texture {
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D,id);
         }
-        if(detailId!=NULL){
+        if(detailId!=0){
             if(Texture::activeDetailId!=detailId){//this is for performance: bind is expensive
                 Texture::activeDetailId=detailId;
                 glActiveTexture(GL_TEXTURE1);
@@ -40,15 +40,15 @@ class Texture {
             }
         }
     }
+
+
     const char* getFilename(){
         return filename.c_str();
     }
-
     GLfloat getMixWeight(){
       return mixWeight;
     }
 };
-
 GLuint Texture::activeId =0;
 GLuint Texture::activeDetailId =0;
 

@@ -22,7 +22,7 @@ class ResourceManager{
     }
     virtual ~ResourceManager(){}
 
-    Shader getShader(char* shaderName){
+    Shader getShader(const char* shaderName){
       Shader shader;
       auto it=std::find_if(shaders.begin(),shaders.end(),
           [shaderName](Shader& shader){ return strcmp(shader.getName(),shaderName)==0; }
@@ -40,7 +40,7 @@ class ResourceManager{
       
       return shader;
     }
-    Texture getTexture(char* textureFilename){
+    Texture getTexture(const char* textureFilename){
       Texture texture;
       auto it=std::find_if(textures.begin(),textures.end(),
           [textureFilename](Texture& texture){ return strcmp(texture.getFilename(),textureFilename)==0; }

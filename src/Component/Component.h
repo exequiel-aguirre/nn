@@ -34,10 +34,10 @@ class Component {
     bool moves=false;
     bool reflects=true;
     bool collides=true;
-    static constexpr char* DEFAULT_SHADER_NAME="Basic";
-    static constexpr char* DEFAULT_TEXTURE_FILENAME="img/default.bmp";
+    static constexpr const char* DEFAULT_SHADER_NAME="Basic";
+    static constexpr const char* DEFAULT_TEXTURE_FILENAME="img/default.bmp";
   public:
-    Component(Position position,ModelObject modelObject,char* textureFilename,GLenum GLMode,char* shaderName){
+    Component(Position position,ModelObject modelObject,const char* textureFilename,GLenum GLMode,const char* shaderName){
       this->position=position;
       this->modelObject=modelObject;
       this->renderStrategy.initModelObject(this->modelObject,GLMode);
@@ -48,7 +48,7 @@ class Component {
       this->calculateBoundary();
     }
 
-    Component(Position position,ModelObject modelObject,char* textureFilename,GLenum GLMode):Component(position,modelObject,textureFilename,GLMode,NULL){}
+    Component(Position position,ModelObject modelObject,const char* textureFilename,GLenum GLMode):Component(position,modelObject,textureFilename,GLMode,NULL){}
     Component(Position position,ModelObject modelObject,GLenum GLMode):Component(position,modelObject,NULL,GLMode,NULL){}
     Component(Position position):Component(position,ModelObject(),NULL,GL_POINTS,NULL){}//by default we set a render strategy with an empty model object, so no geometry will be rendered)(the GLMode is never actually used)
 
@@ -128,7 +128,7 @@ class Component {
     }
 
     virtual float getMass(){
-      if(modelObject.getSize()==0) return NULL;
+      if(modelObject.getSize()==0) return 0;
       //a very rough approximation of volume
       return modelObject.getBoundary().getEnclosingBox().getVolume()* massDensity;
     }

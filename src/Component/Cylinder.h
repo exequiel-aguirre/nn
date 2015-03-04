@@ -13,7 +13,7 @@ class Cylinder: public Surface {
   public:
 	Cylinder(Position&& position):Surface(position,CylinderMap(DEFAULT_R,DEFAULT_H),GL_LINES){}
 	Cylinder(Position&& position,float r,float h):Surface(position,CylinderMap(r,h),GL_LINES){}
-	Cylinder(Position&& position,float r,float h,char* textureFilename):Surface(position,CylinderMap(r,h),textureFilename){}
+	Cylinder(Position&& position,float r,float h,const char* textureFilename):Surface(position,CylinderMap(r,h),textureFilename){}
 
     virtual ~Cylinder(){}    
     

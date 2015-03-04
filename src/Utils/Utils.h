@@ -14,12 +14,12 @@
 
 class Utils{
   public:
-	static constexpr char* SHADER_PATH="src/RenderStrategy/Shader/";
-	static constexpr char* VERTEX_SHADER_EXT=".vs";
-	static constexpr char* FRAGMENT_SHADER_EXT=".fs";
-	static constexpr char* TEXTURE_DETAIL_SUFFIX="_detail";
-	static constexpr char* TEXTURE_EXT=".bmp";
-	static constexpr char* MODEL_EXT=".obj";
+	static constexpr const char* SHADER_PATH="src/RenderStrategy/Shader/";
+	static constexpr const char* VERTEX_SHADER_EXT=".vs";
+	static constexpr const char* FRAGMENT_SHADER_EXT=".fs";
+	static constexpr const char* TEXTURE_DETAIL_SUFFIX="_detail";
+	static constexpr const char* TEXTURE_EXT=".bmp";
+	static constexpr const char* MODEL_EXT=".obj";
 
 	static GLuint loadTexture(const char* fileName){
 		GLuint	texture;	
@@ -37,7 +37,7 @@ class Utils{
 		return texture;	
 	}
 
-	static GLuint loadTextureDetail(char* filename){
+	static GLuint loadTextureDetail(const char* filename){
 		std:string str(filename);
 		str.replace(str.find(TEXTURE_EXT), 4, "");
 		std::stringstream filenameDetail;
@@ -46,7 +46,7 @@ class Utils{
 		if(f.good()){
 			return loadTexture(filenameDetail.str().c_str());
 		}else{
-			return NULL;
+			return 0;
 		}
 	}
 	
@@ -80,7 +80,7 @@ class Utils{
 			else if(lineHeader== "vt")
 			{
 				file >> x >> y;
-				tempUvs.push_back( Point(x,y,NULL));
+				tempUvs.push_back( Point(x,y,0));
 			}
 			else if (lineHeader=="vn")
 			{
@@ -152,7 +152,7 @@ class Utils{
 		
 	}
 
-	static std::string getAnimationFrameFilename(char* modelFilename,int frame){
+	static std::string getAnimationFrameFilename(const char* modelFilename,int frame){
 		std:string str(modelFilename);
 		str.replace(str.find(MODEL_EXT), 4, "");
 		std::stringstream animationFrameFilename;
@@ -192,13 +192,13 @@ class Utils{
 		return content.str();
 	}
 
-	static std::string getVertexShaderFilename(char* shaderName){
+	static std::string getVertexShaderFilename(const char* shaderName){
 		return getShaderFilename(shaderName,VERTEX_SHADER_EXT);
 	}
-	static std::string getFragmentShaderFilename(char* shaderName){
+	static std::string getFragmentShaderFilename(const char* shaderName){
 		return getShaderFilename(shaderName,FRAGMENT_SHADER_EXT);
 	}
-	static std::string getShaderFilename(char* shaderName,char* ext){
+	static std::string getShaderFilename(const char* shaderName,const char* ext){
 		std::stringstream shaderFilename;
 		shaderFilename<<SHADER_PATH<<shaderName<<ext;
 		return shaderFilename.str();

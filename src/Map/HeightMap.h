@@ -8,11 +8,10 @@ class HeightMap :public IMap {
     float h;
     int lats;
     int longs;
-    //TODO:make it an float vector?
     vector<Uint8> pixels;
     int imageWidth;
     int imageHeight;
-    const Uint8 MAX_HEIGHT=300;
+    const Uint8 MAX_HEIGHT=45;
     const float FACTOR=MAX_HEIGHT/(pow(2,7));
     const Uint8 SEA_LEVEL=pow(2,7);
   public:

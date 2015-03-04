@@ -71,22 +71,22 @@ class ModelObject{
           float v0s=(v0-vFrom)/(vTo-vFrom);
           float v1s=(v1-vFrom)/(vTo-vFrom);
 
-          uvs.push_back( Point(u0s,v0s,NULL));
-          uvs.push_back( Point(u0s,v1s,NULL));
-          uvs.push_back( Point(u1s,v0s,NULL));
+          uvs.push_back( Point(u0s,v0s,0));
+          uvs.push_back( Point(u0s,v1s,0));
+          uvs.push_back( Point(u1s,v0s,0));
 
-          uvs.push_back( Point(u1s,v0s,NULL));
-          uvs.push_back( Point(u0s,v1s,NULL));
-          uvs.push_back( Point(u1s,v1s,NULL));
+          uvs.push_back( Point(u1s,v0s,0));
+          uvs.push_back( Point(u0s,v1s,0));
+          uvs.push_back( Point(u1s,v1s,0));
 
 
-          uvsDetail.push_back( Point(j%2,(j+1)%2,NULL));
-          uvsDetail.push_back( Point((j+1)%2,(j+1)%2,NULL));
-          uvsDetail.push_back( Point(j%2,j%2,NULL));
+          uvsDetail.push_back( Point(j%2,(j+1)%2,0));
+          uvsDetail.push_back( Point((j+1)%2,(j+1)%2,0));
+          uvsDetail.push_back( Point(j%2,j%2,0));
 
-          uvsDetail.push_back( Point(j%2,j%2,NULL));
-          uvsDetail.push_back( Point((j+1)%2,(j+1)%2,NULL));
-          uvsDetail.push_back( Point((j+1)%2,j%2,NULL));
+          uvsDetail.push_back( Point(j%2,j%2,0));
+          uvsDetail.push_back( Point((j+1)%2,(j+1)%2,0));
+          uvsDetail.push_back( Point((j+1)%2,j%2,0));
 
                     
           

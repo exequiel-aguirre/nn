@@ -13,7 +13,7 @@ class SkyBox: public Container {
 	  SkyBox(Position&& position):SkyBox(position,2,2,2,"img/box.bmp","img/box.bmp","img/box.bmp","img/box.bmp","img/box.bmp","img/box.bmp"){}
 
 
-	  SkyBox(Position position,float w,float h,float d,char* bottom,char* top,char* left,char* right,char* back,char* front):Container(position){
+	  SkyBox(Position position,float w,float h,float d,const char* bottom,const char* top,const char* left,const char* right,const char* back,const char* front):Container(position){
 		  add(new Plane(Position(0.0f,0.0f,0.0f,0.0f,-90.0f),d,w,bottom));
 		  add(new Plane(Position(0.0f,h,0.0f,180.0f,-90.0f,0.0f),d,w,top));
 
