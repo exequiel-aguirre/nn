@@ -15,16 +15,16 @@ class IMap{
 
     virtual ~IMap(){}
     
-    virtual Point get(float u,float v){}
-    virtual Point getNormal(float u,float v){}
+    virtual Point get(float u,float v)=0;
+    virtual Point getNormal(float u,float v)=0;
 
-    virtual float getUFrom(){}
-	virtual float getUTo(){}
-	virtual float getVFrom(){}
-	virtual float getVTo(){}
+  virtual float getUFrom()=0;
+	virtual float getUTo()=0;
+	virtual float getVFrom()=0;
+	virtual float getVTo()=0;
 
-	virtual int getLats(){}
-	virtual int getLongs(){}
+	virtual int getLats()=0;
+	virtual int getLongs()=0;
 
 
 };

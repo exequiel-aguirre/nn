@@ -68,7 +68,7 @@ class EnclosingBox{
     }
 
     void updatePositionedVertices(){
-      for(int i=0;i<positionedVertices.size();i++){
+      for(unsigned int i=0;i<positionedVertices.size();i++){
         Point p=vertices[i];
         Point& pp=positionedVertices[i];
         pp=p;

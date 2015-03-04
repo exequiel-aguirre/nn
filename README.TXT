@@ -2,7 +2,7 @@
 >apt-get install build-essential mesa-common-dev libsdl2-dev libglew-dev
 
 To compile:
->g++ src/main.cpp -std=c++11  -lGL  -lSDL2 -lGLEW
+>g++ src/main.cpp -Wall -std=c++11  -lGL  -lSDL2 -lGLEW
 
 
 
@@ -12,7 +12,7 @@ DEBUG:
 >bt full
 
 PROFILE:
->g++ src/main.cpp  -lGL  -lSDL2 -pg;./a.out
+>g++ src/main.cpp  -Wall -std=c++11  -lGL  -lSDL2 -lGLEW -pg;./a.out
 >gprof > r.txt
 >kate r.txt
 

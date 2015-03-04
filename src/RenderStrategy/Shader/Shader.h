@@ -10,8 +10,8 @@ class Shader {
     std::string name;
 
     GLuint programId;
-    GLuint timeLocation;
-    GLuint mixWeightLocation;
+    GLint timeLocation;
+    GLint mixWeightLocation;
 
   public:
     static GLuint currentProgramId;

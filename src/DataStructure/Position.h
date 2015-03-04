@@ -73,27 +73,27 @@ class Position {
 		this->psi=psi;
 	}
 
-	float setX(float x){
+	void setX(float x){
     	this->x=x;
     }
 
-    float setY(float y){
+    void setY(float y){
     	this->y=y;
     }    
 
-    float setZ(float z){
+    void setZ(float z){
     	this->z=z;
     }
 
-    float setPhi(float phi){
+    void setPhi(float phi){
     	this->phi=phi;
     }
 
-    float setTheta(float theta){
+    void setTheta(float theta){
     	this->theta=theta;
     }    
 
-    float setPsi(float psi){
+    void setPsi(float psi){
     	this->psi=psi;
     }
 
@@ -120,7 +120,7 @@ class Position {
     }
 
     friend std::ostream& operator<<(std::ostream& os , const Position p){
-        os << "("<<p.x<<","<< p.y<<","<< p.z<<")"<< "\n";
+       return os << "("<<p.x<<","<< p.y<<","<< p.z<<")"<< "\n";
     }
 
     float norm(){

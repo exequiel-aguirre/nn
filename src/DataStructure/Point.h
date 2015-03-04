@@ -32,7 +32,7 @@ class Point{
 	}
 
 	friend std::ostream& operator<<(std::ostream& os , const Point p){
-		os << "("<<p.x<<","<< p.y<<","<< p.z<<")"<< "\n";
+		return os << "("<<p.x<<","<< p.y<<","<< p.z<<")"<< "\n";
 	}
 
 	bool operator==(const Point& p){

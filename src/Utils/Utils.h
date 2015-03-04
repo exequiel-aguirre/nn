@@ -38,7 +38,7 @@ class Utils{
 	}
 
 	static GLuint loadTextureDetail(const char* filename){
-		std:string str(filename);
+		std::string str(filename);
 		str.replace(str.find(TEXTURE_EXT), 4, "");
 		std::stringstream filenameDetail;
 		filenameDetail<<str<<TEXTURE_DETAIL_SUFFIX<<TEXTURE_EXT;
@@ -153,7 +153,7 @@ class Utils{
 	}
 
 	static std::string getAnimationFrameFilename(const char* modelFilename,int frame){
-		std:string str(modelFilename);
+		std::string str(modelFilename);
 		str.replace(str.find(MODEL_EXT), 4, "");
 		std::stringstream animationFrameFilename;
 		animationFrameFilename<<str<<"_"<<frame<<MODEL_EXT;

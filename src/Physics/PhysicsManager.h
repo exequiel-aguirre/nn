@@ -50,7 +50,6 @@ class PhysicsManager{
             //We based this on the elasticity of the components(not physically justified)
             float e=std::min(c1->getElasticity(),c2->getElasticity());
             CollisionStatus& status1=c1->getCollisionStatus();
-            CollisionStatus& status2=c2->getCollisionStatus();
             //Impulse-Based Reaction Model
             float m1=c1->getMass();
             float m2=c2->getMass();
@@ -83,9 +82,7 @@ class PhysicsManager{
         float m2=status.getOtherMass();
         float c=m2/(m2+m);//TODO:justify this
         if(status.hasCollided()){
-          float a=(*it)->getAcceleration().norm();
           Acceleration& acceleration=(*it)->getAcceleration();
-          Velocity& velocity=(*it)->getVelocity();
           (*it)->setAcceleration(
               acceleration.getX() +(c* fabs(acceleration.getX()) * n.x),//fabs, since the direction is given by n
               acceleration.getY() +(c* fabs(acceleration.getY()) * n.y),

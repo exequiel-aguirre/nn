@@ -186,14 +186,14 @@ class ReducedPolygon{
 
     void updatePositionedVertices(){
 
-      for(int i=0;i<positionedIndexedVertices.size();i++){
+      for(unsigned int i=0;i<positionedIndexedVertices.size();i++){
         Point p=indexedVertices[i];
         Point& pp=positionedIndexedVertices[i];
         pp=p;
         transform(pp);
       }
 
-      for(int i=0;i<positionedTriangles.size();i++){
+      for(unsigned int i=0;i<positionedTriangles.size();i++){
         std::tuple<int,int,int,Point> p=indexedTriangles[i];
         int v1Index=std::get<0>(p);
         int v2Index=std::get<1>(p);
