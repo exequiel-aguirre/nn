@@ -13,6 +13,8 @@ class Texture {
     GLfloat mixWeight;
     
   public:
+    static GLuint activeId;
+    static GLuint activeDetailId;
 
     Texture(char* filename){
         this->id=Utils::loadTexture(filename);
@@ -25,11 +27,17 @@ class Texture {
     virtual ~Texture(){}   
 
     void bind(){
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D,id);
+        if(Texture::activeId!=id){//this is for performance: bind is expensive
+            Texture::activeId=id;
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D,id);
+        }
         if(detailId!=NULL){
-            glActiveTexture(GL_TEXTURE1);
-            glBindTexture(GL_TEXTURE_2D,detailId);
+            if(Texture::activeDetailId!=detailId){//this is for performance: bind is expensive
+                Texture::activeDetailId=detailId;
+                glActiveTexture(GL_TEXTURE1);
+                glBindTexture(GL_TEXTURE_2D,detailId);
+            }
         }
     }
     const char* getFilename(){
@@ -41,6 +49,7 @@ class Texture {
     }
 };
 
-
+GLuint Texture::activeId =0;
+GLuint Texture::activeDetailId =0;
 
 #endif

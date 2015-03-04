@@ -14,6 +14,7 @@ class Shader {
     GLuint mixWeightLocation;
 
   public:
+    static GLuint currentProgramId;
 
     Shader(char* shaderName){
         buildShaders(Utils::getVertexShaderFilename(shaderName).c_str(),Utils::getFragmentShaderFilename(shaderName).c_str());
@@ -25,15 +26,12 @@ class Shader {
 
     //TODO:change name
     void useProgram(GLfloat mixWeight){
-        if(getCurrentProgramId()!= programId) glUseProgram(programId);//this is for performace:glUseProgram is expensive
+        if(Shader::currentProgramId!= programId){//this is for performance:glUseProgram is expensive
+            Shader::currentProgramId=programId;
+            glUseProgram(programId);
+        }
         if(timeLocation!=-1) glUniform1f(timeLocation,SDL_GetTicks()/100.0);//TODO:we are forcing all to do this, but just particles actually use it...
         if(mixWeightLocation!=-1) glUniform1f(mixWeightLocation,mixWeight);//TODO:check the performance impact of this line
-    }
-
-    GLint getCurrentProgramId(){
-      GLint currentProgramId=0;
-      glGetIntegerv(GL_CURRENT_PROGRAM,&currentProgramId);
-      return currentProgramId;
     }
 
     void buildShaders(const char* vertexFilename,const char* fragmentFilename){
@@ -108,7 +106,7 @@ class Shader {
         return name;
     }
 };
-
+GLuint Shader::currentProgramId=0;
 
 
 #endif
