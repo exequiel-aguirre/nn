@@ -21,7 +21,6 @@
 #include "../Component/FirePlace.h"
 #include "../Component/Camera.h"
 #include "../Component/InteractiveCamera.h"
-#include "../Component/Background.h"
 #include "../Effect/Fog.h"
 #include "../Effect/Reflection.h"
 #include "../Component/Light.h"
@@ -77,8 +76,7 @@ class MyContainer:public Container{
 			Ellipsoid* myEllipsoid=new Ellipsoid(Position(-60.0f,6.0f,-30.0f),1.0f,2.0f,1.0f);
 
 
-			//SkyBox* mySkyBox=new SkyBox(Position(0.0f,-1.0f,0.0f),400,400,400,"img/skybox_bottom.bmp","img/skybox_top.bmp","img/skybox_left.bmp","img/skybox_right.bmp","img/skybox_back.bmp","img/skybox_front.bmp");			
-			//Background* myBackground=new Background({1.000, 0.941, 0.961,1});
+			//SkyBox* mySkyBox=new SkyBox(Position(0.0f,-1.0f,0.0f),400,400,400,"img/skybox_bottom.bmp","img/skybox_top.bmp","img/skybox_left.bmp","img/skybox_right.bmp","img/skybox_back.bmp","img/skybox_front.bmp");
 			Fog* myFog=new Fog();
 			InteractiveCamera* myInteractiveCamera=new InteractiveCamera(Position(-50.0f,3.0f,0.0f));
 			Light* myLight=new Light(Position(40.0f,40.0f,40.0f));
@@ -121,7 +119,6 @@ class MyContainer:public Container{
 			add(new Plane(Position(-70.0f,20.0f,-17.0f,45.0f,0.0f,0.0f),5.0f,50.0f,"img/box.bmp"));
 
 			//add(mySkyBox);
-			//add(myBackground);
 			add(myFog);
 			add(myInteractiveCamera);
 			add(myLight);
