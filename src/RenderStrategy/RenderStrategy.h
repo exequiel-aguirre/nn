@@ -57,10 +57,10 @@ class RenderStrategy {
     }
 
     //TODO:change name. (configureModelObject?)
-    ModelObject& initModelObject(ModelObject& modelObject,GLenum GLMode){
+    void initModelObject(ModelObject& modelObject,GLenum GLMode){
+        if(modelObject.getSize()==0) return;//nothing to do here
         bufferModel(modelObject);
         modelObject.setGLMode(GLMode);
-        return modelObject;
     }
 
     void bufferModel(ModelObject& modelObject){
