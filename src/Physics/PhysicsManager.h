@@ -14,9 +14,9 @@ class PhysicsManager{
     PhysicsManager(){}
     
    public:
-    static PhysicsManager* getInstance(){
+    static PhysicsManager& getInstance(){
       if(instance == NULL) instance=new PhysicsManager();
-      return instance;
+      return *instance;
     }
     virtual ~PhysicsManager(){}	
     

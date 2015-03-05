@@ -23,7 +23,7 @@ public:
 	bool start()
 	{
 		window=new NNWindow(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, false, "nn");
-		Application::getInstance()->setWorld(MyContainer(Position(0.0f,0.0f,0.0f)));
+		Application::getInstance().setWorld(MyContainer(Position(0.0f,0.0f,0.0f)));
 		run();
 		return true;
 	}
@@ -33,7 +33,7 @@ public:
 			while(processEvents())
 			{
 				window->clearGL();
-				Application::getInstance()->render();
+				Application::getInstance().render();
 				window->refresh();
 			}
 			delete(window);
@@ -65,7 +65,7 @@ public:
 						{
 							return false;
 						}
-						Application::getInstance()->onKeyboardEvent(event.key);
+						Application::getInstance().onKeyboardEvent(event.key);
 						break;
 						
 					}
@@ -74,19 +74,19 @@ public:
 					
 					case SDL_KEYUP:
 					{
-						Application::getInstance()->onKeyboardEvent(event.key);
+						Application::getInstance().onKeyboardEvent(event.key);
 						break;
 					}
 
 					case SDL_MOUSEMOTION:
 					{	
-						Application::getInstance()->onMouseMotionEvent(event.motion);
+						Application::getInstance().onMouseMotionEvent(event.motion);
 						break;
 					}
 
 					case SDL_MOUSEBUTTONDOWN:
 					{
-						Application::getInstance()->onMouseButtonEvent(event.button);
+						Application::getInstance().onMouseButtonEvent(event.button);
 						break;
 					}
 
@@ -118,7 +118,7 @@ public:
 				}
 			}
 			//TODO:check if this is the best way of calling this behavior
-			Application::getInstance()->onTimer();
+			Application::getInstance().onTimer();
 			return true;
 		}
 

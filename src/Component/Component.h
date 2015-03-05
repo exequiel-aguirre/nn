@@ -141,7 +141,7 @@ class Component {
     Component* add(IBehavior* behavior){
       behavior->bind(this);
       this->behaviors.push_back(behavior);
-      ListenerManager::getInstance()->add(behavior);
+      ListenerManager::getInstance().add(behavior);
       return this;
     
     }

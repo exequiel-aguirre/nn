@@ -25,7 +25,7 @@ class Gun: public Cylinder {
         this->ball=new Sphere(Position(0,0,0),0.30,"img/wood.bmp");
         this->ball->add(new MotionBehavior());
         //find a better way of doing this
-        Application::getInstance()->getWorld().add(ball);
+        Application::getInstance().getWorld().add(ball);
       }
 
       float sinTheta=sinf(cameraPosition.getTheta() * M_PI/180);

@@ -12,7 +12,7 @@ class Reflection:public IEffect{
 
 	void doEffect(){
 		//this is not ok...
-		float reflectionY=Application::getInstance()->getWorld().getPosition().getY();
+		float reflectionY=Application::getInstance().getWorld().getPosition().getY();
 		
 		double reflectPlane[] = {0.0f, -1.0f, 0.0f, reflectionY};
 		glEnable(GL_CLIP_PLANE0);
@@ -27,7 +27,7 @@ class Reflection:public IEffect{
 			glCullFace(GL_FRONT);
 			//Now we render all the reflections
 			vector<Component*>::iterator it;
-			vector<Component*> worldChilds=Application::getInstance()->getWorld().getChilds();
+			vector<Component*> worldChilds=Application::getInstance().getWorld().getChilds();
 			for(it=worldChilds.begin();it!=worldChilds.end();it++)
 			{
 				if((*it)->getReflects())

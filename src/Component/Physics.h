@@ -15,7 +15,7 @@ class Physics: public Component {
     virtual ~Physics(){}
     
     void onBeforeRenderFrame(){
-		PhysicsManager::getInstance()->detectCollisions();
+		PhysicsManager::getInstance().detectCollisions();
     }
 
 };

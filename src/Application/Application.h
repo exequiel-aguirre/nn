@@ -16,9 +16,9 @@ class Application:public IListener {
     
   public:   
     
-    static Application* getInstance(){
+    static Application& getInstance(){
       if(application==NULL) application=new Application();
-      return application;
+      return *application;
     }
     
     virtual ~Application(){}	    
@@ -26,16 +26,16 @@ class Application:public IListener {
     void onCreate(){}
     void onDestroy(){}
     void onKeyboardEvent(SDL_KeyboardEvent keyEvent){
-      ListenerManager::getInstance()->callKeyboardListeners(keyEvent);
+      ListenerManager::getInstance().callKeyboardListeners(keyEvent);
     }
     void onTimer(){
-      ListenerManager::getInstance()->callTimerListeners();    
+      ListenerManager::getInstance().callTimerListeners();
     }
     void onMouseMotionEvent(SDL_MouseMotionEvent motion){
-      ListenerManager::getInstance()->callMouseListeners(motion);
+      ListenerManager::getInstance().callMouseListeners(motion);
     }
     void onMouseButtonEvent(SDL_MouseButtonEvent button){
-      ListenerManager::getInstance()->callMouseListeners(button);
+      ListenerManager::getInstance().callMouseListeners(button);
     }
     
     void render(){

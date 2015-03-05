@@ -53,7 +53,7 @@ class Container: public Component {
 
       childs.push_back(child);
       if(child->getModelObject().getSize()!=0 && child->getCollides()){//if the object has no boundary the collision detector won't work, and no physics can be applied
-        PhysicsManager::getInstance()->add(child);
+        PhysicsManager::getInstance().add(child);
       }
       return this;
 	}

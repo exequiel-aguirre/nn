@@ -14,9 +14,9 @@ class ListenerManager{
     
     
    public:
-    static ListenerManager* getInstance(){
+    static ListenerManager& getInstance(){
       if(instance == NULL) instance=new ListenerManager();
-      return instance;
+      return *instance;
     }
     virtual ~ListenerManager(){}	
     
