@@ -30,7 +30,7 @@ class Animation: public Model {
 			}
 		}
 
-		RenderStrategy::getInstance().render(this->positionMatrix,(*currentModelObject),shader,texture);
+		RenderStrategy::getInstance().render(this->modelMatrix,(*currentModelObject),shader,texture);
     }
 
 

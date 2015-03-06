@@ -19,7 +19,7 @@
 class Component {  
   protected:
     ModelObject modelObject;
-    Matrix positionMatrix;
+    Matrix modelMatrix;
     Shader shader;
     Texture texture;
     vector<IEffect*> effects;
@@ -60,7 +60,7 @@ class Component {
 
     virtual void render(){
       doEffects();
-      RenderStrategy::getInstance().render(this->positionMatrix,this->modelObject,this->shader,this->texture);
+      RenderStrategy::getInstance().render(this->modelMatrix,this->modelObject,this->shader,this->texture);
       undoEffects();
     }
 
@@ -75,17 +75,17 @@ class Component {
     }
     virtual void setPosition(float x,float y,float z,float phi,float theta,float psi){
       this->position.set(x,y,z,phi,theta,psi);
-      updatePositionMatrix();
+      updateModelMatrix();
       //position changes so boundaries change
       calculateBoundary();
     }
 
-    void updatePositionMatrix(){
-      positionMatrix.loadIdentity();
-      positionMatrix.translate(position.getX(),position.getY(),position.getZ());
-      positionMatrix.rotate(position.getPhi(), 1.0f, 0.0f, 0.0f);
-      positionMatrix.rotate(position.getTheta(), 0.0f, 1.0f, 0.0f);
-      positionMatrix.rotate(position.getPsi(), 0.0f, 0.0f, 1.0f);
+    void updateModelMatrix(){
+      modelMatrix.loadIdentity();
+      modelMatrix.translate(position.getX(),position.getY(),position.getZ());
+      modelMatrix.rotate(position.getPhi(), 1.0f, 0.0f, 0.0f);
+      modelMatrix.rotate(position.getTheta(), 0.0f, 1.0f, 0.0f);
+      modelMatrix.rotate(position.getPsi(), 0.0f, 0.0f, 1.0f);
     }
     
     Velocity& getVelocity(){

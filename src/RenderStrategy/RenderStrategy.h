@@ -11,7 +11,8 @@
 class RenderStrategy {
 
   private:
-  Matrix cameraMatrix;
+  Matrix viewProjectionMatrix;
+  Matrix viewMatrix;
   static RenderStrategy* instance;
   RenderStrategy(){}
   public:
@@ -21,12 +22,14 @@ class RenderStrategy {
     }
     virtual ~RenderStrategy(){}
 
-    void render(Matrix& positionMatrix,ModelObject& modelObject,Shader& shader,Texture& texture){
+    void render(Matrix& modelMatrix,ModelObject& modelObject,Shader& shader,Texture& texture){
 
         if(modelObject.getSize()!=0){//if there is an empty modelObject, there isn't anything to render
           texture.bind();
-          Matrix modelViewProjectionMatrix=this->cameraMatrix * positionMatrix;//std::cout << this->cameraMatrix << positionMatrix<<std::endl;
-          shader.useProgram(modelViewProjectionMatrix,positionMatrix,texture.getMixWeight());
+          Matrix modelViewProjectionMatrix=this->viewProjectionMatrix * modelMatrix;
+          Matrix modelViewMatrix=this->viewMatrix * modelMatrix;
+          Matrix normalMatrix=modelViewMatrix.getNormalMatrix();
+          shader.useProgram(modelViewProjectionMatrix,modelViewMatrix,normalMatrix,texture.getMixWeight());
           glBindVertexArray(modelObject.getVAOId());
           glDrawArrays(modelObject.getGLMode(), 0, modelObject.getSize());
           glBindVertexArray(0);
@@ -93,8 +96,11 @@ class RenderStrategy {
     }
 
 
-    void setCameraMatrix(Matrix cameraMatrix){
-      this->cameraMatrix=cameraMatrix;
+    void setViewProjectionMatrix(Matrix viewProjectionMatrix){
+      this->viewProjectionMatrix=viewProjectionMatrix;
+    }
+    void setViewMatrix(Matrix viewMatrix){
+      this->viewMatrix=viewMatrix;
     }
 };
 RenderStrategy* RenderStrategy::instance=NULL;

@@ -32,17 +32,18 @@ class Camera: public Component {
     virtual ~Camera(){}
     
     void onBeforeRenderFrame(){
+		this->modelMatrix=Matrix(0.0);//TODO:check this
 		// Reset the matrix
-	 	this->positionMatrix.loadIdentity();
-	 	this->positionMatrix*=projectionMatrix;
+		Matrix viewMatrix=Matrix(1.0);
 		// Move the camera to our location in space
-	 	this->positionMatrix.rotate(this->position.getPhi(), 1.0f, 0.0f, 0.0f); //rotate our camera on the x-axis (looking up and down)
-	 	this->positionMatrix.rotate(this->position.getTheta(), 0.0f, 1.0f, 0.0f); // Rotate our camera on the  y-axis (looking left and right)
+		viewMatrix.rotate(this->position.getPhi(), 1.0f, 0.0f, 0.0f); //rotate our camera on the x-axis (looking up and down)
+		viewMatrix.rotate(this->position.getTheta(), 0.0f, 1.0f, 0.0f); // Rotate our camera on the  y-axis (looking left and right)
 		// Translate the ModelView matrix to the position of our camera - everything should now be drawn relative
 		// to this position!
-		this->positionMatrix.translate( -this->position.getX(), -this->position.getY(), -this->position.getZ() );
+		viewMatrix.translate( -this->position.getX(), -this->position.getY(), -this->position.getZ() );
 
-		RenderStrategy::getInstance().setCameraMatrix(this->positionMatrix);
+		RenderStrategy::getInstance().setViewMatrix(viewMatrix);
+		RenderStrategy::getInstance().setViewProjectionMatrix(this->projectionMatrix*viewMatrix);
     }
 
     void buildProjectionMatrix(){

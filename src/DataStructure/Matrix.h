@@ -168,6 +168,14 @@ class Matrix{
 
 		return Matrix(p);
 	}
+
+	//TODO:implement this
+	/*This will work fine until we use the scale (for the reflection,for example)
+	*/
+	Matrix getNormalMatrix(){
+		//transpose(inverse(gl_ModelViewMatrix))
+		return (*this);
+	}
 	
 };
 
