@@ -25,6 +25,7 @@
 #include "../Effect/Reflection.h"
 #include "../Component/Light.h"
 #include "../Component/Physics.h"
+#include "../DataStructure/Matrix.h"
 
 #include "../Behavior/MotionBehavior.h"
 
@@ -33,7 +34,7 @@
 class MyContainer:public Container{
   public:
     MyContainer(Position&& position):Container(position){
-			add(new Reflection());
+			//add(new Reflection());
 			Ground* myGroundR=new Ground(Position(100.0f,0.01f,0.0f),150,50);
 			Ground* myGroundL=new Ground(Position(-100.0f,0.01f,0.0f),150,50);
 			Ground* myGroundF=new Ground(Position(0.0f,0.01f,-50.0f),350,50);

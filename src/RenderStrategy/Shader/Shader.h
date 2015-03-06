@@ -3,6 +3,7 @@
 
 #include "../../DataStructure/ModelObject.h"
 #include "../../Utils/Utils.h"
+#include "../../DataStructure/Matrix.h"
 
 class Shader {
 
@@ -10,6 +11,8 @@ class Shader {
     std::string name;
 
     GLuint programId;
+    GLint modelViewProjectionMatrixLocation;
+    GLint modelViewMatrixLocation;
     GLint timeLocation;
     GLint mixWeightLocation;
 
@@ -25,11 +28,13 @@ class Shader {
     virtual ~Shader(){}
 
     //TODO:change name
-    void useProgram(GLfloat mixWeight){
+    void useProgram(Matrix& modelViewProjectionMatrix,Matrix& modelViewMatrix,GLfloat mixWeight){
         if(Shader::currentProgramId!= programId){//this is for performance:glUseProgram is expensive
             Shader::currentProgramId=programId;
             glUseProgram(programId);
         }
+        if(modelViewProjectionMatrixLocation!=-1) glUniformMatrix4fv(modelViewProjectionMatrixLocation,1,GL_TRUE,modelViewProjectionMatrix.getRawMatrix());//why the transpose?
+        if(modelViewMatrixLocation!=-1) glUniformMatrix4fv(modelViewMatrixLocation,1,GL_TRUE,modelViewProjectionMatrix.getRawMatrix());//why the transpose?
         if(timeLocation!=-1) glUniform1f(timeLocation,SDL_GetTicks()/100.0);//TODO:we are forcing all to do this, but just particles actually use it...
         if(mixWeightLocation!=-1) glUniform1f(mixWeightLocation,mixWeight);//TODO:check the performance impact of this line
     }
@@ -54,15 +59,17 @@ class Shader {
         glValidateProgram(programId);
         checkErrors(programId,GL_LINK_STATUS,true);
 
+        //matrices
+        this->modelViewProjectionMatrixLocation=glGetUniformLocation(programId, "modelViewProjectionMatrix");
+        this->modelViewMatrixLocation=glGetUniformLocation(programId, "modelViewMatrix");
+
+        //just for the particle shaders
+        this->timeLocation=glGetUniformLocation(programId, "time");
         //textures
         glUseProgram(programId);
         glUniform1i(glGetUniformLocation(programId, "texture"),0);
         glUniform1i(glGetUniformLocation(programId, "textureDetail"),1);
         this->mixWeightLocation=glGetUniformLocation(programId, "mixWeight");
-        //just for the particle shaders
-        this->timeLocation=glGetUniformLocation(programId, "time");
-
-        
     }
 
     GLuint createShader(const char* filename,GLenum type){

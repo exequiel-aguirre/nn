@@ -30,7 +30,7 @@ class Animation: public Model {
 			}
 		}
 
-		this->renderStrategy.render(this->position,(*currentModelObject),shader,texture);
+		RenderStrategy::getInstance().render(this->positionMatrix,(*currentModelObject),shader,texture);
     }
 
 
@@ -43,7 +43,7 @@ class Animation: public Model {
 		    if (f.good()) {
 				f.close();
 				ModelObject modelObject=Utils::loadModel(frameFilename.c_str());
-				this->renderStrategy.initModelObject(modelObject,GL_TRIANGLES);
+				RenderStrategy::getInstance().initModelObject(modelObject,GL_TRIANGLES);
 
 				modelObjects.push_back(modelObject);
 			}

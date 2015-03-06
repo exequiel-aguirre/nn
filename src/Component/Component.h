@@ -1,6 +1,7 @@
 #ifndef ComponentH
 #define ComponentH
 #include <vector>
+#include "../DataStructure/Matrix.h"
 #include "../DataStructure/Position.h"
 #include "../DataStructure/Velocity.h"
 #include "../DataStructure/Acceleration.h"
@@ -18,10 +19,10 @@
 class Component {  
   protected:
     ModelObject modelObject;
-    RenderStrategy renderStrategy;
+    Matrix positionMatrix;
     Shader shader;
     Texture texture;
-
+    vector<IEffect*> effects;
 
     vector<IBehavior*> behaviors;
     //mechanic properties
@@ -40,7 +41,7 @@ class Component {
     Component(Position position,ModelObject modelObject,const char* textureFilename,GLenum GLMode,const char* shaderName){
       this->position=position;
       this->modelObject=modelObject;
-      this->renderStrategy.initModelObject(this->modelObject,GLMode);
+      RenderStrategy::getInstance().initModelObject(this->modelObject,GLMode);
       if(shaderName==NULL) shaderName=DEFAULT_SHADER_NAME;
       this->shader=ResourceManager::getInstance().getShader(shaderName);
       if(textureFilename==NULL) textureFilename=DEFAULT_TEXTURE_FILENAME;
@@ -58,7 +59,9 @@ class Component {
     virtual void onBeforeRenderFrame(){}
 
     virtual void render(){
-      renderStrategy.render(this->position,this->modelObject,this->shader,this->texture);
+      doEffects();
+      RenderStrategy::getInstance().render(this->positionMatrix,this->modelObject,this->shader,this->texture);
+      undoEffects();
     }
 
     virtual void onAfterCollision(){}
@@ -72,8 +75,17 @@ class Component {
     }
     virtual void setPosition(float x,float y,float z,float phi,float theta,float psi){
       this->position.set(x,y,z,phi,theta,psi);
+      updatePositionMatrix();
       //position changes so boundaries change
       calculateBoundary();
+    }
+
+    void updatePositionMatrix(){
+      positionMatrix.loadIdentity();
+      positionMatrix.translate(position.getX(),position.getY(),position.getZ());
+      positionMatrix.rotate(position.getPhi(), 1.0f, 0.0f, 0.0f);
+      positionMatrix.rotate(position.getTheta(), 0.0f, 1.0f, 0.0f);
+      positionMatrix.rotate(position.getPsi(), 0.0f, 0.0f, 1.0f);
     }
     
     Velocity& getVelocity(){
@@ -147,7 +159,7 @@ class Component {
     }
 
     Component* add(IEffect* effect){
-      this->renderStrategy.add(effect);
+      this->effects.push_back(effect);
       return this;    
     }
 
@@ -176,6 +188,24 @@ class Component {
     Component* setCollides(bool collides){
       this->collides=collides;
       return this;
+    }
+
+    void doEffects(){
+      vector<IEffect*>::iterator it;
+
+      for(it=effects.begin();it!=effects.end();it++)
+      {
+          (*it)->doEffect();
+      }
+    }
+
+    void undoEffects(){
+      vector<IEffect*>::iterator it;
+
+      for(it=effects.begin();it!=effects.end();it++)
+      {
+          (*it)->undoEffect();
+      }
     }
 
 };

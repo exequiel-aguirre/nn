@@ -6,54 +6,31 @@
 #include "Texture.h"
 #include "../Utils/Utils.h"
 #include "../DataStructure/RawPoint.h"
+#include "../DataStructure/Matrix.h"
 
 class RenderStrategy {
 
   private:
-    vector<IEffect*> effects;
+  Matrix cameraMatrix;
+  static RenderStrategy* instance;
+  RenderStrategy(){}
   public:
-
-    RenderStrategy(){}
-
+  static RenderStrategy& getInstance(){
+      if(instance == NULL) instance=new RenderStrategy();
+      return *instance;
+    }
     virtual ~RenderStrategy(){}
 
-    //this method is called before the component is rendered.
-    virtual void onBeforeRender(Position& position){
-      //position the rendering
-      glTranslatef(position.getX(),position.getY(),position.getZ());
-      //rotate the x-axis (up and down)
-      glRotatef(position.getPhi(), 1.0f, 0.0f, 0.0f);
-      // Rotate on the y-axis (left and right)
-      glRotatef(position.getTheta(), 0.0f, 1.0f, 0.0f);
+    void render(Matrix& positionMatrix,ModelObject& modelObject,Shader& shader,Texture& texture){
 
-      glRotatef(position.getPsi(), 0.0f, 0.0f, 1.0f);
-
-      doEffects();
-    }
-
-    void render(Position& position,ModelObject& modelObject,Shader& shader,Texture& texture){
-
-        onBeforeRender(position);
         if(modelObject.getSize()!=0){//if there is an empty modelObject, there isn't anything to render
           texture.bind();
-          shader.useProgram(texture.getMixWeight());
+          Matrix modelViewProjectionMatrix=this->cameraMatrix * positionMatrix;//std::cout << this->cameraMatrix << positionMatrix<<std::endl;
+          shader.useProgram(modelViewProjectionMatrix,positionMatrix,texture.getMixWeight());
           glBindVertexArray(modelObject.getVAOId());
           glDrawArrays(modelObject.getGLMode(), 0, modelObject.getSize());
           glBindVertexArray(0);
         }
-        onAfterRender(position);
-    }
-
-    //this method is called after the components are rendered.
-    virtual void onAfterRender(Position& position){
-      undoEffects();
-      //we restore the position to avoid messing with the other's component's location
-      //mind that the group SO(3,R) is non-abelian, so we must do this in the opposite order than
-      // onBeforeRender
-      glRotatef(-position.getPsi(), 0.0f, 0.0f, 1.0f);
-      glRotatef(-position.getTheta(), 0.0f, 1.0f, 0.0f);
-      glRotatef(-position.getPhi(), 1.0f, 0.0f, 0.0f);
-      glTranslatef(-position.getX(),-position.getY(),-position.getZ());
     }
 
     //TODO:change name. (configureModelObject?)
@@ -115,29 +92,12 @@ class RenderStrategy {
         modelObject.setVAOId(vaoId);
     }
 
-   void add(IEffect* effect){
-      this->effects.push_back(effect);
-    }
 
-    void doEffects(){
-      vector<IEffect*>::iterator it;
-
-      for(it=effects.begin();it!=effects.end();it++)
-      {
-          (*it)->doEffect();
-      }
-    }
-
-    void undoEffects(){
-      vector<IEffect*>::iterator it;
-
-      for(it=effects.begin();it!=effects.end();it++)
-      {
-          (*it)->undoEffect();
-      }
+    void setCameraMatrix(Matrix cameraMatrix){
+      this->cameraMatrix=cameraMatrix;
     }
 };
-
+RenderStrategy* RenderStrategy::instance=NULL;
 
 
 #endif
