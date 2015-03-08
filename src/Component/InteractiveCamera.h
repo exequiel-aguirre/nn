@@ -40,11 +40,10 @@ class InteractiveCamera: public Camera {
     virtual ~InteractiveCamera(){}
 
     void onBeforeRenderFrame(){
-        glPushMatrix();        
-        glLoadIdentity();
+        //TODO:find a not so obscure way of doing this.It strongly relies in the
+        // fact that the camera:onBeforeRenderFrame will re-set the ViewProjectionMatrix again.
+        RenderStrategy::getInstance().setViewProjectionMatrix(this->projectionMatrix);
         gun.render();
-        glPopMatrix();
-
         Camera::onBeforeRenderFrame();
     }
 

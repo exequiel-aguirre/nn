@@ -8,7 +8,7 @@
 
 
 class Camera: public Component {
-  private:
+  protected:
 	Matrix projectionMatrix;
   public:
 	  Camera(Position position,bool godMode):Component(position){

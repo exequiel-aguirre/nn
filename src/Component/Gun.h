@@ -11,7 +11,8 @@ class Gun: public Cylinder {
     const float DEFAULT_BALL_SPEED=10.0;
   public:
 	  Gun(Position&& position):Cylinder(std::move(position),0.1f,2.0f,"img/wood.bmp"){
-          
+      //TODO:this is to force the updateModelMatrixMethod.Usually called when we add the component to the container, but this is an exception
+      this->setPosition(position.getX(),position.getY(),position.getZ(),position.getPhi(),position.getTheta(),position.getPsi());
     }   
 
     virtual ~Gun(){}
