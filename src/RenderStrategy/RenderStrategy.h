@@ -99,8 +99,14 @@ class RenderStrategy {
     void setViewProjectionMatrix(Matrix viewProjectionMatrix){
       this->viewProjectionMatrix=viewProjectionMatrix;
     }
+    Matrix& getViewProjectionMatrix(){
+      return viewProjectionMatrix;
+    }
     void setViewMatrix(Matrix viewMatrix){
       this->viewMatrix=viewMatrix;
+    }
+    Matrix& getViewMatrix(){
+      return viewMatrix;
     }
 };
 RenderStrategy* RenderStrategy::instance=NULL;

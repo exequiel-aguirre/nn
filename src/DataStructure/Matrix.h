@@ -11,7 +11,7 @@ class Matrix{
 	Matrix(float a):Matrix(a,a,a,a){}
 	Matrix():Matrix(0.0){}
 
-	Matrix(float* rawMatrix){
+	Matrix(float rawMatrix[16]){
 		for(int i=0;i<16;i++) this->rawMatrix[i]=rawMatrix[i];
 	}
 
@@ -175,6 +175,49 @@ class Matrix{
 	Matrix getNormalMatrix(){
 		//transpose(inverse(gl_ModelViewMatrix))
 		return (*this);
+	}
+
+	Matrix getInverse(){
+		float e[4][8]={0};
+
+		//build the extended matrix e=[a|I]
+		for(int i=0;i<4;i++){
+			for(int j=0;j<8;j++){
+				if(j<4) e[i][j]=(*this)[4*i + j];
+				if(i==(j-4)) e[i][j]=1.0;
+			}
+		}
+
+		//reduce to diagonal
+		for(int i=0;i<4;i++){
+			for(int j=0;j<4;j++){
+				if(i!=j && e[i][i]!=0){
+					float d=e[j][i]/e[i][i];
+					for(int k=0;k<8;k++){
+						e[j][k]-=e[i][k]*d;
+					}
+				}
+			}
+		}
+
+		//reduce to unit
+		for(int i=0;i<4;i++){
+			float d=e[i][i];
+			if(d==0) continue;
+			for(int j=0;j<8;j++){
+				e[i][j]=e[i][j]/d;
+			}
+		}
+
+		//build the inverse Matrix
+		Matrix inverse;
+		for(int i=0;i<4;i++){
+			for(int j=0;j<4;j++){
+				inverse[4*i + j]=e[i][j+4];
+			}
+		}
+
+		return inverse;
 	}
 	
 };

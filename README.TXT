@@ -43,6 +43,7 @@ BUGS:
 
 
 TODOS:
+-Test the matrix inverse. (Maybe just asserting that A * A^-1 = I , on every call)
 -Change the sign in the camera for the angles as well (and swap the order of the rotates)(should be the exact opposite of the Component::onBeforeRender)
 -The Render strategy is assigning a texture always, but the particles shaders don't use any
 -Performance: 

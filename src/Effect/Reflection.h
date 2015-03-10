@@ -11,18 +11,15 @@ class Reflection:public IEffect{
     
 
 	void doEffect(){
-		//this is not ok...
-		float reflectionY=Application::getInstance().getWorld().getPosition().getY();
-		
-		double reflectPlane[] = {0.0f, -1.0f, 0.0f, reflectionY};
+		/*TODO:here we are supposed to transform the reflectPlane 0,-1,0,0 by the inverse of the viewMatrix
+		* What we are doing is taking the second row of the inverse of the viewMatrix and multiplying by -1
+		*/
+		Matrix viewMatrixInverse=RenderStrategy::getInstance().getViewMatrix().getInverse();
+		double reflectPlane[]={-viewMatrixInverse[4],-viewMatrixInverse[5],-viewMatrixInverse[6],-viewMatrixInverse[7]};
 		glEnable(GL_CLIP_PLANE0);
 		glClipPlane(GL_CLIP_PLANE0, reflectPlane);
-		//start reflection
-		glPushMatrix();
-			//translate everything since it will be reflection upside-down
-			glTranslatef(0.0f, reflectionY*2.0f, 0.0f);
-			//Flip everything upside-down
-			glScalef(1.0, -1.0, 1.0);
+			RenderStrategy::getInstance().getViewProjectionMatrix().scale(1.0,-1.0,1.0);
+			RenderStrategy::getInstance().getViewMatrix().scale(1.0,-1.0,1.0);
 			// Since the terrain is upside-down we need to do front-face culling.
 			glCullFace(GL_FRONT);
 			//Now we render all the reflections
@@ -37,7 +34,8 @@ class Reflection:public IEffect{
 			}
 			//Restore all the changes
 			glCullFace(GL_BACK);
-		glPopMatrix();
+			RenderStrategy::getInstance().getViewMatrix().scale(1.0,-1.0,1.0);
+			RenderStrategy::getInstance().getViewProjectionMatrix().scale(1.0,-1.0,1.0);
 		glDisable(GL_CLIP_PLANE0);
 	}
 
