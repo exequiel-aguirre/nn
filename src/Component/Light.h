@@ -21,28 +21,15 @@ class Light: public Component {
   public:
 	  Light(Position&& position):Component(position){
 		RawLight rawLight;
-		float ambientProduct[4]={0};
-		float diffuseProduct[4]={0};
-		float specularProduct[4]={0};
-		float sceneColor[4]={0};
-
 
 		rawLight.shininess=128.0f;
+		this->storeProduct(ambientMaterial,ambientLight,rawLight.ambientProduct);
+		this->storeProduct(diffuseMaterial,diffuseLight,rawLight.diffuseProduct);
+		this->storeProduct(specularMaterial,specularLight,rawLight.specularProduct);
+		this->storeSceneColor(emissionMaterial,ambientMaterial,ambientLightModel,rawLight.sceneColor);
 
-		this->getProduct(ambientMaterial,ambientLight,ambientProduct);
-		std::copy(ambientProduct, ambientProduct+4, rawLight.ambientProduct);
-
-		this->getProduct(diffuseMaterial,diffuseLight,diffuseProduct);
-		std::copy(diffuseProduct, diffuseProduct+4, rawLight.diffuseProduct);
-
-		this->getProduct(specularMaterial,specularLight,specularProduct);
-		std::copy(specularProduct, specularProduct+4, rawLight.specularProduct);
-
-		this->getSceneColor(emissionMaterial,ambientMaterial,ambientLightModel,sceneColor);
-		std::copy(sceneColor, sceneColor+4, rawLight.sceneColor);
-
-		auto lightPosition = std::initializer_list<double>({position.getX(),position.getY(),position.getZ(),1.0f});
-		std::copy(lightPosition.begin(), lightPosition.end(), rawLight.position);
+		float lightPosition[4] = {position.getX(),position.getY(),position.getZ(),1.0f};
+		std::copy(lightPosition, lightPosition+4, rawLight.position);
 		glEnable(GL_LIGHT0);
 
 
@@ -54,13 +41,14 @@ class Light: public Component {
 
     virtual ~Light(){}
 
-	//TODO:find a better way of doing this
-    void getSceneColor(float emissionMaterial[4],float ambientMaterial[4],float ambientLightModel[4],float sceneColor[4]){
-		this->getProduct(ambientMaterial,ambientLightModel,sceneColor);
-		for(int i=0;i<4;i++) sceneColor[i]+=emissionMaterial[i];//Ecm + Acm*Acs
+
+    void storeSceneColor(float emissionMaterial[4],float ambientMaterial[4],float ambientLightModel[4],float sceneColor[4]){
+		for(int i=0;i<4;i++){
+			sceneColor[i]=emissionMaterial[i] + ambientMaterial[i]*ambientLightModel[i];//Ecm + Acm*Acs
+		}
     }
-    //TODO:find a better way of doing this
-    void getProduct(float material[4],float light[4],float product[4]){
+
+    void storeProduct(float material[4],float light[4],float product[4]){
 		for(int i=0;i<4;i++){
 			product[i]=light[i]*material[i];
 		}
