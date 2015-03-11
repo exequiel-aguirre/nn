@@ -48,7 +48,8 @@ class Camera: public Component {
 
     void buildProjectionMatrix(){
 		this->projectionMatrix=Matrix(1.0);
-		this->projectionMatrix.perspective(M_PI/16,1024.0/768.0,1.0f,500.0f);//TODO:avoid hardcoding
+		float aspectRatio=Application::getInstance().getAspectRatio();
+		this->projectionMatrix.perspective(M_PI/16,aspectRatio,1.0f,500.0f);
     }
 
 };
