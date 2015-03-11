@@ -4,6 +4,7 @@
 #include "../../DataStructure/ModelObject.h"
 #include "../../Utils/Utils.h"
 #include "../../DataStructure/Matrix.h"
+#include "../../DataStructure/RawLight.h"
 
 class Shader {
 
@@ -16,6 +17,12 @@ class Shader {
     GLint normalMatrixLocation;
     GLint timeLocation;
     GLint mixWeightLocation;
+    GLint light_positionLocation;
+    GLint light_ambientProductLocation;
+    GLint light_diffuseProductLocation;
+    GLint light_specularProductLocation;
+    GLint light_shininessLocation;
+    GLint light_sceneColorLocation;
 
   public:
     static GLuint currentProgramId;
@@ -29,16 +36,22 @@ class Shader {
     virtual ~Shader(){}
 
     //TODO:change name
-    void useProgram(Matrix& modelViewProjectionMatrix,Matrix& modelViewMatrix,Matrix& normalMatrix,GLfloat mixWeight){
+    void useProgram(Matrix& modelViewProjectionMatrix,Matrix& modelViewMatrix,Matrix& normalMatrix,GLfloat mixWeight,RawLight rawLight){
         if(Shader::currentProgramId!= programId){//this is for performance:glUseProgram is expensive
             Shader::currentProgramId=programId;
             glUseProgram(programId);
         }
         if(modelViewProjectionMatrixLocation!=-1) glUniformMatrix4fv(modelViewProjectionMatrixLocation,1,GL_TRUE,modelViewProjectionMatrix.getRawMatrix());//why the transpose?
-        if(modelViewMatrixLocation!=-1) glUniformMatrix4fv(modelViewMatrixLocation,1,GL_TRUE,modelViewMatrix.getRawMatrix());//why the transpose?
-        if(normalMatrixLocation!=-1) glUniformMatrix4fv(normalMatrixLocation,1,GL_TRUE,normalMatrix.getRawMatrix());//why the transpose?
+        if(modelViewMatrixLocation!=-1) glUniformMatrix4fv(modelViewMatrixLocation,1,GL_TRUE,modelViewMatrix.getRawMatrix());//opengl uses column major for matrices,
+        if(normalMatrixLocation!=-1) glUniformMatrix4fv(normalMatrixLocation,1,GL_TRUE,normalMatrix.getRawMatrix());// so we pass the transpose parameter as GL_TRUE
         if(timeLocation!=-1) glUniform1f(timeLocation,SDL_GetTicks()/100.0);//TODO:we are forcing all to do this, but just particles actually use it...
         if(mixWeightLocation!=-1) glUniform1f(mixWeightLocation,mixWeight);//TODO:check the performance impact of this line
+        if(light_positionLocation!=-1) glUniform4fv(light_positionLocation,1,rawLight.position);//TODO: Find a way of
+        if(light_ambientProductLocation!=-1) glUniform4fv(light_ambientProductLocation,1,rawLight.ambientProduct);//avoiding all
+        if(light_diffuseProductLocation!=-1) glUniform4fv(light_diffuseProductLocation,1,rawLight.diffuseProduct);//these passing
+        if(light_specularProductLocation!=-1) glUniform4fv(light_specularProductLocation,1,rawLight.specularProduct);//each
+        if(light_shininessLocation!=-1) glUniform1f(light_shininessLocation,rawLight.shininess);// light parameter
+        if(light_sceneColorLocation!=-1) glUniform4fv(light_sceneColorLocation,1,rawLight.sceneColor);//Maybe using uniform block ?
     }
 
     void buildShaders(const char* vertexFilename,const char* fragmentFilename){
@@ -73,6 +86,15 @@ class Shader {
         glUniform1i(glGetUniformLocation(programId, "texture"),0);
         glUniform1i(glGetUniformLocation(programId, "textureDetail"),1);
         this->mixWeightLocation=glGetUniformLocation(programId, "mixWeight");
+
+        //light
+        this->light_positionLocation=glGetUniformLocation(programId, "light.position");
+        this->light_ambientProductLocation=glGetUniformLocation(programId, "light.ambientProduct");
+        this->light_diffuseProductLocation=glGetUniformLocation(programId, "light.diffuseProduct");
+        this->light_specularProductLocation=glGetUniformLocation(programId, "light.specularProduct");
+        this->light_shininessLocation=glGetUniformLocation(programId, "light.shininess");
+        this->light_sceneColorLocation=glGetUniformLocation(programId, "light.sceneColor");
+
     }
 
     GLuint createShader(const char* filename,GLenum type){

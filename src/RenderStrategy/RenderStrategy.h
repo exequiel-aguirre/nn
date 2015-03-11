@@ -6,6 +6,7 @@
 #include "Texture.h"
 #include "../Utils/Utils.h"
 #include "../DataStructure/RawPoint.h"
+#include "../DataStructure/RawLight.h"
 #include "../DataStructure/Matrix.h"
 
 class RenderStrategy {
@@ -13,6 +14,7 @@ class RenderStrategy {
   private:
   Matrix viewProjectionMatrix;
   Matrix viewMatrix;
+  RawLight rawLight;
   static RenderStrategy* instance;
   RenderStrategy(){}
   public:
@@ -29,7 +31,7 @@ class RenderStrategy {
           Matrix modelViewProjectionMatrix=this->viewProjectionMatrix * modelMatrix;
           Matrix modelViewMatrix=this->viewMatrix * modelMatrix;
           Matrix normalMatrix=modelViewMatrix.getNormalMatrix();
-          shader.useProgram(modelViewProjectionMatrix,modelViewMatrix,normalMatrix,texture.getMixWeight());
+          shader.useProgram(modelViewProjectionMatrix,modelViewMatrix,normalMatrix,texture.getMixWeight(),rawLight);
           glBindVertexArray(modelObject.getVAOId());
           glDrawArrays(modelObject.getGLMode(), 0, modelObject.getSize());
           glBindVertexArray(0);
@@ -107,6 +109,10 @@ class RenderStrategy {
     }
     Matrix& getViewMatrix(){
       return viewMatrix;
+    }
+
+    void setRawLight(RawLight rawLight){
+      this->rawLight=rawLight;
     }
 };
 RenderStrategy* RenderStrategy::instance=NULL;
