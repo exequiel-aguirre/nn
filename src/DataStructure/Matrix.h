@@ -24,13 +24,6 @@ class Matrix{
 	float operator [](int i) const{//getter
 		return rawMatrix[i];
 	}
-	float& operator [](int i){//setter
-		return rawMatrix[i];
-	}	
-	/*const float* operator [](int i) const{
-		return &rawMatrix[(4*i)];
-	}*/
-	
 
 	Matrix operator*(const Matrix& b){
 		Matrix a=(*this);
@@ -43,8 +36,8 @@ class Matrix{
 		for(int i=0;i<4;i++){
 			for(int j=0;j<4;j++){
 				float c_ij=0;
-				for(int k=0;k<4;k++) c_ij += a[4*i + k] * b[4*k + j];
-				(*this)[4*i + j]=c_ij;
+				for(int k=0;k<4;k++) c_ij += a.rawMatrix[4*i + k] * b.rawMatrix[4*k + j];
+				rawMatrix[4*i + j]=c_ij;
 			}
 		}		
 
@@ -53,7 +46,7 @@ class Matrix{
 
 	Matrix& operator*=(const float a){
 		for(int i=0;i<16;i++){
-			(*this)[i]*=a;
+			rawMatrix[i]*=a;
 		}
 		return (*this);
 	}
@@ -61,7 +54,7 @@ class Matrix{
 	friend std::ostream& operator<<(std::ostream& os , const Matrix m){
 		for(int i=0;i<16;i++){
 			if((i%4)==0) os<< std::endl;
-			os<< m[i]<<" ";
+			os<< m.rawMatrix[i]<<" ";
 		}
 		return os<<std::endl;
 	}
@@ -174,6 +167,7 @@ class Matrix{
 	*/
 	Matrix getNormalMatrix(){
 		//transpose(inverse(gl_ModelViewMatrix))
+		//return (*this).getInverse().transpose();
 		return (*this);
 	}
 
@@ -183,7 +177,7 @@ class Matrix{
 		//build the extended matrix e=[a|I]
 		for(int i=0;i<4;i++){
 			for(int j=0;j<8;j++){
-				if(j<4) e[i][j]=(*this)[4*i + j];
+				if(j<4) e[i][j]=rawMatrix[4*i + j];
 				if(i==(j-4)) e[i][j]=1.0;
 			}
 		}
@@ -213,11 +207,21 @@ class Matrix{
 		Matrix inverse;
 		for(int i=0;i<4;i++){
 			for(int j=0;j<4;j++){
-				inverse[4*i + j]=e[i][j+4];
+				inverse.rawMatrix[4*i + j]=e[i][j+4];
 			}
 		}
 
 		return inverse;
+	}
+
+	Matrix& transpose(){
+		Matrix a=(*this);
+		for (int i=0;i<4;i++){
+			for(int j=0;j<4;j++){
+				rawMatrix[4*i +j]=a[4*j +i];
+			}
+		}
+		return (*this);
 	}
 	
 };
