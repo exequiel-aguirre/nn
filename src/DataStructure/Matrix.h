@@ -15,7 +15,7 @@ class Matrix{
 		for(int i=0;i<16;i++) this->rawMatrix[i]=rawMatrix[i];
 	}
 
-	virtual ~Matrix(){}
+
 
 	float* getRawMatrix(){
 		return rawMatrix;
@@ -51,6 +51,13 @@ class Matrix{
 		return (*this);
 	}
 
+	Matrix operator-(const Matrix& b){
+		Matrix a=(*this);
+		for(int i=0;i<16;i++){
+			a.rawMatrix[i]-=b.rawMatrix[i];
+		}
+		return a;
+	}
 	friend std::ostream& operator<<(std::ostream& os , const Matrix m){
 		for(int i=0;i<16;i++){
 			if((i%4)==0) os<< std::endl;
