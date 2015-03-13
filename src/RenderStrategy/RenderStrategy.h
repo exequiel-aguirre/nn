@@ -15,6 +15,7 @@ class RenderStrategy {
   Matrix viewProjectionMatrix;
   Matrix viewMatrix;
   RawLight rawLight;
+  float reflectPlane[4]={0};
   static RenderStrategy* instance;
   RenderStrategy(){}
   public:
@@ -31,7 +32,7 @@ class RenderStrategy {
           Matrix modelViewProjectionMatrix=this->viewProjectionMatrix * modelMatrix;
           Matrix modelViewMatrix=this->viewMatrix * modelMatrix;
           Matrix normalMatrix=modelViewMatrix.getNormalMatrix();
-          shader.useProgram(modelViewProjectionMatrix,modelViewMatrix,normalMatrix,texture.getMixWeight(),rawLight);
+          shader.useProgram(modelViewProjectionMatrix,modelViewMatrix,normalMatrix,reflectPlane,texture.getMixWeight(),rawLight);
           glBindVertexArray(modelObject.getVAOId());
           glDrawArrays(modelObject.getGLMode(), 0, modelObject.getSize());
           glBindVertexArray(0);
@@ -113,6 +114,9 @@ class RenderStrategy {
 
     void setRawLight(RawLight rawLight){
       this->rawLight=rawLight;
+    }
+    void setReflectPlane(float reflectPlane[4]){
+      std::copy(reflectPlane,reflectPlane+4,this->reflectPlane);
     }
 };
 RenderStrategy* RenderStrategy::instance=NULL;

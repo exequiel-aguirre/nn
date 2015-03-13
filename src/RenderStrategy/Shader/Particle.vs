@@ -1,12 +1,13 @@
-#version 120
+#version 150
 
-attribute vec3 vertex;
-attribute vec2 uv;
-attribute vec2 uvDetail;
-attribute vec3 normal;
+in vec3 vertex;
+in vec2 uv;
+in vec2 uvDetail;
+in vec3 normal;
 
 uniform mat4 modelViewProjectionMatrix;
 uniform mat4 modelViewMatrix;
+uniform vec4 reflectPlane;
 
 uniform float time;
 
@@ -22,7 +23,7 @@ void main()
 	gl_Position=modelViewProjectionMatrix * vec4(vertex1, 1.0);
 
 	//this is for the reflection
-	gl_ClipVertex=modelViewMatrix * vec4(vertex1,1.0);
+	gl_ClipDistance[0]=dot(reflectPlane,modelViewMatrix*vec4(vertex1,1.0));
 
 	gl_PointSize=4.0;
 }

@@ -32,12 +32,6 @@ private:
 
 
 	bool createSDLWindow(int width, int height, bool fullscreen, const string& title){
-		if( SDL_Init( SDL_INIT_VIDEO ) != 0 ) 
-		{		
-			return false;
-		}
-		
-
 		//all values are "at least"!	
 		SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 5);
 		SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 5);
@@ -45,7 +39,15 @@ private:
 		SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 5);
 		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);//TODO:this seems
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);// to have no
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);//effect whatsoever
 		SDL_SetRelativeMouseMode(SDL_TRUE);
+
+		if( SDL_Init( SDL_INIT_VIDEO ) != 0 )
+		{
+			return false;
+		}
 
 		
 		// Flags tell SDL about the type of window we are creating.

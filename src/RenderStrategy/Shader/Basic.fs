@@ -1,9 +1,9 @@
-#version 120
+#version 150
 
-varying vec3 vertex0;
-varying vec2 uv0;
-varying vec2 uvDetail0;
-varying vec3 normal0;
+in vec3 vertex0;
+in vec2 uv0;
+in vec2 uvDetail0;
+in vec3 normal0;
 
 
 uniform sampler2D texture,textureDetail;
@@ -16,6 +16,8 @@ uniform struct Light{
 	float shininess;
 	vec4 sceneColor;
 } light;
+
+out vec4 fragColor;
 
 void main()
 {
@@ -37,7 +39,7 @@ void main()
 	Ispec = clamp(Ispec, 0.0, 1.0); 
 
 	//apply texture and texture detail
-	gl_FragColor = mix(texture2D(texture, uv0),texture2D(textureDetail, uvDetail0),mixWeight);
+	fragColor = mix(texture2D(texture, uv0),texture2D(textureDetail, uvDetail0),mixWeight);
 	//apply the light
-	gl_FragColor *=(light.sceneColor + Iamb + Idiff + Ispec);
+	fragColor *=(light.sceneColor + Iamb + Idiff + Ispec);
 }

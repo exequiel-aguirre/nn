@@ -23,6 +23,7 @@ class Shader {
     GLint light_specularProductLocation;
     GLint light_shininessLocation;
     GLint light_sceneColorLocation;
+    GLint reflectPlaneLocation;
 
   public:
     static GLuint currentProgramId;
@@ -36,7 +37,7 @@ class Shader {
     virtual ~Shader(){}
 
     //TODO:change name
-    void useProgram(Matrix& modelViewProjectionMatrix,Matrix& modelViewMatrix,Matrix& normalMatrix,GLfloat mixWeight,RawLight rawLight){
+    void useProgram(Matrix& modelViewProjectionMatrix,Matrix& modelViewMatrix,Matrix& normalMatrix,float reflectPlane[4],GLfloat mixWeight,RawLight rawLight){
         if(Shader::currentProgramId!= programId){//this is for performance:glUseProgram is expensive
             Shader::currentProgramId=programId;
             glUseProgram(programId);
@@ -52,6 +53,7 @@ class Shader {
         if(light_specularProductLocation!=-1) glUniform4fv(light_specularProductLocation,1,rawLight.specularProduct);//each
         if(light_shininessLocation!=-1) glUniform1f(light_shininessLocation,rawLight.shininess);// light parameter
         if(light_sceneColorLocation!=-1) glUniform4fv(light_sceneColorLocation,1,rawLight.sceneColor);//Maybe using uniform block ?
+        if(reflectPlaneLocation!=-1) glUniform4fv(reflectPlaneLocation,1,reflectPlane);
     }
 
     void buildShaders(const char* vertexFilename,const char* fragmentFilename){
@@ -79,8 +81,14 @@ class Shader {
         this->modelViewMatrixLocation=glGetUniformLocation(programId, "modelViewMatrix");
         this->normalMatrixLocation=glGetUniformLocation(programId, "normalMatrix");
 
+        //reflection
+        this->reflectPlaneLocation=glGetUniformLocation(programId, "reflectPlane");
+
         //just for the particle shaders
         this->timeLocation=glGetUniformLocation(programId, "time");
+
+        //out fragColor
+        glBindFragDataLocation(programId,0,"fragColor");
         //textures
         glUseProgram(programId);
         glUniform1i(glGetUniformLocation(programId, "texture"),0);
