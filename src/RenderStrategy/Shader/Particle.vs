@@ -1,9 +1,6 @@
 #version 150
 
 in vec3 vertex;
-in vec2 uv;
-in vec2 uvDetail;
-in vec3 normal;
 
 uniform mat4 modelViewProjectionMatrix;
 uniform mat4 modelViewMatrix;
