@@ -25,8 +25,7 @@
 #include "../Effect/Reflection.h"
 #include "../Component/Light.h"
 #include "../Component/Physics.h"
-#include "../DataStructure/Matrix.h"
-
+#include "../Component/Stats.h"
 #include "../Behavior/MotionBehavior.h"
 
 
@@ -122,6 +121,7 @@ class MyContainer:public Container{
 			add(myInteractiveCamera);
 			add(myLight);
 			add(physics);
+			add(new Stats());
 
     }
 
