@@ -17,15 +17,11 @@ class Emitter: public Container {
 		particles1->add(new MotionBehavior())->add(new BlendingEffect())->setCollides(false);
 		particles2->add(new MotionBehavior())->add(new BlendingEffect())->setCollides(false);
 		add(particles1)->add(particles2);
+		glEnable(GL_PROGRAM_POINT_SIZE);
 	  }
 
 	virtual ~Emitter(){}
 
-	void render(){
-		glEnable(GL_PROGRAM_POINT_SIZE);
-			Container::render();
-		glDisable(GL_PROGRAM_POINT_SIZE);
-	}
 };
 
 

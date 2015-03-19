@@ -176,7 +176,7 @@ class Utils{
 		SDL_FreeSurface(bmpFile);
 
 		//making the lats=2*bmp->width seems to do well.It may be a bit expensive though
-		return HeightMap(w,h,2*bmpWidth,2*bmpHeight,pixels,bmpWidth,bmpHeight);
+		return HeightMap(w,h,bmpWidth/2,bmpHeight/2,pixels,bmpWidth,bmpHeight);
 	}
 
 	static std::string loadShader(const char* filename){

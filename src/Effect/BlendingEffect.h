@@ -5,14 +5,15 @@
 
 class BlendingEffect:public IEffect{  
   public:
-	BlendingEffect(){}		
+	BlendingEffect(){
+		glBlendFunc(GL_SRC_ALPHA,GL_ONE);
+	}
 
     virtual ~BlendingEffect(){}
     
 
 	void doEffect(){
 		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA,GL_ONE);
 	}
 	void undoEffect(){
 		glDisable(GL_BLEND);

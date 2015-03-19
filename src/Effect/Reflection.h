@@ -20,8 +20,6 @@ class Reflection:public IEffect{
 		glEnable(GL_CLIP_PLANE0);
 			RenderStrategy::getInstance().getViewProjectionMatrix().scale(1.0,-1.0,1.0);
 			RenderStrategy::getInstance().getViewMatrix().scale(1.0,-1.0,1.0);
-			// Since the terrain is upside-down we need to do front-face culling.
-			glCullFace(GL_FRONT);
 			//Now we render all the reflections
 			vector<Component*>::iterator it;
 			vector<Component*> worldChilds=Application::getInstance().getWorld().getChilds();
@@ -33,7 +31,6 @@ class Reflection:public IEffect{
 				}
 			}
 			//Restore all the changes
-			glCullFace(GL_BACK);
 			RenderStrategy::getInstance().getViewMatrix().scale(1.0,-1.0,1.0);
 			RenderStrategy::getInstance().getViewProjectionMatrix().scale(1.0,-1.0,1.0);
 		glDisable(GL_CLIP_PLANE0);
