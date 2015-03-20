@@ -3,7 +3,6 @@
 
 #include "Component.h"
 #include "../DataStructure/RawLight.h"
-#include <GL/gl.h>
 
 
 class Light: public Component { 	

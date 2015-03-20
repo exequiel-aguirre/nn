@@ -5,6 +5,7 @@
 #include "../NNWindow/NNWindow.h"
 #include "../DataStructure/Position.h"
 #include "../Application/Application.h"
+#include "../RenderStrategy/RenderStrategy.h"
 #include "../Test/MyContainer.h"
 
 class Server
@@ -23,7 +24,7 @@ public:
 	bool start()
 	{
 		window=new NNWindow(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, false, "nn");
-		Application::getInstance().setAspectRatio((float)DEFAULT_WINDOW_WIDTH/(float)DEFAULT_WINDOW_HEIGHT);
+		RenderStrategy::getInstance().setAspectRatio((float)DEFAULT_WINDOW_WIDTH/(float)DEFAULT_WINDOW_HEIGHT);
 		Application::getInstance().setWorld(MyContainer(Position(0.0f,0.0f,0.0f)));
 		run();
 		return true;

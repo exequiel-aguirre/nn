@@ -16,7 +16,6 @@ class Camera: public Component {
 		  //TODO:this should be in a super class, like "decorativeComponent" or something like that
 		  add(new BaseTranslationKeyboardBehavior(godMode));
 		  add(new BaseRotationMouseBehavior());
-		  buildProjectionMatrix();
          }
 
 	  Camera(Position&& position,bool godMode):Camera(position,godMode){}
@@ -26,7 +25,6 @@ class Camera: public Component {
 	  Camera(Position position,bool godMode,std::function<void(float,float,float)> onTranslationCallback,ModelObject modelObject,GLenum GLMode):Component(position,modelObject,GLMode){
 		  add(new BaseTranslationKeyboardBehavior(godMode,onTranslationCallback));
 		  add(new BaseRotationMouseBehavior());
-		  buildProjectionMatrix();
          }
 
     virtual ~Camera(){}
@@ -43,14 +41,7 @@ class Camera: public Component {
 		viewMatrix.translate( -this->position.getX(), -this->position.getY(), -this->position.getZ() );
 
 		RenderStrategy::getInstance().setViewMatrix(viewMatrix);
-		RenderStrategy::getInstance().setViewProjectionMatrix(this->projectionMatrix*viewMatrix);
-    }
-
-    void buildProjectionMatrix(){
-		this->projectionMatrix=Matrix(1.0);
-		float aspectRatio=Application::getInstance().getAspectRatio();
-		this->projectionMatrix.perspective(M_PI/16,aspectRatio,1.0f,500.0f);
-    }
+	}
 
 };
 

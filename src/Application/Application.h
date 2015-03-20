@@ -9,7 +9,6 @@
 
 class Application:public IListener {
   private:
-    float aspectRatio;
     Container world=Container(Position(0,0,0));
     static Application* application;    
     
@@ -54,14 +53,7 @@ class Application:public IListener {
     Container& getWorld(){
       return world;
     }
-    
-    void setAspectRatio(float aspectRatio){
-      this->aspectRatio=aspectRatio;
-    }
-    float getAspectRatio(){
-      return aspectRatio;
-    }
-    
+
 };
 Application* Application::application=NULL;
 

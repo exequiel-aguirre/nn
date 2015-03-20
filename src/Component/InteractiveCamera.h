@@ -41,8 +41,8 @@ class InteractiveCamera: public Camera {
 
     void onBeforeRenderFrame(){
         //TODO:find a not so obscure way of doing this.It strongly relies in the
-        // fact that the camera:onBeforeRenderFrame will re-set the ViewProjectionMatrix again.
-        RenderStrategy::getInstance().setViewProjectionMatrix(this->projectionMatrix);
+        // fact that the camera:onBeforeRenderFrame will re-set the ViewMatrix again.
+        RenderStrategy::getInstance().setViewMatrix(Matrix(1.0));
         gun.render();
         Camera::onBeforeRenderFrame();
     }

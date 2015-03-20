@@ -12,7 +12,8 @@
 class RenderStrategy {
 
   private:
-  Matrix viewProjectionMatrix;
+  float aspectRatio;
+  Matrix projectionMatrix;
   Matrix viewMatrix;
   RawLight rawLight;
   float reflectPlane[4]={0};
@@ -29,8 +30,8 @@ class RenderStrategy {
 
         if(modelObject.getSize()!=0){//if there is an empty modelObject, there isn't anything to render
           texture.bind();
-          Matrix modelViewProjectionMatrix=this->viewProjectionMatrix * modelMatrix;
           Matrix modelViewMatrix=this->viewMatrix * modelMatrix;
+          Matrix modelViewProjectionMatrix=this->projectionMatrix * modelViewMatrix;
           Matrix normalMatrix=modelViewMatrix.getNormalMatrix();
           shader.useProgram(modelViewProjectionMatrix,modelViewMatrix,normalMatrix,reflectPlane,texture.getMixWeight(),rawLight);
           glBindVertexArray(modelObject.getVAOId());
@@ -98,13 +99,16 @@ class RenderStrategy {
         modelObject.setVAOId(vaoId);
     }
 
+    void buildProjectionMatrix(){
+      this->projectionMatrix=Matrix(1.0);
+      this->projectionMatrix.perspective(M_PI/16,aspectRatio,1.0f,500.0f);
+    }
 
-    void setViewProjectionMatrix(Matrix viewProjectionMatrix){
-      this->viewProjectionMatrix=viewProjectionMatrix;
+    void setAspectRatio(float aspectRatio){
+      this->aspectRatio=aspectRatio;
+      buildProjectionMatrix();//if the aspectRatio change, we need to rebuild
     }
-    Matrix& getViewProjectionMatrix(){
-      return viewProjectionMatrix;
-    }
+
     void setViewMatrix(Matrix viewMatrix){
       this->viewMatrix=viewMatrix;
     }

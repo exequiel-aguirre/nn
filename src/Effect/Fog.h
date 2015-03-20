@@ -2,7 +2,6 @@
 #define FogH
 
 #include "IEffect.h"
-#include <GL/gl.h>
 
 class Fog: public IEffect { 	
   private:	

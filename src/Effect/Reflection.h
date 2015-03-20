@@ -18,7 +18,6 @@ class Reflection:public IEffect{
 		float reflectPlane[4]={-viewMatrixInverse[4],-viewMatrixInverse[5],-viewMatrixInverse[6],-viewMatrixInverse[7]};
 		RenderStrategy::getInstance().setReflectPlane(reflectPlane);
 		glEnable(GL_CLIP_PLANE0);
-			RenderStrategy::getInstance().getViewProjectionMatrix().scale(1.0,-1.0,1.0);
 			RenderStrategy::getInstance().getViewMatrix().scale(1.0,-1.0,1.0);
 			//Now we render all the reflections
 			vector<Component*>::iterator it;
@@ -32,7 +31,6 @@ class Reflection:public IEffect{
 			}
 			//Restore all the changes
 			RenderStrategy::getInstance().getViewMatrix().scale(1.0,-1.0,1.0);
-			RenderStrategy::getInstance().getViewProjectionMatrix().scale(1.0,-1.0,1.0);
 		glDisable(GL_CLIP_PLANE0);
 	}
 
