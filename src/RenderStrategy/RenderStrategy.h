@@ -12,13 +12,23 @@
 class RenderStrategy {
 
   private:
+  GLuint vaoId;
+  GLuint vertexBufferId;
+  GLuint uvBufferId;
+  GLuint uvDetailBufferId;
+  GLuint normalBufferId;  
+  GLuint currentVAOIndex;
+
   float aspectRatio;
   Matrix projectionMatrix;
   Matrix viewMatrix;
   RawLight rawLight;
   float reflectPlane[4]={0};
+  static constexpr GLuint BUFFER_SIZE=500000;//TODO:make this dynamic
   static RenderStrategy* instance;
-  RenderStrategy(){}
+  RenderStrategy(){
+    buildVertexArrayObject();
+  }
   public:
   static RenderStrategy& getInstance(){
       if(instance == NULL) instance=new RenderStrategy();
@@ -34,9 +44,7 @@ class RenderStrategy {
           Matrix modelViewProjectionMatrix=this->projectionMatrix * modelViewMatrix;
           Matrix normalMatrix=modelViewMatrix.getNormalMatrix();
           shader.useProgram(modelViewProjectionMatrix,modelViewMatrix,normalMatrix,reflectPlane,texture.getMixWeight(),rawLight);
-          glBindVertexArray(modelObject.getVAOId());
-          glDrawArrays(modelObject.getGLMode(), 0, modelObject.getSize());
-          glBindVertexArray(0);
+          glDrawArrays(modelObject.getGLMode(), modelObject.getVAOIndex(),modelObject.getSize());
         }
     }
 
@@ -47,12 +55,39 @@ class RenderStrategy {
         modelObject.setGLMode(GLMode);
     }
 
+    void buildVertexArrayObject(){
+        this->currentVAOIndex=0;
+        vector<RawPoint> placeHolder(BUFFER_SIZE);
+
+        glGenVertexArrays(1,&vaoId);
+        glBindVertexArray(vaoId);
+
+        glGenBuffers(1, &vertexBufferId);
+        glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);        
+        glBufferData(GL_ARRAY_BUFFER, placeHolder.size() * sizeof(RawPoint), &placeHolder[0], GL_STATIC_DRAW);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, 0, 0, 0);
+
+        glGenBuffers(1, &uvBufferId);         
+        glBindBuffer(GL_ARRAY_BUFFER, uvBufferId);        
+        glBufferData(GL_ARRAY_BUFFER, placeHolder.size() * sizeof(RawPoint), &placeHolder[0], GL_STATIC_DRAW);
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 3, GL_FLOAT, 0, 0, 0);
+
+        glGenBuffers(1, &uvDetailBufferId);
+        glBindBuffer(GL_ARRAY_BUFFER, uvDetailBufferId);
+        glBufferData(GL_ARRAY_BUFFER, placeHolder.size() * sizeof(RawPoint), &placeHolder[0], GL_STATIC_DRAW);
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 3, GL_FLOAT, 0, 0, 0);
+
+        glGenBuffers(1, &normalBufferId);
+        glBindBuffer(GL_ARRAY_BUFFER, normalBufferId);        
+        glBufferData(GL_ARRAY_BUFFER, placeHolder.size() * sizeof(RawPoint), &placeHolder[0], GL_STATIC_DRAW);
+        glEnableVertexAttribArray(3);
+        glVertexAttribPointer(3, 3, GL_FLOAT, 0, 0, 0);
+    }
+
     void bufferModel(ModelObject& modelObject){
-        GLuint vertexBufferId;
-        GLuint uvBufferId;
-        GLuint uvDetailBufferId;
-        GLuint normalBufferId;
-        GLuint vaoId;
 
         vector<RawPoint> vertices;
         vector<RawPoint> uvs;
@@ -67,36 +102,26 @@ class RenderStrategy {
           normals.push_back(modelObject.getNormal(i).getRawPoint());
         }
 
-        glGenVertexArrays(1,&vaoId);
-        glBindVertexArray(vaoId);
 
-        glGenBuffers(1, &vertexBufferId);
-        glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);        
-        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(RawPoint), &vertices[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, 0, 0, 0);
+        glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
+        glBufferSubData(GL_ARRAY_BUFFER,currentVAOIndex * sizeof(RawPoint), vertices.size() * sizeof(RawPoint), &vertices[0]);
 
-        glGenBuffers(1, &uvBufferId);         
-        glBindBuffer(GL_ARRAY_BUFFER, uvBufferId);        
-        glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(RawPoint), &uvs[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 3, GL_FLOAT, 0, 0, 0);
+        glBindBuffer(GL_ARRAY_BUFFER, uvBufferId);
+        glBufferSubData(GL_ARRAY_BUFFER,currentVAOIndex * sizeof(RawPoint), uvs.size() * sizeof(RawPoint), &uvs[0]);
 
-        glGenBuffers(1, &uvDetailBufferId);
         glBindBuffer(GL_ARRAY_BUFFER, uvDetailBufferId);
-        glBufferData(GL_ARRAY_BUFFER, uvsDetail.size() * sizeof(RawPoint), &uvsDetail[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 3, GL_FLOAT, 0, 0, 0);
+        glBufferSubData(GL_ARRAY_BUFFER,currentVAOIndex * sizeof(RawPoint), uvsDetail.size() * sizeof(RawPoint), &uvsDetail[0]);
 
-        glGenBuffers(1, &normalBufferId);
-        glBindBuffer(GL_ARRAY_BUFFER, normalBufferId);        
-        glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(RawPoint), &normals[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(3);
-        glVertexAttribPointer(3, 3, GL_FLOAT, 0, 0, 0);
+        glBindBuffer(GL_ARRAY_BUFFER, normalBufferId);
+        glBufferSubData(GL_ARRAY_BUFFER,currentVAOIndex * sizeof(RawPoint), normals.size() * sizeof(RawPoint), &normals[0]);
 
-        glBindVertexArray(0);
+        modelObject.setVAOIndex(currentVAOIndex);
 
-        modelObject.setVAOId(vaoId);
+        currentVAOIndex+=modelObject.getSize();
+        if(currentVAOIndex>BUFFER_SIZE) {
+          std::cout << "Error: Buffer size too small\n";
+          exit(0);
+        }
     }
 
     void buildProjectionMatrix(){

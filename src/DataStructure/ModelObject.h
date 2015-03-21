@@ -16,7 +16,7 @@ class ModelObject{
     vector<Point> uvsDetail;
     vector<Point> normals;
 
-    GLuint vaoId;
+    GLuint vaoIndex;
     GLenum GLMode;
 
     Boundary boundary;
@@ -126,12 +126,12 @@ class ModelObject{
       return uvs.size()>0;
     }
 
-    void setVAOId(GLuint vaoId){
-      this->vaoId=vaoId;
+    void setVAOIndex(GLuint vaoIndex){
+      this->vaoIndex=vaoIndex;
     }
 
-    GLuint getVAOId(){
-      return vaoId;
+    GLuint getVAOIndex(){
+      return vaoIndex;
     }
 
     void setGLMode(GLenum GLMode){
