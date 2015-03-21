@@ -30,16 +30,30 @@ class Matrix{
 		a*=b;
 		return a;
 	}
-	Matrix& operator*=(const Matrix& b){
-		Matrix a=(*this);
+	Matrix& operator*=(const Matrix& bm){
+		Matrix am=(*this);
+		const float* a=am.rawMatrix;
+		const float* b=bm.rawMatrix;
 		//cij=aik bkj k=1..4;
-		for(int i=0;i<4;i++){
-			for(int j=0;j<4;j++){
-				float c_ij=0;
-				for(int k=0;k<4;k++) c_ij += a.rawMatrix[4*i + k] * b.rawMatrix[4*k + j];
-				rawMatrix[4*i + j]=c_ij;
-			}
-		}		
+		rawMatrix[0]=(a[0] * b[0]) + (a[1] * b[4]) + (a[2] * b[8]) +(a[3] * b[12]);
+		rawMatrix[1]=(a[0] * b[1]) + (a[1] * b[5]) + (a[2] * b[9]) +(a[3] * b[13]);
+		rawMatrix[2]=(a[0] * b[2]) + (a[1] * b[6]) + (a[2] * b[10]) +(a[3] * b[14]);
+		rawMatrix[3]=(a[0] * b[3]) + (a[1] * b[7]) + (a[2] * b[11]) +(a[3] * b[15]);
+
+		rawMatrix[4]=(a[4] * b[0]) + (a[5] * b[4]) + (a[6] * b[8]) +(a[7] * b[12]);
+		rawMatrix[5]=(a[4] * b[1]) + (a[5] * b[5]) + (a[6] * b[9]) +(a[7] * b[13]);
+		rawMatrix[6]=(a[4] * b[2]) + (a[5] * b[6]) + (a[6] * b[10]) +(a[7] * b[14]);
+		rawMatrix[7]=(a[4] * b[3]) + (a[5] * b[7]) + (a[6] * b[11]) +(a[7] * b[15]);
+
+		rawMatrix[8]=(a[8] * b[0]) + (a[9] * b[4]) + (a[10] * b[8]) +(a[11] * b[12]);
+		rawMatrix[9]=(a[8] * b[1]) + (a[9] * b[5]) + (a[10] * b[9]) +(a[11] * b[13]);
+		rawMatrix[10]=(a[8] * b[2]) + (a[9] * b[6]) + (a[10] * b[10]) +(a[11] * b[14]);
+		rawMatrix[11]=(a[8] * b[3]) + (a[9] * b[7]) + (a[10] * b[11]) +(a[11] * b[15]);
+
+		rawMatrix[12]=(a[12] * b[0]) + (a[13] * b[4]) + (a[14] * b[8]) +(a[15] * b[12]);
+		rawMatrix[13]=(a[12] * b[1]) + (a[13] * b[5]) + (a[14] * b[9]) +(a[15] * b[13]);
+		rawMatrix[14]=(a[12] * b[2]) + (a[13] * b[6]) + (a[14] * b[10]) +(a[15] * b[14]);
+		rawMatrix[15]=(a[12] * b[3]) + (a[13] * b[7]) + (a[14] * b[11]) +(a[15] * b[15]);
 
 		return (*this);
 	}
@@ -91,14 +105,11 @@ class Matrix{
 		(*this)*=t;
 	}
 	Matrix getTranlationMatrix(float x,float y,float z){
-		float t[16]={0};		
-		t[0]=1;
-		t[3]+=x; //1 0 0 x
-		t[5]=1;
-		t[7]+=y; //0 1 0 y		
-		t[10]=1;
-		t[11]+=z;//0 0 1 z
-		t[15]=1.0;//0 0 0 1	
+		float t[16]={
+			1 , 0 , 0 , x ,
+			0 , 1 , 0 , y ,
+			0 , 0 , 1 , z ,
+			0 , 0 , 0 , 1 };
 
 		return Matrix(t);
 	}
@@ -109,29 +120,14 @@ class Matrix{
 		(*this)*=r;
 	}
 	Matrix getRotationMatrix(float angle,float x,float y,float z){
-		float r[16];		
 		angle=angle*M_PI/180.0f;
 		float c=cos(angle);
 		float s=sin(angle);
-		r[0]=c + x*x*(1-c);
-		r[1]=x*y*(1-c) - (z*s);
-		r[2]=x*z*(1-c) + y*s;
-		r[3]=0;
-
-		r[4]=y*x * (1-c) + z*s;
-		r[5]=c + y*y*(1-c);
-		r[6]=y*z*(1-c) -x*s;
-		r[7]=0;
-
-		r[8]=z*x*(1-c) - y*s;
-		r[9]=z*y*(1-c) + x*s;
-		r[10]=c + z*z*(1-c);
-		r[11]=0;
-
-		r[12]=0;
-		r[13]=0;
-		r[14]=0;
-		r[15]=1;
+		float r[16]={
+			c + x*x*(1-c)     , x*y*(1-c) - (z*s) , x*z*(1-c) + y*s , 0 ,
+			y*x * (1-c) + z*s , c + y*y*(1-c)     , y*z*(1-c) -x*s  , 0 ,
+			z*x*(1-c) - y*s   , z*y*(1-c) + x*s   , c + z*z*(1-c)   , 0 ,
+			0                 , 0                 , 0               , 1 };
 
 		return Matrix(r);
 	}
@@ -147,7 +143,6 @@ class Matrix{
 	}
 
 	Matrix getPerspectiveMatrix(float angle,float aspectRatio,float near,float far){
-		float p[16]={0};
 		// gluPerspective(angle * 2.0f, x/y, near, far);
 		float fH = tan( angle ) * near;
 		float fW = fH * aspectRatio;
@@ -157,14 +152,11 @@ class Matrix{
 		float q=-(far+near)/(far-near);
 		float qn=-2*(far*near)/(far-near);
 
-		p[0]=w;
-
-		p[5]=h;
-
-		p[10]=q;
-		p[11]=-1;
-
-		p[14]=qn;
+		float p[16]={
+			w , 0 , 0  , 0  ,
+			0 , h , 0  , 0  ,
+			0 , 0 , q  , -1 ,
+			0 , 0 , qn , 0  };
 
 		return Matrix(p);
 	}
