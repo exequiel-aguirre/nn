@@ -2,9 +2,7 @@
 
 in vec3 vertex0;
 in vec2 uv0;
-in vec2 uvDetail0;
 in vec3 normal0;
-
 
 uniform sampler2D texture,textureDetail;
 uniform float mixWeight;
@@ -39,7 +37,7 @@ void main()
 	Ispec = clamp(Ispec, 0.0, 1.0); 
 
 	//apply texture and texture detail
-	fragColor = mix(texture2D(texture, uv0),texture2D(textureDetail, uvDetail0),mixWeight);
+	fragColor = mix(texture2D(texture, uv0),texture2D(textureDetail, mod(uv0*100.0,5)*0.2),mixWeight);
 	//apply the light
 	fragColor *=(light.sceneColor + Iamb + Idiff + Ispec);
 }

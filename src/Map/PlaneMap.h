@@ -7,18 +7,11 @@ class PlaneMap :public IMap {
   private:
     float w;
     float h;
-    int lats;
-    int longs;
   public:
-	PlaneMap(float w,float h,int lats,int longs){
+	PlaneMap(float w,float h){
         this->w=w;
         this->h=h;
-        this->lats=lats;
-        this->longs=longs;
-      }
-    PlaneMap(float w,float h):PlaneMap(w,h,12,12){}
-
-    virtual ~PlaneMap(){}
+    }
     
    Point get(float u,float v){
         float x=u;
@@ -55,10 +48,10 @@ class PlaneMap :public IMap {
     } 
 
     int getLats(){
-        return lats;
+        return 1;
     }
     int getLongs(){
-        return longs;
+        return 1;
     } 
 
 };

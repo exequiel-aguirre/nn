@@ -15,7 +15,6 @@ class RenderStrategy {
   GLuint vaoId;
   GLuint vertexBufferId;
   GLuint uvBufferId;
-  GLuint uvDetailBufferId;
   GLuint normalBufferId;  
   GLuint currentVAOIndex;
 
@@ -74,17 +73,11 @@ class RenderStrategy {
         glEnableVertexAttribArray(1);
         glVertexAttribPointer(1, 3, GL_FLOAT, 0, 0, 0);
 
-        glGenBuffers(1, &uvDetailBufferId);
-        glBindBuffer(GL_ARRAY_BUFFER, uvDetailBufferId);
-        glBufferData(GL_ARRAY_BUFFER, placeHolder.size() * sizeof(RawPoint), &placeHolder[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 3, GL_FLOAT, 0, 0, 0);
-
         glGenBuffers(1, &normalBufferId);
         glBindBuffer(GL_ARRAY_BUFFER, normalBufferId);        
         glBufferData(GL_ARRAY_BUFFER, placeHolder.size() * sizeof(RawPoint), &placeHolder[0], GL_STATIC_DRAW);
-        glEnableVertexAttribArray(3);
-        glVertexAttribPointer(3, 3, GL_FLOAT, 0, 0, 0);
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 3, GL_FLOAT, 0, 0, 0);
     }
 
     void bufferModel(ModelObject& modelObject){
@@ -97,7 +90,6 @@ class RenderStrategy {
           vertices.push_back(modelObject.getVertex(i).getRawPoint());
           if(modelObject.hasUVs()){
             uvs.push_back(modelObject.getUV(i).getRawPoint());
-            uvsDetail.push_back(modelObject.getUVDetail(i).getRawPoint());
           }
           normals.push_back(modelObject.getNormal(i).getRawPoint());
         }
@@ -108,9 +100,6 @@ class RenderStrategy {
 
         glBindBuffer(GL_ARRAY_BUFFER, uvBufferId);
         glBufferSubData(GL_ARRAY_BUFFER,currentVAOIndex * sizeof(RawPoint), uvs.size() * sizeof(RawPoint), &uvs[0]);
-
-        glBindBuffer(GL_ARRAY_BUFFER, uvDetailBufferId);
-        glBufferSubData(GL_ARRAY_BUFFER,currentVAOIndex * sizeof(RawPoint), uvsDetail.size() * sizeof(RawPoint), &uvsDetail[0]);
 
         glBindBuffer(GL_ARRAY_BUFFER, normalBufferId);
         glBufferSubData(GL_ARRAY_BUFFER,currentVAOIndex * sizeof(RawPoint), normals.size() * sizeof(RawPoint), &normals[0]);

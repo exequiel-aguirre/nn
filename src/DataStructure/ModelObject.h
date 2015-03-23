@@ -13,7 +13,6 @@ class ModelObject{
 
     vector<Point> vertices;
     vector<Point> uvs;
-    vector<Point> uvsDetail;
     vector<Point> normals;
 
     GLuint vaoIndex;
@@ -27,7 +26,6 @@ class ModelObject{
   	ModelObject(vector<Point> vertices,vector<Point> uvs,vector<Point> normals){
       this->vertices=vertices;
       this->uvs=uvs;
-      this->uvsDetail=uvs;//TODO:is this ok?(more like a walk around)
       this->normals=normals;
       this->boundary= Boundary(vertices);
   	}
@@ -78,16 +76,6 @@ class ModelObject{
           uvs.push_back( Point(u1s,v0s,0));
           uvs.push_back( Point(u0s,v1s,0));
           uvs.push_back( Point(u1s,v1s,0));
-
-
-          uvsDetail.push_back( Point(j%2,(j+1)%2,0));
-          uvsDetail.push_back( Point((j+1)%2,(j+1)%2,0));
-          uvsDetail.push_back( Point(j%2,j%2,0));
-
-          uvsDetail.push_back( Point(j%2,j%2,0));
-          uvsDetail.push_back( Point((j+1)%2,(j+1)%2,0));
-          uvsDetail.push_back( Point((j+1)%2,j%2,0));
-
                     
           
           normals.push_back(map.getNormal(u0,v0));
@@ -108,10 +96,6 @@ class ModelObject{
 
     Point getUV(int i){
       return uvs[i];
-    }
-
-    Point getUVDetail(int i){
-      return uvsDetail[i];
     }
 
   	Point getNormal(int i){

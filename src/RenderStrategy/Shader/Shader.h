@@ -67,8 +67,7 @@ class Shader {
 
         glBindAttribLocation(programId, 0, "vertex");
         glBindAttribLocation(programId, 1, "uv");
-        glBindAttribLocation(programId, 2, "uvDetail");
-        glBindAttribLocation(programId, 3, "normal");
+        glBindAttribLocation(programId, 2, "normal");
 
 
         glLinkProgram(programId);
