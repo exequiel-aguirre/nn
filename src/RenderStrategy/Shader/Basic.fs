@@ -37,7 +37,7 @@ void main()
 	Ispec = clamp(Ispec, 0.0, 1.0); 
 
 	//apply texture and texture detail
-	fragColor = mix(texture2D(texture, uv0),texture2D(textureDetail,mixWeight*2.0 * mod(uv0*100.0,5)*0.2),mixWeight); //mixWeight*2.0 is just for performance, if there is no mixWeight( 0 ), then the gpu can skip the calc
+	fragColor = mix(texture2D(texture, uv0),texture2D(textureDetail,mixWeight*2.0 * mod(uv0*100.0,10)*0.1),mixWeight); //mixWeight*2.0 is just for performance, if there is no mixWeight( 0 ), then the gpu can skip the calc
 	//apply the light
 	fragColor *=(light.sceneColor + Iamb + Idiff + Ispec);
 }

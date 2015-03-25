@@ -27,12 +27,14 @@ class Container: public Component {
 
 	void render()
 	{
-      Component::render();
+      Component::doEffects();
+      RenderStrategy::getInstance().render(this->modelMatrix,this->modelObject,this->shader,this->texture);
       vector<Component*>::iterator it;
       for(it=childs.begin();it!=childs.end();it++)
     	{
         	(*it)->render();
       }
+      Component::undoEffects();
 	}
 
   void setPosition(float x,float y,float z,float phi,float theta,float psi){

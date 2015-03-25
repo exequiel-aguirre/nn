@@ -10,7 +10,6 @@
 #include "../Component/Cloud.h"
 #include "../Component/Tree.h"
 #include "../Component/Water.h"
-#include "../Component/Model.h"
 #include "../Component/Animation.h"
 #include "../Component/Box.h"
 #include "../Component/SkyBox.h"
@@ -19,6 +18,8 @@
 #include "../Component/Ground.h"
 #include "../Component/Terrain.h"
 #include "../Component/FirePlace.h"
+#include "../Component/Bridge.h"
+#include "../Component/Building.h"
 #include "../Component/Camera.h"
 #include "../Component/InteractiveCamera.h"
 #include "../Effect/Fog.h"
@@ -65,8 +66,7 @@ class MyContainer:public Container{
 			Hut* myHut=new Hut(Position(25.0f,0.5f,25.0f));
 			Mill* myMill=new Mill(Position(10.0f,0.0f,-25.0f));
 			Torus* myTorus=new Torus(Position(-70.0f,1.0f,-19.0f,90.0f,0.0f,0.0f),2.0f,1.0f);
-			Model* myModel=new Model(Position(-65.0f,4.0f,-19.0f),"3DModel/monkey.obj");
-			Animation* myAnimation=new Animation(Position(-40.0f,1.8f,-15.0f),"3DModel/human.obj");
+			Animation* myAnimation=new Animation(Position(-50.0f,1.8f,-30.0f,0,180.0,0),"3DModel/human.obj");
 			Sphere* mySphere=new Sphere(Position(-50.0f,4.0f,-10.0f),0.39f);
 			Sphere* mySphere2=new Sphere(Position(-60.0f,8.0f,-20.0f),0.5f);
 			Sphere* mySphere3=new Sphere(Position(-50.0f,6.0f,-20.0f),2.0f);
@@ -104,8 +104,7 @@ class MyContainer:public Container{
 			add(myHut);
 			add(myMill);
 			add(myTorus->add(new MotionBehavior()));
-			add(myModel->add(new MotionBehavior()));
-			myAnimation->getVelocity().setZ(1.8f);add(myAnimation->add(new MotionBehavior()));
+			myAnimation->getVelocity().setZ(-8.8f);add(myAnimation->add(new MotionBehavior()));
 			add(mySphere->add(new MotionBehavior()));
 			mySphere2->getVelocity().setX(40.0f);add(mySphere2->add(new MotionBehavior()));
 			add(mySphere3->add(new MotionBehavior()));
@@ -115,6 +114,10 @@ class MyContainer:public Container{
 			add(new Plane(Position(-65.0f,8.0f,-20.0f,0.0f,0.0f,90.0f),5.0f,5.0f,"img/box.bmp"));
 			add(new Plane(Position(-45.0f,8.0f,-20.0f,0.0f,0.0f,90.0f),5.0f,5.0f,"img/box.bmp"));
 			add(new Plane(Position(-70.0f,20.0f,-17.0f,45.0f,0.0f,0.0f),5.0f,50.0f,"img/box.bmp"));
+			add(new Building(Position(-50,0.04,-200)));
+			add(new Ground(Position(-122.0f,0.01f,-205.0f),112.5,60));
+			add(new Ground(Position(122.0f,0.01f,-205.0f),315,60));
+			add(new Bridge(Position(-50,0.04,-120),4,2,100));
 
 			//add(mySkyBox);
 			add(myFog);

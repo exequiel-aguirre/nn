@@ -8,8 +8,9 @@
 class Box: public Container {  
   
   public:
-	  Box(Position&& position):Box(position,2,2,2,"img/box.bmp","img/box.bmp","img/box.bmp","img/box.bmp","img/box.bmp","img/box.bmp"){}
+	  Box(Position&& position):Box(position,2,2,2,"img/box.bmp"){}
 
+	  Box(Position position,float w,float h,float d,const char* texture):Box(position,w,h,d,texture,texture,texture,texture,texture,texture){}
 
 	  Box(Position position,float w,float h,float d,const char* bottom,const char* top,const  char* left,const  char* right,const char* back,const char* front):Container(position){
 		  add(new Plane(Position(0.0f,0.0f,0.0f),w,d,bottom));
