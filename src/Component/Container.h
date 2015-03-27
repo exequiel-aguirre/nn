@@ -60,6 +60,18 @@ class Container: public Component {
       return this;
 	}
 
+  /*This should behave just like add, but with a better performance
+  * The disadvantage, is that all merged components must have the same texture and shader
+  */
+  Container* merge(Component* child){
+    this->modelObject.merge(child->getModelObject(),child->getPosition());
+    this->shader=child->getShader();
+    this->texture=child->getTexture();
+    delete(child);//Once merged, this is not needed anymore
+
+    return this;
+  }
+
   vector<Component*> getChilds(){
     return this->childs;
   }

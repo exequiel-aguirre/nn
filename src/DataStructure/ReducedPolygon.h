@@ -259,13 +259,30 @@ class ReducedPolygon{
     float getPointDensity(){
       return pointDensity;
     }
-    //for debugging
+
     vector<Point>& getVertices(){
       return vertices;
     }
-
+    //for debugging
     Point getPositionPoint(){
       return Point(position.getX(),position.getY(),position.getZ());
+    }
+
+    void merge(ReducedPolygon& other,Position otherPosition){
+      vector<Point> otherVertices=other.getVertices();
+      for(unsigned int i=0;i<otherVertices.size();i++){
+        otherVertices[i].rotate(otherPosition.getPhi(),otherPosition.getTheta(),otherPosition.getPsi());
+        otherVertices[i].translate(otherPosition.getX(),otherPosition.getY(),otherPosition.getZ());
+      }
+      vertices.insert(vertices.end(),otherVertices.begin(),otherVertices.end());
+      //re-build
+      this->indexedVertices.clear();
+      this->indexedTriangles.clear();
+      this->positionedIndexedVertices.clear();
+      this->positionedTriangles.clear();
+      buildIndexedVertices();
+      buildPositionedVertices();
+      buildPointDensity();
     }
 
 };

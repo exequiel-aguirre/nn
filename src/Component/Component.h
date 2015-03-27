@@ -127,6 +127,14 @@ class Component {
       return modelObject.getBoundary().getCollisionStatus();
     }
 
+    Texture getTexture(){
+      return texture;
+    }
+
+    Shader getShader(){
+      return shader;
+    }
+
     Point getBoundaryMin(){      
       return modelObject.getBoundary().getEnclosingBox().getDiagonalMin();
     }

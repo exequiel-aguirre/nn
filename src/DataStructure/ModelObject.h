@@ -129,6 +129,23 @@ class ModelObject{
     Boundary& getBoundary(){
       return boundary;
     }
+
+    void merge(ModelObject& other,Position otherPosition){
+      for(int i=0;i<other.getSize();i++){
+        //vertices
+        Point vp=other.getVertex(i);
+        vp.rotate(otherPosition.getPhi(),otherPosition.getTheta(),otherPosition.getPsi());
+        vp.translate(otherPosition.getX(),otherPosition.getY(),otherPosition.getZ());
+        this->vertices.push_back(vp);
+        //uvs
+        this->uvs.push_back(other.getUV(i));
+        //normals
+        Point np=other.getNormal(i);
+        np.rotate(otherPosition.getPhi(),otherPosition.getTheta(),otherPosition.getPsi());
+        this->normals.push_back(np);
+      }
+      getBoundary().merge(other.getBoundary(),otherPosition);
+    }
     
 };
 

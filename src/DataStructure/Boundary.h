@@ -48,6 +48,11 @@ class Boundary{
     CollisionStatus& getCollisionStatus(){
       return collisionStatus;
     }
+
+    void merge(Boundary& other,Position otherPosition){
+      this->reducedPolygon.merge(other.getReducedPolygon(),otherPosition);
+      this->enclosingBox.merge(other.getEnclosingBox(),otherPosition);
+    }
     
 };
 
