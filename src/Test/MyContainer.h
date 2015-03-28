@@ -32,41 +32,43 @@
 
 
 class MyContainer:public Container{
+  private:
+	const float GROUND_LEVEL=0.5;
   public:
     MyContainer(Position&& position):Container(position){
 			add(new Reflection());
-			Ground* myGroundR=new Ground(Position(100.0f,0.01f,0.0f),150,50);
-			Ground* myGroundL=new Ground(Position(-100.0f,0.01f,0.0f),150,50);
-			Ground* myGroundF=new Ground(Position(0.0f,0.01f,-50.0f),350,50);
-			Ground* myGroundB=new Ground(Position(0.0f,0.01f,50.0f),350,50);
-			Terrain* myLakeTerrain=new Terrain(Position(0.0f,0.01f,0.0f),50,50,"img/heightMap/hole.bmp","img/ground.bmp");
-			Terrain* myTerrainR=new Terrain(Position(225.0f,0.01f,0.0f),100,350,"img/heightMap/terrain.bmp","img/terrain.bmp");
-			Terrain* myTerrainF=new Terrain(Position(0.0f,0.01f,-125.0f),350,100,"img/heightMap/terrain.bmp","img/terrain.bmp");
-			Terrain* myTerrainB=new Terrain(Position(0.0f,0.01f,125.0f),350,100,"img/heightMap/terrain.bmp","img/terrain.bmp");
+			Ground* myGroundR=new Ground(Position(100.0f,GROUND_LEVEL,0.0f),150,50);
+			Ground* myGroundL=new Ground(Position(-100.0f,GROUND_LEVEL,0.0f),150,50);
+			Ground* myGroundF=new Ground(Position(0.0f,GROUND_LEVEL,-50.0f),350,50);
+			Ground* myGroundB=new Ground(Position(0.0f,GROUND_LEVEL,50.0f),350,50);
+			Terrain* myLakeTerrain=new Terrain(Position(0.0f,GROUND_LEVEL,0.0f),50,50,"img/heightMap/hole.bmp","img/ground.bmp");
+			Terrain* myTerrainR=new Terrain(Position(225.0f,GROUND_LEVEL,0.0f),100,350,"img/heightMap/terrain.bmp","img/terrain.bmp");
+			Terrain* myTerrainF=new Terrain(Position(0.0f,GROUND_LEVEL,-125.0f),350,100,"img/heightMap/terrain.bmp","img/terrain.bmp");
+			Terrain* myTerrainB=new Terrain(Position(0.0f,GROUND_LEVEL,125.0f),350,100,"img/heightMap/terrain.bmp","img/terrain.bmp");
 			Water* myWaterR=new Water(Position(225.0f,0.0f,0.0f),100,300);
 			Water* myWaterF=new Water(Position(0.0f,0.0f,-125.0f),350,100);
 			Water* myWaterB=new Water(Position(0.0f,0.0f,125.0f),350,100);
 			Water* myLakeWater=new Water(Position(0.0f,0.0f,0.0f),50,50);
-			Tree* myTree1=new Tree(Position(25.0f,0.01f,-15.0f));
-			Tree* myTree2=new Tree(Position(25.0f,0.01f,0.0f));
-			Tree* myTree3=new Tree(Position(25.0f,0.01f,15.0f));
-			Tree* myTree4=new Tree(Position(-25.0f,0.01f,-15.0f));
-			Tree* myTree5=new Tree(Position(-25.0f,0.01f,0.0f));
-			Tree* myTree6=new Tree(Position(-25.0f,0.01f,15.0f));
-			Mountain* myMountain=new Mountain(Position(100.0f,57.0f,-70.0f));
-			Cloud* myCloud1=new Cloud(Position(-100.0f,90.0f,-70.0f),15.0f,2.0f,10.0f);
-			Cloud* myCloud2=new Cloud(Position(100.0f,90.0f,70.0f),15.0f,2.0f,20.0f);
-			Cloud* myCloud3=new Cloud(Position(100.0f,90.0f,-40.0f),5.0f,2.0f,15.0f);
-			Cloud* myCloud4=new Cloud(Position(-10.0f,85.0f,-120.0f),5.0f,2.0f,10.0f);
-			Cloud* myCloud5=new Cloud(Position(-20.0f,85.0f,100.0f),15.0f,2.0f,10.0f);
-			Cloud* myCloud6=new Cloud(Position(50.0f,100.0f,-100.0f),15.0f,2.0f,5.0f);
+			Tree* myTree1=new Tree(Position(25.0f,GROUND_LEVEL,-15.0f));
+			Tree* myTree2=new Tree(Position(25.0f,GROUND_LEVEL,0.0f));
+			Tree* myTree3=new Tree(Position(25.0f,GROUND_LEVEL,15.0f));
+			Tree* myTree4=new Tree(Position(-25.0f,GROUND_LEVEL,-15.0f));
+			Tree* myTree5=new Tree(Position(-25.0f,GROUND_LEVEL,0.0f));
+			Tree* myTree6=new Tree(Position(-25.0f,GROUND_LEVEL,15.0f));
+			Mountain* myMountain=new Mountain(Position(100.0f,57.0f+GROUND_LEVEL,-70.0f));
+			Cloud* myCloud1=new Cloud(Position(-100.0f,90.0f+GROUND_LEVEL,-70.0f),15.0f,2.0f,10.0f);
+			Cloud* myCloud2=new Cloud(Position(100.0f,90.0f+GROUND_LEVEL,70.0f),15.0f,2.0f,20.0f);
+			Cloud* myCloud3=new Cloud(Position(100.0f,90.0f+GROUND_LEVEL,-40.0f),5.0f,2.0f,15.0f);
+			Cloud* myCloud4=new Cloud(Position(-10.0f,85.0f+GROUND_LEVEL,-120.0f),5.0f,2.0f,10.0f);
+			Cloud* myCloud5=new Cloud(Position(-20.0f,85.0f+GROUND_LEVEL,100.0f),15.0f,2.0f,10.0f);
+			Cloud* myCloud6=new Cloud(Position(50.0f,100.0f+GROUND_LEVEL,-100.0f),15.0f,2.0f,5.0f);
 
-			Box* my3DBox=new Box(Position(-53.0f,0.01f,-25.0f));
-			Box* my3DBox2=new Box(Position(-50.0f,0.01f,-25.0f));
-			Hut* myHut=new Hut(Position(25.0f,0.5f,25.0f));
-			Mill* myMill=new Mill(Position(10.0f,0.0f,-25.0f));
-			Torus* myTorus=new Torus(Position(-70.0f,1.0f,-19.0f,90.0f,0.0f,0.0f),2.0f,1.0f);
-			Animation* myAnimation=new Animation(Position(-50.0f,1.8f,-30.0f,0,180.0,0),"3DModel/human.obj");
+			Box* my3DBox=new Box(Position(-53.0f,GROUND_LEVEL,-25.0f));
+			Box* my3DBox2=new Box(Position(-50.0f,GROUND_LEVEL,-25.0f));
+			Hut* myHut=new Hut(Position(25.0f,GROUND_LEVEL,25.0f));
+			Mill* myMill=new Mill(Position(10.0f,GROUND_LEVEL,-25.0f));
+			Torus* myTorus=new Torus(Position(-70.0f,1.0f+GROUND_LEVEL,-19.0f,90.0f,0.0f,0.0f),2.0f,1.0f);
+			Animation* myAnimation=new Animation(Position(-50.0f,1.8f+GROUND_LEVEL,-30.0f,0,180.0,0),"3DModel/human.obj");
 			Sphere* mySphere=new Sphere(Position(-50.0f,4.0f,-10.0f),0.39f);
 			Sphere* mySphere2=new Sphere(Position(-60.0f,8.0f,-20.0f),0.5f);
 			Sphere* mySphere3=new Sphere(Position(-50.0f,6.0f,-20.0f),2.0f);
@@ -110,14 +112,14 @@ class MyContainer:public Container{
 			add(mySphere3->add(new MotionBehavior()));
 			add(mySphere4->add(new MotionBehavior()));
 			add(myEllipsoid->add(new MotionBehavior()));
-			add(new FirePlace(Position(10,0.0,25.0)));
+			add(new FirePlace(Position(10,GROUND_LEVEL,25.0)));
 			add(new Plane(Position(-65.0f,8.0f,-20.0f,0.0f,0.0f,90.0f),5.0f,5.0f,"img/box.bmp"));
 			add(new Plane(Position(-45.0f,8.0f,-20.0f,0.0f,0.0f,90.0f),5.0f,5.0f,"img/box.bmp"));
 			add(new Plane(Position(-70.0f,20.0f,-17.0f,45.0f,0.0f,0.0f),5.0f,50.0f,"img/box.bmp"));
-			add(new Building(Position(-50,0.04,-200)));
-			add(new Ground(Position(-122.0f,0.01f,-205.0f),112.5,60));
-			add(new Ground(Position(122.0f,0.01f,-205.0f),315,60));
-			add(new Bridge(Position(-50,0.04,-120),4,2,100));
+			add(new Building(Position(-50,GROUND_LEVEL,-205)));
+			add(new Ground(Position(-122.0f,GROUND_LEVEL,-205.0f),112.5,60));
+			add(new Ground(Position(122.0f,GROUND_LEVEL,-205.0f),315,60));
+			add(new Bridge(Position(-50,GROUND_LEVEL,-120),4,2,100));
 
 			//add(mySkyBox);
 			add(myFog);
