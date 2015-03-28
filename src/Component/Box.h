@@ -5,8 +5,9 @@
 #include "Plane.h"
 
 
-class Box: public Container {  
-  
+class Box: public Container {
+  private:
+	const float EARTH_MASS=5.972 * pow(10,24);
   public:
 	  Box(Position&& position):Box(position,2,2,2,"img/box.bmp"){}
 
@@ -26,7 +27,9 @@ class Box: public Container {
 		RenderStrategy::getInstance().initModelObject(this->modelObject,GL_TRIANGLES);
 		this->calculateBoundary();
 	  }		
-
+	  float getMass(){
+		return EARTH_MASS;
+	  }
     virtual ~Box(){}
     
     

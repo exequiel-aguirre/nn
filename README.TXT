@@ -34,14 +34,13 @@ BLENDER BACKGROUND JOBS:
 
 
 BUGS:
--The animation is penetrating a box
 -The fog is not working.(some code need to be added to the shader, more info at the bottom)
 -The skybox isn't working so well, it's obvious that is a box. Also we should be using just a Box with the textures, but with all the rotation needed(see comment on the skybox) the normals get messed up
 -When 2 objects with std::numeric_limits<float>::max() collide, everything goes to hell (for example, most things just dissapear)
 
 
 TODOS:
--Implement Container::merge and check if it improves performance.
+-We are setting the earth mass, pretty randomly.Maybe we should put the earth mass to all unmovable object.Makes more sense(kind of...)
 -Test the matrix inverse. (Maybe just asserting that A * A^-1 = I , on every call)
 -Change the sign in the camera for the angles as well (and swap the order of the rotates)(should be the exact opposite of the Component::onBeforeRender)
 -Performance: 
