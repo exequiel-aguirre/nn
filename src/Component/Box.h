@@ -23,7 +23,6 @@ class Box: public Container {
 		merge(new Plane(Position(0.0f,h/2.0f,-d/2.0f,90.0f,0.0f,0.0f),w,h,back));
 		merge(new Plane(Position(0.0f,h/2.0f,d/2.0f,90.0f,0.0f,0.0f),w,h,front));
 		//normal init
-		this->position=position;
 		RenderStrategy::getInstance().initModelObject(this->modelObject,GL_TRIANGLES);
 		this->calculateBoundary();
 	  }		

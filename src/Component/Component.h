@@ -40,13 +40,14 @@ class Component {
   public:
     Component(Position position,ModelObject modelObject,const char* textureFilename,GLenum GLMode,const char* shaderName){
       this->position=position;
+      this->updateModelMatrix();
       this->modelObject=modelObject;
+      this->calculateBoundary();
       RenderStrategy::getInstance().initModelObject(this->modelObject,GLMode);
       if(shaderName==NULL) shaderName=DEFAULT_SHADER_NAME;
       this->shader=ResourceManager::getInstance().getShader(shaderName);
       if(textureFilename==NULL) textureFilename=DEFAULT_TEXTURE_FILENAME;
       this->texture=ResourceManager::getInstance().getTexture(textureFilename);
-      this->calculateBoundary();
     }
 
     Component(Position position,ModelObject modelObject,const char* textureFilename,GLenum GLMode):Component(position,modelObject,textureFilename,GLMode,NULL){}
