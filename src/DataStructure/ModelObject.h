@@ -147,6 +147,11 @@ class ModelObject{
       getBoundary().merge(other.getBoundary(),otherPosition);
     }
     
+    void setAllNormalsTo(Point n){
+      for(unsigned int i=0;i<normals.size();i++){
+        normals[i]=n;
+      }
+    }
 };
 
 #endif

@@ -16,6 +16,7 @@
 #include "../Component/Hut.h"
 #include "../Component/Mill.h"
 #include "../Component/Ground.h"
+#include "../Component/Grass.h"
 #include "../Component/Terrain.h"
 #include "../Component/FirePlace.h"
 #include "../Component/Bridge.h"
@@ -120,6 +121,7 @@ class MyContainer:public Container{
 			add(new Ground(Position(-122.0f,GROUND_LEVEL,-205.0f),112.5,60));
 			add(new Ground(Position(122.0f,GROUND_LEVEL,-205.0f),315,60));
 			add(new Bridge(Position(-50,GROUND_LEVEL,-120),4,2,100));
+			add(new Grass(Position(-50.0f,GROUND_LEVEL,-10.0f)));
 
 			//add(mySkyBox);
 			add(myFog);
