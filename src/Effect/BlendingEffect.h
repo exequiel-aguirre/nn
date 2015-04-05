@@ -6,7 +6,7 @@
 class BlendingEffect:public IEffect{  
   public:
 	BlendingEffect(){
-		glBlendFunc(GL_SRC_ALPHA,GL_ONE);
+		glBlendFunc(GL_ONE_MINUS_DST_COLOR,GL_ONE);
 	}
 
     virtual ~BlendingEffect(){}

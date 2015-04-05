@@ -29,9 +29,6 @@ class Building: public Container {
 	  	add(new Box(Position(-w/3+t/2,0,(d-t)/2 ),w/3,h,t,"img/building_wall.bmp"));
 	  	add(new Box(Position(w/3 -t/2,0,(d-t)/2 ),w/3,h,t,"img/building_wall.bmp"));
 	  	add(new Box(Position(0,h/2,(d-t)/2 ),w/3-t,h/2,t,"img/building_wall.bmp"));
-
-	  	//floor
-	  	add(new Plane(Position(0,0,0),w,d,"img/building_floor.bmp"));
 	  	//roof	  	
 	  	add(new Box(Position(0,h,0),w+t,t,d,"img/building_wall.bmp"));
 	  	//podium
@@ -42,6 +39,8 @@ class Building: public Container {
 		add(new Emitter(Position(-w/2+w/15,h/8+0.5,-d/3.0)));
 		add(new Box(Position(w/2-w/20,0,-d/3.0),w/10,h/8,w/10,"img/building_wall.bmp"));
 		add(new Emitter(Position(w/2-w/15,h/8+0.5,-d/3.0)));
+		//floor
+		add((new Plane(Position(0,0,0),w,d,"img/building_floor.bmp"))->add(new BlendingEffect()));
 	  	
 	  }    
 		

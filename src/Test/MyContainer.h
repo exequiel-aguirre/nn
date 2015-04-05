@@ -117,10 +117,10 @@ class MyContainer:public Container{
 			add(new Plane(Position(-65.0f,8.0f,-20.0f,0.0f,0.0f,90.0f),5.0f,5.0f,"img/box.bmp"));
 			add(new Plane(Position(-45.0f,8.0f,-20.0f,0.0f,0.0f,90.0f),5.0f,5.0f,"img/box.bmp"));
 			add(new Plane(Position(-70.0f,20.0f,-17.0f,45.0f,0.0f,0.0f),5.0f,50.0f,"img/box.bmp"));
-			add(new Building(Position(-50,GROUND_LEVEL,-205)));
+			add(new Building(Position(-50,-GROUND_LEVEL/100.0,-205)));//the weird y position
+			add(new Bridge(Position(-50,-GROUND_LEVEL/100.0,-120),8,2,105));//is to make the reflection work correctly
 			add(new Ground(Position(-122.0f,GROUND_LEVEL,-205.0f),112.5,60));
 			add(new Ground(Position(122.0f,GROUND_LEVEL,-205.0f),315,60));
-			add(new Bridge(Position(-50,GROUND_LEVEL,-120),4,2,100));
 			add(new Grass(Position(-50.0f,GROUND_LEVEL,-10.0f)));
 
 			//add(mySkyBox);
