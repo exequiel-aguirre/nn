@@ -7,16 +7,16 @@ bpy.ops.import_scene.obj(filepath=sys.argv[-1])
 
 #select all and make one active
 bpy.ops.object.select_all(action='SELECT')
-bpy.context.scene.objects.active = bpy.data.objects["human:Tshirt01"]
+bpy.context.scene.objects.active = bpy.data.objects["human2:Body"]
 #join
 bpy.ops.object.join()
 
 #move to origin
-bpy.data.objects["human:Tshirt01"].name= "human"
+bpy.data.objects["human2:Body"].name= "human"
 bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
 
 #scale
-bpy.data.objects["human:Tshirt01"].scale =(0.676,0.676,0.676)
+bpy.data.objects["human"].scale =(0.71,0.71,0.71)
 bpy.ops.object.transform_apply(scale=True)
 
 

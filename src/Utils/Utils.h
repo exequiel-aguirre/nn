@@ -150,7 +150,7 @@ class Utils{
 			else if(lineHeader== "vt")
 			{
 				file >> x >> y;
-				tempUvs.push_back( Point(x,y,0));
+				tempUvs.push_back( Point(x,1.0-y,0));
 			}
 			else if (lineHeader=="vn")
 			{
