@@ -32,6 +32,21 @@ BLENDER BACKGROUND JOBS:
 -Make the default "open with" for the obj with
 >blender --python src/script/import_obj.py --
 
+BLENDER TEXTURE:
+-Bake
+--Select the suit and change to "Edit Mode".
+--Select "UV Editing" screen and select the Suit image
+--now if you select "Texture Paint" mode, it should show with the suit
+--create a new image
+
+--go back to default view,add a sun lamp, and select the camera icon,disable all but texture in the Shading option and  click bake option (last on the right bar).
+-Re order the uv.
+--Choose the body and go to UV edit screen and then choose edit mode.
+--There de-activate "uv-mesh sync"(cube with and arrow on the bottom bar in the uv editor).So now you can select "UV selection mode" to island.
+--Once something is selected you can Rotate (R),Translate(G),Scale(S). Arrange the body parts to unused texture
+--Now select "Texture Paint Mode" and paint it.
+
+
 
 BUGS:
 -The fog is not working.(some code need to be added to the shader, more info at the bottom)
