@@ -19,5 +19,9 @@ bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
 bpy.data.objects["human"].scale =(0.71,0.71,0.71)
 bpy.ops.object.transform_apply(scale=True)
 
+#decimate
+#mod = bpy.data.objects['human_human2:Body'].modifiers.new(name='decimate', type='DECIMATE')
+#mod.ratio = 0.8
+#use_mesh_modifiers=True
 
 bpy.ops.export_scene.obj(filepath=sys.argv[-1],use_normals=True,use_uvs=True,use_materials=False,use_triangles=True)
