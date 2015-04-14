@@ -13,7 +13,7 @@ bpy.ops.object.join()
 
 #move to origin
 bpy.data.objects["human2:Body"].name= "human"
-bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN')
+bpy.ops.object.origin_set(type='GEOMETRY_ORIGIN',center='BOUNDS')
 
 #scale
 bpy.data.objects["human"].scale =(0.71,0.71,0.71)
