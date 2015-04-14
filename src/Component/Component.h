@@ -136,18 +136,6 @@ class Component {
       return shader;
     }
 
-    Point getBoundaryMin(){      
-      return modelObject.getBoundary().getEnclosingBox().getDiagonalMin();
-    }
-
-    Point getBoundaryMax(){      
-      return modelObject.getBoundary().getEnclosingBox().getDiagonalMax();
-    }
-
-    Point getBoundaryLength(){      
-      return modelObject.getBoundary().getEnclosingBox().getLength();
-    }
-
     virtual float getMass(){
       if(modelObject.getSize()==0) return 0;
       //a very rough approximation of volume

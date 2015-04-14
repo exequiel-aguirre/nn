@@ -91,13 +91,6 @@ class EnclosingBox{
       return diagonalMax;
     }
 
-    Point getLength(){      
-      return Point(
-        (diagonalMax.x - diagonalMin.x)/2.0f,
-        (diagonalMax.y - diagonalMin.y)/2.0f,
-        (diagonalMax.z - diagonalMin.z)/2.0f);
-    }
-
     float getVolume(){
       return (diagonalMax.x - diagonalMin.x)*
              (diagonalMax.y - diagonalMin.y)*
