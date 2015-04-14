@@ -61,12 +61,12 @@ class PhysicsManager{
             Velocity v1=v1_i - Velocity( (1.0/m1 * j_r) * n );
             Velocity v2=v2_i + Velocity( (1.0/m2 * j_r) * n );
 
-            c1->setVelocity(v1.getX(),v1.getY(),v1.getZ());            
-            c2->setVelocity(v2.getX(),v2.getY(),v2.getZ());         
+            if(c1->getCollisionStatus().getCollisionCount()==1) c1->setVelocity(v1.getX(),v1.getY(),v1.getZ());//just change the velocity if this
+            if(c2->getCollisionStatus().getCollisionCount()==1) c2->setVelocity(v2.getX(),v2.getY(),v2.getZ());//is the first collision in this frame
                         
             
-            c1->getBoundary().getCollisionStatus().setOtherMass(c2->getMass());
-            c2->getBoundary().getCollisionStatus().setOtherMass(c1->getMass());
+            if(c1->getCollisionStatus().getCollisionCount()==1) c1->getBoundary().getCollisionStatus().setOtherMass(c2->getMass());
+            if(c2->getCollisionStatus().getCollisionCount()==1) c2->getBoundary().getCollisionStatus().setOtherMass(c1->getMass());
 
            // std::cout << typeid(*c1).name()<<" with "<< typeid(*c2).name()<< " : "<< c1->getBoundary()->getCollisionStatus()->getImpactNormal();
 

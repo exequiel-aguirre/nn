@@ -9,8 +9,8 @@ class CollisionStatus{
     float islx=0.0f;
     float isly=0.0f;
     float islz=0.0f;
-    //collided in this frame
-    bool collided=false;
+    //amount of collisions in this frame
+    int collisionCount=0;
     //point of impact and normal
     Point impactPoint;
     Point impactNormal;
@@ -29,7 +29,7 @@ class CollisionStatus{
         islx=0.0f;
         isly=0.0f;
         islz=0.0f;
-        collided=false;
+        collisionCount=0;
         distance=10000;
         otherMass=0.0f;
     }
@@ -38,11 +38,11 @@ class CollisionStatus{
         this->islx=islx;
         this->isly=isly;
         this->islz=islz;
-        this->collided=collided;
+        if(collided) collisionCount++;
     }
 
     bool hasCollided(){
-        return collided;
+        return collisionCount!=0;
     }
 
     float getIslx(){
@@ -86,6 +86,8 @@ class CollisionStatus{
     float getDistance(){
         return distance;
     }
-
+    int getCollisionCount(){
+        return collisionCount;
+    }
 };
 #endif
