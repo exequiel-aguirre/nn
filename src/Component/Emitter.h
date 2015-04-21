@@ -11,14 +11,12 @@ class Emitter: public Container {
   public:
 
 	  Emitter(Position position):Container(position){
-		add(new BlendingEffect());
 		Surface* particles1=new Surface(Position(0,0.5,0,0.0,0,0),RandomizedDecorator(new ConeMap(0.4,0.6,24,24)),NULL,GL_POINTS,"Particle");
 		Surface* particles2=new Surface(Position(0,0.5,0,0.0,0,0),RandomizedDecorator(new ConeMap(0.2,0.6,24,24)),NULL,GL_POINTS,"Particle");
-		particles1->add(new BlendingEffect())->setCollides(false);
-		particles2->add(new BlendingEffect())->setCollides(false);
+		particles1->add(new BlendingEffect())->setCollides(false)->getShader().setTimeEnabled(true);
+		particles2->add(new BlendingEffect())->setCollides(false)->getShader().setTimeEnabled(true);
 		add(particles1)->add(particles2);
 		glEnable(GL_PROGRAM_POINT_SIZE);
-		shader.setTimeEnabled(true);
 	  }
 
 	virtual ~Emitter(){}
