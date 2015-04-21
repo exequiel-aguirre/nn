@@ -128,11 +128,11 @@ class Component {
       return modelObject.getBoundary().getCollisionStatus();
     }
 
-    Texture getTexture(){
+    Texture& getTexture(){
       return texture;
     }
 
-    Shader getShader(){
+    Shader& getShader(){
       return shader;
     }
 

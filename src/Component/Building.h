@@ -40,7 +40,9 @@ class Building: public Container {
 		add(new Box(Position(w/2-w/20,0,-d/3.0),w/10,h/8,w/10,"img/building_wall.bmp"));
 		add(new Emitter(Position(w/2-w/15,h/8+0.5,-d/3.0)));
 		//floor
-		add((new Plane(Position(0,0,0),w,d,"img/building_floor.bmp"))->add(new BlendingEffect()));
+		Plane* floorPlane=(new Plane(Position(0,0,0),w,d,"img/building_floor.bmp"));
+		floorPlane->add(new BlendingEffect())->getTexture().setTexturesActive(10.0,0.0,0.0);
+		add(floorPlane);
 	  	
 	  }    
 		

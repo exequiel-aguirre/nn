@@ -45,7 +45,9 @@ BLENDER TEXTURE:
 --There de-activate "uv-mesh sync"(cube with and arrow on the bottom bar in the uv editor).So now you can select "UV selection mode" to island.
 --Once something is selected you can Rotate (R),Translate(G),Scale(S). Arrange the body parts to unused texture
 --Now select "Texture Paint Mode" and paint it.
-
+BUMP MAPPING:
+>sudo apt-get install gimp-normalmap
+-Open an image with Gimp, and go to Filters>Map>NormalMap...
 
 
 BUGS:

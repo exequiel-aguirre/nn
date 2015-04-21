@@ -42,7 +42,7 @@ class RenderStrategy {
           Matrix modelViewMatrix=this->viewMatrix * modelMatrix;
           Matrix modelViewProjectionMatrix=this->projectionMatrix * modelViewMatrix;
           Matrix normalMatrix=modelViewMatrix.getNormalMatrix();
-          shader.useProgram(modelViewProjectionMatrix,modelViewMatrix,normalMatrix,reflectPlane,texture.getMixWeight(),rawLight);
+          shader.useProgram(modelViewProjectionMatrix,modelViewMatrix,normalMatrix,reflectPlane,texture.getTexturesActive(),rawLight);
           glDrawArrays(modelObject.getGLMode(), modelObject.getVAOIndex(),modelObject.getSize());
         }
     }

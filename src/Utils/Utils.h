@@ -18,6 +18,7 @@ class Utils{
 	static constexpr const char* VERTEX_SHADER_EXT=".vs";
 	static constexpr const char* FRAGMENT_SHADER_EXT=".fs";
 	static constexpr const char* TEXTURE_DETAIL_SUFFIX="_detail";
+	static constexpr const char* TEXTURE_NORMAL_SUFFIX="_normal";
 	static constexpr const char* MODEL_EXT=".obj";
 
 	static GLuint loadTexture(const char* fileName){
@@ -49,13 +50,13 @@ class Utils{
 		glTexImage2D(GL_TEXTURE_2D,0,internalFormat,w,h,0,format,GL_UNSIGNED_BYTE,pixels);
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);		
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glBindTexture(GL_TEXTURE_2D,0);//unbind
 		SDL_FreeSurface(bmpFile);
 		return texture;	
 	}
-
+	//TODO:unify these two
 	static GLuint loadTextureDetail(const char* filename){
 		std::string str(filename);
 		std::string ext=str.substr(str.find("."));
@@ -65,6 +66,20 @@ class Utils{
 		std::ifstream f(filenameDetail.str().c_str());
 		if(f.good()){
 			return loadTexture(filenameDetail.str().c_str());
+		}else{
+			return 0;
+		}
+	}
+
+	static GLuint loadTextureNormal(const char* filename){
+		std::string str(filename);
+		std::string ext=str.substr(str.find("."));
+		str.replace(str.find("."), 4, "");
+		std::stringstream filenameNormal;
+		filenameNormal<<str<<TEXTURE_NORMAL_SUFFIX<<ext;
+		std::ifstream f(filenameNormal.str().c_str());
+		if(f.good()){
+			return loadTexture(filenameNormal.str().c_str());
 		}else{
 			return 0;
 		}

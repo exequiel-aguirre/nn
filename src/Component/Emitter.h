@@ -18,6 +18,7 @@ class Emitter: public Container {
 		particles2->add(new BlendingEffect())->setCollides(false);
 		add(particles1)->add(particles2);
 		glEnable(GL_PROGRAM_POINT_SIZE);
+		shader.setTimeEnabled(true);
 	  }
 
 	virtual ~Emitter(){}

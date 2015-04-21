@@ -11,8 +11,10 @@ class Water: public Surface {
   public:
 	  
 	Water(Position position,float w,float h):Surface(position,PlaneMap(w,h),"img/water.bmp"){
-    setReflects(false);
-		add(new BlendingEffect());
+        setReflects(false);
+        shader.setTimeEnabled(true);
+        texture.setTexturesActive(1.0,10.0,10.0);
+        add(new BlendingEffect());
 	}
 
 

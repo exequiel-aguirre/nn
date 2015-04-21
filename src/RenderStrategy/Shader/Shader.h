@@ -16,7 +16,7 @@ class Shader {
     GLint modelViewMatrixLocation;
     GLint normalMatrixLocation;
     GLint timeLocation;
-    GLint mixWeightLocation;
+    GLint texturesActiveLocation;
     GLint light_positionLocation;
     GLint light_ambientProductLocation;
     GLint light_diffuseProductLocation;
@@ -24,6 +24,8 @@ class Shader {
     GLint light_shininessLocation;
     GLint light_sceneColorLocation;
     GLint reflectPlaneLocation;
+
+    bool isTimeEnabled=false;
 
   public:
     static GLuint currentProgramId;
@@ -37,7 +39,7 @@ class Shader {
     virtual ~Shader(){}
 
     //TODO:change name
-    void useProgram(Matrix& modelViewProjectionMatrix,Matrix& modelViewMatrix,Matrix& normalMatrix,float reflectPlane[4],GLfloat mixWeight,RawLight rawLight){
+    void useProgram(Matrix& modelViewProjectionMatrix,Matrix& modelViewMatrix,Matrix& normalMatrix,float reflectPlane[4],GLfloat texturesActive[3],RawLight rawLight){
         if(Shader::currentProgramId!= programId){//this is for performance:glUseProgram is expensive
             Shader::currentProgramId=programId;
             glUseProgram(programId);
@@ -45,8 +47,8 @@ class Shader {
         if(modelViewProjectionMatrixLocation!=-1) glUniformMatrix4fv(modelViewProjectionMatrixLocation,1,GL_TRUE,modelViewProjectionMatrix.getRawMatrix());//why the transpose?
         if(modelViewMatrixLocation!=-1) glUniformMatrix4fv(modelViewMatrixLocation,1,GL_TRUE,modelViewMatrix.getRawMatrix());//opengl uses column major for matrices,
         if(normalMatrixLocation!=-1) glUniformMatrix4fv(normalMatrixLocation,1,GL_TRUE,normalMatrix.getRawMatrix());// so we pass the transpose parameter as GL_TRUE
-        if(timeLocation!=-1) glUniform1f(timeLocation,SDL_GetTicks()/100.0);//TODO:we are forcing all to do this, but just particles actually use it...
-        if(mixWeightLocation!=-1) glUniform1f(mixWeightLocation,mixWeight);//TODO:check the performance impact of this line
+        if(timeLocation!=-1) glUniform1f(timeLocation,isTimeEnabled?(SDL_GetTicks()/100.0):0.0);//TODO:we are forcing all to do this, but just particles actually use it...
+        if(texturesActiveLocation!=-1) glUniform3fv(texturesActiveLocation,1,texturesActive);//TODO:check the performance impact of this line
         if(light_positionLocation!=-1) glUniform4fv(light_positionLocation,1,rawLight.position);//TODO: Find a way of
         if(light_ambientProductLocation!=-1) glUniform4fv(light_ambientProductLocation,1,rawLight.ambientProduct);//avoiding all
         if(light_diffuseProductLocation!=-1) glUniform4fv(light_diffuseProductLocation,1,rawLight.diffuseProduct);//these passing
@@ -92,7 +94,8 @@ class Shader {
         glUseProgram(programId);
         glUniform1i(glGetUniformLocation(programId, "texture"),0);
         glUniform1i(glGetUniformLocation(programId, "textureDetail"),1);
-        this->mixWeightLocation=glGetUniformLocation(programId, "mixWeight");
+        glUniform1i(glGetUniformLocation(programId, "textureNormal"),2);
+        this->texturesActiveLocation=glGetUniformLocation(programId, "texturesActive");
 
         //light
         this->light_positionLocation=glGetUniformLocation(programId, "light.position");
@@ -143,6 +146,10 @@ class Shader {
 
     const char* getName(){
         return name.c_str();
+    }
+
+    void setTimeEnabled(bool isTimeEnabled){
+        this->isTimeEnabled=isTimeEnabled;
     }
 };
 GLuint Shader::currentProgramId=0;
