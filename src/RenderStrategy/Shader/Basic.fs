@@ -5,7 +5,6 @@ in vec2 uv0;
 in vec3 normal0;
 
 uniform sampler2D texture,textureDetail,textureNormal;
-uniform mat4 normalMatrix;//TODO:check this
 uniform vec3 texturesActive;
 uniform float time;
 uniform struct Light{
@@ -34,7 +33,6 @@ void main()
 	if(texturesActive.z>0.0){
 		N = texture2D(textureNormal, uv0*texturesActive.z + time*0.01).xyz;
 		N = N * 2.0 - 1.0;
-		N=normalize(vec3(normalMatrix * vec4(N,0.0)));//TODO:check this
 	}
 
 	//Phong shading model
