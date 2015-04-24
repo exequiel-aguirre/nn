@@ -3,6 +3,7 @@
 in vec3 vertex0;
 in vec2 uv0;
 in vec3 normal0;
+in mat3 frenetMatrix0;
 
 uniform sampler2D texture,textureDetail,textureNormal;
 uniform vec3 texturesActive;
@@ -30,28 +31,18 @@ void main()
 
 	//bump
 	vec3 N=normal0;
-	if(texturesActive.z>0.0){
-		N = texture2D(textureNormal, uv0*texturesActive.z + time*0.01).xyz;
-		N = N * 2.0 - 1.0;
-	}
+	if(texturesActive.z>0.0) N = frenetMatrix0*((2*(texture2D(textureNormal, uv0*texturesActive.z + time*0.01).xyz))-1.0);
 
 	//Phong shading model
 	vec3 L = normalize(light.position.xyz - vertex0);
 	vec3 E = normalize(-vertex0);
 	vec3 R = normalize(-reflect(L,N));
-
 	//Ambient term
 	vec4 Iamb = light.ambientProduct;
-
 	//diffuse term
-	vec4 Idiff = light.diffuseProduct * max(dot(N,L), 0.0);
-	Idiff = clamp(Idiff, 0.0, 1.0);     
-
+	vec4 Idiff = clamp(light.diffuseProduct*max(dot(N,L), 0.0),0.0,1.0);
 	// specular term
-	vec4 Ispec = light.specularProduct
-		* pow(max(dot(R,E),0.0),0.3*light.shininess);
-	Ispec = clamp(Ispec, 0.0, 1.0); 
-
+	vec4 Ispec = clamp(light.specularProduct*pow(max(dot(R,E),0.0),0.3*light.shininess),0.0,1.0);
 
 	//apply the light
 	fragColor *=(light.sceneColor + Iamb + Idiff + Ispec);

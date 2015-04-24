@@ -14,6 +14,7 @@ class ModelObject{
     vector<Point> vertices;
     vector<Point> uvs;
     vector<Point> normals;
+    vector<Point> tangents;
 
     GLuint vaoIndex;
     GLenum GLMode;
@@ -23,10 +24,11 @@ class ModelObject{
   public:	
 	  ModelObject(){}
 
-  	ModelObject(vector<Point> vertices,vector<Point> uvs,vector<Point> normals){
+    ModelObject(vector<Point> vertices,vector<Point> uvs,vector<Point> normals,vector<Point> tangents){
       this->vertices=vertices;
       this->uvs=uvs;
       this->normals=normals;
+      this->tangents=tangents;
       this->boundary= Boundary(vertices);
   	}
 
@@ -85,6 +87,15 @@ class ModelObject{
           normals.push_back(map.getNormal(u1,v0));
           normals.push_back(map.getNormal(u0,v1));
           normals.push_back(map.getNormal(u1,v1));
+
+
+          tangents.push_back(map.getTangent(u0,v0));
+          tangents.push_back(map.getTangent(u0,v1));
+          tangents.push_back(map.getTangent(u1,v0));
+
+          tangents.push_back(map.getTangent(u1,v0));
+          tangents.push_back(map.getTangent(u0,v1));
+          tangents.push_back(map.getTangent(u1,v1));
         }
       }
       this->boundary= Boundary(map,vertices);
@@ -101,6 +112,9 @@ class ModelObject{
   	Point getNormal(int i){
   		return normals[i];
   	}
+    Point getTangent(int i){
+      return tangents[i];
+    }
 
   	int getSize(){
   		return vertices.size();
@@ -143,6 +157,10 @@ class ModelObject{
         Point np=other.getNormal(i);
         np.rotate(otherPosition.getPhi(),otherPosition.getTheta(),otherPosition.getPsi());
         this->normals.push_back(np);
+        //tangents
+        Point tp=other.getTangent(i);
+        tp.rotate(otherPosition.getPhi(),otherPosition.getTheta(),otherPosition.getPsi());
+        this->tangents.push_back(tp);
       }
       getBoundary().merge(other.getBoundary(),otherPosition);
     }

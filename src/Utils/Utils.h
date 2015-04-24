@@ -233,10 +233,21 @@ class Utils{
 		}
 		
 		if(uvs.size()==0) uvs=vector<Point>(vertices.size(),Point(0,0,0));//if there are no uvs, initilize them
-		return  ModelObject(vertices,uvs,normals);
+		vector<Point> tangents=getTangents(vertices);
+		return  ModelObject(vertices,uvs,normals,tangents);
 		
 	}
-
+	static vector<Point> getTangents(vector<Point>& vertices){
+		vector<Point> tangents;
+		vector<Point>::iterator it;
+		for(it=vertices.begin();it!=vertices.end();it+=3){
+			Point v1=*it;
+			Point v2=*(it+1);
+			Point tangent=v2-v1;
+			tangents.push_back(tangent);tangents.push_back(tangent);tangents.push_back(tangent);
+		}
+		return tangents;
+	}
 	static std::string getAnimationFrameFilename(const char* modelFilename,int frame){
 		std::string str(modelFilename);
 		str.replace(str.find(MODEL_EXT), 4, "");

@@ -16,6 +16,7 @@ class RenderStrategy {
   GLuint vertexBufferId;
   GLuint uvBufferId;
   GLuint normalBufferId;  
+  GLuint tangentBufferId;
   GLuint currentVAOIndex;
 
   float aspectRatio;
@@ -78,20 +79,27 @@ class RenderStrategy {
         glBufferData(GL_ARRAY_BUFFER, placeHolder.size() * sizeof(RawPoint), &placeHolder[0], GL_STATIC_DRAW);
         glEnableVertexAttribArray(2);
         glVertexAttribPointer(2, 3, GL_FLOAT, 0, 0, 0);
+
+        glGenBuffers(1, &tangentBufferId);
+        glBindBuffer(GL_ARRAY_BUFFER, tangentBufferId);
+        glBufferData(GL_ARRAY_BUFFER, placeHolder.size() * sizeof(RawPoint), &placeHolder[0], GL_STATIC_DRAW);
+        glEnableVertexAttribArray(3);
+        glVertexAttribPointer(3, 3, GL_FLOAT, 0, 0, 0);
     }
 
     void bufferModel(ModelObject& modelObject){
 
         vector<RawPoint> vertices;
         vector<RawPoint> uvs;
-        vector<RawPoint> uvsDetail;
         vector<RawPoint> normals;
+        vector<RawPoint> tangents;
         for(int i=0;i<modelObject.getSize();i++){
           vertices.push_back(modelObject.getVertex(i).getRawPoint());
           if(modelObject.hasUVs()){
             uvs.push_back(modelObject.getUV(i).getRawPoint());
           }
           normals.push_back(modelObject.getNormal(i).getRawPoint());
+          tangents.push_back(modelObject.getTangent(i).getRawPoint());
         }
 
 
@@ -103,6 +111,9 @@ class RenderStrategy {
 
         glBindBuffer(GL_ARRAY_BUFFER, normalBufferId);
         glBufferSubData(GL_ARRAY_BUFFER,currentVAOIndex * sizeof(RawPoint), normals.size() * sizeof(RawPoint), &normals[0]);
+
+        glBindBuffer(GL_ARRAY_BUFFER, tangentBufferId);
+        glBufferSubData(GL_ARRAY_BUFFER,currentVAOIndex * sizeof(RawPoint), tangents.size() * sizeof(RawPoint), &tangents[0]);
 
         modelObject.setVAOIndex(currentVAOIndex);
 
