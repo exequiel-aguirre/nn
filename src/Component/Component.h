@@ -117,7 +117,7 @@ class Component {
     virtual void calculateBoundary(){
       if(modelObject.getSize()==0) return;
       //update the boundary
-      if(collides) modelObject.getBoundary().update(position,velocity);
+      modelObject.getBoundary().update(position,velocity);
     }
 
     Boundary& getBoundary(){

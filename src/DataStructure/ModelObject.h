@@ -139,7 +139,10 @@ class ModelObject{
     GLenum getGLMode(){
       return GLMode;
     }
-
+    //TODO:REMOVE
+    void setBoundary(Boundary& boundary){
+      this->boundary=boundary;
+    }
     Boundary& getBoundary(){
       return boundary;
     }

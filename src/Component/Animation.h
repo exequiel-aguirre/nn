@@ -29,7 +29,7 @@ class Animation: public Model {
 				currentModelObject=modelObjects.begin();
 			}
 		}
-
+		(*currentModelObject).setBoundary(modelObject.getBoundary());//TODO:avoid this
 		RenderStrategy::getInstance().render(this->modelMatrix,(*currentModelObject),shader,texture);
     }
 

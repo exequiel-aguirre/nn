@@ -10,10 +10,11 @@ class Debug{
     Debug(Boundary& boundary){
     	this->boundary=boundary;
     }
-    //to be called from the onAfterRender() (because this are positioned vertices )
     void renderEnclosingBox(){
-        Point boundaryMin= boundary.getEnclosingBox().getDiagonalMin();
-        Point boundaryMax= boundary.getEnclosingBox().getDiagonalMax();
+      renderEnclosingBox(boundary.getEnclosingBox().getDiagonalMin(),boundary.getEnclosingBox().getDiagonalMax());
+    }
+    //to be called from the onAfterRender() (because this are positioned vertices )
+    void renderEnclosingBox(Point& boundaryMin,Point& boundaryMax){
         glBegin(GL_LINES);
 
           //front rectangle
