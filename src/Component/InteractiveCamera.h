@@ -2,7 +2,9 @@
 #define InteractiveCameraH
 
 #include "Camera.h"
+#include "Weapon.h"
 #include "Gun.h"
+#include "Spell.h"
 #include "../Behavior/MotionBehavior.h"
 #include "../Behavior/SimpleKeyboardBehavior.h"
 #include "../Behavior/SimpleMouseBehavior.h"
@@ -10,14 +12,15 @@
 
 class InteractiveCamera: public Camera {
   private:
-    Gun gun=Gun(Position(1.0f,-1.0f,-4.0f,90.0f,0.0f,0.0f));
+    vector<Weapon*> weapons;
+    vector<Weapon*>::iterator currentWeapon;
   protected:
     float elasticity=0.0f;
     const float U_D=0.05;
     float u_d=0.0;
   public:
 	  InteractiveCamera(Position position):Camera(position,false,[=](float deltaX,float deltaY,float deltaZ){ this->onTranslation(deltaX,deltaY,deltaZ);},ModelObject(EllipsoidMap(1.0,2.0,1.0)),GL_POINTS){
-          //enable physics(both, the this line and a render strategy with a geometry are needed)
+          //enable physics(both, the this line and a modelObject with a geometry are needed)
           add(new MotionBehavior());
           //add a key behavior for the actions
           add(new SimpleKeyboardBehavior(
@@ -35,6 +38,9 @@ class InteractiveCamera: public Camera {
               this->onMouseButtonDown(button);
             }
         ));
+        weapons.push_back(new Gun(std::move(position)));
+        weapons.push_back(new Spell(std::move(position)));
+        currentWeapon=weapons.begin();
     }
 
     virtual ~InteractiveCamera(){}
@@ -43,10 +49,14 @@ class InteractiveCamera: public Camera {
         //TODO:find a not so obscure way of doing this.It strongly relies in the
         // fact that the camera:onBeforeRenderFrame will re-set the ViewMatrix again.
         RenderStrategy::getInstance().setViewMatrix(Matrix(1.0));
-        gun.render();
+        (*currentWeapon)->render();
         Camera::onBeforeRenderFrame();
     }
 
+    void setPosition(float x,float y,float z,float phi,float theta,float psi){
+      Camera::setPosition(x,y,z,phi,theta,psi);
+      for(unsigned int i=0;i<weapons.size();i++) (weapons[i])->setPosition(x,y,z,phi,theta,psi);
+    }
     void onTranslation(float deltaX,float deltaY,float deltaZ){
       if(getCollisionStatus().hasCollided()){
         //We take in account the normal, to avoid penetration.
@@ -64,6 +74,17 @@ class InteractiveCamera: public Camera {
             if(getCollisionStatus().hasCollided()) this->setVelocity(getVelocity().getX(),10.0,getVelocity().getZ());//jump
             break;
           }
+          case SDLK_n:
+          {
+            currentWeapon++;
+            if(currentWeapon==weapons.end()) currentWeapon=weapons.begin();
+          }
+          case SDLK_w:
+          case SDLK_s:
+          {
+            (*currentWeapon)->onWalk();
+            break;
+          }
         }
     }
      void onKeyUp(SDL_Keycode key){
@@ -75,7 +96,7 @@ class InteractiveCamera: public Camera {
       switch(button.button){
         case SDL_BUTTON_LEFT:
         {
-          gun.fire(position);
+          (*currentWeapon)->fire();
         }
       }
     }

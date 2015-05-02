@@ -11,7 +11,7 @@ class Animation: public Model {
 	unsigned int frames=0;
 
   public:  	 
-	Animation(Position&& position,const char* modelFilename):Model(position,modelFilename){
+	Animation(Position&& position,const char* modelFilename,const char* textureFilename):Model(position,modelFilename,textureFilename){
 		modelObjects.push_back(this->modelObject);
 		this->loadAnimation(modelFilename);
 		currentModelObject=modelObjects.begin();

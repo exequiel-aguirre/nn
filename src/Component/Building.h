@@ -33,7 +33,7 @@ class Building: public Container {
 	  	add(new Box(Position(0,h,0),w+t,t,d,"img/building_wall.bmp"));
 	  	//podium
 	  	add(new Box(Position(0,0,0),w/10,h/5,w/10,"img/building_wall.bmp"));
-	  	add(new Model(Position(0.0f,h/5+1.0,0),"3DModel/monkey.obj"));
+		add(new Model(Position(0.0f,h/5+1.0,0),"3DModel/monkey.obj","img/default.bmp"));
 	  	//torchs
 		add(new Box(Position(-w/2+w/20,0,-d/3.0),w/10,h/8,w/10,"img/building_wall.bmp"));
 		add(new Emitter(Position(-w/2+w/15,h/8+0.5,-d/3.0)));

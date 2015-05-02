@@ -49,6 +49,8 @@ BUMP MAPPING:
 >sudo apt-get install gimp-normalmap
 -Open an image with Gimp, and go to Filters>Map>NormalMap...
 
+MAKEHUMAN:
+-For making it save an skin texture, select one different than the default
 
 BUGS:
 -Now the object can collide with just one object per frame. So the torus cannot be moved, since it's already colliding with the ground...
