@@ -72,7 +72,7 @@ class Component {
     }
 
     void setPosition(float x,float y,float z){
-      this->position.set(x,y,z);
+      this->setPosition(x,y,z,position.getPhi(),position.getTheta(),position.getPsi());
     }
     virtual void setPosition(float x,float y,float z,float phi,float theta,float psi){
       this->position.set(x,y,z,phi,theta,psi);
