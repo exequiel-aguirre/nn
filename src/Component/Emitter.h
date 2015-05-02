@@ -19,6 +19,12 @@ class Emitter: public Container {
 		glEnable(GL_PROGRAM_POINT_SIZE);
 	  }
 
+	  Emitter(Position position,IMap* map):Container(position){
+		Surface* particles=new Surface(Position(0,0.5,0,0.0,0,0),RandomizedDecorator(map),NULL,GL_POINTS,"Particle");
+		particles->add(new BlendingEffect())->setCollides(false)->getShader().setTimeEnabled(true);
+		add(particles);
+	  }
+
 	virtual ~Emitter(){}
 
 };

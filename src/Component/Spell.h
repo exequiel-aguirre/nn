@@ -4,6 +4,7 @@
 #include "Weapon.h"
 #include "Model.h"
 #include "Emitter.h"
+#include "../Map/EllipsoidMap.h"
 
 
 //TODO:find a better name
@@ -19,7 +20,7 @@ class Spell: public Weapon{
     }
 
     void buildBall(){
-      this->ball=new Emitter(Position(0,0,0));
+      this->ball=new Emitter(Position(0,0,0),new EllipsoidMap(0.3,0.3,0.3));
     }
     
     void onWalk(){
