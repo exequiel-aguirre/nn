@@ -10,13 +10,15 @@
 //TODO:find a better name
 class Spell: public Weapon{
   private:
-    Model arms=Model(Position(0,-0.8,-1,0,180,0),"3DModel/arms.obj","img/arms.bmp");
+    Model armLeft=Model(Position(-0.75,-1.0,-0.6,0,180,0),"3DModel/armLeft.obj","img/arms.bmp");
+    Model armRight=Model(Position(0.75,-0.8,-1,0,180,0),"3DModel/armRight.obj","img/arms.bmp");
     float gamma=0.0;
   public:
 	  Spell(Position&& position):Weapon(position){}
     
     void render(){
-      this->arms.render();
+      this->armLeft.render();
+      this->armRight.render();
     }
 
     void buildBall(){
@@ -24,8 +26,9 @@ class Spell: public Weapon{
     }
     
     void onWalk(){
-      gamma+=0.1;
-      arms.setPosition(arms.getPosition().getX(),arms.getPosition().getY()+(sin(gamma)*0.005),arms.getPosition().getZ()+(cos(gamma)*0.05));
+      gamma+=0.3;
+      armLeft.setPosition(armLeft.getPosition().getX(),armLeft.getPosition().getY()+(sin(gamma)*0.005),armLeft.getPosition().getZ()+(cos(gamma)*0.15));
+      armRight.setPosition(armRight.getPosition().getX(),armRight.getPosition().getY()+(cos(gamma)*0.005),armRight.getPosition().getZ()+(sin(gamma)*0.15));
     }
 
 };
