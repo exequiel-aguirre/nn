@@ -18,8 +18,10 @@ class InteractiveCamera: public Camera {
     float elasticity=0.0f;
     const float U_D=0.05;
     float u_d=0.0;
+    const float headOffset=1.0;//offset on the y axis of the camera view.(should not affect physics)
   public:
 	  InteractiveCamera(Position position):Camera(position,false,[=](float deltaX,float deltaY,float deltaZ){ this->onTranslation(deltaX,deltaY,deltaZ);},ModelObject(EllipsoidMap(1.0,2.0,1.0)),GL_POINTS){
+          Camera::setPosition(getPosition().getX(),getPosition().getY()+headOffset,getPosition().getZ());
           //enable physics(both, the this line and a modelObject with a geometry are needed)
           add(new MotionBehavior());
           //add a key behavior for the actions
@@ -60,7 +62,7 @@ class InteractiveCamera: public Camera {
     void onTranslation(float deltaX,float deltaY,float deltaZ){
       if(getCollisionStatus().hasCollided()){
         //We take in account the normal, to avoid penetration.
-        Point v=Point(-deltaX*10,-deltaY*10,-deltaZ*10);
+        Point v=Point(-deltaX*20,-deltaY*20,-deltaZ*20);
         Point n=getCollisionStatus().getImpactNormal();
         v=v- ((v*n)*n);
         this->setVelocity(v.x,v.y,v.z);
@@ -109,7 +111,7 @@ class InteractiveCamera: public Camera {
     //This is so the reduced polygon doesn't get rotated when we look up/down
     void calculateBoundary(){
       //update the boundary
-      getBoundary().update(Position(position.getX(),position.getY(),position.getZ()),velocity);
+      getBoundary().update(Position(position.getX(),position.getY()-headOffset,position.getZ()),velocity);
     }
     float getElasticity(){
       return elasticity;
