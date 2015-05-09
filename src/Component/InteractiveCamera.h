@@ -18,10 +18,10 @@ class InteractiveCamera: public Camera {
     float elasticity=0.0f;
     const float U_D=0.05;
     float u_d=0.0;
-    const float headOffset=1.0;//offset on the y axis of the camera view.(should not affect physics)
+    float headOffset=1.0;//offset on the y axis of the camera view.(should not affect physics)
+    float gamma=0.0;
   public:
 	  InteractiveCamera(Position position):Camera(position,false,[=](float deltaX,float deltaY,float deltaZ){ this->onTranslation(deltaX,deltaY,deltaZ);},ModelObject(EllipsoidMap(1.0,2.0,1.0)),GL_POINTS){
-          Camera::setPosition(getPosition().getX(),getPosition().getY()+headOffset,getPosition().getZ());
           //enable physics(both, the this line and a modelObject with a geometry are needed)
           add(new MotionBehavior());
           //add a key behavior for the actions
@@ -52,7 +52,10 @@ class InteractiveCamera: public Camera {
         // fact that the camera:onBeforeRenderFrame will re-set the ViewMatrix again.
         RenderStrategy::getInstance().setViewMatrix(Matrix(1.0));
         (*currentWeapon)->render();
+
+        Camera::setPosition(getPosition().getX(),getPosition().getY()+headOffset,getPosition().getZ());
         Camera::onBeforeRenderFrame();
+        Camera::setPosition(getPosition().getX(),getPosition().getY()-headOffset,getPosition().getZ());
     }
 
     void setPosition(float x,float y,float z,float phi,float theta,float psi){
@@ -84,6 +87,7 @@ class InteractiveCamera: public Camera {
           case SDLK_w:
           case SDLK_s:
           {
+            this->onWalk();
             (*currentWeapon)->onWalk();
             break;
           }
@@ -108,10 +112,15 @@ class InteractiveCamera: public Camera {
       this->setVelocity(v.getX(),v.getY(),v.getZ());
     }
 
+    //Move the head up and down
+    void onWalk(){
+      gamma+=0.5;
+      headOffset+=(cos(gamma)*0.05);
+    }
     //This is so the reduced polygon doesn't get rotated when we look up/down
     void calculateBoundary(){
       //update the boundary
-      getBoundary().update(Position(position.getX(),position.getY()-headOffset,position.getZ()),velocity);
+      getBoundary().update(Position(position.getX(),position.getY(),position.getZ()),velocity);
     }
     float getElasticity(){
       return elasticity;
