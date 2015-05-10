@@ -55,7 +55,6 @@ MAKEHUMAN:
 BUGS:
 -Now the object can collide with just one object per frame. So the torus cannot be moved, since it's already colliding with the ground...
 -The fog is not working.(some code need to be added to the shader, more info at the bottom)
--The skybox isn't working so well, it's obvious that is a box. Also we should be using just a Box with the textures, but with all the rotation needed(see comment on the skybox) the normals get messed up
 -When 2 objects with std::numeric_limits<float>::max() collide, everything goes to hell (for example, most things just dissapear)
 
 
