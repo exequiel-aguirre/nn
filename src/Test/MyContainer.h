@@ -12,7 +12,6 @@
 #include "../Component/Water.h"
 #include "../Component/Animation.h"
 #include "../Component/Box.h"
-#include "../Component/SkyBox.h"
 #include "../Component/Hut.h"
 #include "../Component/Mill.h"
 #include "../Component/Ground.h"
@@ -77,7 +76,6 @@ class MyContainer:public Container{
 			Ellipsoid* myEllipsoid=new Ellipsoid(Position(-60.0f,6.0f,-30.0f),1.0f,2.0f,1.0f);
 
 
-			//SkyBox* mySkyBox=new SkyBox(Position(0.0f,-1.0f,0.0f),400,400,400,"img/skybox_bottom.bmp","img/skybox_top.bmp","img/skybox_left.bmp","img/skybox_right.bmp","img/skybox_back.bmp","img/skybox_front.bmp");
 			Fog* myFog=new Fog();
 			InteractiveCamera* myInteractiveCamera=new InteractiveCamera(Position(-50.0f,3.0f,0.0f));
 			Light* myLight=new Light(Position(40.0f,40.0f,40.0f));
@@ -123,7 +121,6 @@ class MyContainer:public Container{
 			add(new Ground(Position(122.0f,GROUND_LEVEL,-205.0f),315,60));
 			add(new Grass(Position(20.0f,0.0,0.0f)));
 
-			//add(mySkyBox);
 			add(myFog);
 			add(myInteractiveCamera);
 			add(myLight);
