@@ -121,7 +121,7 @@ class MyContainer:public Container{
 			add(new Bridge(Position(-50,-GROUND_LEVEL/100.0,-120),8,2,105));//is to make the reflection work correctly
 			add(new Ground(Position(-122.0f,GROUND_LEVEL,-205.0f),112.5,60));
 			add(new Ground(Position(122.0f,GROUND_LEVEL,-205.0f),315,60));
-			add(new Grass(Position(-50.0f,GROUND_LEVEL,-10.0f)));
+			add(new Grass(Position(20.0f,0.0,0.0f)));
 
 			//add(mySkyBox);
 			add(myFog);

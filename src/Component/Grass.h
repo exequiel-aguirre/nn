@@ -10,9 +10,9 @@ class Grass: public Container {
 
 	  Grass(Position position):Container(position){		
 		setCollides(false);
-		float h=1.0;
-		float w=10;
-		float d=10;
+		float h=2.0;
+		float w=5;
+		float d=20;
 		float density=2.0;
 		int lats=w/density;
 		int longs=d/density;
@@ -20,9 +20,9 @@ class Grass: public Container {
 			float x=(w/lats)*i- w/2;
 			for(int j=0;j<longs;j++){
 				float z=(d/longs)*j- d/2;
-				merge(new Plane(Position(x,h/2,z,90.0f,0.0f,0.0f),h*2,h,"img/grass.tga"));
-				merge(new Plane(Position(x,h/2,z,90.0,00.0f,60.0f),h*2,h,"img/grass.tga"));
-				merge(new Plane(Position(x,h/2,z,90.0,00.0f,120.0f),h*2,h,"img/grass.tga"));
+				merge(new Plane(Position(x,h/2,z,90.0f,0.0f,0.0f),h*1.2,h,"img/grass.tga"));
+				merge(new Plane(Position(x,h/2,z,90.0,00.0f,60.0f),h*1.2,h,"img/grass.tga"));
+				merge(new Plane(Position(x,h/2,z,90.0,00.0f,120.0f),h*1.2,h,"img/grass.tga"));
 			}
 		}
 		//For billboards we need to change this to get the light correctly
