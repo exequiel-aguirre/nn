@@ -99,11 +99,14 @@ class Utils{
 		//read header
 		unsigned char cGarbage;
 		short int iGarbage;
-		file.read((char*)&cGarbage, sizeof(unsigned char) * 2);
-		file.read((char*)&info.type, sizeof(unsigned char));// type must be 2 or 3
-		file.read((char*)&iGarbage, sizeof(short int) * 2);
 		file.read((char*)&cGarbage, sizeof(unsigned char));
-		file.read((char*)&iGarbage, sizeof(short int) * 2);
+		file.read((char*)&cGarbage, sizeof(unsigned char));
+		file.read((char*)&info.type, sizeof(unsigned char));// type must be 2 or 3
+		file.read((char*)&iGarbage, sizeof(short int));
+		file.read((char*)&iGarbage, sizeof(short int));
+		file.read((char*)&cGarbage, sizeof(unsigned char));
+		file.read((char*)&iGarbage, sizeof(short int));
+		file.read((char*)&iGarbage, sizeof(short int));
 		file.read((char*)&info.w, sizeof(short int));
 		file.read((char*)&info.h, sizeof(short int));
 		file.read((char*)&info.pixelDepth, sizeof(unsigned char));
