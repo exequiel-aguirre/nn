@@ -20,6 +20,7 @@ class InteractiveCamera: public Camera {
     float u_d=0.0;
     float headOffset=1.0;//offset on the y axis of the camera view.(should not affect physics)
     float gamma=0.0;
+    bool climbing=false;
   public:
 	  InteractiveCamera(Position position):Camera(position,false,[=](float deltaX,float deltaY,float deltaZ){ this->onTranslation(deltaX,deltaY,deltaZ);},ModelObject(EllipsoidMap(1.0,2.0,1.0)),GL_POINTS){
           //enable physics(both, the this line and a modelObject with a geometry are needed)
@@ -60,6 +61,14 @@ class InteractiveCamera: public Camera {
 
     void setPosition(float x,float y,float z,float phi,float theta,float psi){
       Camera::setPosition(x,y,z,phi,theta,psi);
+      //Climbing logic(part 2)
+      if(climbing && !getCollisionStatus().hasCollided()) {//finalize the climbing by moving towards
+        float deltaX = 2.5 *-sinf(theta * M_PI/180);
+        float deltaZ = 2.5 * cosf(theta * M_PI/180);
+        this->setVelocity(velocity.getX()-deltaX,velocity.getY(),velocity.getZ()-deltaZ);
+        climbing=false;
+      }
+
       for(unsigned int i=0;i<weapons.size();i++) (weapons[i])->setPosition(x,y,z,phi,theta,psi);
     }
     void onTranslation(float deltaX,float deltaY,float deltaZ){
@@ -76,7 +85,10 @@ class InteractiveCamera: public Camera {
         switch(key){
           case SDLK_SPACE:
           {
-            if(getCollisionStatus().hasCollided()) this->setVelocity(getVelocity().getX(),10.0,getVelocity().getZ());//jump
+            if(getCollisionStatus().hasCollided()){
+              Point n=getCollisionStatus().getImpactNormal()* 10;
+              this->setVelocity(getVelocity().getX()+n.x,getVelocity().getY()+n.y,getVelocity().getZ()+n.z);//jump
+            }
             break;
           }
           case SDLK_n:
@@ -110,6 +122,17 @@ class InteractiveCamera: public Camera {
     void onAfterCollision(){
       Velocity v=this->getVelocity() * (1.0-this->u_d);
       this->setVelocity(v.getX(),v.getY(),v.getZ());
+      //Climbing logic(part 1)
+      //TODO:put this setVelocity just once
+      Point normal=getCollisionStatus().getImpactNormal();
+      if( fabs(normal*Point(0,1,0)) <0.0001){//we start climbing
+        this->setVelocity(0,v.getY()+0.7,0);
+        climbing=true;
+      }else if(climbing){//we reached the edge, so some final jump.(not always detected)
+        this->setVelocity(0,v.getY()+10.0,0);
+      }
+
+
     }
 
     //Move the head up and down
