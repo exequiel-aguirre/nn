@@ -1,19 +1,11 @@
 #ifndef GroundH
 #define GroundH
 
-#include "Surface.h"
-#include "../Map/PlaneMap.h"
-#include <limits>
+#include "Plane.h"
 
-class Ground: public Surface { 
+class Ground: public Plane {
   public:
-	Ground(Position&& position,float w,float h):Surface(position, PlaneMap(w,h),"img/ground.bmp"){}
-    virtual ~Ground(){}
-    
-    float getMass(){
-    	return std::numeric_limits<float>::max();
-    }
-    
+	Ground(Position&& position,float w,float h):Plane(std::move(position),w,h,"img/ground.bmp"){}
 };
 
 
