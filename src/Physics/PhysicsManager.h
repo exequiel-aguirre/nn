@@ -61,14 +61,8 @@ class PhysicsManager{
             Velocity v1=v1_i - Velocity( (1.0/m1 * j_r) * n );
             Velocity v2=v2_i + Velocity( (1.0/m2 * j_r) * n );
 
-            if(c1->getCollisionStatus().getCollisionCount()==1) c1->setVelocity(v1.getX(),v1.getY(),v1.getZ());//just change the velocity if this
-            if(c2->getCollisionStatus().getCollisionCount()==1) c2->setVelocity(v2.getX(),v2.getY(),v2.getZ());//is the first collision in this frame
-                        
-            
-            if(c1->getCollisionStatus().getCollisionCount()==1) c1->getBoundary().getCollisionStatus().setOtherMass(c2->getMass());
-            if(c2->getCollisionStatus().getCollisionCount()==1) c2->getBoundary().getCollisionStatus().setOtherMass(c1->getMass());
-
-           // std::cout << typeid(*c1).name()<<" with "<< typeid(*c2).name()<< " : "<< c1->getBoundary()->getCollisionStatus()->getImpactNormal();
+            c1->getCollisionStatus().addFinalVelocity(v1).addOtherMass(c2->getMass());
+            c2->getCollisionStatus().addFinalVelocity(v2).addOtherMass(c1->getMass());
 
     }
     void onAfterDetectCollisions(){
@@ -77,11 +71,15 @@ class PhysicsManager{
         if(!(*it)->getMoves()) continue;//if it doesn't move,makes no sense to add an acceleration to it
         CollisionStatus& status=(*it)->getCollisionStatus();
 
-        Point n=status.getImpactNormal();
-        float m=(*it)->getMass();
-        float m2=status.getOtherMass();
-        float c=m2/(m2+m);//TODO:justify this
         if(status.hasCollided()){
+          Point n=status.getImpactNormal();
+          float m=(*it)->getMass();
+          float m2=status.getOtherMass();
+          float c=m2/(m2+m);//TODO:justify this
+
+          //update velocity
+          (*it)->setVelocity(status.getFinalVelocity().getX(),status.getFinalVelocity().getY(),status.getFinalVelocity().getZ());
+          //update acceleration
           Acceleration& acceleration=(*it)->getAcceleration();
           (*it)->setAcceleration(
               acceleration.getX() +(c* fabs(acceleration.getX()) * n.x),//fabs, since the direction is given by n

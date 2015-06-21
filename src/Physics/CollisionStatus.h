@@ -2,6 +2,7 @@
 #define CollisionStatusH
 
 #include "../DataStructure/Point.h"
+#include "../DataStructure/Velocity.h"
 
 class CollisionStatus{
   private:
@@ -18,6 +19,8 @@ class CollisionStatus{
     float distance=10000;
     //the other component's mass
     float otherMass=0.0f;
+    //velocity after collision
+    Velocity finalVelocity;
 
   public:
     CollisionStatus(){
@@ -32,6 +35,7 @@ class CollisionStatus{
         collisionCount=0;
         distance=10000;
         otherMass=0.0f;
+        finalVelocity=Velocity();
     }
 
     void set(float islx,float isly,float islz,bool collided){
@@ -72,10 +76,10 @@ class CollisionStatus{
     }
 
     float getOtherMass(){
-        return otherMass;
+        return otherMass* (1.0/collisionCount);
     }
-    CollisionStatus& setOtherMass(float otherMass){
-        this->otherMass=otherMass;
+    CollisionStatus& addOtherMass(float otherMass){
+        this->otherMass+=otherMass;
         return *this;
     }
 
@@ -88,6 +92,14 @@ class CollisionStatus{
     }
     int getCollisionCount(){
         return collisionCount;
+    }
+
+    CollisionStatus& addFinalVelocity(Velocity& finalVelocity){
+        this->finalVelocity=this->finalVelocity+finalVelocity;
+        return *this;
+    }
+    Velocity getFinalVelocity(){
+        return this->finalVelocity* (1.0/collisionCount);
     }
 };
 #endif

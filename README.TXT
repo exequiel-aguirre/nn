@@ -59,6 +59,7 @@ BUGS:
 
 
 TODOS:
+-Check how we are dealing with multiple collisions.
 -We are setting the earth mass, pretty randomly.Maybe we should put the earth mass to all unmovable object.Makes more sense(kind of...)
 -Test the matrix inverse. (Maybe just asserting that A * A^-1 = I , on every call)
 -Change the sign in the camera for the angles as well (and swap the order of the rotates)(should be the exact opposite of the Component::onBeforeRender)
