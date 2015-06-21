@@ -105,13 +105,16 @@ class CollisionDetector{
 
         return pointInTriangle(ip,triangle[0],triangle[1],triangle[2]);
     }
+    //We find the coordinates (u,v) for the point p, in the base {c-a,b-a}, so
+    //p=a+ u (c-a) + v (b-a)
     bool pointInTriangle(Point& p,Point& a,Point& b,Point& c){
-        return sameSide(p,a,b,c) && sameSide(p,b,a,c) && sameSide(p,c,a,b);
-    }
-    bool sameSide(Point& p1,Point& p2,Point& a,Point& b){
-        Point cp1=(b-a)^(p1-a);
-        Point cp2=(b-a)^(p2-a);
-        return ((cp1 * cp2) >= 0);
+        Point v0=c-a;
+        Point v1=b-a;
+        Point v2=p-a;
+        float u=((v1*v1)*(v2*v0)-(v1*v0)*(v2*v1))/((v0*v0)*(v1*v1)-(v0*v1)*(v1*v0));
+        float v=((v0*v0)*(v2*v1)-(v0*v1)*(v2*v0))/((v0*v0)*(v1*v1)-(v0*v1)*(v1*v0));
+
+        return (0<=u) && (0<=v) && (u+v<1);
     }
 
 
