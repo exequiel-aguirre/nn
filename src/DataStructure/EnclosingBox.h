@@ -13,6 +13,7 @@ class EnclosingBox{
     Position position;
     Point diagonalMin;
     Point diagonalMax;
+    static constexpr float EPSILON=0.02;
   public:	
     EnclosingBox(){}
     EnclosingBox(vector<Point> vertices){      
@@ -47,8 +48,8 @@ class EnclosingBox{
               return p1.z < p2.z;
           });
 
-      diagonalMin=Point((*minMaxX.first).x,(*minMaxY.first).y,(*minMaxZ.first).z);
-      diagonalMax=Point((*minMaxX.second).x,(*minMaxY.second).y,(*minMaxZ.second).z);
+      diagonalMin=Point((*minMaxX.first).x,(*minMaxY.first).y,(*minMaxZ.first).z)-Point(EPSILON,EPSILON,EPSILON);
+      diagonalMax=Point((*minMaxX.second).x,(*minMaxY.second).y,(*minMaxZ.second).z)+Point(EPSILON,EPSILON,EPSILON);
     }
 
     void buildPositionedVertices(){
