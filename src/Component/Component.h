@@ -16,7 +16,9 @@
 #include "../Physics/CollisionStatus.h"
 
 
-class Component {  
+class Component {
+ private:
+    static constexpr float EARTH_MASS=5.972 * pow(10,24);
   protected:
     ModelObject modelObject;
     Matrix modelMatrix;
@@ -138,6 +140,7 @@ class Component {
 
     virtual float getMass(){
       if(modelObject.getSize()==0) return 0;
+      if(!this->getMoves()) return EARTH_MASS;//if it's unmovable, we treat it as if it was fixed to the earth
       //a very rough approximation of volume
       return modelObject.getBoundary().getEnclosingBox().getVolume()* massDensity;
     }
