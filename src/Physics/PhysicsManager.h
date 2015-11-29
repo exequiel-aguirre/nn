@@ -1,7 +1,7 @@
 #ifndef PhysicsManagerH
 #define PhysicsManagerH
 #include <vector>
-#include "CollisionDetector.h"
+#include "MPRCollisionDetector.h"
 #include <typeinfo>
 using std::vector;
 
@@ -9,7 +9,7 @@ class PhysicsManager{
   private:
     static PhysicsManager* instance;    
     vector<Component*> components;
-    CollisionDetector collisionDetector;
+    MPRCollisionDetector collisionDetector;
 
     PhysicsManager(){}
     

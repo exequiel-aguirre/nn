@@ -6,6 +6,7 @@
 #include "../DataStructure/Position.h"
 #include "../Application/Application.h"
 #include "../RenderStrategy/RenderStrategy.h"
+#include "../Test/CollisionContainer.h"
 #include "../Test/MyContainer.h"
 
 class Server

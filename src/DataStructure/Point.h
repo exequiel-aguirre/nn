@@ -133,6 +133,13 @@ class Point{
 	float norm(){
 		return sqrt((x*x) + (y*y) + (z*z));
 	}
+
+	bool isZero(){
+		int ZERO_EPSILON=6e-05;
+		return (x<ZERO_EPSILON && x>-ZERO_EPSILON &&
+				y<ZERO_EPSILON && y>-ZERO_EPSILON &&
+				z<ZERO_EPSILON && z>-ZERO_EPSILON);
+	}
 };
 
 #endif

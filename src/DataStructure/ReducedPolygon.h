@@ -105,7 +105,7 @@ class ReducedPolygon{
       float vFrom=map.getVFrom();
       float vTo=map.getVTo();
 
-      for(k=1;k<5;k++)
+      for(k=1;k<8;k++)
       {
         float error=0.0;
         //latitudes
