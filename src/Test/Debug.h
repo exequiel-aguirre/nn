@@ -60,30 +60,6 @@ class Debug{
           
         glEnd();
     }
-
-    //to be called from the onRender() (because this are NOT positioned vertices )
-    void renderReducedPolygon(){
-        vector<Point> vertices=boundary.getReducedPolygon().getVertices();
-        vector<Point>::iterator it;
-        glBegin(GL_TRIANGLES);
-        for(it=vertices.begin();it!=vertices.end();it+=3){      
-              Point v1=(*it);
-              Point v2=(*(it+1));
-              Point v3=(*(it+2));
-              Point n=((v2-v1)^(v3-v1)).normalize();
-              glNormal3f(n.x,n.y,n.z);
-              glVertex3f(v1.x,v1.y,v1.z);
-              glVertex3f(v2.x,v2.y,v2.z);
-
-              //glVertex3f(v2.x,v2.y,v2.z);
-              glVertex3f(v3.x,v3.y,v3.z);
-
-              //glVertex3f(v3.x,v3.y,v3.z);
-              //glVertex3f(v1.x,v1.y,v1.z);
-        }
-        glEnd();
-    }
-
     
     //to be called from the onAfterRender() (because this are positioned vertices )
     void renderImpactNormal(){
@@ -103,19 +79,6 @@ class Debug{
       glEnd();
     }
 
-    void renderNormals(){
-        vector<vector<Point>> positionedTriangles=boundary.getReducedPolygon().getPositionedTriangles();
-        vector<vector<Point>>::iterator it;
-        glBegin(GL_LINES);
-        for(it=positionedTriangles.begin();it!=positionedTriangles.end();it++){
-              Point v1=(*it)[0];
-              Point n=(*it)[3];
-              glVertex3f(v1.x,v1.y,v1.z);
-              glVertex3f(v1.x+n.x,v1.y+n.y,v1.z+n.z);
-        }
-        glEnd();
-    }
-
     //to be called from the onAfterRender() (because this are positioned vertices )
     void renderMotionRay(){
       glBegin(GL_LINES);
@@ -126,27 +89,5 @@ class Debug{
       glEnd();
     }
 
-    //to be called from the onAfterRender() (because this are positioned vertices )
-    void renderPositionedTriangles(){
-       vector<vector<Point>> positionedTriangles=boundary.getReducedPolygon().getPositionedTriangles();
-        vector<vector<Point>>::iterator it;
-        glBegin(GL_TRIANGLES);
-        for(it=positionedTriangles.begin();it!=positionedTriangles.end();it++){
-              Point v1=(*it)[0];
-              Point v2=(*it)[1];
-              Point v3=(*it)[2];
-              Point n=(*it)[3];
-              glNormal3f(n.x,n.y,n.z);
-              glVertex3f(v1.x,v1.y,v1.z);
-              glVertex3f(v2.x,v2.y,v2.z);
-
-              //glVertex3f(v2.x,v2.y,v2.z);
-              glVertex3f(v3.x,v3.y,v3.z);
-
-              //glVertex3f(v3.x,v3.y,v3.z);
-              //glVertex3f(v1.x,v1.y,v1.z);
-        }
-        glEnd();
-    }
 };
 #endif

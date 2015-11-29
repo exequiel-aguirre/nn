@@ -98,7 +98,7 @@ class ModelObject{
           tangents.push_back(map.getTangent(u1,v1));
         }
       }
-      this->boundary= Boundary(map,vertices);
+      this->boundary= Boundary(vertices);
     }
 
   	Point getVertex(int i){
@@ -165,7 +165,7 @@ class ModelObject{
         tp.rotate(otherPosition.getPhi(),otherPosition.getTheta(),otherPosition.getPsi());
         this->tangents.push_back(tp);
       }
-      getBoundary().merge(other.getBoundary(),otherPosition);
+      this->boundary=Boundary(vertices);
     }
     
     void setAllNormalsTo(Point n){

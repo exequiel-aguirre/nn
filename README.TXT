@@ -59,16 +59,11 @@ BUGS:
 
 
 TODOS:
+-Some times the ball thrown goes through the ground.Modifying "d=n*v1" to -0.2 intead of 0, seems to improve the situation but not fix it.
 -Check how we are dealing with multiple collisions.
 -Test the matrix inverse. (Maybe just asserting that A * A^-1 = I , on every call)
 -Change the sign in the camera for the angles as well (and swap the order of the rotates)(should be the exact opposite of the Component::onBeforeRender)
 -Performance: 
---CollisionDetector:
---- put if(float d1>EPSILON) just before the willIntersect call. (d1 is cheaper than the willIntersect)
----calculate (b-a) just once
---update reduced polygon on demand: add a flag isUpToDate=(this->position==position) on the ReducedPolygon::update
--CollisionDetector:
-- Maybe we should use t instead of d, to detect a collision. (instead of (d<EPSILON) (t<1.0/60.0))
 - the rawPoint was created, but now inside point we have duplicated x,y,z. Besides that, if we modify point->x, rawPoint won't change, which I think is fine having in mind that we are using GL_STATIC_DRAW?
 -implement a factory so we can avoid thius chaotics constructors
 -try template for ciclyc reference.
@@ -91,56 +86,3 @@ float z=gl_FragCoord.z / gl_FragCoord.w;
 		float fog = exp2(-gl_Fog.density * gl_FogFragCoord * LOG2E);	
 		gl_FragColor=mix(gl_FragColor,gl_Fog.color,fog);
 	}
-
-
-p.isZero() vs p==Point(0,0,0) changed nothing.
-
-
-
-	void render()
-	{
-      Component::doEffects();
-      RenderStrategy::getInstance().render(this->modelMatrix,this->modelObject,this->shader,this->texture);
-      vector<Component*>::iterator it;
-      for(it=childs.begin();it!=childs.end();it++)
-    	{
-        	(*it)->render();
-          /*if((*it)->getModelObject().getSize()==0) continue;
-          redSphere->setPosition((*it)->getPosition().getX(),(*it)->getPosition().getY(),(*it)->getPosition().getZ());
-          redSphere->render();*/
-      }
-      Component::undoEffects();
-	}
-
-
-
-    TODO:
-    check if the bug is with the collision detection or physicsManager.
-    In order to do this, remove all objects (except the floor) and see if the collision is detected when the ball pass through
-    (if it's the collision detection try expanding the reduced poly)
-
-
-    it's probably nothing, but
-        Point getSupportPoint(Boundary& b,Point v){
-        vector<Point>& vertices=b.getReducedPolygon().getPositionedIndexedVertices();
-        vector<Point>::iterator itp;
-        Point max=vertices[0];
-        float d=max * v;
-        for(itp=vertices.begin();itp!=vertices.end();itp++){
-            Point& p=*itp;
-            float d1=p*v;
-            if(d1>d){
-                d=d1;
-                max=p;
-            }
-        }
-        //return max;
-        auto max2=std::max_element(vertices.begin(),vertices.end(),
-        [&v](Point p1, Point p2) {
-              return (p1*v) < (p2*v);
-          });
-        if(!(max==max2[0])) std::cout << max<<max*v<<" vs."<<max2[0]<<max2[0]*v;
-        return max2[0];
-    }
-
-    it's not returning same things...

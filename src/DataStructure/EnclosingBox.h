@@ -102,20 +102,6 @@ class EnclosingBox{
       return vertices;
     }
 
-    void merge(EnclosingBox& other,Position otherPosition){
-      vector<Point> tmpVertices=vertices;
-      vector<Point> otherVertices=other.getVertices();
-      for(unsigned int i=0;i<otherVertices.size();i++){
-        otherVertices[i].rotate(otherPosition.getPhi(),otherPosition.getTheta(),otherPosition.getPsi());
-        otherVertices[i].translate(otherPosition.getX(),otherPosition.getY(),otherPosition.getZ());
-      }
-      tmpVertices.insert(tmpVertices.end(),otherVertices.begin(),otherVertices.end());
-      //re-build
-      this->vertices.clear();
-      this->positionedVertices.clear();
-      buildBoxVertices(tmpVertices);
-      buildPositionedVertices();
-    }
 };
 
 #endif

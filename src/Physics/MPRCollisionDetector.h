@@ -235,7 +235,7 @@ class MPRCollisionDetector{
     
     //ex-getFarthestAlong
     Point getSupportPoint(Boundary& b,Point v){
-        vector<Point>& vertices=b.getReducedPolygon().getPositionedIndexedVertices();        
+        vector<Point>& vertices=b.getReducedPolygon().getPositionedVertices();
         auto max2=std::max_element(vertices.begin(),vertices.end(),
         [&v](Point& p1, Point& p2) {
               return (p1*v) < (p2*v);
