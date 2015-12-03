@@ -100,9 +100,9 @@ class MPRCollisionDetector{
 
         if(dist>0)
         {
-            swap(v1,v2);
-            swap(v11,v12);
-            swap(v21,v22);
+            std::swap(v1,v2);
+            std::swap(v11,v12);
+            std::swap(v21,v22);
             n=-n;
         }
 
@@ -220,12 +220,7 @@ class MPRCollisionDetector{
     }
 
 
-    void swap(Point& p1,Point& p2){
-        Point tmp=p1;
-        p1=p2;
-        p2=tmp;
-    }
-    
+
     //critical!!!
     Point getCenter(Boundary& b){
         Point& min=b.getEnclosingBox().getDiagonalMin();
@@ -235,13 +230,25 @@ class MPRCollisionDetector{
     
     //ex-getFarthestAlong
     Point getSupportPoint(Boundary& b,Point v){
-        vector<Point>& vertices=b.getReducedPolygon().getPositionedVertices();
+        Position& position=b.getReducedPolygon().getPosition();
+        //- rotation
+        v.rotate(-position.getPhi(),0,0);
+        v.rotate(0,-position.getTheta(),0);
+        v.rotate(0,0,-position.getPsi());
+
+        //getFarthestAlong
+        vector<Point>& vertices=b.getReducedPolygon().getVertices();
         auto max2=std::max_element(vertices.begin(),vertices.end(),
         [&v](Point& p1, Point& p2) {
               return (p1*v) < (p2*v);
           });
+
+        Point max=max2[0];
+        //rotation and translation
+        max.rotate(position.getPhi(),position.getTheta(),position.getPsi());
+        max=max.translate(position.getX(),position.getY(),position.getZ());
         
-        return max2[0];
+        return max;
     }
     
 
