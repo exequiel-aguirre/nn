@@ -159,6 +159,26 @@ class MPRCollisionDetector{
                 if(d>-0.2 && !hit)//TODO!:in the original code it's 0 instead of -0.5. This was just to fix a bug, but I need to find a better way
                 {
                     impactNormal=n;
+
+                    //Calculate the barycentric coordinates of the origin
+                    float ba0=(v1^v2) * v3;
+                    float ba1=(v3^v2) * v0;
+                    float ba2=(v0^v1) * v3;
+                    float ba3=(v2^v1) * v0;
+                    float sum=ba0+ba1+ba2+ba3;
+                    if(sum<=0)
+                    {
+                        ba0=0;
+                        ba1=(v2^v3) * n;
+                        ba2=(v3^v1) * n;
+                        ba3=(v1^v2) * n;
+                        sum=ba1+ba2+ba3;
+                    }
+                    float inv=1.0/sum;
+                    impactPoint1=(ba0*v01 + ba1*v11 + ba2*v21 + ba3*v31)*inv;
+                    impactPoint2=(ba0*v02 + ba1*v12 + ba2*v22+ ba3*v32)*inv;
+
+
                     //hit!!!
                     hit=true;
                 }
