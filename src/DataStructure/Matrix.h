@@ -223,6 +223,18 @@ class Matrix{
 		return (*this);
 	}
 	
+	Matrix getRotationMatrix(){
+		Matrix r=(*this);
+		r.rawMatrix[3]=0;
+		r.rawMatrix[7]=0;
+		r.rawMatrix[11]=0;
+		r.rawMatrix[15]=1;
+		return r;
+	}
+	Matrix getTranslationMatrix(){
+		Matrix t=this->getTranlationMatrix(rawMatrix[3],rawMatrix[7],rawMatrix[11]);
+		return t;
+	}
 };
 
 #endif

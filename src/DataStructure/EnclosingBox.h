@@ -10,7 +10,7 @@ class EnclosingBox{
   private:
     vector<Point> vertices;
     vector<Point> positionedVertices;
-    Position position;
+    Matrix modelMatrix;
     Point diagonalMin;
     Point diagonalMax;
     static constexpr float EPSILON=0.02;
@@ -57,13 +57,13 @@ class EnclosingBox{
       vector<Point>::iterator it;
       for(it=vertices.begin();it!=vertices.end();it++){
           Point p=*it;
-          this->positionedVertices.push_back(transform(p));
+          this->positionedVertices.push_back(modelMatrix * p);
       }
       buildDiagonals(positionedVertices);
     }
 
-    void update(Position position){
-      this->position=position;
+    void update(Matrix modelMatrix){
+      this->modelMatrix=modelMatrix;
       //position changes vertices position change
       updatePositionedVertices();
     }
@@ -72,16 +72,9 @@ class EnclosingBox{
       for(unsigned int i=0;i<positionedVertices.size();i++){
         Point p=vertices[i];
         Point& pp=positionedVertices[i];
-        pp=p;
-        transform(pp);
+        pp=modelMatrix*p;
       }
       buildDiagonals(positionedVertices);
-    }
-    //TODO:put this inside the point
-    Point& transform(Point& p){
-        p.rotate(position.getPhi(),position.getTheta(),position.getPsi());
-        p.translate(position.getX(),position.getY(),position.getZ());
-        return p;
     }
 
     Point& getDiagonalMin(){

@@ -91,6 +91,10 @@ class Component {
       modelMatrix.rotate(position.getPsi(), 0.0f, 0.0f, 1.0f);
     }
     
+    Matrix& getModelMatrix(){
+      return modelMatrix;
+    }
+
     Velocity& getVelocity(){
       return velocity;
     }
@@ -119,7 +123,7 @@ class Component {
     virtual void calculateBoundary(){
       if(modelObject.getSize()==0) return;
       //update the boundary
-      modelObject.getBoundary().update(position,velocity);
+      modelObject.getBoundary().update(modelMatrix,velocity);
     }
 
     Boundary& getBoundary(){

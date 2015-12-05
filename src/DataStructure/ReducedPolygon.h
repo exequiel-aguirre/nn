@@ -12,9 +12,10 @@
 class ReducedPolygon{
   private:
     vector<Point> vertices;
-    Position position;
     ////TODO:find a better name. This is the direction of the movement (x,y,z of the component's velocity)
     Point motionRay;
+    Matrix modelMatrix;
+    Matrix rotationInverseMatrix;
   public:	
     ReducedPolygon(){}
 
@@ -25,25 +26,30 @@ class ReducedPolygon{
       vertices.erase( std::unique( vertices.begin(), vertices.end() ), vertices.end() );
     }
 
-    void update(Position position,Velocity velocity){
-      this->position=position;
+    void update(Matrix modelMatrix,Velocity velocity){
+      this->modelMatrix=modelMatrix;
+      this->rotationInverseMatrix=Matrix();//built on demand
       this->motionRay=Point(velocity.getX(),velocity.getY(),velocity.getZ());
     }
-    
+
     Point& getMotionRay(){
       return motionRay;
     }
 
-    //for debugging
-    Point getPositionPoint(){
-      return Point(position.getX(),position.getY(),position.getZ());
-    }
-
-    Position& getPosition(){
-      return position;
-    }
     vector<Point>& getVertices(){
       return vertices;
+    }
+
+    Matrix& getModelMatrix(){
+      return modelMatrix;
+    }
+
+    Matrix& getRotationInverseMatrix(){
+      if(rotationInverseMatrix.rawMatrix[15]==0)//TODO:find a better way
+      {
+        rotationInverseMatrix=modelMatrix.getRotationMatrix().getInverse();//TODO:warning we are doing this even though we might not use it.
+      }
+      return rotationInverseMatrix;
     }
 
 };

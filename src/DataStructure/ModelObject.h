@@ -147,22 +147,22 @@ class ModelObject{
       return boundary;
     }
 
-    void merge(ModelObject& other,Position otherPosition){
+    void merge(ModelObject& other,Matrix otherModelMatrix){
+      Matrix otherRotationMatrix=otherModelMatrix.getRotationMatrix();
       for(int i=0;i<other.getSize();i++){
         //vertices
         Point vp=other.getVertex(i);
-        vp.rotate(otherPosition.getPhi(),otherPosition.getTheta(),otherPosition.getPsi());
-        vp.translate(otherPosition.getX(),otherPosition.getY(),otherPosition.getZ());
+        vp=otherModelMatrix*vp;
         this->vertices.push_back(vp);
         //uvs
         this->uvs.push_back(other.getUV(i));
         //normals
         Point np=other.getNormal(i);
-        np.rotate(otherPosition.getPhi(),otherPosition.getTheta(),otherPosition.getPsi());
+        np=otherRotationMatrix*np;
         this->normals.push_back(np);
         //tangents
         Point tp=other.getTangent(i);
-        tp.rotate(otherPosition.getPhi(),otherPosition.getTheta(),otherPosition.getPsi());
+        tp=otherRotationMatrix*tp;
         this->tangents.push_back(tp);
       }
       this->boundary=Boundary(vertices);

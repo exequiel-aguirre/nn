@@ -1,6 +1,7 @@
 #ifndef PointH
 #define PointH
 #include "RawPoint.h"
+#include "Matrix.h"
 
 class Point{
   public:
@@ -48,44 +49,6 @@ class Point{
 		return false;
 	}
 
-	Point& rotate(float phi,float theta,float psi){
-		if(phi==0 && theta==0 && psi==0) return *this;
-		float xr,yr,zr;
-		phi=phi*M_PI/180.0f;
-		theta=theta*M_PI/180.0f;
-		psi=psi*M_PI/180.0f;
-
-		//rotation on z axis
-		xr=(cos(psi)*x)-(sin(psi)*y);
-		yr=(sin(psi)*x)+(cos(psi)*y);
-		//z=z
-		x=xr;
-		y=yr;
-
-		//rotation on y axis
-		xr=(cos(theta)*x)+(sin(theta)*z);
-		//y=y
-		zr=(-sin(theta)*x)+(cos(theta)*z);
-		x=xr;
-		z=zr;
-
-		//rotation on x axis
-		//x=x;
-		yr=(cos(phi)*y)-(sin(phi)*z);
-		zr=(sin(phi)*y)+(cos(phi)*z);
-		y=yr;
-		z=zr;
-
-		return *this;
-	}
-	Point& translate(float x,float y,float z){
-		this->x+=x;
-		this->y+=y;
-		this->z+=z;
-
-		return *this;
-	}
-
 	//cross product
 	Point operator^(const Point& p) {
 		//y1 z2-z1 y2,z1 x2-x1 z2,x1 y2-y1 x2
@@ -106,6 +69,16 @@ class Point{
 	Point operator*(const float rhs){
 		return Point(x*rhs,y*rhs,z*rhs);
 	}
+
+	//return matrix*Point(p.x,p.y,p.z,1)
+	friend Point operator*(const Matrix& m,Point& p){
+		float x=m.rawMatrix[0]*p.x + m.rawMatrix[1]*p.y + m.rawMatrix[2]*p.z + m.rawMatrix[3];
+		float y=m.rawMatrix[4]*p.x + m.rawMatrix[5]*p.y + m.rawMatrix[6]*p.z + m.rawMatrix[7];
+		float z=m.rawMatrix[8]*p.x + m.rawMatrix[9]*p.y + m.rawMatrix[10]*p.z + m.rawMatrix[11];
+
+		return Point(x,y,z);
+	}
+
 	friend Point operator*(float lhs, Point rhs) {
 		return rhs*lhs;
 	}

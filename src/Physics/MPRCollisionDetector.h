@@ -5,6 +5,7 @@ the original code can be found at http://xenocollide.com
 #ifndef MPRCollisionDetectorH
 #define MPRCollisionDetectorH
 #include "../DataStructure/Boundary.h"
+#include "../DataStructure/Matrix.h"
 
 class MPRCollisionDetector{  
   public:
@@ -230,11 +231,9 @@ class MPRCollisionDetector{
     
     //ex-getFarthestAlong
     Point getSupportPoint(Boundary& b,Point v){
-        Position& position=b.getReducedPolygon().getPosition();
         //- rotation
-        v.rotate(-position.getPhi(),0,0);
-        v.rotate(0,-position.getTheta(),0);
-        v.rotate(0,0,-position.getPsi());
+        Matrix& rotationInverseMatrix=b.getReducedPolygon().getRotationInverseMatrix();
+        v=rotationInverseMatrix*v;
 
         //getFarthestAlong
         vector<Point>& vertices=b.getReducedPolygon().getVertices();
@@ -242,13 +241,9 @@ class MPRCollisionDetector{
         [&v](Point& p1, Point& p2) {
               return (p1*v) < (p2*v);
           });
-
-        Point max=max2[0];
-        //rotation and translation
-        max.rotate(position.getPhi(),position.getTheta(),position.getPsi());
-        max=max.translate(position.getX(),position.getY(),position.getZ());
         
-        return max;
+        Matrix& modelMatrix=b.getReducedPolygon().getModelMatrix();
+        return modelMatrix*max2[0];
     }
     
 

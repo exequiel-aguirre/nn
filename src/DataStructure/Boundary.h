@@ -23,9 +23,9 @@ class Boundary{
       this->collisionStatus= CollisionStatus();
   	}
 
-    void update(Position position,Velocity velocity){
-      this->reducedPolygon.update(position,velocity);
-      this->enclosingBox.update(position);
+    void update(Matrix modelMatrix,Velocity velocity){
+      this->reducedPolygon.update(modelMatrix,velocity);
+      this->enclosingBox.update(modelMatrix);
     }
 
     ReducedPolygon& getReducedPolygon(){

@@ -79,15 +79,5 @@ class Debug{
       glEnd();
     }
 
-    //to be called from the onAfterRender() (because this are positioned vertices )
-    void renderMotionRay(){
-      glBegin(GL_LINES);
-        Point c0=boundary.getReducedPolygon().getPositionPoint();
-        Point v=boundary.getReducedPolygon().getMotionRay();
-        glVertex3f(c0.x,c0.y,c0.z);
-        glVertex3f(c0.x+v.x, c0.y+v.y, c0.z+v.z);
-      glEnd();
-    }
-
 };
 #endif
