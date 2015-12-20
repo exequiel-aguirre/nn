@@ -13,11 +13,15 @@ class EnclosingBox{
     Matrix modelMatrix;
     Point diagonalMin;
     Point diagonalMax;
+    Point whd;
+    float volume;
     static constexpr float EPSILON=0.02;
   public:	
     EnclosingBox(){}
     EnclosingBox(vector<Point> vertices){      
       buildBoxVertices(vertices);
+      whd= diagonalMax - diagonalMin;// - 2.0*Point(EPSILON,EPSILON,EPSILON);//TODO: this is to avoid returning zero for planes,etc...
+      volume= whd.x * whd.y * whd.z ;
       buildPositionedVertices();
   	}
 
@@ -86,13 +90,20 @@ class EnclosingBox{
     }
 
     float getVolume(){
-      return (diagonalMax.x - diagonalMin.x)*
-             (diagonalMax.y - diagonalMin.y)*
-             (diagonalMax.z - diagonalMin.z);
+      return volume;
+    }
+
+    //critical for MPRCollisionDetector!!!
+    Point getCenter(){
+        return diagonalMin + (diagonalMax-diagonalMin)*0.5;
     }
     
     vector<Point>& getVertices(){
       return vertices;
+    }
+    //Point(width,height,depth)
+    Point getWHD(){
+      return whd;
     }
 
 };

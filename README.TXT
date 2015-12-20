@@ -52,14 +52,28 @@ BUMP MAPPING:
 MAKEHUMAN:
 -For making it save an skin texture, select one different than the default
 
+QTCREATOR:
+-To be able to step into a third party lib, you need to add the library path to the includes.For example, add /usr/include/bullet to example.includes .
+
+
 BUGS:
+-The box position is not the centroide of the object.
+-With the real earth mass program freeze.It seems that we cannot handle numbers that big...*
 -Now the object can collide with just one object per frame. So the torus cannot be moved, since it's already colliding with the ground...
 -The fog is not working.(some code need to be added to the shader, more info at the bottom)
 -When 2 objects with std::numeric_limits<float>::max() collide, everything goes to hell (for example, most things just dissapear)
 
 
 TODOS:
+-Return Component::massInverse instead of mass, this way, we can just return 0 for static objects.Fixing *.
+--The setMoves and setRotates should put a valid inverseMass/InverseInertia if true, or 0/Matrix(0) if false.
+-In the physicsManager, if I update the velocity right there in the onCollisionDetected, maybe I can avoid the whole add velocity stuff
+-DELTA_TIME should be an global constant
 -Some times the ball thrown goes through the ground.Modifying "d=n*v1" to -0.2 intead of 0, seems to improve the situation but not fix it.
+-Warning:the getCenter gives the already positioned vertices... I think in MPR we are transforming those(again)...
+-Warning:the std::max_element enters in an infinite loop if p*v is nan
+-For multiple collision (like a box over a box over the ground) we can take in account the other mass.
+In this case the first would be against a box with the mass of ground(+its own mass).For this we should also take into account the area of contact(in case the second box is rotated and just touching ground with a tip)
 -Check how we are dealing with multiple collisions.
 -Test the matrix inverse. (Maybe just asserting that A * A^-1 = I , on every call)
 -Change the sign in the camera for the angles as well (and swap the order of the rotates)(should be the exact opposite of the Component::onBeforeRender)

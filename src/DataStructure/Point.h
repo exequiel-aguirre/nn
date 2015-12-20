@@ -10,13 +10,13 @@ class Point{
    float z;
    //this is for the fastStrategy
    RawPoint rawPoint;
-
+   static constexpr float ZERO_EPSILON=6e-05;
 	Point(float x,float y,float z){
 		this->x=x;
 		this->y=y;
 		this->z=z;
 	}
-	Point(){}
+	Point():Point(0,0,0){}
 
 
 
@@ -71,7 +71,7 @@ class Point{
 	}
 
 	//return matrix*Point(p.x,p.y,p.z,1)
-	friend Point operator*(const Matrix& m,Point& p){
+	friend Point operator*(const Matrix& m,Point p){
 		float x=m.rawMatrix[0]*p.x + m.rawMatrix[1]*p.y + m.rawMatrix[2]*p.z + m.rawMatrix[3];
 		float y=m.rawMatrix[4]*p.x + m.rawMatrix[5]*p.y + m.rawMatrix[6]*p.z + m.rawMatrix[7];
 		float z=m.rawMatrix[8]*p.x + m.rawMatrix[9]*p.y + m.rawMatrix[10]*p.z + m.rawMatrix[11];
@@ -107,8 +107,8 @@ class Point{
 		return sqrt((x*x) + (y*y) + (z*z));
 	}
 
+	//rename to isCloseToZero(or something like that)
 	bool isZero(){
-		int ZERO_EPSILON=6e-05;
 		return (x<ZERO_EPSILON && x>-ZERO_EPSILON &&
 				y<ZERO_EPSILON && y>-ZERO_EPSILON &&
 				z<ZERO_EPSILON && z>-ZERO_EPSILON);

@@ -149,6 +149,18 @@ class Component {
       return modelObject.getBoundary().getEnclosingBox().getVolume()* massDensity;
     }
 
+    //a very rough approximation of the inertia is used here.
+    virtual Matrix getInertiaInverse(){
+      if(getMass()>5e15) return Matrix(0.0);
+      Point mm=modelObject.getBoundary().getEnclosingBox().getWHD();
+      float xyz=mm.x*mm.y*mm.z;
+      float xx=mm.x*mm.x;
+      float yy=mm.y*mm.y;
+      float zz=mm.z*mm.z;
+
+      return Matrix(xyz*(yy+zz)/12.0, xyz*(xx+zz)/12.0, xyz*(xx+yy)/12.0, 1.0);
+    }
+
     virtual float getElasticity(){
       return elasticity;
     }

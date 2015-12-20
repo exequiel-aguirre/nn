@@ -1,7 +1,6 @@
 #ifndef VelocityH
 #define VelocityH
 #include "Position.h"
-#include "Point.h"
 
 class Velocity:public Position{
 
@@ -9,7 +8,8 @@ class Velocity:public Position{
 	Velocity():Position(){}
 	Velocity(float x,float y,float z):Position(x,y,z){}
 	Velocity(float x,float y,float z,float phi,float theta,float psi):Position(x,y,z,phi,theta,psi){}
-	Velocity(Point&& p):Position(p.x,p.y,p.z){}
+	Velocity(Point v,Point w):Position(v.x,v.y,v.z,w.x,w.y,w.z){}
+	Velocity(Point v):Position(v.x,v.y,v.z){}
 
     virtual ~Velocity(){}  
 

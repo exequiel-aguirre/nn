@@ -1,5 +1,6 @@
 #ifndef PositionH
 #define PositionH
+#include "Point.h"
 
 class Position {
 
@@ -125,6 +126,14 @@ class Position {
 
     float norm(){
         return sqrt((x*x) + (y*y) + (z*z));
+    }
+
+    Point getLinear(){
+        return Point(x,y,z);
+    }
+
+    Point getAngular(){
+        return Point(phi,theta,psi);
     }
   
 };

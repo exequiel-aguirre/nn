@@ -27,12 +27,13 @@ class MPRCollisionDetector{
             Point impactNormal;
             Point impactPoint1;
             Point impactPoint2;
-            if(!collideAndFindPoint(b1,b2,impactNormal,impactPoint1,impactPoint2)) return false;
+            float d;
+            if(!collideAndFindPoint(b1,b2,impactNormal,impactPoint1,impactPoint2,d)) return false;
             Point v_r=b2.getReducedPolygon().getMotionRay() - b1.getReducedPolygon().getMotionRay();
             if((v_r*(-impactNormal) ) > 0 ) return false;//if the relative velocity is in the same direction than the impactNormal of b2, then it won't intersect(this happens when c1 and c2 collided in the previous frame but the enclosingBoxes are still intersecting)
 
-            b1.getCollisionStatus().setImpactPoint(impactPoint1).setImpactNormal(impactNormal);
-            b2.getCollisionStatus().setImpactPoint(impactPoint2).setImpactNormal(-impactNormal);
+            b1.getCollisionStatus().setImpactPoint(impactPoint1).setImpactNormal(impactNormal).setDistance(fabs(d));
+            b2.getCollisionStatus().setImpactPoint(impactPoint2).setImpactNormal(-impactNormal).setDistance(fabs(d));
 
             b1.getCollisionStatus().set(
                 islx,
@@ -54,11 +55,11 @@ class MPRCollisionDetector{
     }
 
 
-    bool collideAndFindPoint(Boundary& b1,Boundary& b2,Point& impactNormal,Point& impactPoint1,Point& impactPoint2){
+    bool collideAndFindPoint(Boundary& b1,Boundary& b2,Point& impactNormal,Point& impactPoint1,Point& impactPoint2,float& penetration){
         static float kCollideEpsilon = 1e-3f;
 
-        Point v01=getCenter(b1);
-        Point v02=getCenter(b2);
+        Point v01=b1.getEnclosingBox().getCenter();
+        Point v02=b2.getEnclosingBox().getCenter();
         Point v0=v02-v01;
 
         if(v0.isZero()) v0=Point(0.0001,0,0);//special case
@@ -194,6 +195,7 @@ class MPRCollisionDetector{
                 if(delta<=kCollideEpsilon || separation>=0)
                 {
                     impactNormal=n;
+                    penetration=separation;
                     return hit;
                 }
 
@@ -240,14 +242,6 @@ class MPRCollisionDetector{
     return false;
     }
 
-
-
-    //critical!!!
-    Point getCenter(Boundary& b){
-        Point& min=b.getEnclosingBox().getDiagonalMin();
-        Point& max=b.getEnclosingBox().getDiagonalMax();
-        return min + (max-min)*0.5;        
-    }
     
     //ex-getFarthestAlong
     Point getSupportPoint(Boundary& b,Point v){

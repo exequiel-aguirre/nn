@@ -2,6 +2,7 @@
 #define PhysicsManagerH
 #include <vector>
 #include "MPRCollisionDetector.h"
+#include "Constraint/DistanceConstraint.h"
 #include <typeinfo>
 using std::vector;
 
@@ -10,6 +11,7 @@ class PhysicsManager{
     static PhysicsManager* instance;    
     vector<Component*> components;
     MPRCollisionDetector collisionDetector;
+    vector<Constraint*> constraints;
 
     PhysicsManager(){}
     
@@ -91,16 +93,29 @@ class PhysicsManager{
           (*it)->getAcceleration().set(0.0,-9.8f,0.0f);
         }
       }
+      solveConstraints();
     }
 
     void add(Component* component){
       components.push_back(component);
     }
 
+    void add(Constraint* constraint){
+      constraints.push_back(constraint);
+    }
 
+    void solveConstraints(){
+      vector<Constraint*>::iterator it;
+      for(it=constraints.begin();it!=constraints.end();it++){
+          (*it)->preSolverStep();
+      }
 
-
-
+      for(int i=0;i<20;i++){
+        for(it=constraints.begin();it!=constraints.end();it++){
+          (*it)->applyImpulse();
+        }
+      }
+    }
 
 
 
