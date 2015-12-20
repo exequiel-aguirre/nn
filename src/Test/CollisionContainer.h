@@ -95,7 +95,8 @@ class CollisionContainer:public Container{
         Component* box=(new Box(Position(5,20,10),2,2,2,"img/box.bmp"))->add(new MotionBehavior());
         add(sphere1);
         add(box);
-        PhysicsManager::getInstance().add(new DistanceConstraint(sphere1,box,Point(-5,30,10),Point(4.0,21,10)));
+        PhysicsManager::getInstance().add(new DistanceConstraint(sphere1,box,Point(-5,30,10),Point(4.0,20,10)));
+        //PhysicsManager::getInstance().add(new DistanceConstraint(sphere1,box,Point(-5,30,10),Point(4.0,21,10)));
         //PhysicsManager::getInstance().add(new DistanceConstraint(sphere1,box));
     }
     void testStress(){

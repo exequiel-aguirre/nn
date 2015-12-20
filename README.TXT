@@ -57,11 +57,10 @@ QTCREATOR:
 
 
 BUGS:
--The box position is not the centroide of the object.
 -With the real earth mass program freeze.It seems that we cannot handle numbers that big...*
 -Now the object can collide with just one object per frame. So the torus cannot be moved, since it's already colliding with the ground...
 -The fog is not working.(some code need to be added to the shader, more info at the bottom)
--When 2 objects with std::numeric_limits<float>::max() collide, everything goes to hell (for example, most things just dissapear)
+
 
 
 TODOS:
@@ -71,7 +70,6 @@ TODOS:
 -DELTA_TIME should be an global constant
 -Some times the ball thrown goes through the ground.Modifying "d=n*v1" to -0.2 intead of 0, seems to improve the situation but not fix it.
 -Warning:the getCenter gives the already positioned vertices... I think in MPR we are transforming those(again)...
--Warning:the std::max_element enters in an infinite loop if p*v is nan
 -For multiple collision (like a box over a box over the ground) we can take in account the other mass.
 In this case the first would be against a box with the mass of ground(+its own mass).For this we should also take into account the area of contact(in case the second box is rotated and just touching ground with a tip)
 -Check how we are dealing with multiple collisions.
@@ -100,3 +98,6 @@ float z=gl_FragCoord.z / gl_FragCoord.w;
 		float fog = exp2(-gl_Fog.density * gl_FogFragCoord * LOG2E);	
 		gl_FragColor=mix(gl_FragColor,gl_Fog.color,fog);
 	}
+
+-When 2 objects with std::numeric_limits<float>::max() collide, everything goes to hell (for example, most things just dissapear)
+-Warning:the std::max_element enters in an infinite loop if p*v is nan

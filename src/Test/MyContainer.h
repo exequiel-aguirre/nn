@@ -63,8 +63,8 @@ class MyContainer:public Container{
 			Cloud* myCloud5=new Cloud(Position(-20.0f,85.0f+GROUND_LEVEL,100.0f),15.0f,2.0f,10.0f);
 			Cloud* myCloud6=new Cloud(Position(50.0f,100.0f+GROUND_LEVEL,-100.0f),15.0f,2.0f,5.0f);
 
-			Box* my3DBox=new Box(Position(-53.0f,GROUND_LEVEL,-25.0f));
-			Box* my3DBox2=new Box(Position(-50.0f,GROUND_LEVEL,-25.0f));
+			Box* my3DBox=new Box(Position(-53.0f,GROUND_LEVEL+1.0,-25.0f));
+			Box* my3DBox2=new Box(Position(-50.0f,GROUND_LEVEL+1.0,-25.0f));
 			Hut* myHut=new Hut(Position(25.0f,GROUND_LEVEL,25.0f));
 			Mill* myMill=new Mill(Position(10.0f,GROUND_LEVEL,-25.0f));
 			Torus* myTorus=new Torus(Position(-70.0f,1.0f+GROUND_LEVEL,-19.0f,90.0f,0.0f,0.0f),2.0f,1.0f);
