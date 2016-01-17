@@ -34,15 +34,15 @@
 
 class CollisionContainer:public Container{
   private:
-	const float GROUND_LEVEL=0.5;
+	const float GROUND_LEVEL=0.0;
   public:
     CollisionContainer(Position&& position):Container(position){
-            testConstraint();
+            test6();
 
-			add(new Camera(Position(0.0f,5.0f,100.0f)));
+			add(new Camera(Position(0.0f,5.0f,10.0f)));
 			add(new Light(Position(40.0f,40.0f,40.0f)));
 			add(new Physics());
-			add(new Stats());
+			//add(new Stats());
 			add(new Fog());
     }
 
@@ -80,13 +80,47 @@ class CollisionContainer:public Container{
         add( (new Box(Position(0,20,0,0.0,0,60.0),5,5,5,"img/box.bmp"))->add(new MotionBehavior()) );
     }
     void test6(){
-        add( (new Cylinder(Position(0,5,-70,90,0,0),2.0,100.0,"img/default.bmp"))/*->add(new MotionBehavior())*/ );
-        add( (new Plane(Position(15,30,0),50,5,"img/box.bmp"))->add(new MotionBehavior()) );
+        add( (new Cylinder(Position(0,-30,-120,90,0,0),2.0,50.0,"img/default.bmp"))/*->add(new MotionBehavior())*/ );
+        add( (new Box(Position(0,-25,-100),20,2,5,"img/box.bmp"))->add(new MotionBehavior()) );
     }
     void test7(){
         add(new Ground(Position(0.0f, GROUND_LEVEL, 0.0f, 2.0, 0.0, 2.0),300,300));
-        add( (new Box(Position(5,10,-5),1,1,1,"img/box.bmp"))->add(new MotionBehavior()) );
+        //add( (new Box(Position(5,3,-5,-30,00,0),2,2,5,"img/box.bmp"))->add(new MotionBehavior()) );//working.
+        add( (new Box(Position(5,3,-5,-30,90,0),2,2,5,"img/box.bmp"))->add(new MotionBehavior()) );//not working
+
+        //add( (new Box(Position(5,3,-5,-0,0,0),2,2,5,"img/box.bmp"))->add(new MotionBehavior()) );
+        //add( (new Box(Position(5,10,-5),1,1,1,"img/box.bmp"))->add(new MotionBehavior()) );
         //add((new Sphere(Position(-5,15,10),1.5f))->add(new MotionBehavior()));
+    }
+
+    void test8(){
+        float z1=5.0;
+        float z2=5.0000001;
+        add(new Box(Position(0.0f, -1, 0.0f),300,2,300,"img/ground.bmp"));
+        add( (new Box(Position(5,5,-z1),2,2,2,"img/box.bmp"))->add(new MotionBehavior()) );
+        add( (new Box(Position(5,10,-z2),2,2,2,"img/box.bmp"))->add(new MotionBehavior()) );
+        add( (new Box(Position(5,15,-z1),2,2,2,"img/box.bmp"))->add(new MotionBehavior()) );
+        add( (new Box(Position(5,20,-z2),2,2,2,"img/box.bmp"))->add(new MotionBehavior()) );
+        add( (new Box(Position(5,25,-z1),2,2,2,"img/box.bmp"))->add(new MotionBehavior()) );
+        add( (new Box(Position(5,30,-z2),2,2,2,"img/box.bmp"))->add(new MotionBehavior()) );
+        add( (new Box(Position(5,35,-z1),2,2,2,"img/box.bmp"))->add(new MotionBehavior()) );
+        add( (new Box(Position(5,40,-z2),2,2,2,"img/box.bmp"))->add(new MotionBehavior()) );
+        add( (new Box(Position(5,45,-z1),2,2,2,"img/box.bmp"))->add(new MotionBehavior()) );
+        add( (new Box(Position(5,50,-z2),2,2,2,"img/box.bmp"))->add(new MotionBehavior()) );
+        /*add( (new Box(Position(5,55,-z1),2,2,2,"img/box.bmp"))->add(new MotionBehavior()) );
+        add( (new Box(Position(5,60,-z2),2,2,2,"img/box.bmp"))->add(new MotionBehavior()) );*/
+        //add( (new Box(Position(5,10,-5),1,1,1,"img/box.bmp"))->add(new MotionBehavior()) );
+        //add((new Sphere(Position(-5,15,10),1.5f))->add(new MotionBehavior()));
+    }
+     void test9(){
+        add(new Box(Position(0.1f, -1, 0.1f),300,2,300,"img/ground.bmp"));
+        add( (new Box(Position(0,5,0,0,-15,-90),2,2,2,"img/box.bmp"))->add(new MotionBehavior()) );
+        //add( (new Box(Position(0,5,0,0,0,0),2,2,2,"img/box.bmp"))->add(new MotionBehavior()) );
+    }
+    void test10(){
+        add(new Box(Position(0.0f, -1, 0.0f),300,2,300,"img/ground.bmp"));
+        add( (new Box(Position(5,5,-5,45,45,45),2,2,5,"img/box.bmp"))->add(new MotionBehavior()) );
+        //add((new Ellipsoid(Position(5,5,-5),0.5f,1.0,0.5))->add(new MotionBehavior()));
     }
 
     void testConstraint(){
@@ -95,7 +129,7 @@ class CollisionContainer:public Container{
         Component* box=(new Box(Position(5,20,10),2,2,2,"img/box.bmp"))->add(new MotionBehavior());
         add(sphere1);
         add(box);
-        PhysicsManager::getInstance().add(new DistanceConstraint(sphere1,box,Point(-5,30,10),Point(4.0,20,10)));
+        PhysicsManager::getInstance().add(new DistanceConstraint(sphere1,box,Point(-5,30,10),Point(5.0,20,10)));
         //PhysicsManager::getInstance().add(new DistanceConstraint(sphere1,box,Point(-5,30,10),Point(4.0,21,10)));
         //PhysicsManager::getInstance().add(new DistanceConstraint(sphere1,box));
     }

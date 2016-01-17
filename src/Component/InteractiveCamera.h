@@ -25,6 +25,7 @@ class InteractiveCamera: public Camera {
 	  InteractiveCamera(Position position):Camera(position,false,[=](float deltaX,float deltaY,float deltaZ){ this->onTranslation(deltaX,deltaY,deltaZ);},ModelObject(EllipsoidMap(1.0,2.0,1.0)),GL_POINTS){
           //enable physics(both, the this line and a modelObject with a geometry are needed)
           add(new MotionBehavior());
+          this->setRotates(false);
           //add a key behavior for the actions
           add(new SimpleKeyboardBehavior(
               [=](SDL_Keycode key){//behavior callback
@@ -75,8 +76,8 @@ class InteractiveCamera: public Camera {
       if(getCollisionStatus().hasCollided()){
         //We take in account the normal, to avoid penetration.
         Point v=Point(-deltaX*20,-deltaY*20,-deltaZ*20);
-        Point n=getCollisionStatus().getImpactNormal();
-        v=v- ((v*n)*n);
+        //Point n=getCollisionStatus().getImpactNormal();
+        //v=v- ((v*n)*n);
         this->setVelocity(v.x,v.y,v.z);
       }
     }
@@ -120,7 +121,7 @@ class InteractiveCamera: public Camera {
     }
 
     void onAfterCollision(){
-      Velocity v=this->getVelocity() * (1.0-this->u_d);
+      Velocity v=this->getVelocity();// * (1.0-this->u_d);
       this->setVelocity(v.getX(),v.getY(),v.getZ());
       //Climbing logic(part 1)
       //TODO:put this setVelocity just once

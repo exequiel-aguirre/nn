@@ -59,21 +59,23 @@ QTCREATOR:
 BUGS:
 -With the real earth mass program freeze.It seems that we cannot handle numbers that big...*
 -Now the object can collide with just one object per frame. So the torus cannot be moved, since it's already colliding with the ground...
+-In the reduced polygon we are not effectively removing duplicated points.(See the box for example)
 -The fog is not working.(some code need to be added to the shader, more info at the bottom)
 
 
 
 TODOS:
+-InteractiveCamera: remove all friction and climbing related logic
+-Matrix: remove vector,make both Euler angles function receive things in phi-theta-psi order,rewrite getInverse in a more readable way
+-We should not put the contact points in the collision status, but in the manifold, since it's one set of point's per pair, not per object.(now we are distributiong the 4 points among the pair of collisions, for example 2 points for floor-box1 and 2 points for floor-box2)
 -Return Component::massInverse instead of mass, this way, we can just return 0 for static objects.Fixing *.
 --The setMoves and setRotates should put a valid inverseMass/InverseInertia if true, or 0/Matrix(0) if false.
--In the physicsManager, if I update the velocity right there in the onCollisionDetected, maybe I can avoid the whole add velocity stuff
+--unify the whole manifold,collsionStatus,ContactPoint into one
+-To get all collision points maybe we can check the distance of all points to the plane formed by the impact normal and impact point.
+
 -DELTA_TIME should be an global constant
 -Some times the ball thrown goes through the ground.Modifying "d=n*v1" to -0.2 intead of 0, seems to improve the situation but not fix it.
 -Warning:the getCenter gives the already positioned vertices... I think in MPR we are transforming those(again)...
--For multiple collision (like a box over a box over the ground) we can take in account the other mass.
-In this case the first would be against a box with the mass of ground(+its own mass).For this we should also take into account the area of contact(in case the second box is rotated and just touching ground with a tip)
--Check how we are dealing with multiple collisions.
--Test the matrix inverse. (Maybe just asserting that A * A^-1 = I , on every call)
 -Change the sign in the camera for the angles as well (and swap the order of the rotates)(should be the exact opposite of the Component::onBeforeRender)
 -Performance: 
 - the rawPoint was created, but now inside point we have duplicated x,y,z. Besides that, if we modify point->x, rawPoint won't change, which I think is fine having in mind that we are using GL_STATIC_DRAW?

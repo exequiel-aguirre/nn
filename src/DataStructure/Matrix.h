@@ -1,6 +1,6 @@
 #ifndef MatrixH
 #define MatrixH
-
+#include <vector>
 class Matrix{
   public:
    float rawMatrix[16];
@@ -75,7 +75,7 @@ class Matrix{
 	friend std::ostream& operator<<(std::ostream& os , const Matrix m){
 		for(int i=0;i<16;i++){
 			if((i%4)==0) os<< std::endl;
-			os<< m.rawMatrix[i]<<" ";
+			os<< std::fixed<<m.rawMatrix[i]<<((m.rawMatrix[i]<0.0)?" ":"  ");
 		}
 		return os<<std::endl;
 	}
@@ -170,48 +170,137 @@ class Matrix{
 		return (*this);
 	}
 
-	Matrix getInverse(){
-		float e[4][8]={0};
+	Matrix getInverse()
+	{
+	float* m=this->rawMatrix;
+    float inv[16];
 
-		//build the extended matrix e=[a|I]
-		for(int i=0;i<4;i++){
-			for(int j=0;j<8;j++){
-				if(j<4) e[i][j]=rawMatrix[4*i + j];
-				if(i==(j-4)) e[i][j]=1.0;
-			}
-		}
+    inv[0] = m[5]  * m[10] * m[15] -
+             m[5]  * m[11] * m[14] -
+             m[9]  * m[6]  * m[15] +
+             m[9]  * m[7]  * m[14] +
+             m[13] * m[6]  * m[11] -
+             m[13] * m[7]  * m[10];
 
-		//reduce to diagonal
-		for(int i=0;i<4;i++){
-			for(int j=0;j<4;j++){
-				if(i!=j && e[i][i]!=0){
-					float d=e[j][i]/e[i][i];
-					for(int k=0;k<8;k++){
-						e[j][k]-=e[i][k]*d;
-					}
-				}
-			}
-		}
+    inv[4] = -m[4]  * m[10] * m[15] +
+              m[4]  * m[11] * m[14] +
+              m[8]  * m[6]  * m[15] -
+              m[8]  * m[7]  * m[14] -
+              m[12] * m[6]  * m[11] +
+              m[12] * m[7]  * m[10];
 
-		//reduce to unit
-		for(int i=0;i<4;i++){
-			float d=e[i][i];
-			if(d==0) continue;
-			for(int j=0;j<8;j++){
-				e[i][j]=e[i][j]/d;
-			}
-		}
+    inv[8] = m[4]  * m[9] * m[15] -
+             m[4]  * m[11] * m[13] -
+             m[8]  * m[5] * m[15] +
+             m[8]  * m[7] * m[13] +
+             m[12] * m[5] * m[11] -
+             m[12] * m[7] * m[9];
 
-		//build the inverse Matrix
-		Matrix inverse;
-		for(int i=0;i<4;i++){
-			for(int j=0;j<4;j++){
-				inverse.rawMatrix[4*i + j]=e[i][j+4];
-			}
-		}
+    inv[12] = -m[4]  * m[9] * m[14] +
+               m[4]  * m[10] * m[13] +
+               m[8]  * m[5] * m[14] -
+               m[8]  * m[6] * m[13] -
+               m[12] * m[5] * m[10] +
+               m[12] * m[6] * m[9];
 
-		return inverse;
-	}
+    inv[1] = -m[1]  * m[10] * m[15] +
+              m[1]  * m[11] * m[14] +
+              m[9]  * m[2] * m[15] -
+              m[9]  * m[3] * m[14] -
+              m[13] * m[2] * m[11] +
+              m[13] * m[3] * m[10];
+
+    inv[5] = m[0]  * m[10] * m[15] -
+             m[0]  * m[11] * m[14] -
+             m[8]  * m[2] * m[15] +
+             m[8]  * m[3] * m[14] +
+             m[12] * m[2] * m[11] -
+             m[12] * m[3] * m[10];
+
+    inv[9] = -m[0]  * m[9] * m[15] +
+              m[0]  * m[11] * m[13] +
+              m[8]  * m[1] * m[15] -
+              m[8]  * m[3] * m[13] -
+              m[12] * m[1] * m[11] +
+              m[12] * m[3] * m[9];
+
+    inv[13] = m[0]  * m[9] * m[14] -
+              m[0]  * m[10] * m[13] -
+              m[8]  * m[1] * m[14] +
+              m[8]  * m[2] * m[13] +
+              m[12] * m[1] * m[10] -
+              m[12] * m[2] * m[9];
+
+    inv[2] = m[1]  * m[6] * m[15] -
+             m[1]  * m[7] * m[14] -
+             m[5]  * m[2] * m[15] +
+             m[5]  * m[3] * m[14] +
+             m[13] * m[2] * m[7] -
+             m[13] * m[3] * m[6];
+
+    inv[6] = -m[0]  * m[6] * m[15] +
+              m[0]  * m[7] * m[14] +
+              m[4]  * m[2] * m[15] -
+              m[4]  * m[3] * m[14] -
+              m[12] * m[2] * m[7] +
+              m[12] * m[3] * m[6];
+
+    inv[10] = m[0]  * m[5] * m[15] -
+              m[0]  * m[7] * m[13] -
+              m[4]  * m[1] * m[15] +
+              m[4]  * m[3] * m[13] +
+              m[12] * m[1] * m[7] -
+              m[12] * m[3] * m[5];
+
+    inv[14] = -m[0]  * m[5] * m[14] +
+               m[0]  * m[6] * m[13] +
+               m[4]  * m[1] * m[14] -
+               m[4]  * m[2] * m[13] -
+               m[12] * m[1] * m[6] +
+               m[12] * m[2] * m[5];
+
+    inv[3] = -m[1] * m[6] * m[11] +
+              m[1] * m[7] * m[10] +
+              m[5] * m[2] * m[11] -
+              m[5] * m[3] * m[10] -
+              m[9] * m[2] * m[7] +
+              m[9] * m[3] * m[6];
+
+    inv[7] = m[0] * m[6] * m[11] -
+             m[0] * m[7] * m[10] -
+             m[4] * m[2] * m[11] +
+             m[4] * m[3] * m[10] +
+             m[8] * m[2] * m[7] -
+             m[8] * m[3] * m[6];
+
+    inv[11] = -m[0] * m[5] * m[11] +
+               m[0] * m[7] * m[9] +
+               m[4] * m[1] * m[11] -
+               m[4] * m[3] * m[9] -
+               m[8] * m[1] * m[7] +
+               m[8] * m[3] * m[5];
+
+    inv[15] = m[0] * m[5] * m[10] -
+              m[0] * m[6] * m[9] -
+              m[4] * m[1] * m[10] +
+              m[4] * m[2] * m[9] +
+              m[8] * m[1] * m[6] -
+              m[8] * m[2] * m[5];
+
+    float det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
+
+    if (det == 0){
+        std::cout << "not invertible!!!"<<(*this);exit(4);
+    }
+
+    det = 1.0 / det;
+
+    Matrix inverse;
+    for (int i = 0; i < 16; i++)
+        inverse.rawMatrix[i] = inv[i] * det;
+
+    return inverse;
+}
 
 	Matrix& transpose(){
 		Matrix a=(*this);
@@ -235,6 +324,60 @@ class Matrix{
 		Matrix t=this->getTranlationMatrix(rawMatrix[3],rawMatrix[7],rawMatrix[11]);
 		return t;
 	}
+
+	void rotate(float heading, float attitude, float bank){
+		heading*=M_PI/180.0f;
+		attitude*=M_PI/180.0f;
+		bank*=M_PI/180.0f;
+		float c1=cos(heading/2.0);
+		float c2=cos(attitude/2.0);
+		float c3=cos(bank/2.0);
+
+		float s1=sin(heading/2.0);
+		float s2=sin(attitude/2.0);
+		float s3=sin(bank/2.0);
+
+		float x=(s1*s2*c3) + (c1*c2*s3);
+		float y=(s1*c2*c3) + (c1*s2*s3);
+		float z=(c1*s2*c3) - (s1*c2*s3);
+		float w=c1*c2*c3-s1*s2*s3;
+		float norm= sqrt(x*x + y*y + z*z);
+		if(norm<0.001){
+			x=1;
+			y=z=0;
+		}
+		else{
+			x/=norm;
+			y/=norm;
+			z/=norm;
+		}
+		float angle=2.0*acosf(w) *(180.0f/M_PI);//vs 2*acos(c1*c2*c3-s1*s2*s3) *180.0f/M_PI;
+
+		rotate(angle,x,y,z);
+	}
+
+    std::vector<float> getEulerAngles(){
+        float heading,attitude,bank;
+        float m10=rawMatrix[4*1 + 0];
+        const float C=0.998;
+        if(m10<-C || C<m10)
+        {
+            heading=atan2(rawMatrix[4*0 + 2],rawMatrix[4*2 + 2]);
+            attitude=(m10<-C)?-M_PI/2.0f:M_PI/2.0f;
+            bank=0;
+        }
+        else
+        {
+            heading=atan2(-rawMatrix[4*2 + 0],rawMatrix[4*0 + 0]);
+            attitude=asin(rawMatrix[4*1 + 0]);
+            bank=atan2(-rawMatrix[4*1 + 2],rawMatrix[4*1 + 1]);
+        }
+
+
+        float radToGrad=(180.0f/M_PI);
+        std::vector<float> xyz=std::vector<float>({heading*radToGrad,attitude*radToGrad,bank*radToGrad});
+        return xyz;
+    }
 };
 
 #endif

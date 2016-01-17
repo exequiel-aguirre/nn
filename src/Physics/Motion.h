@@ -12,29 +12,38 @@ class Motion {
     //t is in fact a delta t (t is for time)
     //newPosition=currentPosition + deltaPosition
    Position getPosition(float t,Position position,Velocity velocity,Acceleration acceleration){
-        float x=position.getX() + (velocity.getX()*t) + (0.5f*acceleration.getX()*t*t);
-        float y=position.getY() + (velocity.getY()*t) + (0.5f*acceleration.getY()*t*t);
-        float z=position.getZ() + (velocity.getZ()*t)+ (0.5f*acceleration.getZ()*t*t);
+        Point l=position.getLinear();
+        l=l + (velocity.getLinear()*t);
 
-        float phi=position.getPhi() + (velocity.getPhi()*t) + (0.5f*acceleration.getPhi()*t*t);
-        float theta=position.getTheta() + (velocity.getTheta()*t) + (0.5f*acceleration.getTheta()*t*t);
-        float psi=position.getPsi() + (velocity.getPsi()*t)+ (0.5f*acceleration.getPsi()*t*t);
+        //This is important
+        //For angular position, we cannot just add the velocity increment(rotations do not conmute).
+        Point o=position.getAngular();
+        //build angular velocity transform
+        Point wt=velocity.getAngular()*t;
+        Matrix mwt=Matrix(1.0);
+        mwt.rotate(wt.y,wt.z,wt.x);
+        //build angular position(orientation) transform
+        Matrix mo=Matrix(1.0);
+        mo.rotate(o.y,o.z,o.x);
+        //compose both transform and traduce back to Euler angles
+        Matrix mno=mwt*mo;
+        std::vector<float> yzx=mno.getEulerAngles();
+
+        o=Point(yzx[2],yzx[0],yzx[1]);
         
-        return Position(x,y,z,phi,theta,psi);
+        return Position(l.x,l.y,l.z,o.x,o.y,o.z);
     }
     //t is in fact a delta t (t is for time)
     //newVelocity=currentVelocity + deltaVelocity
     Velocity getVelocity(float t,Velocity velocity,Acceleration acceleration){
         //update velocity
-        float x=velocity.getX() + (acceleration.getX()*t);
-        float y=velocity.getY() + (acceleration.getY()*t);
-        float z=velocity.getZ() + (acceleration.getZ()*t);
+        Point v=velocity.getLinear();
+        v=v + (acceleration.getLinear() * t);
 
-        float phi=velocity.getPhi() + (acceleration.getPhi()*t);
-        float theta=velocity.getTheta() + (acceleration.getTheta()*t);
-        float psi=velocity.getPsi() + (acceleration.getPsi()*t);
+        Point w=velocity.getAngular();
+        w=w+ (acceleration.getAngular() * t);
 
-        return Velocity(x,y,z,phi,theta,psi);
+        return Velocity(v,w);
     }  
 
 };

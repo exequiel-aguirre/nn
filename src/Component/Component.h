@@ -32,9 +32,10 @@ class Component {
     Velocity velocity;
     Acceleration acceleration;
     float massDensity=1.0f;
-    float elasticity=0.88f;
+    float elasticity=0.0f;
     bool rotates=false;
     bool moves=false;
+    Matrix inertiaInverse;
     bool reflects=true;
     bool collides=true;
     static constexpr const char* DEFAULT_SHADER_NAME="Basic";
@@ -45,6 +46,7 @@ class Component {
       this->updateModelMatrix();
       this->modelObject=modelObject;
       this->calculateBoundary();
+      this->calculateInertiaInverse();
       RenderStrategy::getInstance().initModelObject(this->modelObject,GLMode);
       if(shaderName==NULL) shaderName=DEFAULT_SHADER_NAME;
       this->shader=ResourceManager::getInstance().getShader(shaderName);
@@ -86,9 +88,7 @@ class Component {
     void updateModelMatrix(){
       modelMatrix.loadIdentity();
       modelMatrix.translate(position.getX(),position.getY(),position.getZ());
-      modelMatrix.rotate(position.getPhi(), 1.0f, 0.0f, 0.0f);
-      modelMatrix.rotate(position.getTheta(), 0.0f, 1.0f, 0.0f);
-      modelMatrix.rotate(position.getPsi(), 0.0f, 0.0f, 1.0f);
+      modelMatrix.rotate(position.getTheta(),position.getPsi(),position.getPhi());
     }
     
     Matrix& getModelMatrix(){
@@ -150,15 +150,23 @@ class Component {
     }
 
     //a very rough approximation of the inertia is used here.
-    virtual Matrix getInertiaInverse(){
-      if(getMass()>5e15) return Matrix(0.0);
+    void calculateInertiaInverse(){
+      if(getMass()==0){
+        inertiaInverse=Matrix(0.0);
+        return;
+      }
       Point mm=modelObject.getBoundary().getEnclosingBox().getWHD();
       float m=getMass();
       float xx=mm.x*mm.x;
       float yy=mm.y*mm.y;
       float zz=mm.z*mm.z;
 
-      return Matrix(m*(yy+zz)/12.0, m*(xx+zz)/12.0, m*(xx+yy)/12.0, 1.0).getInverse();
+      inertiaInverse=Matrix(m*(yy+zz)/12.0, m*(xx+zz)/12.0, m*(xx+yy)/12.0, 1.0).getInverse();
+    }
+
+    virtual Matrix getInertiaInverse(){
+      if((getMass()>5e15) || !this->getRotates() ) return Matrix(0.0);
+      return inertiaInverse;
     }
 
     virtual float getElasticity(){
@@ -179,8 +187,9 @@ class Component {
       return this;    
     }
 
-
-
+    void setRotates(bool rotates){
+      this->rotates=rotates;
+    }
     bool getRotates(){
       return rotates;
     }

@@ -3,6 +3,7 @@
 #include <vector>
 #include "MPRCollisionDetector.h"
 #include "Constraint/DistanceConstraint.h"
+#include "Manifold.h"
 #include <typeinfo>
 using std::vector;
 
@@ -12,7 +13,7 @@ class PhysicsManager{
     vector<Component*> components;
     MPRCollisionDetector collisionDetector;
     vector<Constraint*> constraints;
-
+    vector<Manifold> manifolds;
     PhysicsManager(){}
     
    public:
@@ -27,6 +28,7 @@ class PhysicsManager{
       for(it=components.begin();it!=components.end();it++){
         (*it)->getCollisionStatus().init();
       }
+      manifolds.clear();
     }
 
     void detectCollisions(){
@@ -48,25 +50,15 @@ class PhysicsManager{
   }
 
     void onCollisionDetected(Component* c1,Component* c2){
-            //e is the Coefficient of restitution for this collision,1 is perfectly elastic,0 is perfectly plastic
-            //We based this on the elasticity of the components(not physically justified)
-            float e=std::min(c1->getElasticity(),c2->getElasticity());
-            CollisionStatus& status1=c1->getCollisionStatus();
-            //Impulse-Based Reaction Model
-            float m1=c1->getMass();
-            float m2=c2->getMass();
-            Velocity v_r=c2->getVelocity()-c1->getVelocity();
-            Point n=status1.getImpactNormal();
-            float j_r=( (-(1.0+e) * v_r) * n )/( (1.0/m1) +(1.0/m2) );
-            Velocity v1_i=c1->getVelocity();
-            Velocity v2_i=c2->getVelocity();
-            Velocity v1=v1_i - Velocity( (1.0/m1 * j_r) * n );
-            Velocity v2=v2_i + Velocity( (1.0/m2 * j_r) * n );
-
-            c1->getCollisionStatus().addFinalVelocity(v1).addOtherMass(c2->getMass());
-            c2->getCollisionStatus().addFinalVelocity(v2).addOtherMass(c1->getMass());
-
+            Manifold manifold=Manifold(c1,c2);
+            vector<Point> points=this->getCachePoints(c1,c2);
+            for(Point& p:points){
+              CollisionStatus status2=c2->getCollisionStatus().setImpactPoint(p);
+              manifold.addContact(status2);
+            }
+            manifolds.push_back(manifold);
     }
+
     void onAfterDetectCollisions(){
       vector<Component*>::iterator it;
       for(it=components.begin();it!=components.end();it++){
@@ -74,19 +66,6 @@ class PhysicsManager{
         CollisionStatus& status=(*it)->getCollisionStatus();
 
         if(status.hasCollided()){
-          Point n=status.getImpactNormal();
-          float m=(*it)->getMass();
-          float m2=status.getOtherMass();
-          float c=m2/(m2+m);//TODO:justify this
-
-          //update velocity
-          (*it)->setVelocity(status.getFinalVelocity().getX(),status.getFinalVelocity().getY(),status.getFinalVelocity().getZ());
-          //update acceleration
-          Acceleration& acceleration=(*it)->getAcceleration();
-          (*it)->setAcceleration(
-              acceleration.getX() +(c* fabs(acceleration.getX()) * n.x),//fabs, since the direction is given by n
-              acceleration.getY() +(c* fabs(acceleration.getY()) * n.y),
-              acceleration.getZ() +(c * fabs(acceleration.getZ()) * n.z));
           (*it)->onAfterCollision();
         }
         else{
@@ -97,6 +76,7 @@ class PhysicsManager{
     }
 
     void add(Component* component){
+      component->calculateInertiaInverse();
       components.push_back(component);
     }
 
@@ -109,16 +89,56 @@ class PhysicsManager{
       for(it=constraints.begin();it!=constraints.end();it++){
           (*it)->preSolverStep();
       }
+      vector<Manifold>::iterator itn;
+      for(itn=manifolds.begin();itn!=manifolds.end();itn++){
+          (*itn).preSolverStep();
+      }
 
       for(int i=0;i<20;i++){
         for(it=constraints.begin();it!=constraints.end();it++){
           (*it)->applyImpulse();
         }
+        for(itn=manifolds.begin();itn!=manifolds.end();itn++){
+          (*itn).applyImpulse();
+        }
       }
     }
 
+    vector<Point> getCachePoints(Component* c1,Component* c2){
+      vector<Point> points;
+      //Refresh cached contact points
+      //Makes no sense having one collision status per object, when in reality it should be 1 collision status per component pair
+      c1->getCollisionStatus().refreshContactPoints(c1->getModelMatrix(),c2->getModelMatrix());
+      c2->getCollisionStatus().refreshContactPoints(c1->getModelMatrix(),c2->getModelMatrix());
 
+      //generate and add the new contact Point
+      ContactPoint cp;
+      cp.normal2=c2->getCollisionStatus().getImpactNormal();
+      cp.distance=fabs(c2->getCollisionStatus().getDistance()*0.5);
+      Point impactPoint2=c2->getCollisionStatus().getImpactPoint() + (cp.normal2*cp.distance);//TODO:check why inverting the distance displacement 
+      Point impactPoint1=c2->getCollisionStatus().getImpactPoint();      //change behaviour according to the which one we apply it. (replaceContactPoint?)
+      cp.point1=c1->getModelMatrix().getInverse()*impactPoint1;
+      cp.point2=c2->getModelMatrix().getInverse()*impactPoint2;
+      cp.position1=impactPoint1;
+      cp.position2=impactPoint2;
 
+      int index=c1->getCollisionStatus().getCacheEntry(cp);
+      if(index==-1){
+        c1->getCollisionStatus().addContactPoint(cp);
+        c2->getCollisionStatus().addContactPoint(cp);
+      }
+      else{
+        c1->getCollisionStatus().replaceContactPoint(cp,index);
+        c2->getCollisionStatus().replaceContactPoint(cp,index);
+      }
+
+      vector<ContactPoint> contactPoints=c2->getCollisionStatus().getContactPoints();
+      for(ContactPoint& cp:contactPoints){
+        points.push_back(cp.position2);//TODO:check if this is correct
+      }
+
+      return points;
+    }
 
 };
 PhysicsManager* PhysicsManager::instance=NULL;

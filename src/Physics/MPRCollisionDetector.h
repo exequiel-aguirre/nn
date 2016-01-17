@@ -25,28 +25,16 @@ class MPRCollisionDetector{
         if( (islx >= 0) && (isly >= 0) && (islz >= 0) ) {
 
             Point impactNormal;
-            Point impactPoint1;
-            Point impactPoint2;
-            float d;
-            if(!collideAndFindPoint(b1,b2,impactNormal,impactPoint1,impactPoint2,d)) return false;
-            Point v_r=b2.getReducedPolygon().getMotionRay() - b1.getReducedPolygon().getMotionRay();
-            if((v_r*(-impactNormal) ) > 0 ) return false;//if the relative velocity is in the same direction than the impactNormal of b2, then it won't intersect(this happens when c1 and c2 collided in the previous frame but the enclosingBoxes are still intersecting)
+            Point impactPoint;
+            float d=0.0f;
+            if(!collideAndFindPoint(b1,b2,impactNormal,impactPoint,d)) return false;
 
-            b1.getCollisionStatus().setImpactPoint(impactPoint1).setImpactNormal(impactNormal).setDistance(fabs(d));
-            b2.getCollisionStatus().setImpactPoint(impactPoint2).setImpactNormal(-impactNormal).setDistance(fabs(d));
+            b1.getCollisionStatus().setImpactPoint(impactPoint).setImpactNormal(impactNormal).setDistance(d);
+            b2.getCollisionStatus().setImpactPoint(impactPoint).setImpactNormal(-impactNormal).setDistance(d);
 
-            b1.getCollisionStatus().set(
-                islx,
-                isly,
-                islz,
-                true
-                );
-            b2.getCollisionStatus().set(
-                islx,
-                isly,
-                islz,
-                true
-                );
+            Point volume=Point(islx,isly,islz);
+            b1.getCollisionStatus().set(volume,true);
+            b2.getCollisionStatus().set(volume,true);
 
             return true;
         }else{
@@ -55,7 +43,7 @@ class MPRCollisionDetector{
     }
 
 
-    bool collideAndFindPoint(Boundary& b1,Boundary& b2,Point& impactNormal,Point& impactPoint1,Point& impactPoint2,float& penetration){
+    bool collideAndFindPoint(Boundary& b1,Boundary& b2,Point& impactNormal,Point& impactPoint,float& penetration){
         static float kCollideEpsilon = 1e-3f;
 
         Point v01=b1.getEnclosingBox().getCenter();
@@ -81,8 +69,8 @@ class MPRCollisionDetector{
             n=v1-v0;
             n.normalize();
             impactNormal=n;
-            impactPoint1=v11;
-            impactPoint2=v12;
+            impactPoint=(v11+v12)*0.5;
+            penetration= (v12-v11)*n;
             return true;
        }
 
@@ -103,8 +91,8 @@ class MPRCollisionDetector{
         if(dist>0)
         {
             std::swap(v1,v2);
-            std::swap(v11,v12);
-            std::swap(v21,v22);
+            std::swap(v11,v21);
+            std::swap(v12,v22);
             n=-n;
         }
 
@@ -157,7 +145,7 @@ class MPRCollisionDetector{
 
                 float d=n*v1;
 
-                if(d>-0.2 && !hit)//TODO!:in the original code it's 0 instead of -0.5. This was just to fix a bug, but I need to find a better way
+                if(d>=0 && !hit)//TODO!:in the original code it's 0 instead of -0.5. This was just to fix a bug, but I need to find a better way
                 {
                     impactNormal=n;
 
@@ -176,8 +164,7 @@ class MPRCollisionDetector{
                         sum=ba1+ba2+ba3;
                     }
                     float inv=1.0/sum;
-                    impactPoint1=(ba0*v01 + ba1*v11 + ba2*v21 + ba3*v31)*inv;
-                    impactPoint2=(ba0*v02 + ba1*v12 + ba2*v22+ ba3*v32)*inv;
+                    impactPoint=( (ba0*v01 + ba1*v11 + ba2*v21 + ba3*v31)+(ba0*v02 + ba1*v12 + ba2*v22+ ba3*v32) ) *inv * 0.5;
 
 
                     //hit!!!
@@ -244,20 +231,16 @@ class MPRCollisionDetector{
 
     
     //ex-getFarthestAlong
+    //TODO:check if we should modify the normal in world coordinates
     Point getSupportPoint(Boundary& b,Point v){
         //- rotation
         Matrix& rotationInverseMatrix=b.getReducedPolygon().getRotationInverseMatrix();
         v=rotationInverseMatrix*v;
 
-        //getFarthestAlong
-        vector<Point>& vertices=b.getReducedPolygon().getVertices();
-        auto max2=std::max_element(vertices.begin(),vertices.end(),
-        [&v](Point& p1, Point& p2) {
-              return (p1*v) < (p2*v);
-          });
+        Point max=b.getReducedPolygon().getFarthestAlong(v);
         
         Matrix& modelMatrix=b.getReducedPolygon().getModelMatrix();
-        return modelMatrix*max2[0];
+        return modelMatrix*max;
     }
     
 

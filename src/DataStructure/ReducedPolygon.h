@@ -52,6 +52,13 @@ class ReducedPolygon{
       return rotationInverseMatrix;
     }
 
+    Point getFarthestAlong(Point v){
+      auto max=std::max_element(vertices.begin(),vertices.end(),
+        [&v](Point& p1, Point& p2) {
+            return (p1*v) < (p2*v);
+        });
+      return max[0];
+    }
 };
 
 #endif
