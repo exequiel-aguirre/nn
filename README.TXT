@@ -65,7 +65,6 @@ BUGS:
 
 
 TODOS:
--InteractiveCamera: remove all friction and climbing related logic
 -Matrix: remove vector,make both Euler angles function receive things in phi-theta-psi order,rewrite getInverse in a more readable way
 -We should not put the contact points in the collision status, but in the manifold, since it's one set of point's per pair, not per object.(now we are distributiong the 4 points among the pair of collisions, for example 2 points for floor-box1 and 2 points for floor-box2)
 -Return Component::massInverse instead of mass, this way, we can just return 0 for static objects.Fixing *.
