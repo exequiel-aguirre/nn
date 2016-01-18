@@ -57,6 +57,7 @@ QTCREATOR:
 
 
 BUGS:
+-Fire an spell and you have a bug
 -Now the object can collide with just one object per frame. So the torus cannot be moved, since it's already colliding with the ground...
 -In the reduced polygon we are not effectively removing duplicated points.(See the box for example)
 -The fog is not working.(some code need to be added to the shader, more info at the bottom)
@@ -97,3 +98,8 @@ float z=gl_FragCoord.z / gl_FragCoord.w;
 
 -When 2 objects with std::numeric_limits<float>::max() collide, everything goes to hell (for example, most things just dissapear)
 -Warning:the std::max_element enters in an infinite loop if p*v is nan
+
+
+
+Idea
+-Maybe the dancing box is because when using the cached point, I apply the impulse with the NEW normal instead of the contact's point normal

@@ -51,11 +51,8 @@ class PhysicsManager{
 
     void onCollisionDetected(Component* c1,Component* c2){
             Manifold manifold=Manifold(c1,c2);
-            vector<Point> points=this->getCachePoints(c1,c2);
-            for(Point& p:points){
-              CollisionStatus status2=c2->getCollisionStatus().setImpactPoint(p);
-              manifold.addContact(status2);
-            }
+            CollisionStatus status2=c2->getCollisionStatus();
+            manifold.addContact(status2);
             manifolds.push_back(manifold);
     }
 
@@ -101,42 +98,6 @@ class PhysicsManager{
           (*itn).applyImpulse();
         }
       }
-    }
-
-    vector<Point> getCachePoints(Component* c1,Component* c2){
-      vector<Point> points;
-      //Refresh cached contact points
-      //Makes no sense having one collision status per object, when in reality it should be 1 collision status per component pair
-      c1->getCollisionStatus().refreshContactPoints(c1->getModelMatrix(),c2->getModelMatrix());
-      c2->getCollisionStatus().refreshContactPoints(c1->getModelMatrix(),c2->getModelMatrix());
-
-      //generate and add the new contact Point
-      ContactPoint cp;
-      cp.normal2=c2->getCollisionStatus().getImpactNormal();
-      cp.distance=fabs(c2->getCollisionStatus().getDistance()*0.5);
-      Point impactPoint2=c2->getCollisionStatus().getImpactPoint() + (cp.normal2*cp.distance);//TODO:check why inverting the distance displacement 
-      Point impactPoint1=c2->getCollisionStatus().getImpactPoint();      //change behaviour according to the which one we apply it. (replaceContactPoint?)
-      cp.point1=c1->getModelMatrix().getInverse()*impactPoint1;
-      cp.point2=c2->getModelMatrix().getInverse()*impactPoint2;
-      cp.position1=impactPoint1;
-      cp.position2=impactPoint2;
-
-      int index=c1->getCollisionStatus().getCacheEntry(cp);
-      if(index==-1){
-        c1->getCollisionStatus().addContactPoint(cp);
-        c2->getCollisionStatus().addContactPoint(cp);
-      }
-      else{
-        c1->getCollisionStatus().replaceContactPoint(cp,index);
-        c2->getCollisionStatus().replaceContactPoint(cp,index);
-      }
-
-      vector<ContactPoint> contactPoints=c2->getCollisionStatus().getContactPoints();
-      for(ContactPoint& cp:contactPoints){
-        points.push_back(cp.position2);//TODO:check if this is correct
-      }
-
-      return points;
     }
 
 };

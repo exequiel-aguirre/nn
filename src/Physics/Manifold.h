@@ -59,7 +59,7 @@ class Manifold{
         Point r1=contact.r1;
         Point v2=c2->getVelocity().getLinear();
         Point w2=c2->getVelocity().getAngular() * (M_PI/180.0);        
-        Point r2=contact.r2;//p2-c2->getBoundary().getEnclosingBox().getCenter();
+        Point r2=contact.r2;
         
         Point vr=v2+(w2^r2) - v1-(w1^r1);
 
@@ -81,7 +81,7 @@ class Manifold{
         {
             float baumgarteScalar=0.2f;
             float baumgarteSlop=0.01f;//original is 0.01
-            float penetrationSlop=std::min(collisionPenetration + baumgarteSlop,0.0f);//TODO:remove the abs from penetration
+            float penetrationSlop=std::min(collisionPenetration + baumgarteSlop,0.0f);
             b+=(baumgarteScalar/DELTA_TIME)*penetrationSlop;
 
 
@@ -108,47 +108,9 @@ class Manifold{
         contact.friction2=Constraint(c1,c2,
                             -tangent2*friction,(-r1^tangent2)*friction,
                             tangent2*friction,(r2^tangent2)*friction,0.0f);
-        
-
-        //update cache;
-        /*float im1=1.0/c1->getMass();
-        float im2=1.0/c2->getMass();        
-
-        Point j1=contact.normal.j1;
-        Point j2=contact.normal.j2;
-        Point j3=contact.normal.j3;
-        Point j4=contact.normal.j4;
-        contact.normal.im1=im1;
-        contact.normal.im2=im2;
-        contact.normal.iI1j2=c1->getInertiaInverse()*contact.normal.j2;
-        contact.normal.iI2j4=c2->getInertiaInverse()*contact.normal.j4;
-        contact.normal.constraintMassB=im1 * j1*j1 + (j2* (contact.normal.iI1j2)) +   im2 * j3*j3 + (j4* (contact.normal.iI2j4));
-
-
-        j1=contact.friction1.j1;
-        j2=contact.friction1.j2;
-        j3=contact.friction1.j3;
-        j4=contact.friction1.j4;
-        contact.friction1.im1=im1;
-        contact.friction1.im2=im2;
-        contact.friction1.iI1j2=c1->getInertiaInverse()*contact.friction1.j2;
-        contact.friction1.iI2j4=c2->getInertiaInverse()*contact.friction1.j4;
-        contact.friction1.constraintMassB=im1 * j1*j1 + (j2* (contact.friction1.iI1j2)) +   im2 * j3*j3 + (j4* (contact.friction1.iI2j4));
-
-        j1=contact.friction2.j1;
-        j2=contact.friction2.j2;
-        j3=contact.friction2.j3;
-        j4=contact.friction2.j4;
-        contact.friction2.im1=im1;
-        contact.friction2.im2=im2;
-        contact.friction2.iI1j2=c1->getInertiaInverse()*contact.friction2.j2;
-        contact.friction2.iI2j4=c2->getInertiaInverse()*contact.friction2.j4;
-        contact.friction2.constraintMassB=im1 * j1*j1 + (j2* (contact.friction2.iI1j2)) + im2 * j3*j3 + (j4* (contact.friction2.iI2j4));*/
-
-
     }
 
-    void addContact(/*CollisionStatus& status1,*/CollisionStatus& status2){
+    void addContact(CollisionStatus& status2){
         Point r1=status2.getImpactPoint()-c1->getBoundary().getEnclosingBox().getCenter();        
         Point r2=status2.getImpactPoint()-c2->getBoundary().getEnclosingBox().getCenter();
 
