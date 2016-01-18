@@ -57,7 +57,6 @@ QTCREATOR:
 
 
 BUGS:
--With the real earth mass program freeze.It seems that we cannot handle numbers that big...*
 -Now the object can collide with just one object per frame. So the torus cannot be moved, since it's already colliding with the ground...
 -In the reduced polygon we are not effectively removing duplicated points.(See the box for example)
 -The fog is not working.(some code need to be added to the shader, more info at the bottom)

@@ -21,8 +21,8 @@ class Grass: public Container {
 			for(int j=0;j<longs;j++){
 				float z=(d/longs)*j- d/2;
 				merge(new Plane(Position(x,h/2,z,90.0f,0.0f,0.0f),h*1.2,h,"img/grass.tga"));
-				merge(new Plane(Position(x,h/2,z,90.0,00.0f,60.0f),h*1.2,h,"img/grass.tga"));
-				merge(new Plane(Position(x,h/2,z,90.0,00.0f,120.0f),h*1.2,h,"img/grass.tga"));
+				merge(new Plane(Position(x,h/2,z,90.0,60.0f,0.0f),h*1.2,h,"img/grass.tga"));
+				merge(new Plane(Position(x,h/2,z,90.0,120.0f,0.0f),h*1.2,h,"img/grass.tga"));
 			}
 		}
 		//For billboards we need to change this to get the light correctly
