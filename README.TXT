@@ -73,8 +73,6 @@ TODOS:
 -Some times the ball thrown goes through the ground.Modifying "d=n*v1" to -0.2 intead of 0, seems to improve the situation but not fix it.
 -Warning:the getCenter gives the already positioned vertices... I think in MPR we are transforming those(again)...
 -Change the sign in the camera for the angles as well (and swap the order of the rotates)(should be the exact opposite of the Component::onBeforeRender)
--Performance: 
-- the rawPoint was created, but now inside point we have duplicated x,y,z. Besides that, if we modify point->x, rawPoint won't change, which I think is fine having in mind that we are using GL_STATIC_DRAW?
 -implement a factory so we can avoid thius chaotics constructors
 -try template for ciclyc reference.
 

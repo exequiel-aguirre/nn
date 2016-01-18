@@ -8,8 +8,7 @@ class Point{
    float x;//put it in one line
    float y;
    float z;
-   //this is for the fastStrategy
-   RawPoint rawPoint;
+
    static constexpr float ZERO_EPSILON=6e-05;
 	Point(float x,float y,float z){
 		this->x=x;
@@ -25,8 +24,9 @@ class Point{
 		this->y=y;
 		this->z=z;
 	}
-
+	//this is for the renderStrategy
 	RawPoint getRawPoint(){
+		RawPoint rawPoint;
 		rawPoint.x=this->x;
 		rawPoint.y=this->y;
 		rawPoint.z=this->z;
