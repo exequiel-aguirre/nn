@@ -49,16 +49,16 @@ class Constraint{
 
     void applyImpulse(){
         delta=0.0;
-        float m1=c1->getMass();
+        float im1=c1->getMassInverse();
         Matrix iI1=c1->getInertiaInverse();
         Point v1_i=c1->getVelocity().getLinear();
         Point w1_i=c1->getVelocity().getAngular() * (M_PI/180.0);
-        float m2=c2->getMass();
+        float im2=c2->getMassInverse();
         Matrix iI2=c2->getInertiaInverse();
         Point v2_i=c2->getVelocity().getLinear();
         Point w2_i=c2->getVelocity().getAngular()* (M_PI/180.0);
 
-        float constraintMass =  1.0/m1 * j1*j1 + (j2* (iI1*j2)) +   1.0/m2 * j3*j3 + (j4* (iI2*j4)) + softness;
+        float constraintMass =  im1 * j1*j1 + (j2* (iI1*j2)) +   im2 * j3*j3 + (j4* (iI2*j4)) + softness;
 
         if(constraintMass>EPSILON){
             float jv= (j1*v1_i + j2*w1_i + j3*v2_i+ j4*w2_i);
@@ -71,9 +71,9 @@ class Constraint{
         impulseSum=std::min( std::max(impulseSum+delta,IMPULSE_SUM_MIN), IMPULSE_SUM_MAX);
         float realDelta= impulseSum - oldImpulseSum;
 
-        Point v1_f=v1_i + ((1.0/m1) * (j1*realDelta));
+        Point v1_f=v1_i + (im1 * (j1*realDelta));
         Point w1_f=(w1_i + (iI1 * (j2*realDelta) ))* (180.0/M_PI);
-        Point v2_f=v2_i + ((1.0/m2) * (j3*realDelta));
+        Point v2_f=v2_i + (im2 * (j3*realDelta));
         Point w2_f=(w2_i + (iI2* (j4*realDelta) ))* (180.0/M_PI);
         //if(w2_f.norm()<2.0) w2_f=Point();//TODO:remove this?
         c1->setVelocity(v1_f.x,v1_f.y,v1_f.z,w1_f.x,w1_f.y,w1_f.z);

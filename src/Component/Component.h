@@ -17,8 +17,6 @@
 
 
 class Component {
- private:
-    static constexpr float EARTH_MASS=5.972 * pow(10,24);
   protected:
     ModelObject modelObject;
     Matrix modelMatrix;
@@ -33,8 +31,7 @@ class Component {
     Acceleration acceleration;
     float massDensity=1.0f;
     float elasticity=0.0f;
-    bool rotates=false;
-    bool moves=false;
+    float massInverse=0.0f;
     Matrix inertiaInverse;
     bool reflects=true;
     bool collides=true;
@@ -46,7 +43,6 @@ class Component {
       this->updateModelMatrix();
       this->modelObject=modelObject;
       this->calculateBoundary();
-      this->calculateInertiaInverse();
       RenderStrategy::getInstance().initModelObject(this->modelObject,GLMode);
       if(shaderName==NULL) shaderName=DEFAULT_SHADER_NAME;
       this->shader=ResourceManager::getInstance().getShader(shaderName);
@@ -142,34 +138,15 @@ class Component {
       return shader;
     }
 
-    virtual float getMass(){
-      if(modelObject.getSize()==0) return 0;
-      if(!this->getMoves()) return EARTH_MASS;//if it's unmovable, we treat it as if it was fixed to the earth
-      //a very rough approximation of volume
-      return modelObject.getBoundary().getEnclosingBox().getVolume()* massDensity;
+    float getMassInverse(){
+      return massInverse;
     }
 
-    //a very rough approximation of the inertia is used here.
-    void calculateInertiaInverse(){
-      if(getMass()==0){
-        inertiaInverse=Matrix(0.0);
-        return;
-      }
-      Point mm=modelObject.getBoundary().getEnclosingBox().getWHD();
-      float m=getMass();
-      float xx=mm.x*mm.x;
-      float yy=mm.y*mm.y;
-      float zz=mm.z*mm.z;
-
-      inertiaInverse=Matrix(m*(yy+zz)/12.0, m*(xx+zz)/12.0, m*(xx+yy)/12.0, 1.0).getInverse();
-    }
-
-    virtual Matrix getInertiaInverse(){
-      if((getMass()>5e15) || !this->getRotates() ) return Matrix(0.0);
+    Matrix getInertiaInverse(){
       return inertiaInverse;
     }
 
-    virtual float getElasticity(){
+    float getElasticity(){
       return elasticity;
     }
 
@@ -188,18 +165,36 @@ class Component {
     }
 
     void setRotates(bool rotates){
-      this->rotates=rotates;
-    }
-    bool getRotates(){
-      return rotates;
+      if(rotates){
+        if(getMassInverse()==0){
+          inertiaInverse=Matrix(0.0);
+          return;
+        }
+        //a very rough approximation of the inertia is used here.
+        Point mm=modelObject.getBoundary().getEnclosingBox().getWHD();
+        float m=1.0/getMassInverse();
+        float xx=mm.x*mm.x;
+        float yy=mm.y*mm.y;
+        float zz=mm.z*mm.z;
+        inertiaInverse=Matrix(m*(yy+zz)/12.0, m*(xx+zz)/12.0, m*(xx+yy)/12.0, 1.0).getInverse();
+      }
+      else
+      {
+        inertiaInverse=Matrix(0.0);
+      }
     }
 
-    void setMoves(bool moves){
-      this->moves=moves;;
+    void setTranslates(bool translates){
+      if(translates){
+        //a very rough approximation of volume
+        massInverse=1.0/(modelObject.getBoundary().getEnclosingBox().getVolume()* massDensity);
+      }
+      else
+      {
+        massInverse=0.0;
+      }
     }
-    bool getMoves(){
-      return moves;
-    }
+
     Component* setReflects(bool reflects){
       this->reflects=reflects;
       return this;

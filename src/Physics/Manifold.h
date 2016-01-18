@@ -29,7 +29,7 @@ class Manifold{
     virtual ~Manifold(){}
 
     void applyImpulse(){
-        float softness=(1.0/c1->getMass() + 1.0/c2->getMass())/contacts.size();
+        float softness=(c1->getMassInverse() + c2->getMassInverse())/contacts.size();
         for(Contact& contact: contacts){           
 
             contact.normal.softness=softness;

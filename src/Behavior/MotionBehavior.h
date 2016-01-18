@@ -15,7 +15,7 @@ class MotionBehavior: public AbstractBehavior{
 
     void bind(Component* hostComponent){
       AbstractBehavior::bind(hostComponent);
-      hostComponent->setMoves(true);
+      hostComponent->setTranslates(true);
       hostComponent->setRotates(true);
       this->motion=Motion();
     }
