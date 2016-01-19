@@ -21,15 +21,15 @@ class Motion {
         //build angular velocity transform
         Point wt=velocity.getAngular()*t;
         Matrix mwt=Matrix(1.0);
-        mwt.rotate(wt.y,wt.z,wt.x);
+        mwt.rotate(wt.x,wt.y,wt.z);
         //build angular position(orientation) transform
         Matrix mo=Matrix(1.0);
-        mo.rotate(o.y,o.z,o.x);
+        mo.rotate(o.x,o.y,o.z);
         //compose both transform and traduce back to Euler angles
         Matrix mno=mwt*mo;
-        std::vector<float> yzx=mno.getEulerAngles();
+        std::vector<float> xyz=mno.getEulerAngles();
 
-        o=Point(yzx[2],yzx[0],yzx[1]);
+        o=Point(xyz[0],xyz[1],xyz[2]);
         
         return Position(l.x,l.y,l.z,o.x,o.y,o.z);
     }

@@ -84,7 +84,7 @@ class Component {
     void updateModelMatrix(){
       modelMatrix.loadIdentity();
       modelMatrix.translate(position.getX(),position.getY(),position.getZ());
-      modelMatrix.rotate(position.getTheta(),position.getPsi(),position.getPhi());
+      modelMatrix.rotate(position.getPhi(),position.getTheta(),position.getPsi());
     }
     
     Matrix& getModelMatrix(){

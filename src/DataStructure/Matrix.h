@@ -239,7 +239,7 @@ class Matrix{
 		return t;
 	}
 
-	void rotate(float heading, float attitude, float bank){
+	void rotate(float bank,float heading, float attitude){
 		heading*=M_PI/180.0f;
 		attitude*=M_PI/180.0f;
 		bank*=M_PI/180.0f;
@@ -271,7 +271,7 @@ class Matrix{
 	}
 
     std::vector<float> getEulerAngles(){
-        float heading,attitude,bank;
+        float bank,heading,attitude;
         float m10=rawMatrix[4*1 + 0];
         const float C=0.998;
         if(m10<-C || C<m10)
@@ -289,7 +289,7 @@ class Matrix{
 
 
         float radToGrad=(180.0f/M_PI);
-        std::vector<float> xyz=std::vector<float>({heading*radToGrad,attitude*radToGrad,bank*radToGrad});
+        std::vector<float> xyz=std::vector<float>({bank*radToGrad,heading*radToGrad,attitude*radToGrad});
         return xyz;
     }
 };
