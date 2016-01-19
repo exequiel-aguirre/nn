@@ -65,15 +65,12 @@ BUGS:
 
 
 TODOS:
--Matrix: remove vector,make both Euler angles function receive things in phi-theta-psi order,rewrite getInverse in a more readable way
+-Matrix: remove vector,make both Euler angles function receive things in phi-theta-psi order
 -We should not put the contact points in the collision status, but in the manifold, since it's one set of point's per pair, not per object.(now we are distributiong the 4 points among the pair of collisions, for example 2 points for floor-box1 and 2 points for floor-box2)
 -Unify the whole manifold,collsionStatus,ContactPoint into one
 -To get all collision points maybe we can check the distance of all points to the plane formed by the impact normal and impact point.
-
 -DELTA_TIME should be an global constant
--Some times the ball thrown goes through the ground.Modifying "d=n*v1" to -0.2 intead of 0, seems to improve the situation but not fix it.
--Warning:the getCenter gives the already positioned vertices... I think in MPR we are transforming those(again)...
--Change the sign in the camera for the angles as well (and swap the order of the rotates)(should be the exact opposite of the Component::onBeforeRender)
+
 -implement a factory so we can avoid thius chaotics constructors
 -try template for ciclyc reference.
 

@@ -65,13 +65,29 @@ class Matrix{
 		return (*this);
 	}
 
-	Matrix operator-(const Matrix& b){
+    friend Matrix operator*(const Matrix& lhs,const float rhs){
+        Matrix a=lhs;
+        for(int i=0;i<16;i++){
+            a.rawMatrix[i]*=rhs;
+        }
+        return a;
+    }
+    friend Matrix operator*(const float lhs,const Matrix rhs){
+        return rhs*lhs;
+    }
+
+    Matrix operator+(const Matrix& b){
 		Matrix a=(*this);
 		for(int i=0;i<16;i++){
-			a.rawMatrix[i]-=b.rawMatrix[i];
+			a.rawMatrix[i]+=b.rawMatrix[i];
 		}
 		return a;
 	}
+
+    Matrix operator-(const Matrix& b){
+        return (*this) + (-1.0* b);
+    }
+
 	friend std::ostream& operator<<(std::ostream& os , const Matrix m){
 		for(int i=0;i<16;i++){
 			if((i%4)==0) os<< std::endl;
@@ -170,137 +186,35 @@ class Matrix{
 		return (*this);
 	}
 
-	Matrix getInverse()
-	{
-	float* m=this->rawMatrix;
-    float inv[16];
+    //Cayley-Hamilton method
+    Matrix getInverse(){
+        Matrix A=(*this);
+        Matrix A2=A*A;
+        Matrix A3=A*A2;
+        Matrix A4=A*A3;
+        float trA=A.trace();
+        float trA2=A2.trace();
+        float trA3=A3.trace();
+        float trA4=A4.trace();
 
-    inv[0] = m[5]  * m[10] * m[15] -
-             m[5]  * m[11] * m[14] -
-             m[9]  * m[6]  * m[15] +
-             m[9]  * m[7]  * m[14] +
-             m[13] * m[6]  * m[11] -
-             m[13] * m[7]  * m[10];
+        float det= (1.0/24.0) * ( trA*trA*trA*trA - 6*trA2*trA*trA +3*trA2*trA2 + 8*trA3*trA - 6*trA4 );
+        if (det == 0){
+            std::cout << "not invertible!!!"<<(*this);exit(4);
+        }
 
-    inv[4] = -m[4]  * m[10] * m[15] +
-              m[4]  * m[11] * m[14] +
-              m[8]  * m[6]  * m[15] -
-              m[8]  * m[7]  * m[14] -
-              m[12] * m[6]  * m[11] +
-              m[12] * m[7]  * m[10];
+        Matrix inverse= (1.0/det) *(
+            1.0/6.0 * (trA*trA*trA - 3*trA*trA2 + 2*trA3)*Matrix(1.0) -
+            1.0/2.0 * (trA*trA-trA2) *A +
+            (trA)*A2 -
+            A3
+            );
 
-    inv[8] = m[4]  * m[9] * m[15] -
-             m[4]  * m[11] * m[13] -
-             m[8]  * m[5] * m[15] +
-             m[8]  * m[7] * m[13] +
-             m[12] * m[5] * m[11] -
-             m[12] * m[7] * m[9];
-
-    inv[12] = -m[4]  * m[9] * m[14] +
-               m[4]  * m[10] * m[13] +
-               m[8]  * m[5] * m[14] -
-               m[8]  * m[6] * m[13] -
-               m[12] * m[5] * m[10] +
-               m[12] * m[6] * m[9];
-
-    inv[1] = -m[1]  * m[10] * m[15] +
-              m[1]  * m[11] * m[14] +
-              m[9]  * m[2] * m[15] -
-              m[9]  * m[3] * m[14] -
-              m[13] * m[2] * m[11] +
-              m[13] * m[3] * m[10];
-
-    inv[5] = m[0]  * m[10] * m[15] -
-             m[0]  * m[11] * m[14] -
-             m[8]  * m[2] * m[15] +
-             m[8]  * m[3] * m[14] +
-             m[12] * m[2] * m[11] -
-             m[12] * m[3] * m[10];
-
-    inv[9] = -m[0]  * m[9] * m[15] +
-              m[0]  * m[11] * m[13] +
-              m[8]  * m[1] * m[15] -
-              m[8]  * m[3] * m[13] -
-              m[12] * m[1] * m[11] +
-              m[12] * m[3] * m[9];
-
-    inv[13] = m[0]  * m[9] * m[14] -
-              m[0]  * m[10] * m[13] -
-              m[8]  * m[1] * m[14] +
-              m[8]  * m[2] * m[13] +
-              m[12] * m[1] * m[10] -
-              m[12] * m[2] * m[9];
-
-    inv[2] = m[1]  * m[6] * m[15] -
-             m[1]  * m[7] * m[14] -
-             m[5]  * m[2] * m[15] +
-             m[5]  * m[3] * m[14] +
-             m[13] * m[2] * m[7] -
-             m[13] * m[3] * m[6];
-
-    inv[6] = -m[0]  * m[6] * m[15] +
-              m[0]  * m[7] * m[14] +
-              m[4]  * m[2] * m[15] -
-              m[4]  * m[3] * m[14] -
-              m[12] * m[2] * m[7] +
-              m[12] * m[3] * m[6];
-
-    inv[10] = m[0]  * m[5] * m[15] -
-              m[0]  * m[7] * m[13] -
-              m[4]  * m[1] * m[15] +
-              m[4]  * m[3] * m[13] +
-              m[12] * m[1] * m[7] -
-              m[12] * m[3] * m[5];
-
-    inv[14] = -m[0]  * m[5] * m[14] +
-               m[0]  * m[6] * m[13] +
-               m[4]  * m[1] * m[14] -
-               m[4]  * m[2] * m[13] -
-               m[12] * m[1] * m[6] +
-               m[12] * m[2] * m[5];
-
-    inv[3] = -m[1] * m[6] * m[11] +
-              m[1] * m[7] * m[10] +
-              m[5] * m[2] * m[11] -
-              m[5] * m[3] * m[10] -
-              m[9] * m[2] * m[7] +
-              m[9] * m[3] * m[6];
-
-    inv[7] = m[0] * m[6] * m[11] -
-             m[0] * m[7] * m[10] -
-             m[4] * m[2] * m[11] +
-             m[4] * m[3] * m[10] +
-             m[8] * m[2] * m[7] -
-             m[8] * m[3] * m[6];
-
-    inv[11] = -m[0] * m[5] * m[11] +
-               m[0] * m[7] * m[9] +
-               m[4] * m[1] * m[11] -
-               m[4] * m[3] * m[9] -
-               m[8] * m[1] * m[7] +
-               m[8] * m[3] * m[5];
-
-    inv[15] = m[0] * m[5] * m[10] -
-              m[0] * m[6] * m[9] -
-              m[4] * m[1] * m[10] +
-              m[4] * m[2] * m[9] +
-              m[8] * m[1] * m[6] -
-              m[8] * m[2] * m[5];
-
-    float det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
-
-    if (det == 0){
-        std::cout << "not invertible!!!"<<(*this);exit(4);
+        return inverse;
     }
 
-    det = 1.0 / det;
-
-    Matrix inverse;
-    for (int i = 0; i < 16; i++)
-        inverse.rawMatrix[i] = inv[i] * det;
-
-    return inverse;
-}
+    float trace(){
+        return rawMatrix[0] + rawMatrix[5] + rawMatrix[10] + rawMatrix[15];
+    }
 
 	Matrix& transpose(){
 		Matrix a=(*this);
