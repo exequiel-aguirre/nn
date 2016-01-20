@@ -38,7 +38,7 @@ class Motion {
     Velocity getVelocity(float t,Velocity velocity,Acceleration acceleration){
         //update velocity
         Point v=velocity.getLinear();
-        v=v + (acceleration.getLinear() * t);
+        v=v + ((acceleration.getLinear()+Point(0,-9.8,0)) * t);
 
         Point w=velocity.getAngular();
         w=w+ (acceleration.getAngular() * t);

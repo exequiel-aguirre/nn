@@ -57,18 +57,6 @@ class PhysicsManager{
     }
 
     void onAfterDetectCollisions(){
-      vector<Component*>::iterator it;
-      for(it=components.begin();it!=components.end();it++){
-        if((*it)->getMassInverse()==0) continue;//if it doesn't move,makes no sense to add an acceleration to it
-        CollisionStatus& status=(*it)->getCollisionStatus();
-
-        if(status.hasCollided()){
-          (*it)->onAfterCollision();
-        }
-        else{
-          (*it)->getAcceleration().set(0.0,-9.8f,0.0f);
-        }
-      }
       solveConstraints();
     }
 

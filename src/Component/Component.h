@@ -65,8 +65,6 @@ class Component {
       undoEffects();
     }
 
-    virtual void onAfterCollision(){}
-
     Position& getPosition(){
       return position;
     }
