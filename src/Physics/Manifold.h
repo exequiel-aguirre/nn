@@ -7,10 +7,7 @@ struct Contact{
     Constraint friction1;
     Constraint friction2;
 
-    Point impactNormal;
-    Point r1;
-    Point r2;
-    float penetration;
+    ContactInfo info;
 };
 
 class Manifold{
@@ -52,14 +49,14 @@ class Manifold{
     }
      void updateConstraint(Contact& contact){
         float b=0;
-        float collisionPenetration=contact.penetration;
-        Point n=contact.impactNormal;
+        float collisionPenetration=contact.info.penetration;
+        Point n=contact.info.impactNormal;
         Point v1=c1->getVelocity().getLinear();
         Point w1=c1->getVelocity().getAngular() * (M_PI/180.0);        
-        Point r1=contact.r1;
+        Point r1=contact.info.r1;
         Point v2=c2->getVelocity().getLinear();
         Point w2=c2->getVelocity().getAngular() * (M_PI/180.0);        
-        Point r2=contact.r2;
+        Point r2=contact.info.r2;
         
         Point vr=v2+(w2^r2) - v1-(w1^r1);
 
@@ -110,18 +107,11 @@ class Manifold{
                             tangent2*friction,(r2^tangent2)*friction,0.0f);
     }
 
-    void addContact(CollisionStatus& status2){
-        Point r1=status2.getImpactPoint()-c1->getBoundary().getEnclosingBox().getCenter();        
-        Point r2=status2.getImpactPoint()-c2->getBoundary().getEnclosingBox().getCenter();
-
+    void addContact(ContactInfo contactInfo){
         Contact contact;
-        contact.r1=r1;
-        contact.r2=r2;
-        contact.impactNormal=status2.getImpactNormal();//TODO:-N
-        contact.penetration=status2.getDistance();
+        contact.info=contactInfo;
 
         contacts.push_back(contact);
-
     }
     
     

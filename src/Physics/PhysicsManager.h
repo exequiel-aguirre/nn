@@ -26,7 +26,7 @@ class PhysicsManager{
     void onBeforeDetectCollisions(){
       vector<Component*>::iterator it;
       for(it=components.begin();it!=components.end();it++){
-        (*it)->getCollisionStatus().init();
+        (*it)->onBeforeDetectCollision();
       }
       manifolds.clear();
     }
@@ -40,8 +40,14 @@ class PhysicsManager{
       for(it=components.begin();it!=components.end();it++){
         for(it2=it+1;it2!=components.end();it2++){
           if((*it)->getMassInverse()==0 && (*it2)->getMassInverse()==0) continue;//if both don't move,nothing to do here.
-          if(collisionDetector.detect((*it)->getBoundary(),(*it2)->getBoundary())){
-            onCollisionDetected(*it,*it2);
+          ContactInfo contactInfo=collisionDetector.detect((*it)->getBoundary(),(*it2)->getBoundary());
+          if(contactInfo.hasCollided){
+            onCollisionDetected(*it,*it2,contactInfo);
+            //callbacks
+            ContactInfo contactInfo1=contactInfo;
+            contactInfo1.impactNormal=-contactInfo.impactNormal;
+            (*it)->onCollisionDetected(contactInfo1);
+            (*it2)->onCollisionDetected(contactInfo);
           }
     	}
     }
@@ -49,10 +55,9 @@ class PhysicsManager{
     onAfterDetectCollisions();
   }
 
-    void onCollisionDetected(Component* c1,Component* c2){
+    void onCollisionDetected(Component* c1,Component* c2,ContactInfo contactInfo){
             Manifold manifold=Manifold(c1,c2);
-            CollisionStatus status2=c2->getCollisionStatus();
-            manifold.addContact(status2);
+            manifold.addContact(contactInfo);
             manifolds.push_back(manifold);
     }
 

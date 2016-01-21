@@ -13,7 +13,7 @@
 #include "../RenderStrategy/ResourceManager.h"
 #include "../RenderStrategy/Shader/Shader.h"
 #include "../RenderStrategy/Texture.h"
-#include "../Physics/CollisionStatus.h"
+#include "../Physics/ContactInfo.h"
 
 
 class Component {
@@ -58,6 +58,10 @@ class Component {
     
     //this method is called before any component is rendered.
     virtual void onBeforeRenderFrame(){}
+    //this method is called before the collision detection starts
+    virtual void onBeforeDetectCollision(){}
+    //this method is called every time a collision is detected
+    virtual void onCollisionDetected(ContactInfo contactInfo){}
 
     virtual void render(){
       doEffects();
@@ -122,10 +126,6 @@ class Component {
 
     Boundary& getBoundary(){
       return modelObject.getBoundary();
-    }
-
-    CollisionStatus& getCollisionStatus(){
-      return modelObject.getBoundary().getCollisionStatus();
     }
 
     Texture& getTexture(){

@@ -6,21 +6,18 @@
 #include "../Map/IMap.h"
 #include "ReducedPolygon.h"
 #include "EnclosingBox.h"
-#include "../Physics/CollisionStatus.h"
 
 
 class Boundary{
   private:
     ReducedPolygon reducedPolygon;
     EnclosingBox enclosingBox;
-    CollisionStatus collisionStatus;
   public:	
     Boundary(){}
     
     Boundary(vector<Point> vertices){
       this->reducedPolygon= ReducedPolygon(vertices);
       this->enclosingBox= EnclosingBox(vertices);
-      this->collisionStatus= CollisionStatus();
   	}
 
     void update(Matrix modelMatrix,Velocity velocity){
@@ -34,10 +31,6 @@ class Boundary{
 
     EnclosingBox& getEnclosingBox(){
       return enclosingBox;
-    }
-
-    CollisionStatus& getCollisionStatus(){
-      return collisionStatus;
     }
     
 };

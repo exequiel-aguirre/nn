@@ -14,6 +14,7 @@ class InteractiveCamera: public Camera {
   private:
     vector<Weapon*> weapons;
     vector<Weapon*>::iterator currentWeapon;
+    ContactInfo contactInfo;
   protected:
     float headOffset=1.0;//offset on the y axis of the camera view.(should not affect physics)
     float gamma=0.0;
@@ -61,7 +62,7 @@ class InteractiveCamera: public Camera {
       for(unsigned int i=0;i<weapons.size();i++) (weapons[i])->setPosition(x,y,z,phi,theta,psi);
     }
     void onTranslation(float deltaX,float deltaY,float deltaZ){
-      if(getCollisionStatus().hasCollided()){
+      if(contactInfo.hasCollided){
         Point v=Point(-deltaX*20,-deltaY*20,-deltaZ*20);
         this->setVelocity(v.x,v.y,v.z);
       }
@@ -70,8 +71,8 @@ class InteractiveCamera: public Camera {
         switch(key){
           case SDLK_SPACE:
           {
-            if(getCollisionStatus().hasCollided()){
-              Point n=getCollisionStatus().getImpactNormal()* 10;
+            if(contactInfo.hasCollided){
+              Point n=contactInfo.impactNormal * 10;
               this->setVelocity(getVelocity().getX()+n.x,getVelocity().getY()+n.y,getVelocity().getZ()+n.z);//jump
             }
             break;
@@ -91,7 +92,7 @@ class InteractiveCamera: public Camera {
         }
     }
      void onKeyUp(SDL_Keycode key){
-        if(getCollisionStatus().hasCollided()) this->setVelocity(0,0,0);
+        if(contactInfo.hasCollided) this->setVelocity(0,0,0);
      }
 
     void onMouseButtonDown(SDL_MouseButtonEvent button){
@@ -112,6 +113,14 @@ class InteractiveCamera: public Camera {
     void calculateBoundary(){
       //update the boundary
       getBoundary().update(this->modelMatrix.getTranslationMatrix(),velocity);
+    }
+
+    void onBeforeDetectCollision(){
+      this->contactInfo.hasCollided=false;
+    }
+
+    void onCollisionDetected(ContactInfo contactInfo){
+      this->contactInfo=contactInfo;
     }
 };
 

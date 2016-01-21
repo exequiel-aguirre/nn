@@ -6,13 +6,15 @@ the original code can be found at http://xenocollide.com
 #define MPRCollisionDetectorH
 #include "../DataStructure/Boundary.h"
 #include "../DataStructure/Matrix.h"
+#include "ContactInfo.h"
 
 class MPRCollisionDetector{  
   public:
     MPRCollisionDetector(){}
     virtual ~MPRCollisionDetector(){}
     
-    bool detect(Boundary& b1,Boundary& b2){
+    ContactInfo detect(Boundary& b1,Boundary& b2){
+        ContactInfo contactInfo;
         Point& min1=b1.getEnclosingBox().getDiagonalMin();
         Point& max1=b1.getEnclosingBox().getDiagonalMax();
         Point& min2=b2.getEnclosingBox().getDiagonalMin();
@@ -23,27 +25,19 @@ class MPRCollisionDetector{
         float islz=std::min(max1.z,max2.z)-std::max(min1.z,min2.z);
        
         if( (islx >= 0) && (isly >= 0) && (islz >= 0) ) {
-
-            Point impactNormal;
-            Point impactPoint;
-            float d=0.0f;
-            if(!collideAndFindPoint(b1,b2,impactNormal,impactPoint,d)) return false;
-
-            b1.getCollisionStatus().setImpactPoint(impactPoint).setImpactNormal(impactNormal).setDistance(d);
-            b2.getCollisionStatus().setImpactPoint(impactPoint).setImpactNormal(-impactNormal).setDistance(d);
-
-            Point volume=Point(islx,isly,islz);
-            b1.getCollisionStatus().set(volume,true);
-            b2.getCollisionStatus().set(volume,true);
-
-            return true;
+            bool hasCollided=collideAndFindPoint(b1,b2,contactInfo);
+            contactInfo.hasCollided=hasCollided;
+            contactInfo.impactNormal=-contactInfo.impactNormal;//TODO:avoid this
+            contactInfo.r1=contactInfo.impactPoint-b1.getEnclosingBox().getCenter();
+            contactInfo.r2=contactInfo.impactPoint-b2.getEnclosingBox().getCenter();
+            return contactInfo;
         }else{
-            return false;
+            return contactInfo;
         }
     }
 
 
-    bool collideAndFindPoint(Boundary& b1,Boundary& b2,Point& impactNormal,Point& impactPoint,float& penetration){
+    bool collideAndFindPoint(Boundary& b1,Boundary& b2,ContactInfo& contactInfo){
         static float kCollideEpsilon = 1e-3f;
 
         Point v01=b1.getEnclosingBox().getCenter();
@@ -59,7 +53,6 @@ class MPRCollisionDetector{
 
         if(v1*n <=0)
         {
-            impactNormal=n;
             return false;
         }
 
@@ -68,9 +61,9 @@ class MPRCollisionDetector{
        {
             n=v1-v0;
             n.normalize();
-            impactNormal=n;
-            impactPoint=(v11+v12)*0.5;
-            penetration= (v12-v11)*n;
+            contactInfo.impactNormal=n;
+            contactInfo.impactPoint=(v11+v12)*0.5;
+            contactInfo.penetration= (v12-v11)*n;
             return true;
        }
 
@@ -79,7 +72,6 @@ class MPRCollisionDetector{
         Point v2=v22-v21;
         if(v2*n <=0)
         {
-            impactNormal=n;
             return false;
         }
 
@@ -106,7 +98,6 @@ class MPRCollisionDetector{
 
             if(v3*n<=0)
             {
-                impactNormal=n;
                 return false;                
             }
 
@@ -147,7 +138,7 @@ class MPRCollisionDetector{
 
                 if(d>=0 && !hit)//TODO!:in the original code it's 0 instead of -0.5. This was just to fix a bug, but I need to find a better way
                 {
-                    impactNormal=n;
+                    contactInfo.impactNormal=n;
 
                     //Calculate the barycentric coordinates of the origin
                     float ba0=(v1^v2) * v3;
@@ -164,7 +155,7 @@ class MPRCollisionDetector{
                         sum=ba1+ba2+ba3;
                     }
                     float inv=1.0/sum;
-                    impactPoint=( (ba0*v01 + ba1*v11 + ba2*v21 + ba3*v31)+(ba0*v02 + ba1*v12 + ba2*v22+ ba3*v32) ) *inv * 0.5;
+                    contactInfo.impactPoint=( (ba0*v01 + ba1*v11 + ba2*v21 + ba3*v31)+(ba0*v02 + ba1*v12 + ba2*v22+ ba3*v32) ) *inv * 0.5;
 
 
                     //hit!!!
@@ -181,8 +172,8 @@ class MPRCollisionDetector{
 
                 if(delta<=kCollideEpsilon || separation>=0)
                 {
-                    impactNormal=n;
-                    penetration=separation;
+                    contactInfo.impactNormal=n;
+                    contactInfo.penetration=separation;
                     return hit;
                 }
 

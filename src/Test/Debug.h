@@ -62,18 +62,6 @@ class Debug{
         glEnd();
     }
     
-    //to be called from the onAfterRender() (because this are positioned vertices )
-    void renderImpactNormal(){
-      glLineWidth(3.0);
-      glBegin(GL_LINES);
-        Point x0=boundary.getCollisionStatus().getImpactPoint();
-        Point n=boundary.getCollisionStatus().getImpactNormal() * 3.0;
-        glVertex3f(x0.x,x0.y,x0.z);
-        glVertex3f(x0.x+n.x, x0.y+n.y, x0.z+n.z);
-      glEnd();
-
-    }
-
     void renderLine( Point c0,Point v){
       glBegin(GL_LINES);
         glVertex3f(c0.x,c0.y,c0.z);
