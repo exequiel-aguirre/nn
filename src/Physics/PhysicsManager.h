@@ -49,16 +49,16 @@ class PhysicsManager{
             (*it)->onCollisionDetected(contactInfo1);
             (*it2)->onCollisionDetected(contactInfo);
           }
-    	}
+        }
+      }
+
+      onAfterDetectCollisions();
     }
 
-    onAfterDetectCollisions();
-  }
-
     void onCollisionDetected(Component* c1,Component* c2,ContactInfo contactInfo){
-            Manifold manifold=Manifold(c1,c2);
-            manifold.addContact(contactInfo);
-            manifolds.push_back(manifold);
+      Manifold manifold=Manifold(c1,c2);
+      manifold.addContact(contactInfo);
+      manifolds.push_back(manifold);
     }
 
     void onAfterDetectCollisions(){
