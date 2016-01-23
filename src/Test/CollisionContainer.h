@@ -122,6 +122,23 @@ class CollisionContainer:public Container{
         add( (new Box(Position(5,5,-5,45,45,45),2,2,5,"img/box.bmp"))->add(new MotionBehavior()) );
         //add((new Ellipsoid(Position(5,5,-5),0.5f,1.0,0.5))->add(new MotionBehavior()));
     }
+    //Elasticity must be set to 1.0 to work (more or less) as expected
+    void test11(){
+        add(new Ground(Position(0.0f, GROUND_LEVEL, 0.0f, 2.0, 0.0, 2.0),300,300));
+        float bw=0.5;
+        for(int i=0;i<5;i++){
+            float offsetX=(i==4)?3:0;
+            float offsetY=(i==4)?1:0;
+            Box* box=new Box(Position(i*(bw), 8, 0.0f),bw,bw,bw,"img/box.bmp");
+            Sphere* sphere=new Sphere(Position(i*bw+offsetX,3+offsetY,0),bw*0.5);
+            sphere->add(new MotionBehavior())->setRotates(false);
+            add(box);
+            add(sphere);//x** 2 + (5-y)**2=25
+            //PhysicsManager::getInstance().add(new DistanceConstraint(sphere,box));
+            PhysicsManager::getInstance().add(new DistanceConstraint(sphere,box,Point(i*bw+offsetX,3+offsetY,0),Point(i*(bw), 8, -0.2f)));//The -0.2 and 0.2 is to avoid
+            PhysicsManager::getInstance().add(new DistanceConstraint(sphere,box,Point(i*bw+offsetX,3+offsetY,0),Point(i*(bw), 8,  0.2f)));//spheres movement along z
+        }
+    }
 
     void testConstraint(){
         add(new Ground(Position(0.0f, GROUND_LEVEL, 0.0f),300,300));
