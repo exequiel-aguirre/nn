@@ -97,7 +97,7 @@ class Manifold{
 
 
         //friction
-        float friction=0.5*0.5;//TODO:
+        float friction=c1->getFriction()*c2->getFriction();
         contact.friction1=Constraint(c1,c2,
                              -tangent1*friction,(-r1^tangent1)*friction,
                              tangent1*friction,(r2^tangent1)*friction,0.0f);

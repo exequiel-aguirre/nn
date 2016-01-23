@@ -31,6 +31,7 @@ class Component {
     Acceleration acceleration;
     float massDensity=1.0f;
     float elasticity=0.0f;
+    float friction=0.5f;
     float massInverse=0.0f;
     Matrix inertiaInverse;
     bool reflects=true;
@@ -148,6 +149,9 @@ class Component {
       return elasticity;
     }
 
+    float getFriction(){
+      return friction;
+    }
 
     Component* add(IBehavior* behavior){
       behavior->bind(this);
