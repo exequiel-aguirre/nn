@@ -20,8 +20,8 @@ class Boundary{
       this->enclosingBox= EnclosingBox(vertices);
   	}
 
-    void update(Matrix modelMatrix,Velocity velocity){
-      this->reducedPolygon.update(modelMatrix,velocity);
+    void update(Matrix modelMatrix){
+      this->reducedPolygon.update(modelMatrix);
       this->enclosingBox.update(modelMatrix);
     }
 

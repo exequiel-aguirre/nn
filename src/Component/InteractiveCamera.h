@@ -112,7 +112,7 @@ class InteractiveCamera: public Camera {
     //This is so the reduced polygon doesn't get rotated when we look up/down
     void calculateBoundary(){
       //update the boundary
-      getBoundary().update(this->modelMatrix.getTranslationMatrix(),velocity);
+      getBoundary().update(this->modelMatrix.getTranslationMatrix());
     }
 
     void onBeforeDetectCollision(){

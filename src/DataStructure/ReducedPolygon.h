@@ -24,7 +24,7 @@ class ReducedPolygon{
       vertices.erase( std::unique( vertices.begin(), vertices.end() ), vertices.end() );
     }
 
-    void update(Matrix modelMatrix,Velocity velocity){
+    void update(Matrix modelMatrix){
       this->modelMatrix=modelMatrix;
       this->rotationInverseMatrix=Matrix();//built on demand
     }

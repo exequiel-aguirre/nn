@@ -121,7 +121,7 @@ class Component {
     virtual void calculateBoundary(){
       if(modelObject.getSize()==0) return;
       //update the boundary
-      modelObject.getBoundary().update(modelMatrix,velocity);
+      modelObject.getBoundary().update(modelMatrix);
     }
 
     Boundary& getBoundary(){
