@@ -39,7 +39,9 @@ class PhysicsManager{
       //n(n-1)/2 calls with n being the amount of components
       for(it=components.begin();it!=components.end();it++){
         for(it2=it+1;it2!=components.end();it2++){
-          if((*it)->getMassInverse()==0 && (*it2)->getMassInverse()==0) continue;//if both don't move,nothing to do here.
+          if(   ( (*it)->getMassInverse()==0 && (*it2)->getMassInverse()==0 ) || //if both don't move or
+                ( (*it)->isSleeping() && (*it2)->isSleeping() ) ) continue;        //are sleeping, nothing to do here.
+
           ContactInfo contactInfo=collisionDetector.detect((*it)->getBoundary(),(*it2)->getBoundary());
           if(contactInfo.hasCollided){
             onCollisionDetected(*it,*it2,contactInfo);

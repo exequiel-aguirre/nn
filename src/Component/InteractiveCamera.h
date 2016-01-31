@@ -62,7 +62,7 @@ class InteractiveCamera: public Camera {
       for(unsigned int i=0;i<weapons.size();i++) (weapons[i])->setPosition(x,y,z,phi,theta,psi);
     }
     void onTranslation(float deltaX,float deltaY,float deltaZ){
-      if(contactInfo.hasCollided){
+      if(contactInfo.hasCollided || isSleeping()){
         Point v=Point(-deltaX*20,-deltaY*20,-deltaZ*20);
         this->setVelocity(v.x,v.y,v.z);
       }
@@ -71,7 +71,7 @@ class InteractiveCamera: public Camera {
         switch(key){
           case SDLK_SPACE:
           {
-            if(contactInfo.hasCollided){
+            if(contactInfo.hasCollided || isSleeping()){
               Point n=contactInfo.impactNormal * 10;
               this->setVelocity(getVelocity().getX()+n.x,getVelocity().getY()+n.y,getVelocity().getZ()+n.z);//jump
             }

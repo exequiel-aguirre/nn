@@ -109,9 +109,12 @@ class Point{
 
 	//rename to isCloseToZero(or something like that)
 	bool isZero(){
-		return (x<ZERO_EPSILON && x>-ZERO_EPSILON &&
-				y<ZERO_EPSILON && y>-ZERO_EPSILON &&
-				z<ZERO_EPSILON && z>-ZERO_EPSILON);
+		return isSmallerThan(ZERO_EPSILON);
+	}
+	bool isSmallerThan(float value){
+		return (x<value && x>-value &&
+				y<value && y>-value &&
+				z<value && z>-value);
 	}
 };
 

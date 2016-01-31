@@ -24,11 +24,22 @@ class MotionBehavior: public AbstractBehavior{
     //todo:make an "function" object with the responsability of generating the new position
     void  onTimer(){    	
       Velocity velocity=motion.getVelocity(DELTA_TIME,getComponent()->getVelocity(),getComponent()->getAcceleration());
-      getComponent()->setVelocity(velocity.getX(),velocity.getY(),velocity.getZ(),velocity.getPhi(),velocity.getTheta(),velocity.getPsi());
       Position position=motion.getPosition(DELTA_TIME,getComponent()->getPosition(),getComponent()->getVelocity(),getComponent()->getAcceleration());
-      getComponent()->setPosition(position.getX(),position.getY(),position.getZ(),position.getPhi(),position.getTheta(),position.getPsi());
       
-      
+      //TODO:this should be in the physicsManager
+      //sleeping logic
+      if(velocity.getAngular().isSmallerThan(30) && velocity.getLinear().isSmallerThan(1)){
+        getComponent()->incrementSleepingFrames();
+      }
+      else
+      {
+        getComponent()->wakeUp();
+      }
+
+      if(!getComponent()->isSleeping()){
+        getComponent()->setVelocity(velocity.getX(),velocity.getY(),velocity.getZ(),velocity.getPhi(),velocity.getTheta(),velocity.getPsi());
+        getComponent()->setPosition(position.getX(),position.getY(),position.getZ(),position.getPhi(),position.getTheta(),position.getPsi());
+      }
       
     }    
    

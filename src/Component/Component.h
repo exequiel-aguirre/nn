@@ -36,6 +36,8 @@ class Component {
     Matrix inertiaInverse;
     bool reflects=true;
     bool collides=true;
+    unsigned int sleepingFrames=0;
+    static constexpr unsigned int SLEEPING_FRAMES=60*2;
     static constexpr const char* DEFAULT_SHADER_NAME="Basic";
     static constexpr const char* DEFAULT_TEXTURE_FILENAME="img/default.bmp";
   public:
@@ -210,6 +212,17 @@ class Component {
     Component* setCollides(bool collides){
       this->collides=collides;
       return this;
+    }
+    //TODO:this whole sleeping logic should be in the boundary
+    bool isSleeping(){
+      if(massInverse==0 && inertiaInverse[15]==0) return true;
+      return sleepingFrames>SLEEPING_FRAMES;
+    }
+    void incrementSleepingFrames(){
+      if(sleepingFrames<=SLEEPING_FRAMES) sleepingFrames++;//increment the sleeping frames, unless we already match the condition
+    }
+    void wakeUp(){
+      sleepingFrames=0;
     }
 
     void doEffects(){
