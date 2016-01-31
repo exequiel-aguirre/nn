@@ -105,7 +105,7 @@ class MyContainer:public Container{
 			add(myHut);
 			add(myMill);
 			add(myTorus->add(new MotionBehavior()));
-			myAnimation->getVelocity().setZ(-8.8f);add(myAnimation->add(new MotionBehavior()));
+			myAnimation->getAcceleration().setZ(-3.8f);add(myAnimation->add(new MotionBehavior()));myAnimation->setRotates(false);
 			add(mySphere->add(new MotionBehavior()));
 			mySphere2->getVelocity().setX(40.0f);add(mySphere2->add(new MotionBehavior()));
 			add(mySphere3->add(new MotionBehavior()));
