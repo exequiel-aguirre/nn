@@ -28,7 +28,7 @@ class Camera: public Component {
          }
 
     virtual ~Camera(){}
-    
+
     void onBeforeRenderFrame(){
 		this->modelMatrix=Matrix(0.0);//TODO:check this
 		// Reset the matrix

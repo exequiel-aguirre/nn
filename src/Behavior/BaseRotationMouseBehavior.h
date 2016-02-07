@@ -13,7 +13,6 @@ class BaseRotationMouseBehavior: public AbstractBehavior{
   public:
 	  BaseRotationMouseBehavior(){}
 
-    virtual ~BaseRotationMouseBehavior(){}
 
     
     

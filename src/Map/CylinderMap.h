@@ -14,7 +14,6 @@ class CylinderMap :public IMap {
         this->h=h;
     }		
 
-    virtual ~CylinderMap(){}
             
     Point get(float theta,float v){
         float x=r*sin(theta);

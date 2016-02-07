@@ -9,7 +9,6 @@ using std::vector;
 
 class PhysicsManager{
   private:
-    static PhysicsManager* instance;    
     vector<Component*> components;
     MPRCollisionDetector collisionDetector;
     vector<Constraint*> constraints;
@@ -18,10 +17,9 @@ class PhysicsManager{
     
    public:
     static PhysicsManager& getInstance(){
-      if(instance == NULL) instance=new PhysicsManager();
-      return *instance;
+      static PhysicsManager instance;
+      return instance;
     }
-    virtual ~PhysicsManager(){}	
     
     void onBeforeDetectCollisions(){
       vector<Component*>::iterator it;
@@ -96,7 +94,6 @@ class PhysicsManager{
     }
 
 };
-PhysicsManager* PhysicsManager::instance=NULL;
 
 #endif
 

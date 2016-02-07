@@ -19,7 +19,6 @@ class FirePlace: public Container {
 		add(new Cylinder(Position(0.9f,0.1f,0.0f,0.0,0.0,90.0),0.05f,0.5,"img/wood.bmp"));
 
   	}
-  	virtual ~FirePlace(){}		
 		
 };
 

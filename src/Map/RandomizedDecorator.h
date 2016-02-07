@@ -13,7 +13,6 @@ class RandomizedDecorator :public IMap {
         this->map=map;
       }
 
-    virtual ~RandomizedDecorator(){}
 
     //return a random float in [-max,max]
     float getRandomFloat(float max){

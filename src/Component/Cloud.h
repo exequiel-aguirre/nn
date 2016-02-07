@@ -12,7 +12,6 @@ class Cloud: public Surface {
 	  
 	Cloud(Position&& position,float a,float b, float c):Surface(position,CreasedDecorator(new EllipsoidMap(a,b,c)),GL_TRIANGLES){}
 
-    virtual ~Cloud(){}    
 
 };
 

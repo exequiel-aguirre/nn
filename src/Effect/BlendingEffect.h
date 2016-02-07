@@ -9,7 +9,6 @@ class BlendingEffect:public IEffect{
 		glBlendFunc(GL_ONE_MINUS_DST_COLOR,GL_ONE);
 	}
 
-    virtual ~BlendingEffect(){}
     
 
 	void doEffect(){

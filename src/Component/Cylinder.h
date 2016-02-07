@@ -15,7 +15,6 @@ class Cylinder: public Surface {
 	Cylinder(Position&& position,float r,float h):Surface(position,CylinderMap(r,h),GL_LINES){}
 	Cylinder(Position&& position,float r,float h,const char* textureFilename):Surface(position,CylinderMap(r,h),textureFilename){}
 
-    virtual ~Cylinder(){}    
     
 
 };

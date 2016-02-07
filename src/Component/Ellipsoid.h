@@ -16,7 +16,6 @@ class Ellipsoid: public Surface {
 	Ellipsoid(Position&& position,float a,float b,float c):Surface(position,EllipsoidMap(a,b,c),GL_TRIANGLES){}
 	Ellipsoid(Position&& position,float a,float b,float c,char* textureFilename):Surface(position,EllipsoidMap(a,b,c),textureFilename){}
 
-    virtual ~Ellipsoid(){}    
 };
 
 

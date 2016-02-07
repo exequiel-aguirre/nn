@@ -11,7 +11,6 @@ class AbstractBehavior:public IBehavior{
     const float DEFAULT_SPEED=0.1f;
   public:
     AbstractBehavior(){}
-    virtual ~AbstractBehavior(){}   
     
    
     

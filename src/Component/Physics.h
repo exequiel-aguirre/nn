@@ -8,11 +8,10 @@
 
 class Physics: public Component { 	
   public:
-	  Physics():Component(Position(0.0f,-100.0f,0.0f)){
+	  Physics():Component(Position()){
 		  
 	  }		
 
-    virtual ~Physics(){}
     
     void onBeforeRenderFrame(){
 		PhysicsManager::getInstance().detectCollisions();

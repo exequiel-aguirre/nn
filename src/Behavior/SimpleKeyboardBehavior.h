@@ -15,7 +15,6 @@ class SimpleKeyboardBehavior: public AbstractBehavior{
         this->onKeyUpCallback=onKeyUpCallback;
     }
     
-    virtual ~SimpleKeyboardBehavior(){}
     
     void  onKeyDown(SDL_Keycode key){
       this->onKeyDownCallback(key);

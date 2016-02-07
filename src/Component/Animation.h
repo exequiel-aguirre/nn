@@ -17,7 +17,6 @@ class Animation: public Model {
 		currentModelObject=modelObjects.begin();
 	}
 
-    virtual ~Animation(){}
 
 
     void render(){

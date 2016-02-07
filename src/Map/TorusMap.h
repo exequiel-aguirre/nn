@@ -14,7 +14,6 @@ class TorusMap :public IMap {
         this->r1=r1;
     }		
 
-    virtual ~TorusMap(){}
         
     //this is vertical. To make it horizontal, swap Y with Z
     Point get(float theta,float phi){

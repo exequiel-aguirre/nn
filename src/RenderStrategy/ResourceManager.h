@@ -10,17 +10,24 @@ using std::vector;
 class ResourceManager{
 
   private:
-    static ResourceManager* instance;
     vector<Shader> shaders;
     vector<Texture> textures;
     ResourceManager(){}
 
   public:
     static ResourceManager& getInstance(){
-      if(instance == NULL) instance=new ResourceManager();
-      return *instance;
+      static ResourceManager instance;
+      return instance;
     }
-    virtual ~ResourceManager(){}
+
+    ~ResourceManager(){
+      for(Shader& shader:shaders){
+        shader.destroy();
+      }
+      for(Texture& texture:textures){
+          texture.destroy();
+      }
+    }
 
     Shader getShader(const char* shaderName){
       Shader shader;
@@ -58,7 +65,6 @@ class ResourceManager{
     }
 
 };
-ResourceManager* ResourceManager::instance=NULL;
 
 #endif
 

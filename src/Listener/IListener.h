@@ -6,7 +6,6 @@
 class IListener{
   public:
     IListener(){}
-    virtual ~IListener(){}
     
     
     virtual void onTimer(){}

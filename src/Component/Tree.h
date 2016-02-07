@@ -14,7 +14,6 @@ class Tree: public Container {
       add(new Cylinder(Position(0.0f,0.0f,0.0f),0.3f,6.0,"img/wood.bmp"));
 
   	}
-  	virtual ~Tree(){}		
 		
 };
 

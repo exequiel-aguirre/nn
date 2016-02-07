@@ -18,7 +18,6 @@ class Fog: public IEffect {
 		glEnable(GL_FOG);
 	  }		
 
-    virtual ~Fog(){}    
 
 };
 

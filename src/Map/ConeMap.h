@@ -19,7 +19,6 @@ class ConeMap :public IMap {
 
        ConeMap(float r,float h):ConeMap(r,h,12,12){}
 
-    virtual ~ConeMap(){}
             
     Point get(float u,float theta){
         float x=u* cos(theta);

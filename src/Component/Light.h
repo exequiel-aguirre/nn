@@ -38,7 +38,6 @@ class Light: public Component {
 		
 	  }		
 
-    virtual ~Light(){}
 
 
     void storeSceneColor(float emissionMaterial[4],float ambientMaterial[4],float ambientLightModel[4],float sceneColor[4]){

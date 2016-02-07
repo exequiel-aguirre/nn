@@ -11,7 +11,6 @@ class Velocity:public Position{
 	Velocity(Point v,Point w):Position(v.x,v.y,v.z,w.x,w.y,w.z){}
 	Velocity(Point v):Position(v.x,v.y,v.z){}
 
-    virtual ~Velocity(){}
 
   
 };

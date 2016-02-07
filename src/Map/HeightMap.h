@@ -25,7 +25,6 @@ class HeightMap :public IMap {
         this->imageHeight=imageHeight;
       }    
 
-    virtual ~HeightMap(){}
 
    Point get(float u,float v){
         //Move the domain to [0,w]x[x,h] and then scale it to [0,imageWidth-1]x[0,imageHeight-1]

@@ -28,7 +28,6 @@ class BaseTranslationKeyboardBehavior: public AbstractBehavior{
             };
     }
 
-    virtual ~BaseTranslationKeyboardBehavior(){}   
     
     //todo:make an "function" object with the responsability of generating the new position
     void  onKeyDown(SDL_Keycode key){

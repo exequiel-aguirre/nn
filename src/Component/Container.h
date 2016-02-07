@@ -14,7 +14,12 @@ class Container: public Component {
 
   Container(Position&& position):Container(position){};
 
-	virtual ~Container(){}  
+  //TODO:this should be in the destructor
+  void destroy(){
+    for(Component* child: childs){
+      delete(child);
+    }
+  }
   
 
   void onBeforeRenderFrame(){

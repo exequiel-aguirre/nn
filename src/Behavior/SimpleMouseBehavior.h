@@ -13,7 +13,6 @@ class SimpleMouseBehavior: public AbstractBehavior{
         this->callback=callback;
     }
     
-    virtual ~SimpleMouseBehavior(){}
     
     void  onMouseButtonDown(SDL_MouseButtonEvent button){
     	this->callback(button);

@@ -35,7 +35,6 @@ class Position {
 		Position(float x,float y,float z):Position(x,y,z,0.0f,0.0f,0.0f){}
 		
     
-    virtual ~Position(){}  
               	
     float getX(){			
 			return this->x;		

@@ -1,5 +1,5 @@
-#ifndef SERVER_H_
-#define SERVER_H_
+#ifndef ServerH
+#define ServerH
 
 #include <SDL2/SDL.h>
 #include "../NNWindow/NNWindow.h"
@@ -21,7 +21,7 @@ protected:
 	NNWindow* window;		
 public:
 	Server(){}
-	virtual ~Server(){}	
+
 	bool start()
 	{
 		window=new NNWindow(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, false, "nn");
@@ -127,4 +127,4 @@ public:
 
 };
 
-#endif /*SERVER_H_*/
+#endif

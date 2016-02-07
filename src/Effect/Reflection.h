@@ -7,7 +7,6 @@ class Reflection:public IEffect{
   public:
 	Reflection(){}		
 
-    virtual ~Reflection(){}
     
 
 	void doEffect(){

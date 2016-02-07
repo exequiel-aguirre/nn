@@ -14,7 +14,6 @@ class Sphere: public Surface {
 	Sphere(Position&& position,float r):Surface(position,EllipsoidMap(r,r,r),GL_TRIANGLES){}
 	Sphere(Position&& position,float r,const char* textureFilename):Surface(position,EllipsoidMap(r,r,r),textureFilename){}
 
-    virtual ~Sphere(){}    
 };
 
 

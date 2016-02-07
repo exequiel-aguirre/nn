@@ -12,7 +12,6 @@ class Mountain: public Surface {
 	  
 	Mountain(Position&& position):Surface(position,CreasedDecorator(new ConeMap(36.0f,60.0f)),"img/mountain.bmp"){}
 
-    virtual ~Mountain(){}    
 
 };
 

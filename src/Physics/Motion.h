@@ -8,7 +8,6 @@ class Motion {
   public:
 	Motion(){}
 
-    virtual ~Motion(){}
     //t is in fact a delta t (t is for time)
     //newPosition=currentPosition + deltaPosition
    Position getPosition(float t,Position position,Velocity velocity,Acceleration acceleration){

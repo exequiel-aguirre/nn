@@ -27,7 +27,12 @@ class Texture {
     }
     Texture(){}
 
-    virtual ~Texture(){}   
+    //TODO:this should be in the destructor
+    void destroy(){
+        if(id!=0) glDeleteTextures(1,&id);
+        if(detailId!=0) glDeleteTextures(1,&detailId);
+        if(normalId!=0) glDeleteTextures(1,&normalId);
+    }
 
     void bind(){
         if(Texture::activeId!=id){//this is for performance: bind is expensive

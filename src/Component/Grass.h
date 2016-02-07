@@ -32,7 +32,6 @@ class Grass: public Container {
 		this->calculateBoundary();		
 	  }
 
-	virtual ~Grass(){}
 
 };
 

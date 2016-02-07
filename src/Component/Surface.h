@@ -14,7 +14,6 @@ class Surface: public Component {
 
 	  Surface(Position position,IMap&& map,const char* textureFilename,GLenum GLMode,const char* shaderName):Component(position,ModelObject(map),textureFilename,GLMode,shaderName){}
 
-    virtual ~Surface(){}
 
 
 };

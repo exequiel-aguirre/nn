@@ -19,7 +19,6 @@ class MotionBehavior: public AbstractBehavior{
       hostComponent->setRotates(true);
       this->motion=Motion();
     }
-    virtual ~MotionBehavior(){}   
     
     //todo:make an "function" object with the responsability of generating the new position
     void  onTimer(){    	

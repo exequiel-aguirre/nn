@@ -11,7 +11,6 @@ class CreasedDecorator :public IMap {
         this->map=map;
       }
 
-    virtual ~CreasedDecorator(){}
             
     Point get(float u,float v){
         Point point=map->get(u,v);

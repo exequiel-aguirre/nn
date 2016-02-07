@@ -16,7 +16,6 @@ class Hut: public Container {
 
 	  }		
 
-    virtual ~Hut(){}
     
     
 		

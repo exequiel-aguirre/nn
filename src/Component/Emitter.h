@@ -25,7 +25,6 @@ class Emitter: public Container {
 		add(particles);
 	  }
 
-	virtual ~Emitter(){}
 
 };
 

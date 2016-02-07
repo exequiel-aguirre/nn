@@ -11,7 +11,6 @@ the original code can be found at http://xenocollide.com
 class MPRCollisionDetector{  
   public:
     MPRCollisionDetector(){}
-    virtual ~MPRCollisionDetector(){}
     
     ContactInfo detect(Boundary& b1,Boundary& b2){
         ContactInfo contactInfo;

@@ -25,7 +25,6 @@ class Mill: public Container {
 
 	  }		
 
-    virtual ~Mill(){}
     
     
 		

@@ -36,7 +36,10 @@ class Shader {
     }
     Shader(){}
 
-    virtual ~Shader(){}
+    //TODO:this should be in the destructor
+    void destroy(){
+        glDeleteProgram(programId);
+    }
 
     //TODO:change name
     void useProgram(Matrix& modelViewProjectionMatrix,Matrix& modelViewMatrix,Matrix& normalMatrix,float reflectPlane[4],GLfloat texturesActive[3],RawLight rawLight){
@@ -77,6 +80,12 @@ class Shader {
         checkErrors(programId,GL_LINK_STATUS,true);
         glValidateProgram(programId);
         checkErrors(programId,GL_LINK_STATUS,true);
+
+        //after the program was linked, we can delete the shaders
+        glDetachShader(programId,vertexShaderId);
+        glDetachShader(programId,fragmentShaderId);
+        glDeleteShader(vertexShaderId);
+        glDeleteShader(fragmentShaderId);
 
         //matrices
         this->modelViewProjectionMatrixLocation=glGetUniformLocation(programId, "modelViewProjectionMatrix");

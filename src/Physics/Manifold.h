@@ -23,7 +23,6 @@ class Manifold{
         this->c1=c1;
         this->c2=c2;        
     }
-    virtual ~Manifold(){}
 
     void applyImpulse(){
         float softness=(c1->getMassInverse() + c2->getMassInverse())/contacts.size();

@@ -13,7 +13,6 @@ class Model: public Component {
 	Model(Position& position,const char* modelFilename,const char* textureFilename):Component(position,Utils::loadModel(modelFilename),textureFilename,GL_TRIANGLES){}
 	Model(Position&& position,const char* modelFilename,const char* textureFilename):Model(position,modelFilename,textureFilename){}
 
-    virtual ~Model(){}
 
 };
 

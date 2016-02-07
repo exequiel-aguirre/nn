@@ -13,7 +13,6 @@ class IMap{
 
 	IMap(){}
 
-    virtual ~IMap(){}
     
     virtual Point get(float u,float v)=0;
     virtual Point getNormal(float u,float v)=0;

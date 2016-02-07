@@ -7,7 +7,6 @@ class IEffect{
   public:
 	IEffect(){}		
 
-    virtual ~IEffect(){}    
     
 	virtual void doEffect(){}
 	virtual void undoEffect(){}

@@ -10,18 +10,19 @@
 class Application:public IListener {
   private:
     Container world=Container(Position(0,0,0));
-    static Application* application;    
     
     Application(){}
     
   public:   
-    
+    //for Singletons we are using static local, so the destructor is called when the program exits
     static Application& getInstance(){
-      if(application==NULL) application=new Application();
-      return *application;
+      static Application application;
+      return application;
     }
-    
-    virtual ~Application(){}	    
+
+    ~Application(){
+      world.destroy();
+    }
     
     void onCreate(){}
     void onDestroy(){}
@@ -55,6 +56,5 @@ class Application:public IListener {
     }
 
 };
-Application* Application::application=NULL;
 
 #endif

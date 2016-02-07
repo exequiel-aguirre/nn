@@ -29,16 +29,22 @@ class RenderStrategy {
   float frustum[6][4];
   enum planeData{A=0,B=1,C=2,D=3};
   static constexpr GLuint BUFFER_SIZE=500000;//TODO:make this dynamic
-  static RenderStrategy* instance;
   RenderStrategy(){
     buildVertexArrayObject();
   }
   public:
   static RenderStrategy& getInstance(){
-      if(instance == NULL) instance=new RenderStrategy();
-      return *instance;
+      static RenderStrategy instance;
+      return instance;
     }
-    virtual ~RenderStrategy(){}
+
+    ~RenderStrategy(){
+      glDeleteBuffers(1,&vertexBufferId);
+      glDeleteBuffers(1,&uvBufferId);
+      glDeleteBuffers(1,&normalBufferId);
+      glDeleteBuffers(1,&tangentBufferId);
+      glDeleteVertexArrays(1,&vaoId);
+    }
 
     void render(Matrix& modelMatrix,ModelObject& modelObject,Shader& shader,Texture& texture){
         if(!isVisible(modelObject.getBoundary())) return;
@@ -193,7 +199,6 @@ class RenderStrategy {
       return true;
     }
 };
-RenderStrategy* RenderStrategy::instance=NULL;
 
 
 #endif

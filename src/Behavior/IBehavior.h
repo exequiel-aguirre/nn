@@ -9,7 +9,6 @@ class Component;
 class IBehavior : public IListener {
   public:
     IBehavior(){}
-    virtual ~IBehavior(){}
     
     
     virtual void bind(Component* component){}

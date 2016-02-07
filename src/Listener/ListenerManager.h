@@ -5,7 +5,6 @@ using std::vector;
 
 class ListenerManager{
   private:
-    static ListenerManager* instance;
     
     vector<IListener*> listeners;
     ListenerManager(){
@@ -15,10 +14,9 @@ class ListenerManager{
     
    public:
     static ListenerManager& getInstance(){
-      if(instance == NULL) instance=new ListenerManager();
-      return *instance;
+      static ListenerManager instance;
+      return instance;
     }
-    virtual ~ListenerManager(){}	
     
 
 
@@ -64,7 +62,6 @@ class ListenerManager{
 
 
 };
-ListenerManager* ListenerManager::instance=NULL;
 
 #endif
 

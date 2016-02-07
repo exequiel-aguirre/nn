@@ -11,7 +11,6 @@ class Terrain: public Surface {
 	Terrain(Position&& position,float w,float h,const char* filename):Surface(position,Utils::loadHeightMap(w,h,filename),GL_TRIANGLES){}
 	Terrain(Position&& position,float w,float h,const char* filename,const char* textureFilename):Surface(position,Utils::loadHeightMap(w,h,filename),textureFilename){}
   
-  virtual ~Terrain(){}
 
 };
 

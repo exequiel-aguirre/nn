@@ -16,7 +16,6 @@ class EllipsoidMap :public IMap {
         this->c=c;
     }		
 
-    virtual ~EllipsoidMap(){}
     
         
     Point get(float theta,float phi){

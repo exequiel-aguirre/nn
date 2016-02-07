@@ -44,7 +44,11 @@ class InteractiveCamera: public Camera {
         currentWeapon=weapons.begin();
     }
 
-    virtual ~InteractiveCamera(){}
+    ~InteractiveCamera(){
+      for(Weapon* weapon:weapons){
+        delete(weapon);
+      }
+    }
 
     void onBeforeRenderFrame(){
         //TODO:find a not so obscure way of doing this.It strongly relies in the
