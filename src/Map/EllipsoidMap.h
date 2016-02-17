@@ -39,6 +39,16 @@ class EllipsoidMap :public IMap {
         return (p2^p1).normalize();
     }
 
+    std::function<Point(Point)> getSupportFunction(){
+        const float a=this->a;
+        const float b=this->b;
+        const float c=this->c;
+        return ( [a,b,c](Point v){
+            float denom=Point(a*v.x,b*v.y,c*v.z).norm();
+            return Point(a*a*v.x,b*b*v.y,c*c*v.z)*(1.0/denom);
+        });
+    }
+
     float getUFrom(){        
         return 0;
     }
@@ -57,8 +67,7 @@ class EllipsoidMap :public IMap {
     }
     int getLongs(){
         return 12;
-    } 
-
+    }
 };
 
 

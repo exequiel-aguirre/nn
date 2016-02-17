@@ -55,7 +55,7 @@ class MyContainer:public Container{
 			Tree* myTree4=new Tree(Position(-25.0f,GROUND_LEVEL,-15.0f));
 			Tree* myTree5=new Tree(Position(-25.0f,GROUND_LEVEL,0.0f));
 			Tree* myTree6=new Tree(Position(-25.0f,GROUND_LEVEL,15.0f));
-			Mountain* myMountain=new Mountain(Position(100.0f,57.0f+GROUND_LEVEL,-70.0f));
+			Mountain* myMountain=new Mountain(Position(100.0f,GROUND_LEVEL,-70.0f));
 			Cloud* myCloud1=new Cloud(Position(-100.0f,90.0f+GROUND_LEVEL,-70.0f),15.0f,2.0f,10.0f);
 			Cloud* myCloud2=new Cloud(Position(100.0f,90.0f+GROUND_LEVEL,70.0f),15.0f,2.0f,20.0f);
 			Cloud* myCloud3=new Cloud(Position(100.0f,90.0f+GROUND_LEVEL,-40.0f),5.0f,2.0f,15.0f);

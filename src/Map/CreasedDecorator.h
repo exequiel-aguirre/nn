@@ -27,6 +27,10 @@ class CreasedDecorator :public IMap {
         return map->getNormal(u,v);
     }
 
+    std::function<Point(Point)> getSupportFunction(){
+        return map->getSupportFunction();
+    }
+
     float getUFrom(){        
         return map->getUFrom();
     }

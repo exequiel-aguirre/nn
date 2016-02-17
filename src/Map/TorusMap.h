@@ -2,7 +2,7 @@
 #define TorusMapH
 #include "IMap.h"
 
-
+//TODO:implement a support function
 class TorusMap :public IMap {  
   private:
     float r0;

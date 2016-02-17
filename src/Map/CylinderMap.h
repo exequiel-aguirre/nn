@@ -37,6 +37,22 @@ class CylinderMap :public IMap {
         return (p2^p1).normalize();
     }
 
+    std::function<Point(Point)> getSupportFunction(){
+        float r=this->r;
+        float h=this->h;
+        return ( [r,h](Point v){
+          Point d=Point(v.x,0,v.z);//disc
+          Point sdBottom=r*d* (1.0/d.norm());
+          Point sdTop=sdBottom+Point(0,h,0);
+          if(sdTop*v > sdBottom*v){
+            return sdTop;
+          }
+          else{
+            return sdBottom;
+          }
+        });
+    }
+
     float getUFrom(){        
         return 0;
     }

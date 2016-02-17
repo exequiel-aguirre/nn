@@ -24,7 +24,14 @@ class Box: public Container {
 		//normal init
 		RenderStrategy::getInstance().initModelObject(this->modelObject,GL_TRIANGLES);
 		this->calculateBoundary();
+		this->getBoundary().getReducedPolygon().setSupportFunction(getSupportFunction(w,h,d));
 	  }
+
+	std::function<Point(Point)> getSupportFunction(float w,float h,float d){
+      return ( [w,h,d](Point v){
+          return Point((w/2)*(v.x>0?1:-1),(h/2)*(v.y>0?1:-1),(d/2)*(v.z>0?1:-1));
+        });
+    }
 		
 };
 

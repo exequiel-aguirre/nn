@@ -15,8 +15,9 @@ class Boundary{
   public:	
     Boundary(){}
     
-    Boundary(vector<Point> vertices){
-      this->reducedPolygon= ReducedPolygon(vertices);
+    Boundary(vector<Point> vertices):Boundary(vertices,std::function<Point(Point)>()){};
+    Boundary(vector<Point> vertices,std::function<Point(Point)> supportFunction){
+      this->reducedPolygon= ReducedPolygon(vertices,supportFunction);
       this->enclosingBox= EnclosingBox(vertices);
   	}
 

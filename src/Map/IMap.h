@@ -33,6 +33,10 @@ class IMap{
 	virtual int getLats()=0;
 	virtual int getLongs()=0;
 
+    virtual std::function<Point(Point)> getSupportFunction(){
+      return std::function<Point(Point)>();
+    }
+
 
 };
 #endif

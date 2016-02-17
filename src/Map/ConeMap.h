@@ -22,7 +22,7 @@ class ConeMap :public IMap {
             
     Point get(float u,float theta){
         float x=u* cos(theta);
-        float y=-u*(h/r);
+        float y=h-u*(h/r);
         float z=u*sin(theta);
         return Point(x,y,z);
     }
@@ -41,6 +41,23 @@ class ConeMap :public IMap {
         return (p2^p1).normalize();
     }
     
+
+    std::function<Point(Point)> getSupportFunction(){
+        float r=this->r;
+        float h=this->h;
+        return ( [r,h](Point v){
+          Point sp=Point(0,h,0);
+
+          Point d=Point(v.x,0,v.z);//disc
+          Point sd=r*d* (d.isZero()?1.0:(1.0/d.norm()));//TODO:check this if....
+          if(sp*v > sd*v){
+            return sp;
+          }
+          else{
+            return sd;
+          }
+        });
+    }
 
     float getUFrom(){        
         return 0+EPSILON;

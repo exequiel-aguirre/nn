@@ -98,7 +98,7 @@ class ModelObject{
           tangents.push_back(map.getTangent(u1,v1));
         }
       }
-      this->boundary= Boundary(vertices);
+      this->boundary= Boundary(vertices,map.getSupportFunction());
     }
 
   	Point getVertex(int i){

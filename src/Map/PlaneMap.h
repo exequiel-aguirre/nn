@@ -34,6 +34,14 @@ class PlaneMap :public IMap {
         return (p2^p1).normalize();
     }
 
+    std::function<Point(Point)> getSupportFunction(){
+        float w=this->w;
+        float h=this->h;
+        return ( [w,h](Point v){
+          return Point((w/2)*(v.x>0?1:-1),0,(h/2)*(v.z>0?1:-1));
+        });
+    }
+
     float getUFrom(){        
         return -w/2;
     }
