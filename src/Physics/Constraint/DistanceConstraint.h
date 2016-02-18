@@ -49,7 +49,7 @@ class DistanceConstraint:public Constraint{
             float baumgarteScalar=0.1f;
             b= -(baumgarteScalar/DELTA_TIME) * distanceOffset;            
         }
-
+        Constraint::preSolverStep();
     }
     
 };

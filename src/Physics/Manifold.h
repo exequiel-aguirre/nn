@@ -92,7 +92,8 @@ class Manifold{
         contact.normal=Constraint(c1,c2,
                           -n,(-r1^n),
                           n,(r2^n),b);
-        contact.normal.IMPULSE_SUM_MIN=0.0;        
+        contact.normal.IMPULSE_SUM_MIN=0.0;
+        contact.normal.preSolverStep();
 
 
         //friction
@@ -100,10 +101,12 @@ class Manifold{
         contact.friction1=Constraint(c1,c2,
                              -tangent1*friction,(-r1^tangent1)*friction,
                              tangent1*friction,(r2^tangent1)*friction,0.0f);
+        contact.friction1.preSolverStep();
 
         contact.friction2=Constraint(c1,c2,
                             -tangent2*friction,(-r1^tangent2)*friction,
                             tangent2*friction,(r2^tangent2)*friction,0.0f);
+        contact.friction2.preSolverStep();
     }
 
     void addContact(ContactInfo contactInfo){
