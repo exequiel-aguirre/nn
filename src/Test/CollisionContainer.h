@@ -29,9 +29,9 @@
 #include "../Physics/Constraint/DistanceConstraint.h"
 #include "../Component/Stats.h"
 #include "../Behavior/MotionBehavior.h"
-#include "../Map/InterpolatingMap.h"
 #include "../Map/SamplingMap.h"
 #include "../Map/BezierMap.h"
+#include "../Map/CuboidMap.h"
 
 
 
@@ -40,7 +40,7 @@ class CollisionContainer:public Container{
 	const float GROUND_LEVEL=0.0;
   public:
     CollisionContainer(Position&& position):Container(position){
-            test12();
+            test10();
 
 			add(new Camera(Position(0.0f,5.0f,10.0f)));
 			add(new Light(Position(40.0f,40.0f,40.0f)));
@@ -121,9 +121,10 @@ class CollisionContainer:public Container{
         //add( (new Box(Position(0,5,0,0,0,0),2,2,2,"img/box.bmp"))->add(new MotionBehavior()) );
     }
     void test10(){
-        add(new Box(Position(0.0f, -1, 0.0f),300,2,300,"img/ground.bmp"));
+        add(new Ground(Position(0.0f, -1, 0.0f),300,300));
         add( (new Box(Position(5,5,-5,45,45,45),2,2,5,"img/box.bmp"))->add(new MotionBehavior()) );
         //add((new Ellipsoid(Position(5,5,-5),0.5f,1.0,0.5))->add(new MotionBehavior()));
+        add( (new Surface(Position(-5.0f,3.0f,-5.0f),CuboidMap(2,2,2),"img/default.bmp"))->add(new MotionBehavior()) );
     }
     //Elasticity must be set to 1.0 to work (more or less) as expected
     void test11(){
