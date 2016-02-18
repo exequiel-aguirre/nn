@@ -2,7 +2,7 @@
 #define TorusMapH
 #include "IMap.h"
 
-//TODO:implement a support function
+
 class TorusMap :public IMap {  
   private:
     float r0;
@@ -35,6 +35,20 @@ class TorusMap :public IMap {
         Point p2= Point(x_phi,y_phi,z_phi);
 
         return (p2^p1).normalize();
+    }
+
+    //using wheel support
+    std::function<Point(Point)> getSupportFunction(){
+        const float r0=this->r0;
+        const float r1=this->r1;
+        return ( [r0,r1](Point v){
+            //The torus is vertical, so is the disc
+            Point d=Point(v.x,v.y,0);//disc
+            d=r0*d*(d.isZero()?1.0:(1.0/d.norm()));//TODO:check this if....
+            Point s=r1*v.normalize();//sphere
+
+            return d+s;
+        });
     }
 
     float getUFrom(){        

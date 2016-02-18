@@ -57,6 +57,7 @@ QTCREATOR:
 
 
 BUGS:
+-The small ball is passing through the big one.This is most likely related to sleeping.
 -Fire an spell and you have a bug
 -Now the object can collide with just one object per frame. So the torus cannot be moved, since it's already colliding with the ground...
 -In the reduced polygon we are not effectively removing duplicated points.(See the box for example)
