@@ -29,6 +29,9 @@
 #include "../Physics/Constraint/DistanceConstraint.h"
 #include "../Component/Stats.h"
 #include "../Behavior/MotionBehavior.h"
+#include "../Map/InterpolatingMap.h"
+#include "../Map/SamplingMap.h"
+#include "../Map/BezierMap.h"
 
 
 
@@ -37,7 +40,7 @@ class CollisionContainer:public Container{
 	const float GROUND_LEVEL=0.0;
   public:
     CollisionContainer(Position&& position):Container(position){
-            test6();
+            test12();
 
 			add(new Camera(Position(0.0f,5.0f,10.0f)));
 			add(new Light(Position(40.0f,40.0f,40.0f)));
@@ -138,6 +141,15 @@ class CollisionContainer:public Container{
             PhysicsManager::getInstance().add(new DistanceConstraint(sphere,box,Point(i*bw+offsetX,3+offsetY,0),Point(i*(bw), 8, -0.2f)));//The -0.2 and 0.2 is to avoid
             PhysicsManager::getInstance().add(new DistanceConstraint(sphere,box,Point(i*bw+offsetX,3+offsetY,0),Point(i*(bw), 8,  0.2f)));//spheres movement along z
         }
+    }
+
+    void test12(){
+        add(new Ground(Position(0.0f, GROUND_LEVEL, 0.0f, 2.0, 0.0, 2.0),300,300));
+
+        Model* myModel=new Model(Position(-5.0f,3,-5),"3DModel/human.obj","img/default.bmp");
+        add(myModel);
+        add(new Surface(Position(0.0f,3.0f,-5.0f),SamplingMap(myModel->getBoundary().getReducedPolygon().getVertices()),"img/default.bmp"));
+        add(new Surface(Position(5.0f,3.0f,-5.0f),BezierMap(new SamplingMap(myModel->getBoundary().getReducedPolygon().getVertices())),"img/default.bmp") );
     }
 
     void testConstraint(){
