@@ -6,9 +6,11 @@
 class SamplingMap :public IMap {  
   private:   
     std::vector<Point> vertices;
+    std::function<Point(Point)> supportFunction;
   public:
 	  SamplingMap(std::vector<Point> moVertices ){
         this->vertices=moVertices;
+        this->supportFunction=getSupportFunction();
     }		
 
     
@@ -17,7 +19,7 @@ class SamplingMap :public IMap {
         float y=sin(theta)*sin(phi);
         float z=cos(phi);        
 
-        return getFarthestAlong(Point(x,y,z));
+        return supportFunction(Point(x,y,z));
         
     }
 
@@ -28,20 +30,16 @@ class SamplingMap :public IMap {
         return Point(x,y,z);
     }
 
-    Point getFarthestAlong(const Point& v){
-      Point max=vertices[0];
-      float maxDot=max*v;
-      for(Point& p:vertices){
-        float pDot=p*v;
-        if(pDot > maxDot){
-          max=p;
-          maxDot=pDot;
-        }
-      }
-      return max;
+    std::function<Point(Point)> getSupportFunction(){
+      std::vector<Point> vertices=this->vertices;
+        return ( [vertices](Point v){
+          auto max=std::max_element(vertices.begin(),vertices.end(),
+          [&v](Point p1, Point p2) {
+                return (p1-p2)*v < 0;
+            });
+          return max[0];
+        });
     }
-
-
 
     float getUFrom(){        
         return 0;

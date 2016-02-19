@@ -12,28 +12,19 @@
 
 class ReducedPolygon{
   private:
-    vector<Point> vertices;//TODO:remove this, we should just keep a supportFunction
     std::function<Point(Point)> supportFunction;
     Matrix modelMatrix;
     Matrix rotationInverseMatrix;
   public:	
     ReducedPolygon(){}
 
-    ReducedPolygon(vector<Point> moVertices,std::function<Point(Point)> supportFunction){
-      vertices=moVertices;
-      //remove duplicated points
-      std::sort( vertices.begin(), vertices.end() );
-      vertices.erase( std::unique( vertices.begin(), vertices.end() ), vertices.end() );
-      setSupportFunction(supportFunction);
+    ReducedPolygon(vector<Point> vertices,std::function<Point(Point)> supportFunction){
+      setSupportFunction(supportFunction,vertices);
     }
 
     void update(Matrix modelMatrix){
       this->modelMatrix=modelMatrix;
       this->rotationInverseMatrix=Matrix();//built on demand
-    }
-
-    vector<Point>& getVertices(){
-      return vertices;
     }
 
     Matrix& getModelMatrix(){
@@ -49,14 +40,16 @@ class ReducedPolygon{
     }
 
 
-    void setSupportFunction(std::function<Point(Point)> supportFunction){
+    void setSupportFunction(std::function<Point(Point)> supportFunction,vector<Point> vertices=vector<Point>()){
       //TODO:this whole support function init is a mess...
       if(supportFunction){
         this->supportFunction=supportFunction;
       }else{
-        //const vector<Point> vertices=this->vertices;//It seems like we cannot use the member-variable vertices for the lambda
-        //TODO:improve this, we have the same logic in modelObject and the same lambda is in the sampling and in here.
+        //TODO:improve this, we have the same logic in modelObject
         vector<Point> sampledVertices;
+        //remove duplicates to speed the sampling evaluation
+        std::sort( vertices.begin(), vertices.end() );
+        vertices.erase( std::unique( vertices.begin(), vertices.end() ), vertices.end() );
         SamplingMap map=SamplingMap(vertices);
         int lats=map.getLats();
         int longs=map.getLongs();
@@ -64,9 +57,9 @@ class ReducedPolygon{
         float uTo=map.getUTo();
         float vFrom=map.getVFrom();
         float vTo=map.getVTo();
-        for(int i = 1; i <= longs; i++){
-          float v0= vFrom + (((vTo-vFrom)/longs)* (i-1));
-          float v1= vFrom + (((vTo-vFrom)/longs)* i);
+        for(int i = 0; i < longs; i++){
+          float v0= vFrom + (((vTo-vFrom)/longs)* i);
+          float v1= vFrom + (((vTo-vFrom)/longs)* (i+1));
 
           for(int j = 0; j < lats; j++){
             float u0=uFrom + (((uTo-uFrom)/lats) * j);
@@ -78,20 +71,10 @@ class ReducedPolygon{
             sampledVertices.push_back(map.get(u1,v1));
           }
         }
+        //remove duplicated points
         std::sort( sampledVertices.begin(), sampledVertices.end() );
         sampledVertices.erase( std::unique( sampledVertices.begin(), sampledVertices.end() ), sampledVertices.end() );
-        this->supportFunction=( [sampledVertices](Point v){
-            Point max=sampledVertices[0];
-            float maxDot=max*v;
-            for(Point p:sampledVertices){
-              float pDot=p*v;
-              if(pDot > maxDot){
-                max=p;
-                maxDot=pDot;
-              }
-            }
-            return max;
-        });
+        this->supportFunction=SamplingMap(sampledVertices).getSupportFunction();
 
       }
     }

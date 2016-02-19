@@ -149,8 +149,8 @@ class CollisionContainer:public Container{
 
         Model* myModel=new Model(Position(-5.0f,3,-5),"3DModel/human.obj","img/default.bmp");
         add(myModel);
-        add(new Surface(Position(0.0f,3.0f,-5.0f),SamplingMap(myModel->getBoundary().getReducedPolygon().getVertices()),"img/default.bmp"));
-        add(new Surface(Position(5.0f,3.0f,-5.0f),BezierMap(new SamplingMap(myModel->getBoundary().getReducedPolygon().getVertices())),"img/default.bmp") );
+        //add(new Surface(Position(0.0f,3.0f,-5.0f),SamplingMap(myModel->getBoundary().getReducedPolygon().getVertices()),"img/default.bmp"));
+        //add(new Surface(Position(5.0f,3.0f,-5.0f),BezierMap(new SamplingMap(myModel->getBoundary().getReducedPolygon().getVertices())),"img/default.bmp") );
     }
 
     void testConstraint(){
