@@ -38,7 +38,7 @@ class Component {
     bool collides=true;
     unsigned int sleepingFrames=0;
     static constexpr unsigned int SLEEPING_FRAMES=60*2;
-    static constexpr const char* DEFAULT_SHADER_NAME="Basic";
+    static constexpr const char* DEFAULT_SHADER_NAME="Default";
     static constexpr const char* DEFAULT_TEXTURE_FILENAME="img/default.bmp";
   public:
     Component(Position position,ModelObject modelObject,const char* textureFilename,GLenum GLMode,const char* shaderName){
