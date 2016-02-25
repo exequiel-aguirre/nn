@@ -22,7 +22,9 @@ class Spell: public Weapon{
     }
 
     void buildBall(){
-      this->ball=new Emitter(Position(0,0,0),new EllipsoidMap(0.3,0.3,0.3));
+      this->ball=new Surface(Position(0,0,0),RandomizedDecorator(new EllipsoidMap(0.3,0.3,0.3)),NULL,GL_POINTS,"Particle");
+      this->ball->add(new BlendingEffect())->setCollides(false)->getShader().setTimeEnabled(true);
+      this->ball->setAcceleration(0,9.8,0);
     }
     
     void onWalk(){
