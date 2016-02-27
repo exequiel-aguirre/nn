@@ -41,6 +41,11 @@ class Container: public Component {
       }
       Component::undoEffects();
 	}
+  void render(Shader& shader,Texture& texture){
+    for(Component* child:childs){
+      child->render(shader,texture);
+    }
+  }
 
   void setPosition(float x,float y,float z,float phi,float theta,float psi){
     Position deltaPosition=Position(x,y,z,phi,theta,psi)-position;

@@ -8,11 +8,13 @@ in vec3 tangent;
 uniform mat4 modelViewProjectionMatrix;
 uniform mat4 modelViewMatrix;
 uniform mat4 normalMatrix;
+uniform mat4 lightModelViewProjectionMatrix;
 uniform vec4 reflectPlane;
 
 out vec3 vertex0;
 out vec2 uv0;
 out vec3 normal0;
+out vec4 depthMapProjVertex0;
 out mat3 frenetMatrix0;
 
 void main()
@@ -23,6 +25,7 @@ void main()
 	vertex0 = vec3(modelViewMatrix * vec4(vertex,1.0));
 	uv0 = uv;
 	normal0 = normalize(vec3(normalMatrix * vec4(normal,0.0)));
+	depthMapProjVertex0=lightModelViewProjectionMatrix * vec4(vertex,1.0);
 	vec3 tangent0 = normalize(vec3(normalMatrix * vec4(tangent,0.0)));
 	tangent0 = normalize(tangent0 - dot(tangent0,normal0)*normal0);
 	vec3 binormal0 = cross(tangent0,normal0);

@@ -86,6 +86,28 @@ class Utils{
 		}
 	}
 
+	//TODO:there are several small diferences(in parameters), check if we can avoid those, and do it like in other methods
+	static GLuint createDepthMap(unsigned int width,unsigned int height){
+		GLuint texture;
+		int channels=1;
+		unsigned char* pixels = new unsigned char[width * height * channels];//TODO:hardecoded!!,check if we can use unsigned char
+		glGenTextures(1,&texture);
+		glBindTexture(GL_TEXTURE_2D,texture);
+		glTexImage2D(GL_TEXTURE_2D,0,GL_DEPTH_COMPONENT,width,height,0,GL_DEPTH_COMPONENT,GL_UNSIGNED_BYTE,pixels);//check if we can use GL_UNSIGNED_byte
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_COMPARE_MODE,GL_COMPARE_R_TO_TEXTURE);
+		//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_COMPARE_FUNC,GL_LEQUAL);
+
+		glBindTexture(GL_TEXTURE_2D,0);
+
+		delete(pixels);
+
+		return texture;
+	}
 	static TGAInfo loadTGA(const char* filename) {
 		TGAInfo info;
 

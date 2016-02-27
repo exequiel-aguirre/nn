@@ -25,6 +25,7 @@ class RenderStrategy {
   Matrix viewMatrix;
   RawLight rawLight;
   float reflectPlane[4]={0};
+  Matrix lightViewProjectionMatrix;
 
   float frustum[6][4];
   enum planeData{A=0,B=1,C=2,D=3};
@@ -53,7 +54,8 @@ class RenderStrategy {
           Matrix modelViewMatrix=this->viewMatrix * modelMatrix;
           Matrix modelViewProjectionMatrix=this->projectionMatrix * modelViewMatrix;
           Matrix normalMatrix=modelViewMatrix.getNormalMatrix();
-          shader.useProgram(modelViewProjectionMatrix,modelViewMatrix,normalMatrix,reflectPlane,texture.getTexturesActive(),rawLight);
+          Matrix lightModelViewProjectionMatrix=this->lightViewProjectionMatrix*modelMatrix;
+          shader.useProgram(modelViewProjectionMatrix,modelViewMatrix,normalMatrix,lightModelViewProjectionMatrix,reflectPlane,texture.getTexturesActive(),rawLight);
           glDrawArrays(modelObject.getGLMode(), modelObject.getVAOIndex(),modelObject.getSize());
         }
     }
@@ -197,6 +199,10 @@ class RenderStrategy {
         return false;
       }
       return true;
+    }
+
+    void setLightViewProjectionMatrix(Matrix biasMatrix,Matrix lightViewMatrix){
+      this->lightViewProjectionMatrix=biasMatrix * this->projectionMatrix * lightViewMatrix;
     }
 };
 

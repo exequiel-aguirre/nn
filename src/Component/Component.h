@@ -35,6 +35,7 @@ class Component {
     float massInverse=0.0f;
     Matrix inertiaInverse;
     bool reflects=true;
+    bool castsShadow=true;
     bool collides=true;
     unsigned int sleepingFrames=0;
     static constexpr unsigned int SLEEPING_FRAMES=60*2;
@@ -70,6 +71,10 @@ class Component {
       doEffects();
       RenderStrategy::getInstance().render(this->modelMatrix,this->modelObject,this->shader,this->texture);
       undoEffects();
+    }
+    //This is just for performance when rendering shadows
+    virtual void render(Shader& shader,Texture& texture){
+      RenderStrategy::getInstance().render(this->modelMatrix,this->modelObject,shader,texture);
     }
 
     Position& getPosition(){
@@ -208,6 +213,13 @@ class Component {
     }
     bool getCollides(){
       return collides;
+    }
+    Component* setCastsShadow(bool castsShadow){
+      this->castsShadow=castsShadow;
+      return this;
+    }
+    bool getCastsShadow(){
+      return castsShadow;
     }
     Component* setCollides(bool collides){
       this->collides=collides;

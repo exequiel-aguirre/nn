@@ -24,6 +24,7 @@
 #include "../Component/InteractiveCamera.h"
 #include "../Effect/Fog.h"
 #include "../Effect/Reflection.h"
+#include "../Effect/Shadow.h"
 #include "../Component/Light.h"
 #include "../Component/Physics.h"
 #include "../Component/Stats.h"
@@ -36,7 +37,6 @@ class MyContainer:public Container{
 	const float GROUND_LEVEL=0.5;
   public:
     MyContainer(Position&& position):Container(position){
-			add(new Reflection());
 			Ground* myGroundR=new Ground(Position(100.0f,GROUND_LEVEL,0.0f),150,50);
 			Ground* myGroundL=new Ground(Position(-100.0f,GROUND_LEVEL,0.0f),150,50);
 			Ground* myGroundF=new Ground(Position(0.0f,GROUND_LEVEL,-50.0f),350,50);
@@ -78,7 +78,7 @@ class MyContainer:public Container{
 
 			Fog* myFog=new Fog();
 			InteractiveCamera* myInteractiveCamera=new InteractiveCamera(Position(-50.0f,3.0f,0.0f));
-			Light* myLight=new Light(Position(40.0f,40.0f,40.0f));
+			Light* myLight=new Light(Position(180.0,98.0,172.0,28.0,-38.0,0.0));
 			Physics* physics=new Physics();
 
 
@@ -126,6 +126,9 @@ class MyContainer:public Container{
 			add(myLight);
 			add(physics);
 			add(new Stats());
+
+			add(new Reflection());
+			add(new Shadow(myLight));
 
     }
 

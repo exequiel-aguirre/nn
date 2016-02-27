@@ -12,6 +12,7 @@ class Stats: public Component {
   public:
 	  Stats():Component(Position()){
       setReflects(false);
+      setCastsShadow(false);
     }
 
     void render(){

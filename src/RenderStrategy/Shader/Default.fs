@@ -3,10 +3,12 @@
 in vec3 vertex0;
 in vec2 uv0;
 in vec3 normal0;
+in vec4 depthMapProjVertex0;
 in mat3 frenetMatrix0;
 
 uniform sampler2D texture,textureDetail,textureNormal;
 uniform vec3 texturesActive;
+uniform sampler2DShadow depthMap;
 uniform float time;
 uniform struct Light{
 	vec4 position;
@@ -43,6 +45,10 @@ void main()
 	vec4 Idiff = clamp(light.diffuseProduct*max(dot(N,L), 0.0),0.0,1.0);
 	// specular term
 	vec4 Ispec = clamp(light.specularProduct*pow(max(dot(R,E),0.0),0.3*light.shininess),0.0,1.0);
+
+	//shadow
+	float shadow=clamp(textureProj(depthMap,depthMapProjVertex0) + 0.3,0.0,1.0);
+	fragColor*=shadow;
 
 	//apply the light
 	fragColor *=(light.sceneColor + Iamb + Idiff + Ispec);

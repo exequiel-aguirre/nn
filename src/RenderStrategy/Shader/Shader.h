@@ -15,6 +15,7 @@ class Shader {
     GLint modelViewProjectionMatrixLocation;
     GLint modelViewMatrixLocation;
     GLint normalMatrixLocation;
+    GLint lightModelViewProjectionMatrixLocation;
     GLint timeLocation;
     GLint texturesActiveLocation;
     GLint light_positionLocation;
@@ -42,7 +43,7 @@ class Shader {
     }
 
     //TODO:change name
-    void useProgram(Matrix& modelViewProjectionMatrix,Matrix& modelViewMatrix,Matrix& normalMatrix,float reflectPlane[4],GLfloat texturesActive[3],RawLight rawLight){
+    void useProgram(Matrix& modelViewProjectionMatrix,Matrix& modelViewMatrix,Matrix& normalMatrix,Matrix& lightModelViewProjectionMatrix,float reflectPlane[4],GLfloat texturesActive[3],RawLight rawLight){
         if(Shader::currentProgramId!= programId){//this is for performance:glUseProgram is expensive
             Shader::currentProgramId=programId;
             glUseProgram(programId);
@@ -50,6 +51,7 @@ class Shader {
         if(modelViewProjectionMatrixLocation!=-1) glUniformMatrix4fv(modelViewProjectionMatrixLocation,1,GL_TRUE,modelViewProjectionMatrix.getRawMatrix());//why the transpose?
         if(modelViewMatrixLocation!=-1) glUniformMatrix4fv(modelViewMatrixLocation,1,GL_TRUE,modelViewMatrix.getRawMatrix());//opengl uses column major for matrices,
         if(normalMatrixLocation!=-1) glUniformMatrix4fv(normalMatrixLocation,1,GL_TRUE,normalMatrix.getRawMatrix());// so we pass the transpose parameter as GL_TRUE
+        if(lightModelViewProjectionMatrixLocation!=-1) glUniformMatrix4fv(lightModelViewProjectionMatrixLocation,1,GL_TRUE,lightModelViewProjectionMatrix.getRawMatrix());
         if(timeLocation!=-1) glUniform1f(timeLocation,isTimeEnabled?(SDL_GetTicks()/100.0):0.0);//TODO:we are forcing all to do this, but just particles actually use it...
         if(texturesActiveLocation!=-1) glUniform3fv(texturesActiveLocation,1,texturesActive);//TODO:check the performance impact of this line
         if(light_positionLocation!=-1) glUniform4fv(light_positionLocation,1,rawLight.position);//TODO: Find a way of
@@ -91,9 +93,11 @@ class Shader {
         this->modelViewProjectionMatrixLocation=glGetUniformLocation(programId, "modelViewProjectionMatrix");
         this->modelViewMatrixLocation=glGetUniformLocation(programId, "modelViewMatrix");
         this->normalMatrixLocation=glGetUniformLocation(programId, "normalMatrix");
+        this->lightModelViewProjectionMatrixLocation=glGetUniformLocation(programId, "lightModelViewProjectionMatrix");
 
         //reflection
         this->reflectPlaneLocation=glGetUniformLocation(programId, "reflectPlane");
+
 
         //just for the particle shaders
         this->timeLocation=glGetUniformLocation(programId, "time");
@@ -107,6 +111,8 @@ class Shader {
         glUniform1i(glGetUniformLocation(programId, "textureNormal"),2);
         this->texturesActiveLocation=glGetUniformLocation(programId, "texturesActive");
 
+        //shadow
+        glUniform1i(glGetUniformLocation(programId, "depthMap"),3);
         //light
         this->light_positionLocation=glGetUniformLocation(programId, "light.position");
         this->light_ambientProductLocation=glGetUniformLocation(programId, "light.ambientProduct");
