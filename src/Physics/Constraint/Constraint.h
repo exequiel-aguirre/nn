@@ -64,7 +64,7 @@ class Constraint{
         iI2j4=iI2* j4;
     }
 
-    void applyImpulse(){
+    virtual void applyImpulse(){
         delta=0.0;
         Point v1_i=c1->getVelocity().getLinear();
         Point w1_i=c1->getVelocity().getAngular() * (M_PI/180.0);

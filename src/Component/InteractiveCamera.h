@@ -5,6 +5,7 @@
 #include "Weapon.h"
 #include "Gun.h"
 #include "Spell.h"
+#include "Grappler.h"
 #include "../Behavior/MotionBehavior.h"
 #include "../Behavior/SimpleKeyboardBehavior.h"
 #include "../Behavior/SimpleMouseBehavior.h"
@@ -40,6 +41,7 @@ class InteractiveCamera: public Camera {
             }
         ));
         weapons.push_back(new Gun(std::move(position)));
+        weapons.push_back(new Grappler(std::move(position),this));
         weapons.push_back(new Spell(std::move(position)));
         currentWeapon=weapons.begin();
     }
@@ -104,6 +106,12 @@ class InteractiveCamera: public Camera {
         case SDL_BUTTON_LEFT:
         {
           (*currentWeapon)->fire();
+          break;
+        }
+        case SDL_BUTTON_RIGHT:
+        {
+          (*currentWeapon)->secondaryFire();
+          break;
         }
       }
     }

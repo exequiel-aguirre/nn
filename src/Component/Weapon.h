@@ -34,6 +34,7 @@ class Weapon: public Component{
 
 		ball->setVelocity(vX,vY,vZ);
     };
+    virtual void secondaryFire(){}
     //TODO:find a better name
     virtual void onWalk(){};
     virtual void buildBall()=0;

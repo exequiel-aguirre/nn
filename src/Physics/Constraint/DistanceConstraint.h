@@ -7,6 +7,7 @@ class DistanceConstraint:public Constraint{
     float distance;
     Point localSurfacePoint1;
     Point localSurfacePoint2;
+    bool enabled;//TODO:should this be in the parent class ?
     static constexpr float DELTA_TIME=1.0/60.0;
   public:
     DistanceConstraint(Component* c1,Component* c2,Point surfacePoint1, Point surfacePoint2){
@@ -50,6 +51,22 @@ class DistanceConstraint:public Constraint{
             b= -(baumgarteScalar/DELTA_TIME) * distanceOffset;            
         }
         Constraint::preSolverStep();
+    }
+
+    void applyImpulse(){
+        if(enabled) Constraint::applyImpulse();
+    }
+
+    void setIsEnabled(bool enabled){
+        this->enabled=enabled;
+    }
+
+    void setDistance(float distance){
+        this->distance=distance;
+    }
+
+    void decreaseDistance(){
+        distance-=5.0;
     }
     
 };
