@@ -7,7 +7,7 @@ class DistanceConstraint:public Constraint{
     float distance;
     Point localSurfacePoint1;
     Point localSurfacePoint2;
-    bool enabled;//TODO:should this be in the parent class ?
+    bool enabled=true;//TODO:should this be in the parent class ?
     static constexpr float DELTA_TIME=1.0/60.0;
   public:
     DistanceConstraint(Component* c1,Component* c2,Point surfacePoint1, Point surfacePoint2){
