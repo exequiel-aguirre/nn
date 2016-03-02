@@ -40,9 +40,9 @@ class CollisionContainer:public Container{
 	const float GROUND_LEVEL=0.0;
   public:
     CollisionContainer(Position&& position):Container(position){
-            test10();
+            test13();
 
-			add(new Camera(Position(0.0f,5.0f,10.0f)));
+			add(new InteractiveCamera(Position(0.0f,5.0f,10.0f)));
 			add(new Light(Position(40.0f,40.0f,40.0f)));
 			add(new Physics());
 			//add(new Stats());
@@ -151,6 +151,68 @@ class CollisionContainer:public Container{
         add(myModel);
         //add(new Surface(Position(0.0f,3.0f,-5.0f),SamplingMap(myModel->getBoundary().getReducedPolygon().getVertices()),"img/default.bmp"));
         //add(new Surface(Position(5.0f,3.0f,-5.0f),BezierMap(new SamplingMap(myModel->getBoundary().getReducedPolygon().getVertices())),"img/default.bmp") );
+    }
+    //ragdoll
+    void test13(){
+        add(new Ground(Position(0.0f, GROUND_LEVEL, 0.0f, 2.0, 0.0, 2.0),300,300));
+        float ba=1.5;
+        float bb=0.5;
+        float bc=0.5;
+        //body
+        Point bp=Point(-5,7,-10);
+        Ellipsoid* body=(new Ellipsoid(Position(bp.x,bp.y,bp.z,0,0,90),ba,bb,bc));
+        add(body->add(new MotionBehavior()));
+        //head
+        float ha=ba/3.0;
+        float hb=bb/3.0;
+        float hc=bc/3.0;
+        Point hp=Point(bp.x,bp.y+ba,bp.z);
+        Ellipsoid* head=(new Ellipsoid(Position(hp.x,hp.y,hp.z),ha,hb,hc));
+        add(head);
+        PhysicsManager::getInstance().add(new DistanceConstraint(body,head,bp+Point(0,ba,0),hp+Point(0,0,0)));
+
+        //right arm
+        float a=ba/2.0;
+        float b=bb/2.0;
+        float c=bc/2.0;
+        Point p1=Point(bp.x+2*bb,bp.y+(0.5*ba),bp.z);
+        Point p2=Point(p1.x+ 2*a,p1.y,p1.z);
+        Ellipsoid* armRU=(new Ellipsoid(Position(p1.x,p1.y,p1.z),a,b,c));
+        Ellipsoid* armRD=(new Ellipsoid(Position(p2.x,p2.y,p2.z),a,b,c));
+        add(armRU->add(new MotionBehavior()));
+        add(armRD->add(new MotionBehavior()));
+        PhysicsManager::getInstance().add(new DistanceConstraint(body,armRU,bp+Point(bb,(0.5*ba),0),p1+Point(-bb,0,0)));
+        PhysicsManager::getInstance().add(new DistanceConstraint(armRU,armRD,p1+Point(a,0,0),p2+Point(-a,0,0)));
+        //left arm
+        p1=Point(bp.x-2*bb,bp.y+(0.5*ba),bp.z);
+        p2=Point(p1.x- 2*a,p1.y,p1.z);
+        Ellipsoid* armLU=(new Ellipsoid(Position(p1.x,p1.y,p1.z),a,b,c));
+        Ellipsoid* armLD=(new Ellipsoid(Position(p2.x,p2.y,p2.z),a,b,c));
+        add(armLU->add(new MotionBehavior()));
+        add(armLD->add(new MotionBehavior()));
+        PhysicsManager::getInstance().add(new DistanceConstraint(body,armLU,bp+Point(-bb,(0.5*ba),0),p1+Point(bb,0,0)));
+        PhysicsManager::getInstance().add(new DistanceConstraint(armLU,armLD,p1+Point(-a,0,0),p2+Point(a,0,0)));
+
+        //right leg
+        p1=Point(bp.x+2*bb,bp.y-(0.8*ba),bp.z);
+        p2=Point(p1.x+ 2*a,p1.y,p1.z);
+        Ellipsoid* legRU=(new Ellipsoid(Position(p1.x,p1.y,p1.z),a,b,c));
+        Ellipsoid* legRD=(new Ellipsoid(Position(p2.x,p2.y,p2.z),a,b,c));
+        add(legRU->add(new MotionBehavior()));
+        add(legRD->add(new MotionBehavior()));
+        PhysicsManager::getInstance().add(new DistanceConstraint(body,legRU,bp+Point(bb,-(0.8*ba),0),p1+Point(-bb,0,0)));
+        PhysicsManager::getInstance().add(new DistanceConstraint(legRU,legRD,p1+Point(a,0,0),p2+Point(-a,0,0)));
+
+        //left leg
+        p1=Point(bp.x-2*bb,bp.y-(0.8*ba),bp.z);
+        p2=Point(p1.x- 2*a,p1.y,p1.z);
+        Ellipsoid* legLU=(new Ellipsoid(Position(p1.x,p1.y,p1.z),a,b,c));
+        Ellipsoid* legLD=(new Ellipsoid(Position(p2.x,p2.y,p2.z),a,b,c));
+        add(legLU->add(new MotionBehavior()));
+        add(legLD->add(new MotionBehavior()));
+        PhysicsManager::getInstance().add(new DistanceConstraint(body,legLU,bp+Point(-bb,-(0.8*ba),0),p1+Point(bb,0,0)));
+        PhysicsManager::getInstance().add(new DistanceConstraint(legLU,legLD,p1+Point(-a,0,0),p2+Point(a,0,0)));
+
     }
 
     void testConstraint(){
