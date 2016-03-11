@@ -5,11 +5,13 @@
 #include <fstream>
 #include <sstream>
 #include <string> 
+#include <cstring>
 #include <algorithm>
 #include "../DataStructure/Point.h"
 #include "../DataStructure/ModelObject.h"
 #include "../Map/HeightMap.h"
 #include "../DataStructure/TGAInfo.h"
+#include "../DataStructure/RawSkeleton.h"
 
 
 class Utils{
@@ -326,6 +328,63 @@ class Utils{
 		return shaderFilename.str();
 	}
 
+
+
+	static RawSkeleton loadSkeleton(const char* filename){
+		RawSkeleton rawSkeleton;
+		RawJoint currentJoint;
+
+		std::ifstream file (filename,std::ifstream::in);
+		if( file == NULL ) std::cout << "Couldn't open the file";
+		while(!file.eof()){
+		    std::string line;
+		    std::getline(file,line);
+		    if(line=="") continue;
+			std::vector<std::string> tokens=parseLine(line.c_str(),";");
+
+			if(tokens[0]=="j"){
+				currentJoint.id=std::stoi(tokens[1].c_str());
+				currentJoint.position=parsePoint(tokens[2].c_str());
+				//std::cout << position;
+			}else
+			if(tokens[0]=="a"){
+				RawAction action;
+				action.start=parsePoint(tokens[1].c_str());
+				action.end=parsePoint(tokens[2].c_str());
+				action.duration=std::stof(tokens[3].c_str());
+				currentJoint.actions.push_back(action);
+				//std::cout <<  start<<end<<" "<<duration<<std::endl;
+			}else
+			if(tokens[0]=="ej"){
+				rawSkeleton.joints.push_back(currentJoint);
+				currentJoint.actions.clear();
+			}else
+			if(tokens[0]=="b"){
+				RawBone rawBone;
+				rawBone.aId=std::stoi(tokens[1].c_str());
+				rawBone.bId=std::stoi(tokens[2].c_str());
+				rawSkeleton.bones.push_back(rawBone);
+			}
+		}
+		file.close();
+
+		return rawSkeleton;
+	}
+	static std::vector<std::string> parseLine(const char* constLine,const char* delimiter){
+        char* line=strdup(constLine);
+        std::vector<std::string> tokens;
+        char* token=strtok(line,delimiter);
+        tokens.push_back(token);
+        while( (token=strtok(NULL,delimiter)) ){
+            tokens.push_back(token);
+        }
+
+        return tokens;
+    }
+	static Point parsePoint(const char* pointStr){
+		std::vector<std::string> xyz=parseLine(pointStr,"(),");
+		return Point(std::stof(xyz[0]),std::stof(xyz[1]),std::stof(xyz[2]) );
+	}
 };
 
 #endif

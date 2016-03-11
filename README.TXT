@@ -64,6 +64,7 @@ BUGS:
 
 
 TODOS:
+-Right now we are using Animation and Skeleton as if they were the same thing.
 -We should not put the contact points in the collision status, but in the manifold, since it's one set of point's per pair, not per object.(now we are distributiong the 4 points among the pair of collisions, for example 2 points for floor-box1 and 2 points for floor-box2)
 -Unify the whole manifold,collsionStatus,ContactPoint into one
 -Matrix: remove vector

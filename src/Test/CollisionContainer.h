@@ -11,6 +11,7 @@
 #include "../Component/Tree.h"
 #include "../Component/Water.h"
 #include "../Component/Animation.h"
+#include "../Component/Skeleton.h"
 #include "../Component/Box.h"
 #include "../Component/Hut.h"
 #include "../Component/Mill.h"
@@ -35,12 +36,13 @@
 
 
 
+
 class CollisionContainer:public Container{
   private:
 	const float GROUND_LEVEL=0.0;
   public:
     CollisionContainer(Position&& position):Container(position){
-            test13();
+            test14();
 
 			add(new InteractiveCamera(Position(0.0f,5.0f,10.0f)));
 			add(new Light(Position(40.0f,40.0f,40.0f)));
@@ -214,7 +216,13 @@ class CollisionContainer:public Container{
         PhysicsManager::getInstance().add(new DistanceConstraint(legLU,legLD,p1+Point(-a,0,0),p2+Point(a,0,0)));
 
     }
+    void test14(){
+        add(new Ground(Position(0.0f, GROUND_LEVEL, 0.0f),300,300));
+        add(new Skeleton(Position(0,GROUND_LEVEL,5),"animation/walk.ani"));
+        //
+        add(new Animation(Position(0,1.8f+GROUND_LEVEL,0),"3DModel/human.obj","img/human.bmp"));
 
+    }
     void testConstraint(){
         add(new Ground(Position(0.0f, GROUND_LEVEL, 0.0f),300,300));
         Component* sphere1=(new Sphere(Position(-5,30,10),0.5f));
