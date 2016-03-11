@@ -38,6 +38,15 @@ class Skeleton: public Component {
 
   Skeleton(Position&& position,const char* filename):Skeleton(position,filename){};
 
+  ~Skeleton(){
+    for(Bone* bone:bones){
+        delete(bone);
+    }
+    for(Joint* joint:joints){
+        delete(joint);
+    }
+  }
+
   void buildJointsAndBones(RawSkeleton& rawSkeleton){
     for(RawJoint& rawJoint: rawSkeleton.joints){
       Point skeletonPosition=this->position.getLinear();
