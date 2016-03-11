@@ -25,6 +25,7 @@
 #include "../Component/InteractiveCamera.h"
 #include "../Effect/Fog.h"
 #include "../Effect/Reflection.h"
+#include "../Effect/Shadow.h"
 #include "../Component/Light.h"
 #include "../Component/Physics.h"
 #include "../Physics/Constraint/DistanceConstraint.h"
@@ -45,10 +46,12 @@ class CollisionContainer:public Container{
             test14();
 
 			add(new InteractiveCamera(Position(0.0f,5.0f,10.0f)));
-			add(new Light(Position(40.0f,40.0f,40.0f)));
+            Light* myLight=new Light(Position(180.0,98.0,172.0,28.0,-38.0,0.0));
+			add(myLight);
 			add(new Physics());
-			//add(new Stats());
+			add(new Stats());
 			add(new Fog());
+            add(new Shadow(myLight));
     }
 
     void test1(){//+0.1
@@ -218,7 +221,10 @@ class CollisionContainer:public Container{
     }
     void test14(){
         add(new Ground(Position(0.0f, GROUND_LEVEL, 0.0f),300,300));
-        add(new Skeleton(Position(0,GROUND_LEVEL,5),"animation/walk.ani"));
+        Skeleton* mySkeleton=new Skeleton(Position(0,GROUND_LEVEL,5),"animation/walk.ani");
+        mySkeleton->setAcceleration(0,0,3);
+        mySkeleton->add(new MotionBehavior())->setRotates(false);
+        add( mySkeleton );
         //
         add(new Animation(Position(0,1.8f+GROUND_LEVEL,0),"3DModel/human.obj","img/human.bmp"));
 

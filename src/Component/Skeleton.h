@@ -49,20 +49,33 @@ class Skeleton: public Component {
 
   void buildJointsAndBones(RawSkeleton& rawSkeleton){
     for(RawJoint& rawJoint: rawSkeleton.joints){
-      Point skeletonPosition=this->position.getLinear();
-      Point jointPosition=skeletonPosition+rawJoint.position;
-      Joint* joint=new Joint(rawJoint.id,Position(jointPosition.x,jointPosition.y,jointPosition.z));
+      Joint* joint=new Joint(rawJoint.id,Position(rawJoint.position.x,rawJoint.position.y,rawJoint.position.z));
       for(RawAction& rawAction:rawJoint.actions){
-        joint->addAction(skeletonPosition+rawAction.start,skeletonPosition+rawAction.end,rawAction.duration);
+        joint->addAction(rawAction.start,rawAction.end,rawAction.duration);
       }
       joints.push_back(joint);
     }
+    updateJointsPosition(position.getLinear());
 
     for(RawBone rawBone:rawSkeleton.bones){
       Joint* jointA=findJointById(rawBone.aId);
       Joint* jointB=findJointById(rawBone.bId);
       Bone* bone=new Bone(Position(0,0,0),jointA,jointB);
       bones.push_back(bone);
+    }
+  }
+
+  void updateJointsPosition(Point deltaPosition){
+    for(Joint* joint:joints){
+      Point position=joint->getPosition().getLinear();
+      position=position+deltaPosition;
+      joint->setPosition(position.x,position.y,position.z);
+
+      std::vector<Action>& actions=joint->getActions();
+      for(Action& action:actions){
+        action.start=action.start+deltaPosition;
+        action.end=action.end+deltaPosition;
+      }
     }
   }
 
@@ -74,7 +87,13 @@ class Skeleton: public Component {
     for(Bone* bone: bones){
       bone->render();
     }
-  }  
+  }
+
+  void setPosition(float x,float y,float z,float phi,float theta,float psi){
+    Point deltaPosition=Point(x,y,z)-position.getLinear();
+    Component::setPosition(x,y,z,phi,theta,psi);
+    updateJointsPosition(deltaPosition);
+  }
 
   Joint* findJointById(unsigned int id){
     auto it=std::find_if(joints.begin(),joints.end(),

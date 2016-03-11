@@ -57,6 +57,9 @@ class Joint: public Sphere {
         return this;
     }
 
+    vector<Action>& getActions(){
+        return actions;
+    }
 
 };
 
