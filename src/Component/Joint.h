@@ -5,8 +5,7 @@
 
 //TODO:find a better name
 struct Action{
-    Point start;
-    Point end;
+    Point position;
     float deltaT;
 };
 
@@ -38,19 +37,19 @@ class Joint: public Sphere {
             t=0;
         }
         Action action=actions[currentActionIndex];
+        Action nextAction=actions[(currentActionIndex+1) % actions.size()];
 
         t+=action.deltaT;
-        Point p= (1.0-t)*action.start + t*action.end;
+        Point p= (1.0-t)*action.position + t*nextAction.position;
         this->setPosition(p.x,p.y,p.z);
     }
       
     unsigned int getId(){
       return this->id;
     }
-    Joint* addAction(Point start,Point end,float duration){
+    Joint* addAction(Point position,float duration){
         Action action;
-        action.start=start;
-        action.end=end;
+        action.position=position;
         action.deltaT=1.0/(60*duration);
         actions.push_back(action);
 

@@ -344,16 +344,12 @@ class Utils{
 
 			if(tokens[0]=="j"){
 				currentJoint.id=std::stoi(tokens[1].c_str());
-				currentJoint.position=parsePoint(tokens[2].c_str());
-				//std::cout << position;
 			}else
 			if(tokens[0]=="a"){
 				RawAction action;
-				action.start=parsePoint(tokens[1].c_str());
-				action.end=parsePoint(tokens[2].c_str());
-				action.duration=std::stof(tokens[3].c_str());
+				action.position=parsePoint(tokens[1].c_str());
+				action.duration=std::stof(tokens[2].c_str());
 				currentJoint.actions.push_back(action);
-				//std::cout <<  start<<end<<" "<<duration<<std::endl;
 			}else
 			if(tokens[0]=="ej"){
 				rawSkeleton.joints.push_back(currentJoint);

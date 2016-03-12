@@ -4,14 +4,12 @@
 #include "Point.h"
 //TODO:duplicated code.Similar code in the Joint class
 struct RawAction {
-    Point start;
-    Point end;
+    Point position;
     float duration;
 };
 
 struct RawJoint {
     unsigned int id;
-	Point position;
     std::vector<RawAction> actions;
 };
 

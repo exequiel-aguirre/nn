@@ -49,9 +49,9 @@ class Skeleton: public Component {
 
   void buildJointsAndBones(RawSkeleton& rawSkeleton){
     for(RawJoint& rawJoint: rawSkeleton.joints){
-      Joint* joint=new Joint(rawJoint.id,Position(rawJoint.position.x,rawJoint.position.y,rawJoint.position.z));
+      Joint* joint=new Joint(rawJoint.id,Position(rawJoint.actions[0].position.x,rawJoint.actions[0].position.y,rawJoint.actions[0].position.z));
       for(RawAction& rawAction:rawJoint.actions){
-        joint->addAction(rawAction.start,rawAction.end,rawAction.duration);
+        joint->addAction(rawAction.position,rawAction.duration);
       }
       joints.push_back(joint);
     }
@@ -73,8 +73,7 @@ class Skeleton: public Component {
 
       std::vector<Action>& actions=joint->getActions();
       for(Action& action:actions){
-        action.start=action.start+deltaPosition;
-        action.end=action.end+deltaPosition;
+        action.position=action.position+deltaPosition;
       }
     }
   }
