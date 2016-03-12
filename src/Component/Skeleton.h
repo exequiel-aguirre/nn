@@ -49,13 +49,14 @@ class Skeleton: public Component {
 
   void buildJointsAndBones(RawSkeleton& rawSkeleton){
     for(RawJoint& rawJoint: rawSkeleton.joints){
-      Joint* joint=new Joint(rawJoint.id,Position(rawJoint.actions[0].position.x,rawJoint.actions[0].position.y,rawJoint.actions[0].position.z));
+      Point jointPosition=rawJoint.actions[0].position + position.getLinear();
+      Joint* joint=new Joint(rawJoint.id,Position(jointPosition.x,jointPosition.y,jointPosition.z));
       for(RawAction& rawAction:rawJoint.actions){
         joint->addAction(rawAction.position,rawAction.duration);
       }
       joints.push_back(joint);
     }
-    updateJointsPosition(position.getLinear());
+    //onPositionChanged();//I think this is not needed. But not sure about that...
 
     for(RawBone rawBone:rawSkeleton.bones){
       Joint* jointA=findJointById(rawBone.aId);
@@ -65,16 +66,9 @@ class Skeleton: public Component {
     }
   }
 
-  void updateJointsPosition(Point deltaPosition){
+  void onPositionChanged(){
     for(Joint* joint:joints){
-      Point position=joint->getPosition().getLinear();
-      position=position+deltaPosition;
-      joint->setPosition(position.x,position.y,position.z);
-
-      std::vector<Action>& actions=joint->getActions();
-      for(Action& action:actions){
-        action.position=action.position+deltaPosition;
-      }
+      joint->setSkeletonPosition(position.getLinear());
     }
   }
 
@@ -89,9 +83,8 @@ class Skeleton: public Component {
   }
 
   void setPosition(float x,float y,float z,float phi,float theta,float psi){
-    Point deltaPosition=Point(x,y,z)-position.getLinear();
     Component::setPosition(x,y,z,phi,theta,psi);
-    updateJointsPosition(deltaPosition);
+    onPositionChanged();
   }
 
   Joint* findJointById(unsigned int id){

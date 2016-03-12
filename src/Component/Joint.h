@@ -5,7 +5,7 @@
 
 //TODO:find a better name
 struct Action{
-    Point position;
+    Point position;//this position is relative to the skeleton
     float deltaT;
 };
 
@@ -15,6 +15,7 @@ class Joint: public Sphere {
     vector<Action> actions;
     unsigned int currentActionIndex;
     float t;
+    Point skeletonPosition;
     static constexpr float R=0.1;
 
   public:
@@ -41,6 +42,7 @@ class Joint: public Sphere {
 
         t+=action.deltaT;
         Point p= (1.0-t)*action.position + t*nextAction.position;
+        p=p+skeletonPosition;
         this->setPosition(p.x,p.y,p.z);
     }
       
@@ -56,8 +58,8 @@ class Joint: public Sphere {
         return this;
     }
 
-    vector<Action>& getActions(){
-        return actions;
+    void setSkeletonPosition(Point skeletonPosition){
+        this->skeletonPosition=skeletonPosition;
     }
 
 };
