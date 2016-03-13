@@ -333,6 +333,7 @@ class Utils{
 	static RawSkeleton loadSkeleton(const char* filename){
 		RawSkeleton rawSkeleton;
 		RawJoint currentJoint;
+		RawCycle currentCycle;
 
 		std::ifstream file (filename,std::ifstream::in);
 		if( file == NULL ) std::cout << "Couldn't open the file";
@@ -346,15 +347,22 @@ class Utils{
 			if(tokens[0]=="j"){
 				currentJoint.id=tokens[1];
 			}else
+			if(tokens[0]=="c"){
+				currentCycle.id=tokens[1];
+			}else
 			if(tokens[0]=="a"){
 				RawAction action;
 				action.position=parsePoint(tokens[1].c_str());
 				action.duration=std::stof(tokens[2].c_str());
-				currentJoint.actions.push_back(action);
+				currentCycle.actions.push_back(action);
+			}else
+			if(tokens[0]=="ec"){
+				currentJoint.cycles.push_back(currentCycle);
+				currentCycle.actions.clear();
 			}else
 			if(tokens[0]=="ej"){
 				rawSkeleton.joints.push_back(currentJoint);
-				currentJoint.actions.clear();
+				currentJoint.cycles.clear();
 			}else
 			if(tokens[0]=="b"){
 				RawBone rawBone;

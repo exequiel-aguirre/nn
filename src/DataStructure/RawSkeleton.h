@@ -8,9 +8,14 @@ struct RawAction {
     float duration;
 };
 
-struct RawJoint {
+struct RawCycle {
     std::string id;
     std::vector<RawAction> actions;
+};
+
+struct RawJoint {
+    std::string id;
+    std::vector<RawCycle> cycles;
 };
 
 struct RawBone{

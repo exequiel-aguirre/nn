@@ -29,6 +29,7 @@ class Skeleton: public Component {
      add(new SimpleKeyboardBehavior(
               [=](SDL_Keycode key){//behavior callback
                 if(key== SDLK_r) this->reload();
+                if(key== SDLK_c) this->nextCycle();
               },
               [=](SDL_Keycode key){//behavior callback
                 
@@ -49,10 +50,10 @@ class Skeleton: public Component {
 
   void buildJointsAndBones(RawSkeleton& rawSkeleton){
     for(RawJoint& rawJoint: rawSkeleton.joints){
-      Point jointPosition=modelMatrix * rawJoint.actions[0].position;
+      Point jointPosition=modelMatrix * rawJoint.cycles[0].actions[0].position;
       Joint* joint=new Joint(rawJoint.id,Position(jointPosition.x,jointPosition.y,jointPosition.z));
-      for(RawAction& rawAction:rawJoint.actions){
-        joint->addAction(rawAction.position,rawAction.duration);
+      for(RawCycle rawCycle:rawJoint.cycles){
+          joint->addCycle(rawCycle);
       }
       joints.push_back(joint);
     }
@@ -99,9 +100,14 @@ class Skeleton: public Component {
     void reload(){
       joints.clear();
       bones.clear();
-      RawSkeleton rawSkeleton=Utils::loadSkeleton("animation/walk.ani");
+      RawSkeleton rawSkeleton=Utils::loadSkeleton("animation/skeleton.ani");
       buildJointsAndBones(rawSkeleton);
       onPositionChanged();
+  }
+  void nextCycle(){
+    for(Joint* joint:joints){
+      joint->nextCycle();
+    }
   }
 
 };

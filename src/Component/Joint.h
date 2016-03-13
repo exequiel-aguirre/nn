@@ -8,11 +8,16 @@ struct Action{
     Point position;//this position is relative to the skeleton
     float deltaT;
 };
+struct Cycle{
+    std::string id;
+    std::vector<Action> actions;
+};
 
 class Joint: public Sphere {
   private:
     std::string id;
-    vector<Action> actions;
+    vector<Cycle> cycles;
+    unsigned int currentCycleIndex;
     unsigned int currentActionIndex;
     float t;
     Matrix skeletonModelMatrix;
@@ -21,6 +26,7 @@ class Joint: public Sphere {
   public:
 	Joint(std::string id,Position&& position):Sphere(std::move(position),R,"img/default.bmp"){
         this->id=id;
+        this->currentCycleIndex=0;
         this->currentActionIndex=0;
         this->t=0;
     }
@@ -31,14 +37,14 @@ class Joint: public Sphere {
     }
     
     void animate(){
-        if(actions.empty()) return;
+        if(cycles[currentCycleIndex].actions.empty()) return;
 
         if(t>1){
-            currentActionIndex=(currentActionIndex+1) % actions.size();
+            currentActionIndex=(currentActionIndex+1) % cycles[currentCycleIndex].actions.size();
             t=0;
         }
-        Action action=actions[currentActionIndex];
-        Action nextAction=actions[(currentActionIndex+1) % actions.size()];
+        Action action=cycles[currentCycleIndex].actions[currentActionIndex];
+        Action nextAction=cycles[currentCycleIndex].actions[(currentActionIndex+1) % cycles[currentCycleIndex].actions.size()];
 
         t+=action.deltaT;
         Point p= (1.0-t)*action.position + t*nextAction.position;
@@ -49,11 +55,16 @@ class Joint: public Sphere {
     std::string getId(){
       return this->id;
     }
-    Joint* addAction(Point position,float duration){
-        Action action;
-        action.position=position;
-        action.deltaT=1.0/(60*duration);
-        actions.push_back(action);
+    Joint* addCycle(RawCycle rawCycle){
+        Cycle cycle;
+        cycle.id=rawCycle.id;
+        for(RawAction rawAction:rawCycle.actions){
+            Action action;
+            action.position=rawAction.position;
+            action.deltaT=1.0/(60* rawAction.duration);
+            cycle.actions.push_back(action);
+        }
+        cycles.push_back(cycle);
 
         return this;
     }
@@ -62,6 +73,11 @@ class Joint: public Sphere {
         this->skeletonModelMatrix=skeletonModelMatrix;
     }
 
+
+    void nextCycle(){
+        currentCycleIndex=(currentCycleIndex+1) % cycles.size();
+        currentActionIndex=0;
+    }
 };
 
 

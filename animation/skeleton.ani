@@ -1,0 +1,160 @@
+//Format example
+//j;1 // id
+//a;(0,2,0);5 //initial position and animation start; duration
+//a;(0,2,0.5);5 //end of the previous and start of the next one;duration
+//a;(0,2,1);5
+//ej; //end joint
+
+//joints legL
+j;hipL
+    c;walk
+        a;(-0.25,2,0);1
+    ec
+    c;greet
+        a;(-0.25,2,0);1
+    ec
+ej
+j;kneeL
+    c;walk
+        a;(-0.25,1,0);1
+        a;(-0.25,1.2,0.5);1
+    ec;
+    c;greet
+        a;(-0.25,1,0);1
+    ec
+ej
+j;ankleL
+    c;walk
+        a;(-0.25,0,-0.5);1
+        a;(-0.25,0.2,0.5);1
+    ec;
+    c;greet
+        a;(-0.25,0,0);1
+    ec
+ej
+//bones
+b;hipL;kneeL
+b;kneeL;ankleL
+
+
+//joints legR
+j;hipR
+    c;walk
+        a;(0.25,2,0);1
+    ec
+    c;greet
+        a;(0.25,2,0);1
+    ec
+ej
+j;kneeR
+    c;walk
+        a;(0.25,1.2,0.5);1
+        a;(0.25,1,0);1
+    ec;
+    c;greet
+        a;(0.25,1,0);1
+    ec
+ej
+j;ankleR
+    c;walk
+        a;(0.25,0.2,0.5);1
+        a;(0.25,0,-0.5);1
+    ec;
+    c;greet
+        a;(0.25,0,0);1
+    ec
+ej
+//bones
+b;hipR;kneeR
+b;kneeR;ankleR
+
+
+//joints body
+j;bodyTop
+    c;walk
+        a;(0,3.5,0);1
+    ec
+    c;greet
+        a;(0,3.5,0);1
+    ec
+ej
+j;bodyBottom
+    c;walk
+        a;(0,2,0);1
+    ec
+    c;greet
+        a;(0,2,0);1
+    ec
+ej
+//bones
+b;bodyTop;bodyBottom
+
+
+//joints armL
+j;shoulderL
+    c;walk
+        a;(-0.5,3.5,0);1
+    ec;
+    c;greet
+        a;(-0.5,3.5,0);1
+    ec
+ej
+j;elbowL
+    c;walk
+        a;(-0.5,2.5,0.0);1
+        a;(-0.5,2.7,-0.5);1
+    ec
+    c;greet
+        a;(-1.5,3.5,0);1
+    ec
+ej
+j;wristL
+    c;walk
+        a;(-0.5,2,0.8);1
+        a;(-0.5,1.7,-0.5);1
+    ec
+    c;greet
+        a;(-1.7,4.5,0);1
+        a;(-1.3,4.5,0);1
+    ec
+ej
+//bones
+b;shoulderL;elbowL
+b;elbowL;wristL
+
+
+//joints armR
+j;shoulderR
+    c;walk
+        a;(0.5,3.5,0);1
+    ec
+    c;greet
+        a;(0.5,3.5,0);1
+    ec
+ej
+j;elbowR
+    c;walk
+        a;(0.5,2.7,-0.5);1
+        a;(0.5,2.5,0.0);1
+    ec
+    c;greet
+        a;(0.5,2.5,0);1
+    ec
+ej
+j;wristR
+    c;walk
+        a;(0.5,1.7,-0.5);1
+        a;(0.5,2.0,0.8);1
+    ec
+    c;greet
+        a;(0.5,1.7,0);1
+    ec
+ej
+//bones
+b;shoulderR;elbowR
+b;elbowR;wristR
+
+
+//arms to body
+b;bodyTop;shoulderL
+b;bodyTop;shoulderR

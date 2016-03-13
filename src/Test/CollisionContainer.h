@@ -221,7 +221,7 @@ class CollisionContainer:public Container{
     }
     void test14(){
         add(new Ground(Position(0.0f, GROUND_LEVEL, 0.0f),300,300));
-        Skeleton* mySkeleton=new Skeleton(Position(0,0,5,0,180,0),"animation/walk.ani");
+        Skeleton* mySkeleton=new Skeleton(Position(0,0,5,0,180,0),"animation/skeleton.ani");
         mySkeleton->setAcceleration(0,0,3);
         mySkeleton->add(new MotionBehavior())->setRotates(false);
         add( mySkeleton );
