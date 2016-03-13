@@ -339,6 +339,7 @@ class Utils{
 		while(!file.eof()){
 		    std::string line;
 		    std::getline(file,line);
+		    line=clean(line);
 		    if(line=="") continue;
 			std::vector<std::string> tokens=parseLine(line.c_str(),";");
 
@@ -365,6 +366,11 @@ class Utils{
 		file.close();
 
 		return rawSkeleton;
+	}
+	static std::string clean(std::string line){
+		line.erase(std::remove(line.begin(),line.end(),'\t'),line.end());
+		line.erase(std::remove(line.begin(),line.end(),' '),line.end());
+		return line;
 	}
 	static std::vector<std::string> parseLine(const char* constLine,const char* delimiter){
         char* line=strdup(constLine);
