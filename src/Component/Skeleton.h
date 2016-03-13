@@ -87,9 +87,9 @@ class Skeleton: public Component {
     onPositionChanged();
   }
 
-  Joint* findJointById(unsigned int id){
+  Joint* findJointById(std::string id){
     auto it=std::find_if(joints.begin(),joints.end(),
-              [id](Joint* joint){ return (joint->getId()==id); });
+              [id](Joint* joint){ return (joint->getId().compare(id)==0 ); });
     return (*it);
   }
   
@@ -100,7 +100,8 @@ class Skeleton: public Component {
       joints.clear();
       bones.clear();
       RawSkeleton rawSkeleton=Utils::loadSkeleton("animation/walk.ani");
-      buildJointsAndBones(rawSkeleton);    
+      buildJointsAndBones(rawSkeleton);
+      onPositionChanged();
   }
 
 };

@@ -9,13 +9,13 @@ struct RawAction {
 };
 
 struct RawJoint {
-    unsigned int id;
+    std::string id;
     std::vector<RawAction> actions;
 };
 
 struct RawBone{
-    unsigned int aId;
-    unsigned int bId;
+    std::string aId;
+    std::string bId;
 };
 
 struct RawSkeleton{

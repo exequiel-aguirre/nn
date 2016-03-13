@@ -11,7 +11,7 @@ struct Action{
 
 class Joint: public Sphere {
   private:
-    unsigned int id;
+    std::string id;
     vector<Action> actions;
     unsigned int currentActionIndex;
     float t;
@@ -19,7 +19,7 @@ class Joint: public Sphere {
     static constexpr float R=0.1;
 
   public:
-	Joint(unsigned int id,Position&& position):Sphere(std::move(position),R,"img/default.bmp"){
+	Joint(std::string id,Position&& position):Sphere(std::move(position),R,"img/default.bmp"){
         this->id=id;
         this->currentActionIndex=0;
         this->t=0;
@@ -46,7 +46,7 @@ class Joint: public Sphere {
         this->setPosition(p.x,p.y,p.z);
     }
       
-    unsigned int getId(){
+    std::string getId(){
       return this->id;
     }
     Joint* addAction(Point position,float duration){

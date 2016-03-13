@@ -344,7 +344,7 @@ class Utils{
 			std::vector<std::string> tokens=parseLine(line.c_str(),";");
 
 			if(tokens[0]=="j"){
-				currentJoint.id=std::stoi(tokens[1].c_str());
+				currentJoint.id=tokens[1];
 			}else
 			if(tokens[0]=="a"){
 				RawAction action;
@@ -358,8 +358,8 @@ class Utils{
 			}else
 			if(tokens[0]=="b"){
 				RawBone rawBone;
-				rawBone.aId=std::stoi(tokens[1].c_str());
-				rawBone.bId=std::stoi(tokens[2].c_str());
+				rawBone.aId=tokens[1].c_str();
+				rawBone.bId=tokens[2].c_str();
 				rawSkeleton.bones.push_back(rawBone);
 			}
 		}
