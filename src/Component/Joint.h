@@ -15,7 +15,7 @@ class Joint: public Sphere {
     vector<Action> actions;
     unsigned int currentActionIndex;
     float t;
-    Point skeletonPosition;
+    Matrix skeletonModelMatrix;
     static constexpr float R=0.1;
 
   public:
@@ -42,7 +42,7 @@ class Joint: public Sphere {
 
         t+=action.deltaT;
         Point p= (1.0-t)*action.position + t*nextAction.position;
-        p=p+skeletonPosition;
+        p=skeletonModelMatrix* p;
         this->setPosition(p.x,p.y,p.z);
     }
       
@@ -58,8 +58,8 @@ class Joint: public Sphere {
         return this;
     }
 
-    void setSkeletonPosition(Point skeletonPosition){
-        this->skeletonPosition=skeletonPosition;
+    void setSkeletonPosition(Matrix skeletonModelMatrix){
+        this->skeletonModelMatrix=skeletonModelMatrix;
     }
 
 };

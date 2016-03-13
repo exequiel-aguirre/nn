@@ -49,7 +49,7 @@ class Skeleton: public Component {
 
   void buildJointsAndBones(RawSkeleton& rawSkeleton){
     for(RawJoint& rawJoint: rawSkeleton.joints){
-      Point jointPosition=rawJoint.actions[0].position + position.getLinear();
+      Point jointPosition=modelMatrix * rawJoint.actions[0].position;
       Joint* joint=new Joint(rawJoint.id,Position(jointPosition.x,jointPosition.y,jointPosition.z));
       for(RawAction& rawAction:rawJoint.actions){
         joint->addAction(rawAction.position,rawAction.duration);
@@ -68,7 +68,7 @@ class Skeleton: public Component {
 
   void onPositionChanged(){
     for(Joint* joint:joints){
-      joint->setSkeletonPosition(position.getLinear());
+      joint->setSkeletonPosition(modelMatrix);
     }
   }
 
