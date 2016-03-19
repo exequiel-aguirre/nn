@@ -15,6 +15,7 @@ struct RawCycle {
 
 struct RawJoint {
     std::string id;
+    float r=0.1;
     std::vector<RawCycle> cycles;
 };
 

@@ -158,3 +158,15 @@ b;elbowR;wristR
 //arms to body
 b;bodyTop;shoulderL
 b;bodyTop;shoulderR
+
+
+//head
+j;head;0.25
+    c;walk
+        a;(0,1.9,0);1
+    ec
+    c;greet
+        a;(0,1.5,0);1
+    ec
+ej
+b;head;bodyTop

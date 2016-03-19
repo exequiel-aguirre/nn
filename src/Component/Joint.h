@@ -21,10 +21,9 @@ class Joint: public Sphere {
     unsigned int currentActionIndex;
     float t;
     Matrix skeletonModelMatrix;
-    static constexpr float R=0.1;
 
   public:
-	Joint(std::string id,Position&& position):Sphere(std::move(position),R,"img/default.bmp"){
+	Joint(std::string id,Position&& position,float r):Sphere(std::move(position),r,"img/default.bmp"){
         this->id=id;
         this->currentCycleIndex=0;
         this->currentActionIndex=0;

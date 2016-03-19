@@ -51,7 +51,7 @@ class Skeleton: public Component {
   void buildJointsAndBones(RawSkeleton& rawSkeleton){
     for(RawJoint& rawJoint: rawSkeleton.joints){
       Point jointPosition=modelMatrix * rawJoint.cycles[0].actions[0].position;
-      Joint* joint=new Joint(rawJoint.id,Position(jointPosition.x,jointPosition.y,jointPosition.z));
+      Joint* joint=new Joint(rawJoint.id,Position(jointPosition.x,jointPosition.y,jointPosition.z),rawJoint.r);
       for(RawCycle rawCycle:rawJoint.cycles){
           joint->addCycle(rawCycle);
       }

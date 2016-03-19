@@ -346,6 +346,7 @@ class Utils{
 
 			if(tokens[0]=="j"){
 				currentJoint.id=tokens[1];
+				if(tokens.size()>2) currentJoint.r=std::stof(tokens[2]);//optional radius
 			}else
 			if(tokens[0]=="c"){
 				currentCycle.id=tokens[1];
@@ -358,11 +359,11 @@ class Utils{
 			}else
 			if(tokens[0]=="ec"){
 				currentJoint.cycles.push_back(currentCycle);
-				currentCycle.actions.clear();
+				currentCycle=RawCycle();//clear
 			}else
 			if(tokens[0]=="ej"){
 				rawSkeleton.joints.push_back(currentJoint);
-				currentJoint.cycles.clear();
+				currentJoint=RawJoint();//clear
 			}else
 			if(tokens[0]=="b"){
 				RawBone rawBone;
