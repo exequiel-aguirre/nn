@@ -16,7 +16,6 @@ class Bone: public Ellipsoid {
     }        
     
     void render(){
-        this->animate();
         Ellipsoid::render();
     }
 

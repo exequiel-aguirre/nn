@@ -68,7 +68,8 @@ class MyContainer:public Container{
 			Hut* myHut=new Hut(Position(25.0f,GROUND_LEVEL,25.0f));
 			Mill* myMill=new Mill(Position(10.0f,GROUND_LEVEL,-25.0f));
 			Torus* myTorus=new Torus(Position(-70.0f,1.0f+GROUND_LEVEL,-19.0f,90.0f,0.0f,0.0f),2.0f,1.0f);
-			Animation* myAnimation=new Animation(Position(-50.0f,1.8f+GROUND_LEVEL,-30.0f,0,180.0,0),"3DModel/human.obj","img/human.bmp");
+			//Animation* myAnimation=new Animation(Position(-50.0f,1.8f+GROUND_LEVEL,-30.0f,0,180.0,0),"3DModel/human.obj","img/human.bmp");
+			Skeleton* mySkeleton=new Skeleton(Position(-50.0f,1.8f+GROUND_LEVEL,-30.0f,0,180.0,0),"animation/skeleton.ani");
 			Sphere* mySphere=new Sphere(Position(-50.0f,4.0f,-10.0f),0.39f);
 			Sphere* mySphere2=new Sphere(Position(-60.0f,8.0f,-20.0f),0.5f);
 			Sphere* mySphere3=new Sphere(Position(-50.0f,6.0f,-20.0f),2.0f);
@@ -105,7 +106,7 @@ class MyContainer:public Container{
 			add(myHut);
 			add(myMill);
 			add(myTorus->add(new MotionBehavior()));
-			myAnimation->getAcceleration().setZ(-3.8f);add(myAnimation->add(new MotionBehavior()));myAnimation->setRotates(false);
+			mySkeleton->getAcceleration().setZ(-3.8f);add(mySkeleton->add(new MotionBehavior()));mySkeleton->setRotates(false);
 			add(mySphere->add(new MotionBehavior()));
 			mySphere2->getVelocity().setX(40.0f);add(mySphere2->add(new MotionBehavior()));
 			add(mySphere3->add(new MotionBehavior()));

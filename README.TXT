@@ -55,7 +55,10 @@ MAKEHUMAN:
 QTCREATOR:
 -To be able to step into a third party lib, you need to add the library path to the includes.For example, add /usr/include/bullet to example.includes .
 
-
+QAPITRACE:
+>apitrace trace  ./a.out 
+>qapitrace
+-Select profile
 BUGS:
 -The small ball is passing through the big one.This is most likely related to sleeping.
 -In the reduced polygon we are not effectively removing duplicated points.(See the box for example)

@@ -25,7 +25,7 @@ class EnclosingBox{
       buildPositionedVertices();
   	}
 
-    void buildBoxVertices(vector<Point> moVertices){
+    void buildBoxVertices(vector<Point>& moVertices){
       buildDiagonals(moVertices);      
       //push the vertices of the boundary box
       vertices.push_back( Point(diagonalMin.x,diagonalMin.y,diagonalMin.z));
@@ -74,9 +74,7 @@ class EnclosingBox{
 
     void updatePositionedVertices(){
       for(unsigned int i=0;i<positionedVertices.size();i++){
-        Point p=vertices[i];
-        Point& pp=positionedVertices[i];
-        pp=modelMatrix*p;
+        positionedVertices[i]=modelMatrix*vertices[i];
       }
       buildDiagonals(positionedVertices);
     }

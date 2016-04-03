@@ -31,7 +31,6 @@ class Joint: public Sphere {
     }
 
     void render(){
-        this->animate();
         Sphere::render();
     }
     

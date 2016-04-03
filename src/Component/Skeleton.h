@@ -12,7 +12,7 @@ class Skeleton: public Component {
   private:
     vector<Joint*> joints;
     vector<Bone*> bones;
-  
+    unsigned int frames=0;
   public:
   using Component::add;//just for debug
   Skeleton(Position& position,const char* filename):Component(position){
@@ -74,11 +74,15 @@ class Skeleton: public Component {
   }
 
   void render(){
+    if(frames++ >1) frames=0;
+
     for(Joint* joint: joints){
+      if(frames==0) joint->animate();
       joint->render();
     }
 
     for(Bone* bone: bones){
+      if(frames==0) bone->animate();
       bone->render();
     }
   }
