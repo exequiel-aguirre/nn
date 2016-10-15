@@ -1,7 +1,7 @@
 #ifndef IMapH
 #define IMapH
 #include "../DataStructure/Point.h"
-
+#include <functional>
 /**
 *This represent a map f:R^2->R^3
 */

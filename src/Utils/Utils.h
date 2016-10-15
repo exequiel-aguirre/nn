@@ -115,7 +115,7 @@ class Utils{
 
 		//open file
 		std::ifstream file(filename,std::ifstream::binary);
-		if (file == NULL) {
+		if (file.fail()) {
 			info.status = "Couldn't open file";
 			return info;
 		}
@@ -182,7 +182,7 @@ class Utils{
 		
 		
 		std::ifstream file (filename,std::ifstream::in);
-		if( file == NULL ) std::cout << "Couldn't open the file";
+		if( file.fail() ) std::cout << "Couldn't open the file";
 		while(!file.eof())
 		{ 	
 		    file >> lineHeader;		   
@@ -336,7 +336,7 @@ class Utils{
 		RawCycle currentCycle;
 
 		std::ifstream file (filename,std::ifstream::in);
-		if( file == NULL ) std::cout << "Couldn't open the file";
+		if( file.fail() ) std::cout << "Couldn't open the file";
 		while(!file.eof()){
 		    std::string line;
 		    std::getline(file,line);
